@@ -278,6 +278,13 @@
           </button>
         </section>
 
+        <!-- Direct Navigation to Next Lesson (Screen 1) -->
+        <div style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти к третьему уроку →</span>
+          </button>
+        </div>
+
       </div>
 
       <!-- ==========================================
@@ -686,19 +693,19 @@
             </div>
           </div>
 
-          <!-- Next Step Navigation (Hidden until result is calculated) -->
-          <div id="nextLessonBlock" style="display:none; opacity:0; transform:translateY(12px); transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); padding-top:4px;">
-            <button id="btnNextLesson3" onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="primary-btn pulse" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
-              <span>Перейти к уроку 3 →</span>
-            </button>
-          </div>
-
           <div style="text-align:center;">
             <button onclick="goToStage(1)" class="ghost-btn" style="color:var(--nb-slate); font-size:12.5px;">
               🔄 Пройти наблюдение заново
             </button>
           </div>
 
+        </div>
+
+        <!-- Next Step Navigation (Appears smoothly after 3s on Screen 2) -->
+        <div id="nextLessonBlock" style="display:none; opacity:0; transform:translateY(12px); transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); padding-top:4px;">
+          <button id="btnNextLesson3" onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти к третьему уроку →</span>
+          </button>
         </div>
 
       </div>
@@ -725,6 +732,17 @@
       }
     }, 3000);
 
+    function revealNextLessonBtn() {
+      const nextBtn = document.getElementById('nextLessonBlock');
+      if (nextBtn) {
+        nextBtn.style.display = 'block';
+        requestAnimationFrame(function() {
+          nextBtn.style.opacity = '1';
+          nextBtn.style.transform = 'translateY(0)';
+        });
+      }
+    }
+
     // Screen Transition: Video (Screen 1) <-> Interactive (Screen 2)
     function goToStep2() {
       safeHaptic('selection');
@@ -733,6 +751,9 @@
       const s2 = document.getElementById('step2InteractiveScreen');
       s2.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Automatically reveal "Перейти к третьему уроку →" button after 3 seconds on Screen 2
+      setTimeout(revealNextLessonBtn, 3000);
     }
 
     function goToStep1() {
@@ -1109,9 +1130,11 @@
         textContainer.textContent = htmlContent;
       }
       block.classList.remove('hidden');
-      block.style.display = 'flex';
-
       revealNextLessonBtn();
+      const btn3 = document.getElementById('btnNextLesson3');
+      if (btn3) {
+        btn3.className = 'primary-btn pulse';
+      }
       block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   </script>
