@@ -27,10 +27,10 @@
     }
     .bonus-tile {
       background: rgba(255, 255, 255, 0.95);
-      border: 1px solid rgba(36, 49, 57, 0.08);
+      border: 1px solid rgba(36, 49, 57, 0.1);
       border-radius: 20px;
       padding: 20px;
-      box-shadow: 0 10px 28px rgba(36, 49, 57, 0.06);
+      box-shadow: 0 10px 28px rgba(36, 49, 57, 0.08);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -39,11 +39,25 @@
       text-decoration: none;
       transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
       text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .bonus-tile-1 {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.87), rgba(255, 255, 255, 0.94)), url('bonus1.png') center/cover no-repeat;
+    }
+    .bonus-tile-2 {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.87), rgba(255, 255, 255, 0.94)), url('bonus2.png') center/cover no-repeat;
+    }
+    .bonus-tile-3 {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.87), rgba(255, 255, 255, 0.94)), url('bonus3.png') center/cover no-repeat;
+    }
+    .bonus-tile-4 {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.87), rgba(255, 255, 255, 0.94)), url('bonus4.png') center/cover no-repeat;
     }
     .bonus-tile:hover {
       transform: translateY(-3px);
-      box-shadow: 0 16px 36px rgba(36, 49, 57, 0.12);
-      border-color: rgba(217, 131, 78, 0.4);
+      box-shadow: 0 16px 36px rgba(36, 49, 57, 0.15);
+      border-color: rgba(217, 131, 78, 0.5);
     }
     .bonus-tile:active {
       transform: scale(0.985);
@@ -115,7 +129,7 @@
       <div class="bonuses-grid">
 
         <!-- Bonus 1 -->
-        <a href="10_bonus1.html" onclick="safeHaptic('selection');" class="bonus-tile">
+        <a href="10_bonus1.html" onclick="safeHaptic('selection');" class="bonus-tile bonus-tile-1">
           <div style="display:flex; align-items:center; justify-content:space-between;">
             <div class="bonus-tile-icon">💬</div>
             <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 1</span>
@@ -132,7 +146,7 @@
         </a>
 
         <!-- Bonus 2 -->
-        <a href="11_bonus2.html" onclick="safeHaptic('selection');" class="bonus-tile">
+        <a href="11_bonus2.html" onclick="safeHaptic('selection');" class="bonus-tile bonus-tile-2">
           <div style="display:flex; align-items:center; justify-content:space-between;">
             <div class="bonus-tile-icon">🌿</div>
             <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 2</span>
@@ -149,7 +163,7 @@
         </a>
 
         <!-- Bonus 3 -->
-        <a href="12_bonus3.html" onclick="safeHaptic('selection');" class="bonus-tile">
+        <a href="12_bonus3.html" onclick="safeHaptic('selection');" class="bonus-tile bonus-tile-3">
           <div style="display:flex; align-items:center; justify-content:space-between;">
             <div class="bonus-tile-icon">🚪</div>
             <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 3</span>
@@ -166,7 +180,7 @@
         </a>
 
         <!-- Bonus 4 -->
-        <a href="13_bonus4.html" onclick="safeHaptic('selection');" class="bonus-tile">
+        <a href="13_bonus4.html" onclick="safeHaptic('selection');" class="bonus-tile bonus-tile-4">
           <div style="display:flex; align-items:center; justify-content:space-between;">
             <div class="bonus-tile-icon">🧭</div>
             <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 4</span>
