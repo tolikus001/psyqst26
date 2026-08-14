@@ -503,6 +503,144 @@ const server = http.createServer(async (req, res) => {
         }));
       }
 
+      // Route: /api/lesson4-strategy (Вернуть себе свою силу)
+      if (pathname === '/api/lesson4-strategy') {
+        const {
+          mode = 'resource',
+          quality = '',
+          allowedBehavior = '',
+          rules = [],
+          resource = '',
+          bodyChange = '',
+          newAction = '',
+          userName = 'Участник'
+        } = parsed;
+
+        const rulesStr = Array.isArray(rules) ? rules.join('; ') : rules;
+
+        // Clean text helper
+        function cleanSimple(str) {
+          if (!str || typeof str !== 'string') return '';
+          return str.replace(/[*#_`]/g, '').trim();
+        }
+
+        if (mode === 'permission') {
+          const systemPrompt = [
+            'Ты — «Интеллектуальный попутчик» в курсе «Я выбираю».',
+            'Твоя задача — сформулировать персональную фразу-разрешение для участника на основе пройденной им практики.',
+            '',
+            'СТРОГИЕ ТРЕБОВАНИЯ К ФРАЗЕ:',
+            '1. Верни СТРОГИЙ JSON без Markdown: {"permission": "Текст фразы"}',
+            '2. Строго ОДНО предложение.',
+            '3. От первого лица (начинается с «Я разрешаю себе...» или «Я возвращаю себе право...»).',
+            '4. Без диагнозов и психологических ярлыков.',
+            '5. Без обещаний мгновенной трансформации.',
+            '6. Соединяет выбранное качество со здоровым уважением к себе и другим.',
+            '7. Пример: «Я разрешаю себе быть заметной, сохраняя уважение к себе и другим».',
+            '',
+            'ОГРАНИЧЕНИЯ (ЗАПРЕЩЕНО):',
+            '- Не использовать слова «точно», «всегда», «однозначно».',
+            '- Не использовать Markdown, символы **, #, кавычки-ёлочки внутри JSON-ключей.'
+          ].join('\n');
+
+          const userPrompt = `Участник: ${userName}\nКачество: ${quality}\nЧто позволял другой человек: ${allowedBehavior}\nВнутренние правила: ${rulesStr}\nЗдоровая форма: ${resource}\nОщущение в теле: ${bodyChange}\nНовый поступок: ${newAction}`;
+
+          let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
+          let aiParsed = null;
+          if (aiRaw) {
+            try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
+          }
+
+          let fallbackPerm = `Я разрешаю себе ${resource ? resource.toLowerCase().replace(/^(право|способность|разрешение)\s+/i, '') : 'проявлять свою силу'}, сохраняя уважение к себе и другим.`;
+          if (quality.toLowerCase().includes('дерзост')) fallbackPerm = 'Я разрешаю себе прямо говорить «нет» и защищать свои границы, сохраняя уважение к себе и другим.';
+          else if (quality.toLowerCase().includes('независим')) fallbackPerm = 'Я разрешаю себе принимать решения с опорой на себя, сохраняя уважение к себе и другим.';
+          else if (quality.toLowerCase().includes('яркост')) fallbackPerm = 'Я разрешаю себе быть заметной и занимать своё место, сохраняя уважение к себе и другим.';
+          else if (quality.toLowerCase().includes('спонтан')) fallbackPerm = 'Я разрешаю себе быть живой и естественной в своих проявлениях, сохраняя уважение к себе и другим.';
+          else if (quality.toLowerCase().includes('уверен')) fallbackPerm = 'Я разрешаю себе опираться на свою ценность и открыто выражать свои желания, сохраняя уважение к себе и другим.';
+          else if (quality.toLowerCase().includes('эмоциональн')) fallbackPerm = 'Я разрешаю себе открыто называть свои чувства, сохраняя бережность к себе и окружающим.';
+          else if (quality.toLowerCase().includes('решительн')) fallbackPerm = 'Я разрешаю себе действовать и делать выбор без бесконечных сомнений, сохраняя уважение к себе и другим.';
+
+          const finalPerm = cleanSimple(aiParsed?.permission) || fallbackPerm;
+
+          res.writeHead(200);
+          return res.end(JSON.stringify({
+            success: true,
+            isAi: !!aiParsed,
+            permission: finalPerm
+          }));
+        }
+
+        // Default mode: 'resource' (Этап 4)
+        const systemPrompt = [
+          'Ты — «Интеллектуальный попутчик» в курсе «Я выбираю».',
+          'Твоя задача — помочь участнику отделить полезный ресурс от разрушительного поведения и найти здоровую форму качества, которое привлекает его в других людях.',
+          '',
+          'СТРОГИЕ ТРЕБОВАНИЯ К ФОРМАТУ:',
+          'Верни СТРОГИЙ JSON без Markdown-разметки:',
+          '{',
+          '  "resource": "Здоровая форма выбранного качества (краткая емкая формулировка)",',
+          '  "explanation": "Краткое бережное объяснение в 1–2 предложениях"',
+          '}',
+          '',
+          'ОГРАНИЧЕНИЯ (ЗАПРЕЩЕНО):',
+          '- Не ставить диагнозы и не искать травмы в детстве.',
+          '- Не приписывать скрытые мотивы.',
+          '- Не советовать копировать резкость, агрессию или неуважение другого человека.',
+          '- Не объявлять любое раздражающее качество подавленной частью личности.',
+          '- Не утверждать, что пользователь обязательно выбирает партнёров по этому механизму.',
+          '- Не использовать категоричные слова «точно», «всегда», «однозначно».',
+          '- НЕ использовать символы ** и # в тексте.'
+        ].join('\n');
+
+        const userPrompt = `Участник: ${userName}\nКачество-магнит: ${quality}\nЧто позволяет себе тот человек: ${allowedBehavior}\nВнутренние правила и запреты: ${rulesStr}`;
+
+        let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
+        let aiParsed = null;
+        if (aiRaw) {
+          try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
+        }
+
+        // Smart fallback dictionary
+        const qLower = (quality || '').toLowerCase();
+        let fallbackResource = 'Внимание к собственным потребностям';
+        let fallbackExplanation = 'Это способность замечать и уважать свои желания, выстраивая ясный и честный контакт с окружающими.';
+
+        if (qLower.includes('дерзост')) {
+          fallbackResource = 'Право прямо говорить «нет»';
+          fallbackExplanation = 'Это способность спокойно обозначать свои границы и открыто выражать несогласие без агрессии и чувства вины.';
+        } else if (qLower.includes('независим')) {
+          fallbackResource = 'Способность принимать решения с опорой на себя';
+          fallbackExplanation = 'Это внутренняя автономия и готовность делать выбор, не нуждаясь в постоянном внешнем одобрении.';
+        } else if (qLower.includes('яркост')) {
+          fallbackResource = 'Право быть заметной и занимать пространство';
+          fallbackExplanation = 'Это естественное проявление своей индивидуальности и открытое присутствие в общении.';
+        } else if (qLower.includes('спонтан')) {
+          fallbackResource = 'Разрешение иногда отступать от жесткого плана';
+          fallbackExplanation = 'Это гибкость и способность доверять моменту, сохраняя внутреннее спокойствие.';
+        } else if (qLower.includes('уверен')) {
+          fallbackResource = 'Право на собственное мнение и ценность';
+          fallbackExplanation = 'Это устойчивое признание своей значимости без потребности что-либо доказывать другим.';
+        } else if (qLower.includes('эмоциональн')) {
+          fallbackResource = 'Способность открыто проживать и называть свои чувства';
+          fallbackExplanation = 'Это честный контакт со своими переживаниями и право делиться ими в безопасной форме.';
+        } else if (qLower.includes('решительн')) {
+          fallbackResource = 'Право действовать без бесконечных сомнений';
+          fallbackExplanation = 'Это готовность делать первый шаг и брать ответственность за свои решения.';
+        }
+
+        const resObj = {
+          resource: cleanSimple(aiParsed?.resource) || fallbackResource,
+          explanation: cleanSimple(aiParsed?.explanation) || fallbackExplanation
+        };
+
+        res.writeHead(200);
+        return res.end(JSON.stringify({
+          success: true,
+          isAi: !!aiParsed,
+          result: resObj
+        }));
+      }
+
       // Route: /api/portrait-assessment
       if (pathname === '/api/portrait-assessment') {
         const { answers = [], userName = 'Участник' } = parsed;
