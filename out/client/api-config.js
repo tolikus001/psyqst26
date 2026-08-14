@@ -14,8 +14,40 @@
     ? (window.USE_AMVERA_FOR_FILE ? AMVERA_HOST : LOCAL_HOST)
     : (isLocal ? '' : AMVERA_HOST);
 
+  // Official Notibot Article IDs for seamless inside-bot navigation
+  const NOTIBOT_ARTICLES = {
+    quest: '35Kvp1YSxOSOzKeVKcpom2',
+    landing: '54xiZ3LlRdXnk88t9xPt7s',
+    lesson1: '6QzHvAlz22e4lEb6wVhjy0',
+    lesson2: '6wQPr20VEfbLD5Jg6GeEVR',
+    lesson3: '0wFlaZghZ7ZieZiqFtJpSs',
+    lesson4: '1ddMHSu3zb0ixr2CWRLKvg',
+    lesson5: '4uMyKJZW4TdZJM8z9G7Zbg',
+    '01_psyquest.html': '35Kvp1YSxOSOzKeVKcpom2',
+    '02_landing_partner.html': '54xiZ3LlRdXnk88t9xPt7s',
+    '03_lesson1.html': '6QzHvAlz22e4lEb6wVhjy0',
+    '04_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
+    '05_lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
+    '06_lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
+    '07_lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg'
+  };
+
   window.API_BASE = API_BASE;
   window.AMVERA_HOST = AMVERA_HOST;
+  window.NOTIBOT_ARTICLES = NOTIBOT_ARTICLES;
+
+  /**
+   * Navigate to screen via Notibot openArticle if embedded, or window.location if standalone
+   */
+  function openScreen(target) {
+    const clean = String(target || '').replace(/^(\.\/|\/)/, '');
+    const articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[target];
+    if (window.notibot && articleId && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
+      window.notibot.openArticle(articleId);
+    } else {
+      window.location.href = target;
+    }
+  }
 
   /**
    * Safe Fetch with Timeout and Automatic Error Handling
@@ -78,4 +110,5 @@
 
   window.apiPost = apiPost;
   window.resolveMediaUrl = resolveMediaUrl;
+  window.openScreen = openScreen;
 })();
