@@ -272,18 +272,14 @@
           textEl.innerHTML = '🚂 <strong style="color:var(--nb-terracotta);">Интеллектуальный попутчик поехал в следующий урок</strong> и будет ждать вас там с новыми вопросами и своей помощью.';
         }
         if (btn) {
-          btn.classList.remove('pulse');
-          btn.style.background = 'linear-gradient(135deg, var(--nb-sea), var(--nb-accent))';
-          btn.innerHTML = '<span>Попутчик ждёт вас во 2-м уроке ➔</span>';
-          btn.type = 'button';
-          btn.onclick = function() {
-            safeHaptic('selection');
-            window.location.href = '04_lesson2.html';
-          };
+          btn.style.display = 'none';
         }
       } else {
         if (textEl) {
           textEl.textContent = 'Интеллектуальный попутчик поможет тебе потренироваться анализировать ситуацию. Его рекомендации только помогающие и не являются диагнозом, хотя он очень старается. И чтоб он не перестарался, он сможет ответить только 5 раз.';
+        }
+        if (btn) {
+          btn.style.display = 'block';
         }
       }
     }
