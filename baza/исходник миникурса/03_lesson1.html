@@ -153,37 +153,37 @@
         <!-- Interactive 5-Step AI Strategy Tool -->
         <section class="glass card">
           <div class="eyebrow" style="margin-bottom:8px;">Практика</div>
-          <h3 class="question-title">Практика: «Карта моего сценария»</h3>
-          <p class="lead" style="font-size:13px; margin-bottom:14px;">Заполните 5 пунктов формулы Анатолия Фёдорова, чтобы подсветить узловую точку сценария</p>
+          <h3 class="question-title">Карта моего сценария</h3>
+          <p class="lead" style="font-size:13px; margin-bottom:14px;">Ответьте на пять вопросов, чтобы увидеть, где факт превращается в тревогу и привычную реакцию.</p>
 
           <form id="strategyForm" onsubmit="analyzeStrategy(event)" style="display:flex; flex-direction:column; gap:12px;">
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">1. Реальный факт (Что произошло?):</label>
-              <input type="text" id="inpFact" required placeholder="Например: Он не отвечает на сообщение 40 минут" />
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что произошло в реальности?</label>
+              <input type="text" id="inpFact" required placeholder="Пример: он не отвечает на сообщение 40 минут." />
             </div>
 
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">2. Я становлюсь той, которая... (Чувства и мысли):</label>
-              <input type="text" id="inpFeeling" required placeholder="Например: Боится потери, накручивает себя" />
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я подумала и почувствовала?</label>
+              <input type="text" id="inpFeeling" required placeholder="Пример: «Он потерял интерес». Я почувствовала тревогу." />
             </div>
 
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">3. Поэтому я начинаю... (Твои действия):</label>
-              <input type="text" id="inpAction" required placeholder="Например: Мониторю статус, пишу «ты куда пропал?»" />
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я начала делать?</label>
+              <input type="text" id="inpAction" required placeholder="Пример: проверять статус и писать снова." />
             </div>
 
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">4. Сразу это мне дает чувство... (Облегчение):</label>
-              <input type="text" id="inpRelief" required placeholder="Например: Иллюзия контроля, спад напряжения" />
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что это дало мне сразу?</label>
+              <input type="text" id="inpRelief" required placeholder="Пример: на несколько минут стало спокойнее." />
             </div>
 
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">5. В итоге я получаю... (Фактический результат):</label>
-              <input type="text" id="inpResult" required placeholder="Например: Роль догоняющей, холодность партнера" />
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">К чему это привело в итоге?</label>
+              <input type="text" id="inpResult" required placeholder="Пример: я оказалась в позиции догоняющей." />
             </div>
 
             <button type="submit" id="btnSubmitStrategy" class="primary-btn pulse" style="margin-top:6px;">
-              <span>Разобрать сценарий с Интеллектуальным попутчиком ➔</span>
+              <span>Разобрать с Попутчиком →</span>
             </button>
           </form>
 
@@ -301,7 +301,7 @@
 
       const btn = document.getElementById('btnSubmitStrategy');
       btn.disabled = true;
-      btn.textContent = 'Интеллектуальный попутчик анализирует...';
+      btn.textContent = 'Попутчик анализирует...';
 
       const payload = {
         fact: document.getElementById('inpFact').value,
@@ -327,7 +327,7 @@
         updateCreditsUI();
         if (aiCredits > 0) {
           btn.disabled = false;
-          btn.textContent = 'Разобрать сценарий с Интеллектуальным попутчиком ➔';
+          btn.textContent = 'Разобрать с Попутчиком →';
         }
       }
     }
