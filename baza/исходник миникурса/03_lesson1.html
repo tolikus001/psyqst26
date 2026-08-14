@@ -188,9 +188,15 @@
           </form>
 
           <!-- AI Feedback -->
-          <div id="aiResultBlock" class="hidden" style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:8px;">
+          <div id="aiResultBlock" class="hidden" style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:10px;">
             <strong style="color:var(--nb-deep); font-size:13px;">✨ Ответ Интеллектуального попутчика:</strong>
             <div id="aiAnalysisText" style="font-size:13px; color:var(--nb-text); line-height:1.5; white-space:pre-line;"></div>
+
+            <!-- Send to Telegram Button -->
+            <button id="btnSendLesson1Telegram" onclick="sendLesson1ToTelegram(event)" class="secondary-btn" style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span>✈️ Прислать этот разбор мне в Telegram</span>
+            </button>
+            <div id="tgStatusLesson1" style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;"></div>
           </div>
         </section>
 
@@ -377,6 +383,104 @@
       }
 
       block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ==========================================
+    // TELEGRAM SUMMARY DISPATCH (LESSON 1)
+    // ==========================================
+    async function sendLesson1ToTelegram(e) {
+      if (e) e.preventDefault();
+      safeHaptic('selection');
+      const btn = document.getElementById('btnSendLesson1Telegram');
+      const statusEl = document.getElementById('tgStatusLesson1');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ Отправляем в Telegram...</span>';
+      }
+
+      const fact = document.getElementById('inpFact')?.value || '';
+      const feeling = document.getElementById('inpFeeling')?.value || '';
+      const action = document.getElementById('inpAction')?.value || '';
+      const relief = document.getElementById('inpRelief')?.value || '';
+      const result = document.getElementById('inpResult')?.value || '';
+      const aiText = document.getElementById('aiAnalysisText')?.innerText || '';
+
+      const fullMessage = [
+        '💡 Персональный разбор сценария (Урок 1 • «Я выбираю»):',
+        '',
+        `• ФАКТ: ${fact}`,
+        `• ТРЕВОГА / ИНТЕРПРЕТАЦИЯ: ${feeling}`,
+        `• АВТОМАТИЧЕСКОЕ ДЕЙСТВИЕ: ${action}`,
+        `• ИЛЛЮЗИЯ КОНТРОЛЯ: ${relief}`,
+        `• ИТОГОВЫЙ РЕЗУЛЬТАТ: ${result}`,
+        '',
+        '✨ РАЗБОР ПОПУТЧИКА:',
+        aiText.replace(/\n{3,}/g, '\n\n'),
+        '',
+        '👉 Практика: Наблюдать за соматическим спазмом и не спешить с реакцией.'
+      ].join('\n');
+
+      let delivered = false;
+
+      // 1. Telegram WebApp sendData
+      try {
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+          window.Telegram.WebApp.sendData(JSON.stringify({
+            event: 'lesson_summary',
+            lesson: 1,
+            title: 'Урок 1 • Персональный разбор сценария',
+            message: fullMessage
+          }));
+          delivered = true;
+        }
+      } catch (err) {
+        console.log('Telegram sendData:', err);
+      }
+
+      // 2. Notibot SDK
+      try {
+        if (window.notibot && typeof window.notibot.submitForm === 'function') {
+          await window.notibot.submitForm('lesson_summary_1', [
+            { title: 'Разбор урока 1', answers: [fullMessage] }
+          ]);
+          delivered = true;
+        }
+      } catch (err) {
+        console.log('Notibot submitForm:', err);
+      }
+
+      // 3. Backend dispatch
+      try {
+        const user = (window.extractTelegramUser ? window.extractTelegramUser() : null) || window.currentUser || {};
+        await window.apiPost('/api/send-telegram-summary', {
+          lessonNumber: 1,
+          title: 'Урок 1 • Персональный разбор сценария',
+          message: fullMessage,
+          user: user
+        });
+        delivered = true;
+      } catch (err) {
+        console.log('API send-telegram-summary:', err);
+      }
+
+      // 4. Clipboard fallback
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(fullMessage);
+        }
+      } catch (err) {}
+
+      safeHaptic('success');
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span>✅ Разбор отправлен в ваш Telegram!</span>';
+        btn.style.borderColor = 'var(--success)';
+        btn.style.color = 'var(--success)';
+      }
+      if (statusEl) {
+        statusEl.style.display = 'block';
+        statusEl.textContent = 'Сообщение с разбором направлено в ваш диалог с ботом.';
+      }
     }
   </script>
 

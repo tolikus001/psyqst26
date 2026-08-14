@@ -516,6 +516,53 @@ const server = http.createServer(async (req, res) => {
         }));
       }
 
+      // Route: /api/send-telegram-summary (Отправка разбора в личные сообщения бота)
+      if (pathname === '/api/send-telegram-summary') {
+        const { lessonNumber = 1, title = '', message = '', user = {} } = parsed;
+        const botToken = process.env.TELEGRAM_BOT_TOKEN || '';
+        const chatId = user?.id || user?.userId || process.env.TELEGRAM_DEFAULT_CHAT_ID || '';
+
+        console.log(`[Telegram PM Summary] Lesson ${lessonNumber} for user ${user?.first_name || user?.id || 'guest'}`);
+
+        if (botToken && chatId) {
+          try {
+            const https = require('https');
+            const postData = JSON.stringify({
+              chat_id: chatId,
+              text: message,
+              parse_mode: 'HTML'
+            });
+
+            const reqTg = https.request({
+              hostname: 'api.telegram.org',
+              path: `/bot${botToken}/sendMessage`,
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(postData)
+              }
+            }, (resTg) => {
+              let tgData = '';
+              resTg.on('data', chunk => tgData += chunk);
+              resTg.on('end', () => console.log('[Telegram Bot API response]:', tgData));
+            });
+
+            reqTg.on('error', (err) => console.error('[Telegram Bot API error]:', err.message));
+            reqTg.write(postData);
+            reqTg.end();
+          } catch (e) {
+            console.error('[Telegram Bot Send Exception]:', e);
+          }
+        }
+
+        res.writeHead(200);
+        return res.end(JSON.stringify({
+          success: true,
+          delivered: true,
+          lesson: lessonNumber
+        }));
+      }
+
       // Unknown POST
       res.writeHead(404);
       res.end(JSON.stringify({ error: 'NOT_FOUND' }));
