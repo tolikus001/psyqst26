@@ -112,7 +112,9 @@
         <p class="lead" style="font-size:13px; margin-bottom:12px;">Практика возвращения к внутренней тишине и опоре.</p>
 
         <div style="padding:10px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-          <audio controls preload="none" style="width:100%; accent-color:var(--nb-accent);">
+          <audio id="meditationAudio3" controls preload="metadata" style="width:100%; accent-color:var(--nb-accent);">
+            <source src="/data/meditation1-3.MP3" type="audio/mpeg">
+            <source src="meditation1-3.MP3" type="audio/mpeg">
             <source src="https://cloud.amvera.ru/projects/applications/msk0/inter01/meditation1-3.MP3" type="audio/mpeg">
             Ваш браузер не поддерживает аудио.
           </audio>
@@ -132,6 +134,20 @@
 
     </div>
   </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const audioEl = document.getElementById('meditationAudio3');
+      if (audioEl && window.resolveMediaUrl) {
+        const publicUrl = window.resolveMediaUrl('meditation1-3.MP3');
+        const primarySource = audioEl.querySelector('source');
+        if (primarySource && publicUrl) {
+          primarySource.src = publicUrl;
+          audioEl.load();
+        }
+      }
+    });
+  </script>
 
 </body>
 </html>

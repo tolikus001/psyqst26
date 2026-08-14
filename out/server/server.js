@@ -212,8 +212,8 @@ const server = http.createServer(async (req, res) => {
     return res.end(JSON.stringify({ ok: true, status: 'running', service: 'psyquest-media-ai-zero-dep', timestamp: new Date().toISOString() }));
   }
 
-  // Serve Client Files (HTML, CSS, JS, Images, PDFs, etc.)
-  const staticExts = ['.html', '.css', '.js', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.ico', '.mp4', '.json', '.pdf'];
+  // Serve Client Files (HTML, CSS, JS, Images, PDFs, Audio, Video, etc.)
+  const staticExts = ['.html', '.css', '.js', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.ico', '.mp4', '.mp3', '.m4a', '.wav', '.ogg', '.json', '.pdf'];
   if (pathname === '/' || staticExts.some(ext => pathname.toLowerCase().endsWith(ext))) {
     const filename = pathname === '/' ? 'index.html' : path.basename(pathname);
     const clientPath = path.join(__dirname, '..', 'client', filename);
