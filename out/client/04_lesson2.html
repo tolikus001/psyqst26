@@ -13,7 +13,7 @@
       img-src 'self' data: https:;
       connect-src 'self' https: http://localhost:3000;
     " />
-  <title>Урок 2: Бабочки в животе или спазм тревоги? — Анатолий Фёдоров</title>
+  <title>Урок 2: Бабочки или тревога? — Анатолий Фёдоров</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,85 +74,118 @@
         </div>
       </header>
 
-      <!-- Video Card -->
-      <section class="glass card text-center">
-        <div class="eyebrow" style="margin-bottom:8px;">Урок 2 из 5</div>
-        <h2>Бабочки или тревога?</h2>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Как отличить притяжение к человеку от реакции на его недоступность и непредсказуемость.</p>
+      <!-- ==========================================
+           SCREEN 1: VIDEO & 3s INSIGHT
+           ========================================== -->
+      <div id="step1VideoScreen" style="display:flex; flex-direction:column; gap:14px;">
 
-        <!-- Video Player Wrapper (Kinescope) -->
-        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-          <iframe id="lesson2VideoIframe" src="https://kinescope.io/embed/xkP3RBdibqvFYLizjBpFsW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-        </div>
-      </section>
+        <!-- Video Card -->
+        <section class="glass card text-center">
+          <div class="eyebrow" style="margin-bottom:8px;">Урок 2 из 5</div>
+          <h2>Бабочки или тревога?</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как отличить притяжение к человеку от реакции на его недоступность и непредсказуемость.</p>
 
-      <!-- Insight Card (Appears after 3 seconds) -->
-      <section id="insightSection" class="glass card text-center" style="display:none; opacity:0; transform:translateY(16px); transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);">
-        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-          💡 Главный вывод
-        </div>
-        <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
-        <p class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:0;">
-          «Бабочки в животе» — это телесное возбуждение. Оно может сопровождать и влюблённость, и тревогу, поэтому само по себе ничего не говорит о совместимости. Надёжнее смотреть на регулярные поступки человека и на своё состояние рядом с ним.
-        </p>
-      </section>
-
-      <!-- Somatic Checklist Card -->
-      <section class="glass card">
-        <div class="eyebrow" style="margin-bottom:8px;">Практика</div>
-        <h3 class="question-title">Практика: «Что говорит моё тело рядом с ним»</h3>
-        <p class="lead" style="font-size:13px; margin-bottom:14px;">Оцените свои соматические реакции рядом с человеком</p>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <div style="font-size:12px; font-weight:800; color:var(--nb-deep); text-align:center;">1. Соматические маркеры тела:</div>
-          
-          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-            <span style="font-size:13px;">🫁 Дыхание: глубокое и ровное (не поверхностное)</span>
-            <div class="answer-dot"></div>
+          <!-- Video Player Wrapper (Kinescope) -->
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="lesson2VideoIframe" src="https://kinescope.io/embed/xkP3RBdibqvFYLizjBpFsW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
           </div>
+        </section>
 
-          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-            <span style="font-size:13px;">🧘 Плечи и челюсть: мягкие и опущенные (без спазма)</span>
-            <div class="answer-dot"></div>
+        <!-- Insight Card (Appears strictly after 3 seconds) -->
+        <section id="insightSection" class="glass card text-center" style="display:none; opacity:0; transform:translateY(16px); transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+            💡 Главный вывод
           </div>
+          <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
+          <p class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
+            «Бабочки в животе» — это телесное возбуждение. Оно может сопровождать и влюблённость, и тревогу, поэтому само по себе ничего не говорит о совместимости. Надёжнее смотреть на регулярные поступки человека и на своё состояние рядом с ним.
+          </p>
 
-          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-            <span style="font-size:13px;">🌱 Ощущение в теле: заземление и безопасность</span>
-            <div class="answer-dot"></div>
-          </div>
+          <button onclick="goToStep2()" class="primary-btn pulse" style="width:100%;">
+            <span>Переходим к практике →</span>
+          </button>
+        </section>
+
+        <!-- Direct Navigation to Next Lesson (Always visible on Screen 1) -->
+        <div style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти к уроку 3 →</span>
+          </button>
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px; padding-top:12px; border-top:1px solid var(--nb-line);">
-          <div style="font-size:12px; font-weight:800; color:var(--nb-deep); text-align:center;">2. Человеческие критерии партнера:</div>
-          
-          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-            <span style="font-size:13px;">🤝 Предсказуемость: держит слово, не играет в прятки</span>
-            <div class="answer-dot"></div>
-          </div>
-
-          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-            <span style="font-size:13px;">💬 Ясность: прямо говорит о планах и чувствах</span>
-            <div class="answer-dot"></div>
-          </div>
-
-          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-            <span style="font-size:13px;">🛡 Опора: с ним можно спокойно жить и проходить штормы</span>
-            <div class="answer-dot"></div>
-          </div>
-        </div>
-
-        <div id="checklistScore" style="margin-top:14px; padding:12px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); font-size:12px; text-align:center; color:var(--nb-text-2);">
-          Отметьте пункты, чтобы рассчитать индекс соматической совместимости
-        </div>
-      </section>
-
-      <!-- Next Step -->
-      <div style="padding-top:4px;">
-        <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn">
-          <span>Перейти к Уроку 3: «Качели и медитация» ➔</span>
-        </button>
       </div>
 
+      <!-- ==========================================
+           SCREEN 2: PRACTICE
+           ========================================== -->
+      <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
+
+        <!-- Back to Video Button -->
+        <div>
+          <button onclick="goToStep1()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
+            ← Назад к видеоуроку
+          </button>
+        </div>
+
+        <!-- Somatic Checklist Card -->
+        <section class="glass card">
+          <div class="eyebrow" style="margin-bottom:8px;">Практика</div>
+          <h3 class="question-title">Что говорит моё тело рядом с ним</h3>
+          <p class="lead" style="font-size:13px; margin-bottom:14px;">Оцените свои соматические реакции рядом с человеком</p>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="font-size:12px; font-weight:800; color:var(--nb-deep); text-align:center;">1. Соматические маркеры тела:</div>
+            
+            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+              <span style="font-size:13px;">🫁 Дыхание: глубокое и ровное (не поверхностное)</span>
+              <div class="answer-dot"></div>
+            </div>
+
+            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+              <span style="font-size:13px;">🧘 Плечи и челюсть: мягкие и опущенные (без спазма)</span>
+              <div class="answer-dot"></div>
+            </div>
+
+            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+              <span style="font-size:13px;">🌱 Ощущение в теле: заземление и безопасность</span>
+              <div class="answer-dot"></div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px; padding-top:12px; border-top:1px solid var(--nb-line);">
+            <div style="font-size:12px; font-weight:800; color:var(--nb-deep); text-align:center;">2. Человеческие критерии партнера:</div>
+            
+            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+              <span style="font-size:13px;">🤝 Предсказуемость: держит слово, не играет в прятки</span>
+              <div class="answer-dot"></div>
+            </div>
+
+            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+              <span style="font-size:13px;">💬 Ясность: прямо говорит о планах и чувствах</span>
+              <div class="answer-dot"></div>
+            </div>
+
+            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+              <span style="font-size:13px;">🛡 Опора: с ним можно спокойно жить и проходить штормы</span>
+              <div class="answer-dot"></div>
+            </div>
+          </div>
+
+          <div id="checklistScore" style="margin-top:14px; padding:12px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); font-size:12px; text-align:center; color:var(--nb-text-2);">
+            Отметьте пункты, чтобы рассчитать индекс соматической совместимости
+          </div>
+        </section>
+
+        <!-- Next Step Transition (Screen 2) -->
+        <div id="nextLessonBlock" style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="primary-btn pulse" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти к уроку 3 →</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
       <footer class="subtle text-center py-2" style="font-size:11px;">
         © Анатолий Фёдоров • ПСИквест
       </footer>
@@ -173,6 +206,37 @@
         safeHaptic('selection');
       }
     }, 3000);
+
+    // Transition from Video (Screen 1) to Interactive Practice (Screen 2)
+    function goToStep2() {
+      safeHaptic('selection');
+      pauseVideo();
+      document.getElementById('step1VideoScreen').style.display = 'none';
+      const s2 = document.getElementById('step2InteractiveScreen');
+      s2.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Return to Video Screen (Screen 1)
+    function goToStep1() {
+      safeHaptic('selection');
+      document.getElementById('step2InteractiveScreen').style.display = 'none';
+      document.getElementById('step1VideoScreen').style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Pause Kinescope Video Player
+    function pauseVideo() {
+      const iframe = document.getElementById('lesson2VideoIframe');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+          iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+        } catch (e) {
+          console.log('Pause message error:', e);
+        }
+      }
+    }
 
     function toggleCheck(el) {
       safeHaptic('selection');
