@@ -1,6 +1,71 @@
 <!doctype html>
 <html lang="ru">
 <head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+  <!-- Notibot Bridge Early Interceptor (КОДЕР 2.0) -->
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+  </script>
+  <!-- Fallback Inlined Notibot Bridge if standalone -->
+  <script>
+    if (!window.notibot) {
+      (function() {
+        class NotibotBridge {
+          constructor() {
+            this.user = {};
+            this.app = {};
+            this._updateHandlers = [];
+            this._lastActionTimes = {};
+            this._responseHandlers = {};
+            this._init();
+          }
+          _init() {
+            window.addEventListener('message', (event) => {
+              if (!event.data) return;
+              const isInit = event.data.type === 'NOTIBOT_INIT' ||
+                             event.data.type === 'notibot:init' ||
+                             event.data.type === 'NOTIBOT_READY' ||
+                             event.data.type === 'notibot_init';
+              if (isInit) {
+                const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+                const a = (event.data.data && event.data.data.app) || event.data.app || {};
+                if (u) this.user = u;
+                if (a) this.app = a;
+                this._updateHandlers.forEach(cb => {
+                  try { cb(this.user, this.app); } catch(e) {}
+                });
+              }
+            });
+            if (window.parent && window.parent !== window) {
+              try { window.parent.postMessage({ source: 'vibe-sandbox', type: 'READY_FOR_INIT' }, '*'); } catch(e) {}
+            }
+          }
+          onUpdate(callback) {
+            if (typeof callback === 'function') {
+              this._updateHandlers.push(callback);
+              if (this.user && (this.user.displayName || this.user.first_name || this.user.id || Object.keys(this.user).length > 0)) {
+                callback(this.user, this.app);
+              }
+            }
+          }
+          openArticle(id) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_article', payload: { id } }, '*'); }
+          openProduct(id) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_product', payload: { id } }, '*'); }
+          openStorefront() { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_storefront' }, '*'); }
+          openLink(url) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_link', payload: { url } }, '*'); else window.location.href = url; }
+          hapticImpact(style) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style } }, '*'); }
+          hapticNotification(type) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { type } }, '*'); }
+          hapticSelection() { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style: 'selection' } }, '*'); }
+        }
+        window.notibot = new NotibotBridge();
+      })();
+    }
+  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="Content-Security-Policy"
@@ -574,8 +639,8 @@ textarea:focus, input:focus {
 </script>
   <script>
 /**
- * Telegram & Notibot Real-Time Personalization Engine
- * Automatically extracts user name & avatar from Telegram WebApp, Notibot Bridge SDK, URL params, or LocalStorage.
+ * Telegram & Notibot Real-Time Personalization Engine (КОДЕР 2.0 Standard)
+ * Automatically extracts user name & avatar from Notibot Bridge SDK, Telegram WebApp, URL params, hash, or LocalStorage.
  */
 (function() {
   function getUrlParam(param) {
@@ -587,8 +652,30 @@ textarea:focus, input:focus {
     }
   }
 
+  function getInitials(name) {
+    if (!name) return '?';
+    const parts = String(name).trim().split(/\s+/);
+    const a = parts[0] ? parts[0].charAt(0) : '';
+    const b = parts.length > 1 ? parts[1].charAt(0) : '';
+    return (a + b).toUpperCase() || '?';
+  }
+
   function extractTelegramUser() {
-    // 1. Telegram WebApp
+    // 1. Notibot Init Data (via postMessage)
+    try {
+      if (window.notibotInitData && window.notibotInitData.user) {
+        return window.notibotInitData.user;
+      }
+    } catch (e) {}
+
+    // 2. Notibot global bridge object
+    try {
+      if (window.notibot && window.notibot.user && (window.notibot.user.displayName || window.notibot.user.first_name || window.notibot.user.id)) {
+        return window.notibot.user;
+      }
+    } catch (e) {}
+
+    // 3. Telegram WebApp
     try {
       if (window.Telegram && window.Telegram.WebApp) {
         if (typeof window.Telegram.WebApp.ready === 'function') {
@@ -598,88 +685,85 @@ textarea:focus, input:focus {
         if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
           return window.Telegram.WebApp.initDataUnsafe.user;
         }
+        if (window.Telegram.WebApp.initData) {
+          const params = new URLSearchParams(window.Telegram.WebApp.initData);
+          const userStr = params.get('user');
+          if (userStr) return JSON.parse(userStr);
+        }
       }
     } catch (e) {}
 
-    // 2. Notibot Init Data (via postMessage)
+    // 4. URL Params & Hash Fragment (?tgWebAppData=... / #tgWebAppData=... / ?name=... / ?first_name=...)
     try {
-      if (window.notibotInitData && window.notibotInitData.user) {
-        return window.notibotInitData.user;
+      const rawParams = window.location.search + '&' + window.location.hash.replace(/^#/, '');
+      const urlParams = new URLSearchParams(rawParams);
+      const tgData = urlParams.get('tgWebAppData') || urlParams.get('tgWebAppInitData');
+      if (tgData) {
+        const parsed = new URLSearchParams(tgData);
+        const userJson = parsed.get('user');
+        if (userJson) return JSON.parse(userJson);
       }
-    } catch (e) {}
-
-    // 3. Notibot global bridge object
-    try {
-      if (window.notibot && window.notibot.user) {
-        return window.notibot.user;
+      const directUser = urlParams.get('user');
+      if (directUser) {
+        try { return JSON.parse(decodeURIComponent(directUser)); } catch(e) { return { displayName: directUser }; }
       }
-    } catch (e) {}
-
-    // 4. URL Search Query (?name=... or ?first_name=... or ?user=...)
-    try {
-      const qName = getUrlParam('first_name') || getUrlParam('name') || getUrlParam('user');
+      const qName = urlParams.get('displayName') || urlParams.get('first_name') || urlParams.get('name');
       if (qName) {
-        return { first_name: decodeURIComponent(qName) };
+        return { displayName: decodeURIComponent(qName) };
       }
     } catch (e) {}
 
     // 5. LocalStorage Cache
     try {
       const cached = localStorage.getItem('psy_user_data');
-      if (cached) {
-        return JSON.parse(cached);
-      }
+      if (cached) return JSON.parse(cached);
       const cachedName = localStorage.getItem('psy_user_name');
-      if (cachedName) {
-        return { first_name: cachedName };
-      }
+      if (cachedName) return { displayName: cachedName };
     } catch (e) {}
 
     return null;
   }
 
+  function applyThemeColors(colors) {
+    if (!colors) return;
+    const root = document.documentElement;
+    if (colors.background) root.style.setProperty('--nb-bg', colors.background);
+    if (colors.textPrimary) root.style.setProperty('--nb-text', colors.textPrimary);
+    if (colors.textSecondary) root.style.setProperty('--nb-text-2', colors.textSecondary);
+    if (colors.primaryMain) root.style.setProperty('--nb-accent', colors.primaryMain);
+  }
+
   function applyPersonalization(user) {
     user = user || extractTelegramUser();
-
-    let firstName = '';
+    let rawName = '';
     let photoUrl = '';
 
     if (user) {
-      firstName = user.first_name || user.firstName || user.name || user.username || '';
-      photoUrl = user.photo_url || user.photoURL || user.avatar_url || user.avatarUrl || '';
+      rawName = user.displayName || user.first_name || user.firstName || user.name || user.username || '';
+      photoUrl = user.photoURL || user.photo_url || user.avatar_url || user.avatarUrl || '';
       try {
         localStorage.setItem('psy_user_data', JSON.stringify(user));
-        if (firstName) localStorage.setItem('psy_user_name', firstName);
+        if (rawName) localStorage.setItem('psy_user_name', rawName);
       } catch (e) {}
     }
 
-    firstName = String(firstName || '').trim().split(/\s+/)[0];
+    const firstName = String(rawName || '').trim().split(/\s+/)[0];
+    window.currentUserName = firstName || 'Участник';
+    window.currentUser = user || (firstName ? { displayName: firstName, first_name: firstName } : null);
 
-    // Update Greeting in Header
+    // Update Greeting in Header (КОДЕР 2.0: "Привет, {Имя}!" или "Привет!")
     const greetingEl = document.getElementById('userGreeting');
     if (greetingEl) {
       greetingEl.textContent = firstName ? `Привет, ${firstName}!` : 'Привет!';
     }
 
-    // Update Avatar in Header
+    // Update Avatar in Header (КОДЕР 2.0: аватар с fallback на инициалы)
     const avatarEl = document.getElementById('userAvatar');
     if (avatarEl) {
-      avatarEl.innerHTML = '';
       if (photoUrl) {
-        const img = document.createElement('img');
-        img.src = photoUrl;
-        img.alt = firstName || 'Avatar';
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-        img.style.borderRadius = '9999px';
-        img.onerror = function() {
-          avatarEl.innerHTML = '';
-          avatarEl.textContent = firstName ? firstName.charAt(0).toUpperCase() : '?';
-        };
-        avatarEl.appendChild(img);
+        avatarEl.innerHTML = '<img src="' + photoUrl + '" alt="' + (firstName || 'Avatar') + '" style="width:100%;height:100%;object-fit:cover;border-radius:9999px;" onerror="this.parentNode.setAttribute(\'data-fallback\',\'1\');this.style.display=\'none\';this.parentNode.textContent=\'' + getInitials(firstName) + '\';" />';
       } else {
-        avatarEl.textContent = firstName ? firstName.charAt(0).toUpperCase() : '?';
+        avatarEl.textContent = getInitials(firstName);
       }
     }
 
@@ -687,9 +771,21 @@ textarea:focus, input:focus {
     document.querySelectorAll('[data-user-name]').forEach(el => {
       el.textContent = firstName || el.getAttribute('data-default') || 'Участник';
     });
+  }
 
-    window.currentUser = user || (firstName ? { first_name: firstName } : null);
-    window.currentUserName = firstName || 'Участник';
+  function handleNotibotInit(user, app) {
+    if (app && app.colors) applyThemeColors(app.colors);
+    applyPersonalization(user);
+  }
+
+  // Subscribe to Notibot Bridge
+  if (window.notibot && typeof window.notibot.onUpdate === 'function') {
+    window.notibot.onUpdate(handleNotibotInit);
+    if (window.notibotInitData) {
+      handleNotibotInit(window.notibotInitData.user, window.notibotInitData.app);
+    } else if (window.notibot.app && Object.keys(window.notibot.app).length > 0) {
+      handleNotibotInit(window.notibot.user, window.notibot.app);
+    }
   }
 
   // Initialize immediately & on events
@@ -699,18 +795,40 @@ textarea:focus, input:focus {
     applyPersonalization();
   }
 
-  // Listen for Notibot async initialization
+  // Periodic check for async Telegram/Notibot init
+  let pollAttempts = 0;
+  const pollTimer = setInterval(() => {
+    pollAttempts++;
+    const u = extractTelegramUser();
+    if (u && (u.displayName || u.first_name || u.firstName || u.name || u.username)) {
+      applyPersonalization(u);
+      clearInterval(pollTimer);
+    }
+    if (pollAttempts >= 20) clearInterval(pollTimer);
+  }, 100);
+
+  // Listen for Notibot async initialization postMessages
   window.addEventListener('message', function(event) {
-    if (event.data && (event.data.type === 'NOTIBOT_INIT' || event.data.type === 'NOTIBOT_READY')) {
-      if (event.data.data && event.data.data.user) {
-        window.notibotInitData = event.data.data;
-        applyPersonalization(event.data.data.user);
+    if (!event.data) return;
+    const isInit = event.data.type === 'NOTIBOT_INIT' ||
+                   event.data.type === 'notibot:init' ||
+                   event.data.type === 'NOTIBOT_READY' ||
+                   event.data.type === 'notibot_init';
+    if (isInit) {
+      const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+      const a = (event.data.data && event.data.data.app) || event.data.app || {};
+      if (u) {
+        window.notibotInitData = event.data.data || { user: u, app: a };
+        handleNotibotInit(u, a);
       }
     }
   });
 
   window.applyPersonalization = applyPersonalization;
   window.extractTelegramUser = extractTelegramUser;
+  window.getInitials = getInitials;
+  window.handleNotibotInit = handleNotibotInit;
+  window.applyThemeColors = applyThemeColors;
 })();
 
 </script>
@@ -799,29 +917,24 @@ textarea:focus, input:focus {
 
 </script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
-
-  <!-- Early interceptor for Notibot Bridge -->
   <script>
-    window.notibotInitData = null;
-    window.addEventListener('message', function(event) {
-      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
-        window.notibotInitData = event.data.data;
-      }
-    });
-
     function safeHaptic(type) {
       try {
-        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
-          window.notibot.hapticFeedback(type || 'impactLight');
+        if (window.notibot) {
+          if (type === 'selection' && typeof window.notibot.hapticSelection === 'function') {
+            window.notibot.hapticSelection();
+          } else if ((type === 'success' || type === 'error' || type === 'warning') && typeof window.notibot.hapticNotification === 'function') {
+            window.notibot.hapticNotification(type);
+          } else if (typeof window.notibot.hapticImpact === 'function') {
+            window.notibot.hapticImpact(type || 'light');
+          }
         } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
           if (type === 'success' || type === 'error' || type === 'warning') {
             window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
           } else {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
           }
-        } else if (navigator.vibrate) {
+        } else if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
           navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
         }
       } catch (e) {}
