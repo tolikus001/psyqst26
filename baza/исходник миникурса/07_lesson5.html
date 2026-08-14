@@ -156,13 +156,15 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const audioEl = document.getElementById('meditationAudio5');
-      if (audioEl && window.resolveMediaUrl) {
-        const publicUrl = window.resolveMediaUrl('meditation1-5.MP3');
-        const primarySource = audioEl.querySelector('source');
-        if (primarySource && publicUrl) {
-          primarySource.src = publicUrl;
-          audioEl.load();
-        }
+      if (audioEl) {
+        audioEl.addEventListener('error', function() {
+          const amveraUrl = 'https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3';
+          if (audioEl.src !== amveraUrl) {
+            console.log('[Audio] Falling back to Amvera URL:', amveraUrl);
+            audioEl.src = amveraUrl;
+            audioEl.load();
+          }
+        }, true);
       }
     });
 
