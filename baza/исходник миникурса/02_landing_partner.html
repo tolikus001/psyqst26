@@ -310,17 +310,11 @@
       startTimer();
     }
 
-    // If timer already started in a previous session, show offer immediately
-    if (expireTime) {
-      expireTime = parseInt(expireTime, 10);
+    // Strictly reveal Course Offer Card and start/resume timer after exactly 20 seconds
+    setTimeout(function() {
       showOfferCard();
-    } else {
-      // Reveal Course Offer Card and start timer after exactly 20 seconds
-      setTimeout(function() {
-        showOfferCard();
-        safeHaptic('selection');
-      }, 20000);
-    }
+      safeHaptic('selection');
+    }, 20000);
 
     // Accordion Toggle
     let isDetailsOpen = false;
