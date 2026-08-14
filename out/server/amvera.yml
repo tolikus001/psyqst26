@@ -9,3 +9,4 @@ build:
 
 run:
   command: npm start
+  persistenceMount: /data

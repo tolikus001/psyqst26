@@ -12,7 +12,10 @@ yarn-error.log*
 
 # Environment files
 .env
-.env.local
+.env.*
+*.env
+**/.env
+out/server/.env
 
 # Node modules
 node_modules/
