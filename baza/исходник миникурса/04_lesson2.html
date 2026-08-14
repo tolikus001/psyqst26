@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta http-equiv="Content-Security-Policy"
-    content="
+  <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
       script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
       frame-src 'self' https://kinescope.io https://*.kinescope.io;
@@ -17,7 +17,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="theme.css">
   <script src="leaves-bg.js"></script>
   <script src="telegram-user.js"></script>
@@ -28,7 +29,7 @@
 
   <script>
     window.notibotInitData = null;
-    window.addEventListener('message', function(event) {
+    window.addEventListener('message', function (event) {
       if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
         window.notibotInitData = event.data.data;
       }
@@ -47,7 +48,7 @@
         } else if (navigator.vibrate) {
           navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
         }
-      } catch (e) {}
+      } catch (e) { }
     }
   </script>
 
@@ -60,12 +61,14 @@
       border: 1px solid rgba(36, 49, 57, 0.08);
       box-shadow: 0 4px 14px rgba(18, 68, 83, 0.03);
     }
+
     .slider-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 6px;
     }
+
     .slider-val-badge {
       font-size: 12px;
       font-weight: 800;
@@ -78,6 +81,7 @@
       transition: all 0.15s ease;
       box-shadow: 0 2px 8px rgba(47, 125, 89, 0.25);
     }
+
     .touch-range {
       -webkit-appearance: none;
       appearance: none;
@@ -89,6 +93,7 @@
       margin: 12px 0 6px;
       cursor: pointer;
     }
+
     .touch-range::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
@@ -101,10 +106,12 @@
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
+
     .touch-range::-webkit-slider-thumb:active {
       transform: scale(1.22);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
     }
+
     .touch-range::-moz-range-thumb {
       width: 28px;
       height: 28px;
@@ -114,6 +121,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       cursor: pointer;
     }
+
     .slider-ticks {
       display: flex;
       justify-content: space-between;
@@ -123,6 +131,7 @@
       color: var(--nb-slate);
       margin-top: 4px;
     }
+
     .scale-labels {
       display: flex;
       justify-content: space-between;
@@ -138,6 +147,7 @@
       gap: 6px;
       margin-top: 8px;
     }
+
     .action-choice {
       padding: 10px 14px;
       border-radius: 12px;
@@ -152,6 +162,7 @@
       justify-content: space-between;
       transition: all 0.2s ease;
     }
+
     .action-choice.active {
       background: rgba(18, 68, 83, 0.06);
       border-color: var(--nb-sea);
@@ -166,6 +177,7 @@
       gap: 8px;
       margin-top: 10px;
     }
+
     .criteria-item {
       padding: 12px 14px;
       border-radius: 14px;
@@ -180,12 +192,14 @@
       justify-content: space-between;
       transition: all 0.2s ease;
     }
+
     .criteria-item.active {
       background: rgba(217, 131, 78, 0.08);
       border-color: var(--nb-terracotta);
       color: var(--nb-terracotta);
       font-weight: 800;
     }
+
     .criteria-checkbox {
       width: 20px;
       height: 20px;
@@ -197,6 +211,7 @@
       font-size: 11px;
       transition: all 0.2s ease;
     }
+
     .criteria-item.active .criteria-checkbox {
       background: var(--nb-terracotta);
       border-color: var(--nb-terracotta);
@@ -210,6 +225,7 @@
       gap: 6px;
       margin-bottom: 12px;
     }
+
     .step-dot {
       width: 8px;
       height: 8px;
@@ -217,12 +233,14 @@
       background: rgba(36, 49, 57, 0.15);
       transition: all 0.3s ease;
     }
+
     .step-dot.active {
       width: 24px;
       background: var(--nb-sea);
     }
   </style>
 </head>
+
 <body>
   <div id="maisonArtBackground" aria-hidden="true"></div>
 
@@ -232,7 +250,8 @@
       <!-- Navigation & Progress Bar (40% | 2 из 5) -->
       <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
         <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <a href="03_lesson1.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+          <a href="03_lesson1.html" onclick="safeHaptic('selection');" class="subtle"
+            style="font-weight:700; font-size:13px; text-decoration:none;">
             ← К уроку 1
           </a>
           <div class="strategy-badge" style="margin:0;">
@@ -242,7 +261,9 @@
 
         <!-- Progress Track -->
         <div style="width:100%; height:6px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
-          <div style="width:40%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px; transition:width 0.4s ease;"></div>
+          <div
+            style="width:40%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px; transition:width 0.4s ease;">
+          </div>
         </div>
       </header>
 
@@ -255,22 +276,30 @@
         <section class="glass card text-center">
           <div class="eyebrow" style="margin-bottom:8px;">Урок 2 из 5</div>
           <h2>Бабочки или тревога?</h2>
-          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как отличить притяжение к человеку от реакции на его недоступность и непредсказуемость.</p>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как отличить притяжение к человеку от реакции на
+            его недоступность и непредсказуемость.</p>
 
           <!-- Video Player Wrapper (Kinescope) -->
-          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="lesson2VideoIframe" src="https://kinescope.io/embed/xkP3RBdibqvFYLizjBpFsW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          <div
+            style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="lesson2VideoIframe" src="https://kinescope.io/embed/xkP3RBdibqvFYLizjBpFsW?max_quality=720"
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+              frameborder="0" allowfullscreen
+              style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
           </div>
         </section>
 
         <!-- Insight Card (Immediately visible) -->
         <section id="insightSection" class="glass card text-center">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+          <div class="eyebrow"
+            style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
             💡 Главный вывод
           </div>
           <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
           <p class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
-            «Бабочки в животе» — это телесное возбуждение. Оно может сопровождать и влюблённость, и тревогу, поэтому само по себе ничего не говорит о совместимости. Надёжнее смотреть на регулярные поступки человека и на своё состояние рядом с ним.
+            «Бабочки в животе» — это телесное возбуждение. Оно может сопровождать и влюблённость, и тревогу, поэтому
+            само по себе ничего не говорит о совместимости. Надёжнее смотреть на регулярные поступки человека и на своё
+            состояние рядом с ним.
           </p>
 
           <button onclick="goToStep2()" class="primary-btn pulse" style="width:100%;">
@@ -280,7 +309,8 @@
 
         <!-- Direct Navigation to Next Lesson (Screen 1) -->
         <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+          <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn"
+            style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
             <span>Перейти к третьему уроку →</span>
           </button>
         </div>
@@ -294,23 +324,30 @@
 
         <!-- Back to Video Button -->
         <div>
-          <button onclick="goToStep1()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
+          <button onclick="goToStep1()" class="ghost-btn"
+            style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
             ← Назад к видеоуроку
           </button>
         </div>
 
         <!-- AI Helper Top Info Card (Project Glass Theme Centered) -->
         <div class="glass card text-center" style="padding: 18px 20px;">
-          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
-            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+          <div
+            style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
+            <div class="eyebrow"
+              style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
               ☀️ Интеллектуальный попутчик
             </div>
-            <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
-              Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">5</span>
+            <div class="strategy-badge"
+              style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
+              Осталось разборов:&nbsp;<span id="aiCreditsLeft"
+                style="color:var(--nb-terracotta); font-weight:900;">5</span>
             </div>
           </div>
-          <p id="aiCreditsCardText" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
-            Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.
+          <p id="aiCreditsCardText"
+            style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
+            Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит
+            диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.
           </p>
         </div>
 
@@ -331,7 +368,8 @@
             Что сильнее влияет на ваши чувства: сам человек или неопределённость рядом с ним?
           </p>
           <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:4px 0 12px;">
-            Вспомните последнюю встречу или переписку с человеком, который вам нравится. Отвечайте, опираясь на то, что происходило в реальности.
+            Вспомните последнюю встречу или переписку с человеком, который вам нравится. Отвечайте, опираясь на то, что
+            происходило в реальности.
           </p>
 
           <button onclick="goToStage(2)" class="primary-btn pulse" style="width:100%;">
@@ -352,8 +390,10 @@
           </div>
           <div class="eyebrow" style="margin-bottom:2px;">Шаг 2 из 5 • Ситуация</div>
           <h3 class="question-title">Какую ситуацию вы хотите разобрать?</h3>
-          
-          <textarea id="inpSituation" oninput="checkStage2Valid()" class="input-field" placeholder="Например: после встречи он не писал два дня, а затем появился как ни в чём не бывало." rows="4" style="width:100%; font-size:13px; line-height:1.45; padding:12px; border-radius:14px; resize:vertical;"></textarea>
+
+          <textarea id="inpSituation" oninput="checkStage2Valid()" class="input-field"
+            placeholder="Например: после встречи он не писал два дня, а затем появился как ни в чём не бывало." rows="4"
+            style="width:100%; font-size:13px; line-height:1.45; padding:12px; border-radius:14px; resize:vertical;"></textarea>
 
           <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
             <button id="btnStage2Next" onclick="goToStage(3)" class="primary-btn" style="width:100%;">
@@ -392,7 +432,8 @@
               <span>Свободное и ровное</span>
               <span>Поверхностное / сбивается</span>
             </div>
-            <input type="range" id="range1" min="0" max="100" step="1" value="0" oninput="handleSliderChange(1, this.value)" class="touch-range" />
+            <input type="range" id="range1" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(1, this.value)" class="touch-range" />
             <div class="slider-ticks">
               <span>0%</span>
               <span>25%</span>
@@ -412,7 +453,8 @@
               <span>Расслаблены</span>
               <span>Заметно напрягаются</span>
             </div>
-            <input type="range" id="range2" min="0" max="100" step="1" value="0" oninput="handleSliderChange(2, this.value)" class="touch-range" />
+            <input type="range" id="range2" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(2, this.value)" class="touch-range" />
             <div class="slider-ticks">
               <span>0%</span>
               <span>25%</span>
@@ -432,7 +474,8 @@
               <span>Присутствую в общении</span>
               <span>Постоянно слежу за реакцией</span>
             </div>
-            <input type="range" id="range3" min="0" max="100" step="1" value="0" oninput="handleSliderChange(3, this.value)" class="touch-range" />
+            <input type="range" id="range3" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(3, this.value)" class="touch-range" />
             <div class="slider-ticks">
               <span>0%</span>
               <span>25%</span>
@@ -452,7 +495,8 @@
               <span>Спокойствие и ясность</span>
               <span>Тревога и прокручивание</span>
             </div>
-            <input type="range" id="range4" min="0" max="100" step="1" value="0" oninput="handleSliderChange(4, this.value)" class="touch-range" />
+            <input type="range" id="range4" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(4, this.value)" class="touch-range" />
             <div class="slider-ticks">
               <span>0%</span>
               <span>25%</span>
@@ -472,7 +516,8 @@
               <span>Спокойно занимаюсь делами</span>
               <span>Хочется проверить / написать</span>
             </div>
-            <input type="range" id="range5" min="0" max="100" step="1" value="0" oninput="handleSliderChange(5, this.value)" class="touch-range" />
+            <input type="range" id="range5" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(5, this.value)" class="touch-range" />
             <div class="slider-ticks">
               <span>0%</span>
               <span>25%</span>
@@ -511,61 +556,87 @@
 
           <!-- Q1 -->
           <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">1. Его слова совпадают с поступками</div>
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">1. Его слова
+              совпадают с поступками</div>
             <div class="action-choice-group">
-              <div onclick="setActionAnswer(1, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
-              <div onclick="setActionAnswer(1, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
-              <div onclick="setActionAnswer(1, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
-              <div onclick="setActionAnswer(1, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+              <div onclick="setActionAnswer(1, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(1, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(1, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(1, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
             </div>
           </div>
 
           <!-- Q2 -->
           <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">2. Он сам проявляет инициативу</div>
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">2. Он сам проявляет
+              инициативу</div>
             <div class="action-choice-group">
-              <div onclick="setActionAnswer(2, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
-              <div onclick="setActionAnswer(2, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
-              <div onclick="setActionAnswer(2, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
-              <div onclick="setActionAnswer(2, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+              <div onclick="setActionAnswer(2, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(2, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(2, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(2, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
             </div>
           </div>
 
           <!-- Q3 -->
           <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">3. Его отношение и намерения достаточно понятны</div>
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">3. Его отношение и
+              намерения достаточно понятны</div>
             <div class="action-choice-group">
-              <div onclick="setActionAnswer(3, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
-              <div onclick="setActionAnswer(3, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
-              <div onclick="setActionAnswer(3, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
-              <div onclick="setActionAnswer(3, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+              <div onclick="setActionAnswer(3, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(3, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(3, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(3, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
             </div>
           </div>
 
           <!-- Q4 -->
           <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">4. Он уважает мои границы и отказ</div>
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">4. Он уважает мои
+              границы и отказ</div>
             <div class="action-choice-group">
-              <div onclick="setActionAnswer(4, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
-              <div onclick="setActionAnswer(4, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
-              <div onclick="setActionAnswer(4, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
-              <div onclick="setActionAnswer(4, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+              <div onclick="setActionAnswer(4, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(4, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(4, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(4, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
             </div>
           </div>
 
           <!-- Q5 -->
           <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">5. Его поведение остаётся последовательным во времени</div>
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">5. Его поведение
+              остаётся последовательным во времени</div>
             <div class="action-choice-group">
-              <div onclick="setActionAnswer(5, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
-              <div onclick="setActionAnswer(5, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
-              <div onclick="setActionAnswer(5, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
-              <div onclick="setActionAnswer(5, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+              <div onclick="setActionAnswer(5, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(5, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(5, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(5, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
             </div>
           </div>
 
           <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
-            <button id="btnStage4Next" onclick="goToStage(5)" class="primary-btn" style="width:100%; opacity:0.6;" disabled>
+            <button id="btnStage4Next" onclick="goToStage(5)" class="primary-btn" style="width:100%; opacity:0.6;"
+              disabled>
               <span>Определить мои ориентиры →</span>
             </button>
             <button onclick="goToStage(3)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
@@ -588,7 +659,8 @@
           <div class="eyebrow" style="margin-bottom:2px;">Шаг 5 из 5 • Личные критерии</div>
           <h3 class="question-title" style="font-size:16px; margin:0;">Ваши ориентиры</h3>
           <p class="lead" style="font-size:13px; margin:0; color:var(--nb-slate);">
-            Какие три качества особенно важны вам для устойчивых отношений? Выберите ровно 3 варианта (<span id="criteriaCount" style="font-weight:800; color:var(--nb-sea);">0</span>/3):
+            Какие три качества особенно важны вам для устойчивых отношений? Выберите ровно 3 варианта (<span
+              id="criteriaCount" style="font-weight:800; color:var(--nb-sea);">0</span>/3):
           </p>
 
           <div class="criteria-grid">
@@ -627,11 +699,14 @@
           </div>
 
           <div id="customCriteriaInputBlock" style="display:none; margin-top:4px;">
-            <input type="text" id="inpCustomCriteria" oninput="handleCustomCriteriaInput()" placeholder="Введите ваше качество..." class="input-field" style="width:100%; padding:10px 14px; font-size:13px; border-radius:12px;" />
+            <input type="text" id="inpCustomCriteria" oninput="handleCustomCriteriaInput()"
+              placeholder="Введите ваше качество..." class="input-field"
+              style="width:100%; padding:10px 14px; font-size:13px; border-radius:12px;" />
           </div>
 
           <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
-            <button id="btnStage5Submit" onclick="calculateAndShowResult()" class="primary-btn" style="width:100%; opacity:0.6;" disabled>
+            <button id="btnStage5Submit" onclick="calculateAndShowResult()" class="primary-btn"
+              style="width:100%; opacity:0.6;" disabled>
               <span>Получить карту притяжения →</span>
             </button>
             <button onclick="goToStage(4)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
@@ -646,95 +721,126 @@
         <div id="resultContainer" style="display:none; flex-direction:column; gap:14px;">
 
           <section class="glass card text-center" style="border:1.5px solid rgba(18,68,83,0.18);">
-            <div class="eyebrow" style="margin-bottom:8px; background:rgba(18,68,83,0.08); color:var(--nb-sea); border-color:rgba(18,68,83,0.18);">
+            <div class="eyebrow"
+              style="margin-bottom:8px; background:rgba(18,68,83,0.08); color:var(--nb-sea); border-color:rgba(18,68,83,0.18);">
               🗺 Моя карта притяжения
             </div>
-            
+
             <h2 id="resTitle" style="font-size:20px; line-height:1.3; margin-bottom:10px; color:var(--nb-deep);">
               Притяжение усиливается неопределённостью
             </h2>
 
-            <p id="resText" class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
-              Ваше тело реагирует достаточно сильно, но поведение человека пока не даёт устойчивой ясности. Интенсивность чувств может усиливаться ожиданием и непредсказуемостью. Она ещё не доказывает совместимость.
+            <p id="resText" class="lead"
+              style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
+              Ваше тело реагирует достаточно сильно, но поведение человека пока не даёт устойчивой ясности.
+              Интенсивность чувств может усиливаться ожиданием и непредсказуемостью. Она ещё не доказывает
+              совместимость.
             </p>
 
             <!-- 3 Summary Metrics -->
-            <div style="display:flex; flex-direction:column; gap:8px; text-align:left; background:#F8FAFC; padding:14px; border-radius:16px; border:1px solid rgba(36,49,57,0.08); font-size:13px; line-height:1.45;">
+            <div
+              style="display:flex; flex-direction:column; gap:8px; text-align:left; background:#F8FAFC; padding:14px; border-radius:16px; border:1px solid rgba(36,49,57,0.08); font-size:13px; line-height:1.45;">
               <div>
-                <strong style="color:var(--nb-deep);">• Реакция тела:</strong> <span id="resBodyLevel" style="color:var(--nb-terracotta); font-weight:700;">выраженная</span>
+                <strong style="color:var(--nb-deep);">• Реакция тела:</strong> <span id="resBodyLevel"
+                  style="color:var(--nb-terracotta); font-weight:700;">выраженная</span>
               </div>
               <div>
-                <strong style="color:var(--nb-deep);">• Поведение человека:</strong> <span id="resActionsLevel" style="color:var(--nb-sea); font-weight:700;">противоречивые сигналы</span>
+                <strong style="color:var(--nb-deep);">• Поведение человека:</strong> <span id="resActionsLevel"
+                  style="color:var(--nb-sea); font-weight:700;">противоречивые сигналы</span>
               </div>
               <div>
-                <strong style="color:var(--nb-deep);">• Мои три ориентира:</strong> <span id="resCriteriaList" style="font-weight:700; color:var(--nb-deep);">Надёжность, Уважение, Честность</span>
+                <strong style="color:var(--nb-deep);">• Мои три ориентира:</strong> <span id="resCriteriaList"
+                  style="font-weight:700; color:var(--nb-deep);">Надёжность, Уважение, Честность</span>
               </div>
             </div>
 
             <p style="font-size:12px; line-height:1.45; color:var(--nb-slate); margin:14px 0 0; text-align:center;">
-              Это не оценка вашей совместимости, а снимок текущей ситуации: что показывает тело и что подтверждают реальные поступки.
+              Это не оценка вашей совместимости, а снимок текущей ситуации: что показывает тело и что подтверждают
+              реальные поступки.
             </p>
 
             <!-- Send to Telegram Button -->
-            <button id="btnSendLesson2Telegram" onclick="sendLesson2ToTelegram(event)" class="secondary-btn" style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <button id="btnSendLesson2Telegram" onclick="sendLesson2ToTelegram(event)" class="secondary-btn"
+              style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
               <span>✈️ Прислать этот разбор мне в Telegram</span>
             </button>
-            <div id="tgStatusLesson2" style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;"></div>
+            <div id="tgStatusLesson2"
+              style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;">
+            </div>
           </section>
 
           <!-- AI Companion Analysis Action Block -->
           <div style="display:flex; flex-direction:column; gap:10px;">
-            <button id="btnSubmitAttractionMap" onclick="analyzeAttractionMap(event)" class="primary-btn pulse" style="width:100%;">
+            <button id="btnSubmitAttractionMap" onclick="analyzeAttractionMap(event)" class="primary-btn pulse"
+              style="width:100%;">
               <span>Разобрать карту с Попутчиком →</span>
             </button>
           </div>
 
           <!-- AI Result Output Block (3 Distinct Visual Subcards) -->
-          <div id="aiResultBlock" class="glass card hidden" style="display:none; flex-direction:column; gap:12px; border-left:4px solid var(--nb-terracotta);">
-            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25); align-self:flex-start;">
+          <div id="aiResultBlock" class="glass card hidden"
+            style="display:none; flex-direction:column; gap:12px; border-left:4px solid var(--nb-terracotta);">
+            <div class="eyebrow"
+              style="margin:0 auto 12px; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25); align-self:center; display:inline-flex;">
               💡 Разбор Интеллектуального попутчика
             </div>
 
             <!-- Offline / Fallback Notice Banner -->
-            <div id="aiOfflineNotice" style="display:none; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
-              🚂 <strong>Попутчик ищет путь... (проблемы с интернетом)</strong> А пока обратите внимание на этот ориентир. Вы сможете снова обратиться к Попутчику попозже.
+            <div id="aiOfflineNotice"
+              style="display:none; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+              🚂 <strong>Попутчик ищет путь... (проблемы с интернетом)</strong> А пока обратите внимание на этот
+              ориентир. Вы сможете снова обратиться к Попутчику попозже.
             </div>
 
             <!-- Block 1: Body -->
-            <div style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
-              <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <div
+              style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
+              <div
+                style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
                 <span>🫀</span> <span>Что показывает тело</span>
               </div>
-              <p id="aiBodyText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
+              <p id="aiBodyText"
+                style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
               </p>
             </div>
 
             <!-- Block 2: Behavior -->
-            <div style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
-              <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <div
+              style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
+              <div
+                style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
                 <span>👣</span> <span>Что показывают поступки</span>
               </div>
-              <p id="aiBehaviorText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
+              <p id="aiBehaviorText"
+                style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
               </p>
             </div>
 
             <!-- Block 3: Focus -->
-            <div style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
-              <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <div
+              style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
+              <div
+                style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
                 <span>🎯</span> <span>На что обратить внимание</span>
               </div>
-              <p id="aiFocusText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
+              <p id="aiFocusText"
+                style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
               </p>
             </div>
 
             <!-- Send AI Breakdown to Telegram Button -->
-            <button id="btnSendLesson2TelegramAI" onclick="sendLesson2ToTelegram(event)" class="secondary-btn" style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <button id="btnSendLesson2TelegramAI" onclick="sendLesson2ToTelegram(event)" class="secondary-btn"
+              style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
               <span>✈️ Прислать этот разбор мне в Telegram</span>
             </button>
-            <div id="tgStatusLesson2AI" style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;"></div>
+            <div id="tgStatusLesson2AI"
+              style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;">
+            </div>
 
-            <div id="aiCreditsDepletedNotice" style="display:none; margin-top:4px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">
-              🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей помощью.
+            <div id="aiCreditsDepletedNotice"
+              style="display:none; margin-top:4px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">
+              🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей
+              помощью.
             </div>
           </div>
 
@@ -748,7 +854,9 @@
 
         <!-- Next Step Navigation (Immediately visible) -->
         <div id="nextLessonBlock" style="padding-top:4px;">
-          <button id="btnNextLesson3" onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+          <button id="btnNextLesson3" onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';"
+            class="secondary-btn"
+            style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
             <span>Перейти к третьему уроку →</span>
           </button>
         </div>
@@ -902,7 +1010,7 @@
       parentGroup.querySelectorAll('.action-choice').forEach(choice => choice.classList.remove('active'));
       el.classList.add('active');
 
-      const allAnswered = [1,2,3,4,5].every(i => actionAnswers[i] !== undefined);
+      const allAnswered = [1, 2, 3, 4, 5].every(i => actionAnswers[i] !== undefined);
       const btn = document.getElementById('btnStage4Next');
       if (allAnswered) {
         btn.disabled = false;
@@ -982,7 +1090,7 @@
       safeHaptic('success');
 
       // Metric 1: Body Arousal (Sum 5 scales 0..100 -> 0..500)
-      const bodySum = [1,2,3,4,5].reduce((sum, i) => sum + (scaleAnswers[i] || 0), 0);
+      const bodySum = [1, 2, 3, 4, 5].reduce((sum, i) => sum + (scaleAnswers[i] || 0), 0);
       const avgPct = Math.round(bodySum / 5);
       const normalizedScore = Math.round(bodySum / 25); // 0..20 scale for AI
 
@@ -997,7 +1105,7 @@
       }
 
       // Metric 2: Behavior Clarity
-      const validAnswers = [1,2,3,4,5].map(i => actionAnswers[i]).filter(val => val !== null && val !== undefined);
+      const validAnswers = [1, 2, 3, 4, 5].map(i => actionAnswers[i]).filter(val => val !== null && val !== undefined);
       let actionsClarity = 'противоречивые сигналы';
       let actionsClarityDisplay = 'противоречивые сигналы';
 
@@ -1005,7 +1113,7 @@
         actionsClarity = 'недостаточно информации';
         actionsClarityDisplay = 'пока недостаточно информации';
       } else {
-        const avg = validAnswers.reduce((a,b) => a + b, 0) / validAnswers.length;
+        const avg = validAnswers.reduce((a, b) => a + b, 0) / validAnswers.length;
         if (avg < 0.75) {
           actionsClarity = 'мало последовательности';
           actionsClarityDisplay = 'мало последовательности';
@@ -1217,7 +1325,7 @@
         if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
           await navigator.clipboard.writeText(fullMessage);
         }
-      } catch (err) {}
+      } catch (err) { }
 
       safeHaptic('success');
       [btn1, btn2].forEach(b => {
@@ -1310,4 +1418,5 @@
   </script>
 
 </body>
+
 </html>
