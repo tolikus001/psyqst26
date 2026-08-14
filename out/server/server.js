@@ -412,6 +412,62 @@ const server = http.createServer(async (req, res) => {
         return res.end(JSON.stringify({ success: true, result: resData, analysis: formattedText }));
       }
 
+      // Route: /api/lesson2-strategy (Карта притяжения)
+      if (pathname === '/api/lesson2-strategy') {
+        const {
+          situation = '',
+          bodyScore = 0,
+          bodyLevel = 'умеренное',
+          actionsClarity = 'противоречивые сигналы',
+          criteria = [],
+          resultTitle = '',
+          resultText = '',
+          userName = 'Участник'
+        } = parsed;
+
+        const systemPrompt = [
+          'Ты — «Интеллектуальный попутчик» и психолог-наставник метода Анатолия Фёдорова. Твоя задача — бережно разобрать «Карту притяжения» клиентки для Урока 2.',
+          'Важно: ты НЕ ставишь диагнозов, НЕ оцениваешь совместимость и НЕ принимаешь решений за пользователя. Ты помогаешь сопоставить реакцию тела, поступки человека и личные ориентиры.',
+          'Верни ответ СТРОГО в формате JSON с 3 блоками:',
+          '{"body":"Что показывает тело (до 300 символов)","actions":"Что подтверждают поступки (до 300 символов)","focus":"На что обратить внимание при следующих встречах (до 350 символов)"}'
+        ].join('\n');
+
+        const criteriaStr = Array.isArray(criteria) ? criteria.join(', ') : criteria;
+        const userPrompt = `Участник: ${userName}\nСитуация: ${situation}\nРеакция тела: ${bodyLevel} (${bodyScore}/20 баллов)\nПоведение человека: ${actionsClarity}\nКлючевые ориентиры: ${criteriaStr}\nРезультат теста: ${resultTitle} — ${resultText}`;
+
+        let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
+        let aiParsed = null;
+        if (aiRaw) {
+          try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
+        }
+
+        const fallback = {
+          body: bodyLevel === 'выраженное'
+            ? 'Телесный спазм и учащённое внимание показывают, что нервная система находится в режиме ожидания и неопределённости. Это возбуждение питается непредсказуемостью контакта.'
+            : (bodyLevel === 'низкое'
+              ? 'Тело сохраняет ровное дыхание и расслабленность. Отсутствие адреналинового шторма — здоровый физиологический маркер безопасности.'
+              : 'Тело реагирует умеренно: есть интерес, но присутствуют и отдельные точки напряжения, требующие внимания к своим границам.'),
+          actions: actionsClarity === 'достаточно последовательное поведение'
+            ? 'Поступки человека показывают инициативу и уважение к договоренностям. Слова подкрепляются реальными действиями.'
+            : (actionsClarity === 'мало последовательности'
+              ? 'В поведении много хаотичности, редких проявлений и нестыковок между словами и делами. Это создаёт дефицит безопасности.'
+              : 'Сигналы человека пока неоднозначны: периоды тепла сменяются дистанцией или паузами.'),
+          focus: `Сверяйтесь с вашими главными ориентирами (${criteriaStr || 'надёжность, ясность, уважение'}). На следующих встречах отслеживайте, расслабляются ли плечи и челюсть, и держит ли человек свои простые обещания без вашей суеты.`
+        };
+
+        const resData = aiParsed || fallback;
+        const formattedText = `
+🔍 **Разбор «Карты притяжения» с Попутчиком:**
+
+• **Что показывает тело**: ${resData.body}
+• **Что подтверждают поступки**: ${resData.actions}
+• **На что обратить внимание при следующих встречах**: ${resData.focus}
+        `.trim();
+
+        res.writeHead(200);
+        return res.end(JSON.stringify({ success: true, result: resData, analysis: formattedText }));
+      }
+
       // Route: /api/portrait-assessment
       if (pathname === '/api/portrait-assessment') {
         const { answers = [], userName = 'Участник' } = parsed;

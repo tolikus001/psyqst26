@@ -50,6 +50,136 @@
       } catch (e) {}
     }
   </script>
+
+  <style>
+    /* Scale segment styles */
+    .scale-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      margin: 8px 0;
+    }
+    .scale-btn {
+      flex: 1;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(36, 49, 57, 0.14);
+      background: #FFFFFF;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--nb-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scale-btn.active {
+      background: var(--nb-sea);
+      color: #FFFFFF;
+      border-color: var(--nb-sea);
+      box-shadow: 0 4px 12px rgba(18, 68, 83, 0.2);
+      transform: scale(1.04);
+    }
+    .scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--nb-slate);
+      line-height: 1.3;
+    }
+
+    /* Action Question Radio Cards */
+    .action-choice-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .action-choice {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(36, 49, 57, 0.12);
+      background: #FFFFFF;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--nb-deep);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .action-choice.active {
+      background: rgba(18, 68, 83, 0.06);
+      border-color: var(--nb-sea);
+      color: var(--nb-sea);
+      font-weight: 700;
+    }
+
+    /* Criteria Tags */
+    .criteria-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .criteria-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(36, 49, 57, 0.12);
+      background: #FFFFFF;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--nb-deep);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .criteria-item.active {
+      background: rgba(217, 131, 78, 0.08);
+      border-color: var(--nb-terracotta);
+      color: var(--nb-terracotta);
+      font-weight: 800;
+    }
+    .criteria-checkbox {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 1.5px solid rgba(36, 49, 57, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      transition: all 0.2s ease;
+    }
+    .criteria-item.active .criteria-checkbox {
+      background: var(--nb-terracotta);
+      border-color: var(--nb-terracotta);
+      color: #FFFFFF;
+    }
+
+    /* Stage Steps Indicator */
+    .step-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(36, 49, 57, 0.15);
+      transition: all 0.3s ease;
+    }
+    .step-dot.active {
+      width: 24px;
+      background: var(--nb-sea);
+    }
+  </style>
 </head>
 <body>
   <div id="maisonArtBackground" aria-hidden="true"></div>
@@ -106,17 +236,10 @@
           </button>
         </section>
 
-        <!-- Direct Navigation to Next Lesson (Always visible on Screen 1) -->
-        <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
-            <span>Перейти к уроку 3 →</span>
-          </button>
-        </div>
-
       </div>
 
       <!-- ==========================================
-           SCREEN 2: PRACTICE
+           SCREEN 2: INTERACTIVE «КАРТА ПРИТЯЖЕНИЯ»
            ========================================== -->
       <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
 
@@ -127,60 +250,393 @@
           </button>
         </div>
 
-        <!-- Somatic Checklist Card -->
-        <section class="glass card">
-          <div class="eyebrow" style="margin-bottom:8px;">Практика</div>
-          <h3 class="question-title">Что говорит моё тело рядом с ним</h3>
-          <p class="lead" style="font-size:13px; margin-bottom:14px;">Оцените свои соматические реакции рядом с человеком</p>
-
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <div style="font-size:12px; font-weight:800; color:var(--nb-deep); text-align:center;">1. Соматические маркеры тела:</div>
-            
-            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-              <span style="font-size:13px;">🫁 Дыхание: глубокое и ровное (не поверхностное)</span>
-              <div class="answer-dot"></div>
+        <!-- AI Helper Top Info Card (Project Glass Theme Centered) -->
+        <div class="glass card text-center" style="padding: 18px 20px;">
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
+            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+              ☀️ Интеллектуальный попутчик
             </div>
-
-            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-              <span style="font-size:13px;">🧘 Плечи и челюсть: мягкие и опущенные (без спазма)</span>
-              <div class="answer-dot"></div>
-            </div>
-
-            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-              <span style="font-size:13px;">🌱 Ощущение в теле: заземление и безопасность</span>
-              <div class="answer-dot"></div>
+            <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
+              Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">5</span>
             </div>
           </div>
+          <p id="aiCreditsCardText" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
+            Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.
+          </p>
+        </div>
 
-          <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px; padding-top:12px; border-top:1px solid var(--nb-line);">
-            <div style="font-size:12px; font-weight:800; color:var(--nb-deep); text-align:center;">2. Человеческие критерии партнера:</div>
-            
-            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-              <span style="font-size:13px;">🤝 Предсказуемость: держит слово, не играет в прятки</span>
-              <div class="answer-dot"></div>
-            </div>
-
-            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-              <span style="font-size:13px;">💬 Ясность: прямо говорит о планах и чувствах</span>
-              <div class="answer-dot"></div>
-            </div>
-
-            <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
-              <span style="font-size:13px;">🛡 Опора: с ним можно спокойно жить и проходить штормы</span>
-              <div class="answer-dot"></div>
-            </div>
+        <!-- -----------------------------------------
+             STAGE 1: START
+             ----------------------------------------- -->
+        <section id="stage1Card" class="glass card text-center" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="step-dots">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
           </div>
+          <div class="eyebrow" style="margin:0 auto 4px;">Практика • Шаг 1 из 5</div>
+          <h2>Карта притяжения</h2>
+          <p style="font-size:14px; font-weight:700; color:var(--nb-sea); margin:0;">
+            Что сильнее влияет на ваши чувства: сам человек или неопределённость рядом с ним?
+          </p>
+          <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:4px 0 12px;">
+            Вспомните последнюю встречу или переписку с человеком, который вам нравится. Отвечайте, опираясь на то, что происходило в реальности.
+          </p>
 
-          <div id="checklistScore" style="margin-top:14px; padding:12px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); font-size:12px; text-align:center; color:var(--nb-text-2);">
-            Отметьте пункты, чтобы рассчитать индекс соматической совместимости
+          <button onclick="goToStage(2)" class="primary-btn pulse" style="width:100%;">
+            <span>Начать наблюдение →</span>
+          </button>
+        </section>
+
+        <!-- -----------------------------------------
+             STAGE 2: SITUATION
+             ----------------------------------------- -->
+        <section id="stage2Card" class="glass card" style="display:none; flex-direction:column; gap:12px;">
+          <div class="step-dots">
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:2px;">Шаг 2 из 5 • Ситуация</div>
+          <h3 class="question-title">Какую ситуацию вы хотите разобрать?</h3>
+          
+          <textarea id="inpSituation" oninput="checkStage2Valid()" class="input-field" placeholder="Например: после встречи он не писал два дня, а затем появился как ни в чём не бывало." rows="4" style="width:100%; font-size:13px; line-height:1.45; padding:12px; border-radius:14px; resize:vertical;"></textarea>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+            <button id="btnStage2Next" onclick="goToStage(3)" class="primary-btn" style="width:100%;">
+              <span>Посмотреть на реакцию тела →</span>
+            </button>
+            <button onclick="goToStage(1)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
+              ← Назад
+            </button>
           </div>
         </section>
 
-        <!-- Next Step Transition (Screen 2) -->
-        <div id="nextLessonBlock" style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="primary-btn pulse" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
-            <span>Перейти к уроку 3 →</span>
-          </button>
+        <!-- -----------------------------------------
+             STAGE 3: BODY REACTION (5 SCALES 0..4)
+             ----------------------------------------- -->
+        <section id="stage3Card" class="glass card" style="display:none; flex-direction:column; gap:14px;">
+          <div class="step-dots">
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:2px;">Шаг 3 из 5 • Реакция тела</div>
+          <h3 class="question-title" style="font-size:16px; margin:0;">Реакция вашего тела</h3>
+          <p class="lead" style="font-size:12.5px; margin:0; color:var(--nb-slate);">
+            Отметьте своё обычное состояние рядом с этим человеком или после общения с ним:
+          </p>
+
+          <!-- Scale 1 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">1. Дыхание</div>
+            <div class="scale-labels">
+              <span>Свободное и ровное</span>
+              <span>Поверхностное / сбивается</span>
+            </div>
+            <div class="scale-row">
+              <button onclick="setScale(1, 0, this)" class="scale-btn">0</button>
+              <button onclick="setScale(1, 1, this)" class="scale-btn">1</button>
+              <button onclick="setScale(1, 2, this)" class="scale-btn">2</button>
+              <button onclick="setScale(1, 3, this)" class="scale-btn">3</button>
+              <button onclick="setScale(1, 4, this)" class="scale-btn">4</button>
+            </div>
+          </div>
+
+          <!-- Scale 2 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">2. Плечи и челюсть</div>
+            <div class="scale-labels">
+              <span>Расслаблены</span>
+              <span>Заметно напрягаются</span>
+            </div>
+            <div class="scale-row">
+              <button onclick="setScale(2, 0, this)" class="scale-btn">0</button>
+              <button onclick="setScale(2, 1, this)" class="scale-btn">1</button>
+              <button onclick="setScale(2, 2, this)" class="scale-btn">2</button>
+              <button onclick="setScale(2, 3, this)" class="scale-btn">3</button>
+              <button onclick="setScale(2, 4, this)" class="scale-btn">4</button>
+            </div>
+          </div>
+
+          <!-- Scale 3 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">3. Внимание</div>
+            <div class="scale-labels">
+              <span>Присутствую в общении</span>
+              <span>Постоянно слежу за реакцией</span>
+            </div>
+            <div class="scale-row">
+              <button onclick="setScale(3, 0, this)" class="scale-btn">0</button>
+              <button onclick="setScale(3, 1, this)" class="scale-btn">1</button>
+              <button onclick="setScale(3, 2, this)" class="scale-btn">2</button>
+              <button onclick="setScale(3, 3, this)" class="scale-btn">3</button>
+              <button onclick="setScale(3, 4, this)" class="scale-btn">4</button>
+            </div>
+          </div>
+
+          <!-- Scale 4 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">4. Состояние после встречи</div>
+            <div class="scale-labels">
+              <span>Спокойствие и ясность</span>
+              <span>Тревога и прокручивание</span>
+            </div>
+            <div class="scale-row">
+              <button onclick="setScale(4, 0, this)" class="scale-btn">0</button>
+              <button onclick="setScale(4, 1, this)" class="scale-btn">1</button>
+              <button onclick="setScale(4, 2, this)" class="scale-btn">2</button>
+              <button onclick="setScale(4, 3, this)" class="scale-btn">3</button>
+              <button onclick="setScale(4, 4, this)" class="scale-btn">4</button>
+            </div>
+          </div>
+
+          <!-- Scale 5 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">5. Реакция на паузу</div>
+            <div class="scale-labels">
+              <span>Спокойно занимаюсь делами</span>
+              <span>Хочется проверить / написать</span>
+            </div>
+            <div class="scale-row">
+              <button onclick="setScale(5, 0, this)" class="scale-btn">0</button>
+              <button onclick="setScale(5, 1, this)" class="scale-btn">1</button>
+              <button onclick="setScale(5, 2, this)" class="scale-btn">2</button>
+              <button onclick="setScale(5, 3, this)" class="scale-btn">3</button>
+              <button onclick="setScale(5, 4, this)" class="scale-btn">4</button>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
+            <button id="btnStage3Next" onclick="goToStage(4)" class="primary-btn" style="width:100%; opacity:0.6;" disabled>
+              <span>Перейти к поступкам →</span>
+            </button>
+            <button onclick="goToStage(2)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
+              ← Назад
+            </button>
+          </div>
+        </section>
+
+        <!-- -----------------------------------------
+             STAGE 4: ACTIONS OF PARTNER (5 STATEMENTS)
+             ----------------------------------------- -->
+        <section id="stage4Card" class="glass card" style="display:none; flex-direction:column; gap:14px;">
+          <div class="step-dots">
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:2px;">Шаг 4 из 5 • Поступки человека</div>
+          <h3 class="question-title" style="font-size:16px; margin:0;">Поступки человека</h3>
+          <p class="lead" style="font-size:12.5px; margin:0; color:var(--nb-slate);">
+            Оценивайте регулярное поведение, а не отдельные яркие моменты:
+          </p>
+
+          <!-- Q1 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">1. Его слова совпадают с поступками</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(1, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
+              <div onclick="setActionAnswer(1, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
+              <div onclick="setActionAnswer(1, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
+              <div onclick="setActionAnswer(1, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">2. Он сам проявляет инициативу</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(2, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
+              <div onclick="setActionAnswer(2, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
+              <div onclick="setActionAnswer(2, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
+              <div onclick="setActionAnswer(2, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">3. Его отношение и намерения достаточно понятны</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(3, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
+              <div onclick="setActionAnswer(3, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
+              <div onclick="setActionAnswer(3, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
+              <div onclick="setActionAnswer(3, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">4. Он уважает мои границы и отказ</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(4, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
+              <div onclick="setActionAnswer(4, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
+              <div onclick="setActionAnswer(4, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
+              <div onclick="setActionAnswer(4, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">5. Его поведение остаётся последовательным во времени</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(5, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2 б.</strong></div>
+              <div onclick="setActionAnswer(5, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong></div>
+              <div onclick="setActionAnswer(5, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong></div>
+              <div onclick="setActionAnswer(5, null, this)" class="action-choice"><span>Пока недостаточно информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
+            <button id="btnStage4Next" onclick="goToStage(5)" class="primary-btn" style="width:100%; opacity:0.6;" disabled>
+              <span>Определить мои ориентиры →</span>
+            </button>
+            <button onclick="goToStage(3)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
+              ← Назад
+            </button>
+          </div>
+        </section>
+
+        <!-- -----------------------------------------
+             STAGE 5: PERSONAL CRITERIA (EXACTLY 3)
+             ----------------------------------------- -->
+        <section id="stage5Card" class="glass card" style="display:none; flex-direction:column; gap:12px;">
+          <div class="step-dots">
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:2px;">Шаг 5 из 5 • Личные критерии</div>
+          <h3 class="question-title" style="font-size:16px; margin:0;">Ваши ориентиры</h3>
+          <p class="lead" style="font-size:13px; margin:0; color:var(--nb-slate);">
+            Какие три качества особенно важны вам для устойчивых отношений? Выберите ровно 3 варианта (<span id="criteriaCount" style="font-weight:800; color:var(--nb-sea);">0</span>/3):
+          </p>
+
+          <div class="criteria-grid">
+            <div onclick="toggleCriteria('Надёжность', this)" class="criteria-item">
+              <span>Надёжность</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Эмоциональная доступность', this)" class="criteria-item">
+              <span>Эмоциональная доступность</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Честность', this)" class="criteria-item">
+              <span>Честность</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Уважение', this)" class="criteria-item">
+              <span>Уважение</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Взаимная инициатива', this)" class="criteria-item">
+              <span>Взаимная инициатива</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Общие цели', this)" class="criteria-item">
+              <span>Общие цели</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Способность обсуждать сложное', this)" class="criteria-item">
+              <span>Способность обсуждать сложное</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteriaCustom(this)" id="criteriaCustomItem" class="criteria-item">
+              <span>Свой вариант</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+          </div>
+
+          <div id="customCriteriaInputBlock" style="display:none; margin-top:4px;">
+            <input type="text" id="inpCustomCriteria" oninput="handleCustomCriteriaInput()" placeholder="Введите ваше качество..." class="input-field" style="width:100%; padding:10px 14px; font-size:13px; border-radius:12px;" />
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+            <button id="btnStage5Submit" onclick="calculateAndShowResult()" class="primary-btn" style="width:100%; opacity:0.6;" disabled>
+              <span>Получить карту притяжения →</span>
+            </button>
+            <button onclick="goToStage(4)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
+              ← Назад
+            </button>
+          </div>
+        </section>
+
+        <!-- -----------------------------------------
+             FINAL STAGE: ATTRACTION MAP RESULT CARD
+             ----------------------------------------- -->
+        <div id="resultContainer" style="display:none; flex-direction:column; gap:14px;">
+
+          <section class="glass card text-center" style="border:1.5px solid rgba(18,68,83,0.18);">
+            <div class="eyebrow" style="margin-bottom:8px; background:rgba(18,68,83,0.08); color:var(--nb-sea); border-color:rgba(18,68,83,0.18);">
+              🗺 Моя карта притяжения
+            </div>
+            
+            <h2 id="resTitle" style="font-size:20px; line-height:1.3; margin-bottom:10px; color:var(--nb-deep);">
+              Притяжение усиливается неопределённостью
+            </h2>
+
+            <p id="resText" class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
+              Ваше тело реагирует достаточно сильно, но поведение человека пока не даёт устойчивой ясности. Интенсивность чувств может усиливаться ожиданием и непредсказуемостью. Она ещё не доказывает совместимость.
+            </p>
+
+            <!-- 3 Summary Metrics -->
+            <div style="display:flex; flex-direction:column; gap:8px; text-align:left; background:#F8FAFC; padding:14px; border-radius:16px; border:1px solid rgba(36,49,57,0.08); font-size:13px; line-height:1.45;">
+              <div>
+                <strong style="color:var(--nb-deep);">• Реакция тела:</strong> <span id="resBodyLevel" style="color:var(--nb-terracotta); font-weight:700;">выраженная</span>
+              </div>
+              <div>
+                <strong style="color:var(--nb-deep);">• Поведение человека:</strong> <span id="resActionsLevel" style="color:var(--nb-sea); font-weight:700;">противоречивые сигналы</span>
+              </div>
+              <div>
+                <strong style="color:var(--nb-deep);">• Мои три ориентира:</strong> <span id="resCriteriaList" style="font-weight:700; color:var(--nb-deep);">Надёжность, Уважение, Честность</span>
+              </div>
+            </div>
+
+            <p style="font-size:12px; line-height:1.45; color:var(--nb-slate); margin:14px 0 0; text-align:center;">
+              Это не оценка вашей совместимости, а снимок текущей ситуации: что показывает тело и что подтверждают реальные поступки.
+            </p>
+          </section>
+
+          <!-- AI Companion Analysis Action Block -->
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button id="btnSubmitAttractionMap" onclick="analyzeAttractionMap(event)" class="primary-btn pulse" style="width:100%;">
+              <span>Разобрать карту с Попутчиком →</span>
+            </button>
+          </div>
+
+          <!-- AI Result Output Block -->
+          <div id="aiResultBlock" class="glass card hidden" style="display:none; flex-direction:column; gap:10px; border-left:4px solid var(--nb-terracotta);">
+            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+              💡 Разбор Интеллектуального попутчика
+            </div>
+            <div id="aiAnalysisText" style="font-size:13.5px; line-height:1.55; color:var(--nb-text); white-space:pre-line;">
+              Попутчик формирует персональный разбор вашей карты притяжения...
+            </div>
+          </div>
+
+          <!-- Next Step Navigation (Hidden until result is calculated) -->
+          <div id="nextLessonBlock" style="display:none; opacity:0; transform:translateY(12px); transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); padding-top:4px;">
+            <button id="btnNextLesson3" onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="primary-btn pulse" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+              <span>Перейти к уроку 3 →</span>
+            </button>
+          </div>
+
+          <div style="text-align:center;">
+            <button onclick="goToStage(1)" class="ghost-btn" style="color:var(--nb-slate); font-size:12.5px;">
+              🔄 Пройти наблюдение заново
+            </button>
+          </div>
+
         </div>
 
       </div>
@@ -207,7 +663,7 @@
       }
     }, 3000);
 
-    // Transition from Video (Screen 1) to Interactive Practice (Screen 2)
+    // Screen Transition: Video (Screen 1) <-> Interactive (Screen 2)
     function goToStep2() {
       safeHaptic('selection');
       pauseVideo();
@@ -217,7 +673,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Return to Video Screen (Screen 1)
     function goToStep1() {
       safeHaptic('selection');
       document.getElementById('step2InteractiveScreen').style.display = 'none';
@@ -225,7 +680,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Pause Kinescope Video Player
     function pauseVideo() {
       const iframe = document.getElementById('lesson2VideoIframe');
       if (iframe && iframe.contentWindow) {
@@ -238,22 +692,348 @@
       }
     }
 
-    function toggleCheck(el) {
+    // AI Credits System (5 requests limit)
+    const AI_CREDITS_KEY = 'lesson2_ai_credits_v1';
+    let aiCredits = parseInt(localStorage.getItem(AI_CREDITS_KEY) || '5', 10);
+
+    function updateCreditsUI() {
+      const el = document.getElementById('aiCreditsLeft');
+      const textEl = document.getElementById('aiCreditsCardText');
+      const btn = document.getElementById('btnSubmitAttractionMap');
+
+      if (el) el.textContent = aiCredits;
+
+      if (aiCredits <= 0) {
+        if (textEl) {
+          textEl.innerHTML = '🚂 <strong style="color:var(--nb-terracotta);">Интеллектуальный попутчик поехал в следующий урок</strong> и будет ждать вас там с новыми вопросами и своей помощью.';
+        }
+        if (btn) {
+          btn.style.display = 'none';
+        }
+      } else {
+        if (textEl) {
+          textEl.textContent = 'Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.';
+        }
+        if (btn) {
+          btn.style.display = 'block';
+        }
+      }
+    }
+    updateCreditsUI();
+
+    // ==========================================
+    // INTERACTIVE STATE & STAGES
+    // ==========================================
+    let userSituation = '';
+    let scaleAnswers = { 1: null, 2: null, 3: null, 4: null, 5: null };
+    let actionAnswers = { 1: undefined, 2: undefined, 3: undefined, 4: undefined, 5: undefined };
+    let selectedCriteria = [];
+    let customCriteriaText = '';
+    let calculatedData = null;
+
+    function goToStage(stageNum) {
       safeHaptic('selection');
-      el.classList.toggle('selected');
-      calcScore();
+      document.getElementById('stage1Card').style.display = 'none';
+      document.getElementById('stage2Card').style.display = 'none';
+      document.getElementById('stage3Card').style.display = 'none';
+      document.getElementById('stage4Card').style.display = 'none';
+      document.getElementById('stage5Card').style.display = 'none';
+      document.getElementById('resultContainer').style.display = 'none';
+
+      if (stageNum === 1) document.getElementById('stage1Card').style.display = 'flex';
+      if (stageNum === 2) document.getElementById('stage2Card').style.display = 'flex';
+      if (stageNum === 3) document.getElementById('stage3Card').style.display = 'flex';
+      if (stageNum === 4) document.getElementById('stage4Card').style.display = 'flex';
+      if (stageNum === 5) document.getElementById('stage5Card').style.display = 'flex';
+
+      window.scrollTo({ top: 100, behavior: 'smooth' });
     }
 
-    function calcScore() {
-      const activeCount = document.querySelectorAll('.answer.selected').length;
-      const scoreBox = document.getElementById('checklistScore');
-      if (activeCount >= 5) {
-        scoreBox.innerHTML = '<strong style="color:var(--success);">🛡 Высокий индекс безопасности (' + activeCount + '/6):</strong> Ваше тело считывает надежный фундамент. Здесь можно строить долгосрочный союз.';
-      } else if (activeCount >= 3) {
-        scoreBox.innerHTML = '<strong style="color:var(--warning);">⚖️ Средний индекс (' + activeCount + '/6):</strong> Есть точки напряжения. Обращайте внимание на сигналы тела.';
+    // Stage 2 Validation
+    function checkStage2Valid() {
+      const val = document.getElementById('inpSituation').value.trim();
+      userSituation = val;
+      const btn = document.getElementById('btnStage2Next');
+      if (val.length > 0) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
       } else {
-        scoreBox.innerHTML = '<strong style="color:var(--danger);">⚠️ Преобладание тревожного спазма (' + activeCount + '/6):</strong> Тело находится в режиме мобилизации и обороны.';
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
       }
+    }
+
+    // Stage 3 Scales (0..4)
+    function setScale(qIndex, val, el) {
+      safeHaptic('selection');
+      scaleAnswers[qIndex] = val;
+      const parentRow = el.parentElement;
+      parentRow.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+
+      const allSet = [1,2,3,4,5].every(i => scaleAnswers[i] !== null);
+      const btn = document.getElementById('btnStage3Next');
+      if (allSet) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    }
+
+    // Stage 4 Actions (2, 1, 0, null)
+    function setActionAnswer(qIndex, val, el) {
+      safeHaptic('selection');
+      actionAnswers[qIndex] = val;
+      const parentGroup = el.parentElement;
+      parentGroup.querySelectorAll('.action-choice').forEach(choice => choice.classList.remove('active'));
+      el.classList.add('active');
+
+      const allAnswered = [1,2,3,4,5].every(i => actionAnswers[i] !== undefined);
+      const btn = document.getElementById('btnStage4Next');
+      if (allAnswered) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    }
+
+    // Stage 5 Criteria Selection (Exactly 3)
+    function toggleCriteria(name, el) {
+      safeHaptic('selection');
+      const idx = selectedCriteria.indexOf(name);
+      if (idx > -1) {
+        selectedCriteria.splice(idx, 1);
+        el.classList.remove('active');
+      } else {
+        if (selectedCriteria.length < 3) {
+          selectedCriteria.push(name);
+          el.classList.add('active');
+        } else {
+          safeHaptic('error');
+        }
+      }
+      updateCriteriaUI();
+    }
+
+    function toggleCriteriaCustom(el) {
+      safeHaptic('selection');
+      const inputBlock = document.getElementById('customCriteriaInputBlock');
+      const isSelected = el.classList.contains('active');
+
+      if (isSelected) {
+        el.classList.remove('active');
+        inputBlock.style.display = 'none';
+        selectedCriteria = selectedCriteria.filter(c => c !== customCriteriaText && c !== 'Свой вариант');
+        customCriteriaText = '';
+        document.getElementById('inpCustomCriteria').value = '';
+      } else {
+        if (selectedCriteria.length < 3) {
+          el.classList.add('active');
+          inputBlock.style.display = 'block';
+          document.getElementById('inpCustomCriteria').focus();
+          handleCustomCriteriaInput();
+        } else {
+          safeHaptic('error');
+        }
+      }
+      updateCriteriaUI();
+    }
+
+    function handleCustomCriteriaInput() {
+      const val = document.getElementById('inpCustomCriteria').value.trim() || 'Свой вариант';
+      selectedCriteria = selectedCriteria.filter(c => c !== customCriteriaText && c !== 'Свой вариант');
+      customCriteriaText = val;
+      selectedCriteria.push(customCriteriaText);
+      updateCriteriaUI();
+    }
+
+    function updateCriteriaUI() {
+      const countEl = document.getElementById('criteriaCount');
+      countEl.textContent = selectedCriteria.length;
+      const btn = document.getElementById('btnStage5Submit');
+      if (selectedCriteria.length === 3) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.classList.add('pulse');
+      } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        btn.classList.remove('pulse');
+      }
+    }
+
+    // ==========================================
+    // CALCULATION LOGIC & RESULT PRESENTATION
+    // ==========================================
+    function calculateAndShowResult() {
+      safeHaptic('success');
+
+      // Metric 1: Body Arousal (Sum 5 scales 0..4) -> 0..20
+      const bodySum = [1,2,3,4,5].reduce((sum, i) => sum + (scaleAnswers[i] || 0), 0);
+      let bodyLevel = 'умеренное';
+      let bodyLevelDisplay = 'умеренная';
+      if (bodySum <= 6) {
+        bodyLevel = 'низкое';
+        bodyLevelDisplay = 'низкая';
+      } else if (bodySum >= 14) {
+        bodyLevel = 'выраженное';
+        bodyLevelDisplay = 'выраженная';
+      }
+
+      // Metric 2: Behavior Clarity
+      const validAnswers = [1,2,3,4,5].map(i => actionAnswers[i]).filter(val => val !== null && val !== undefined);
+      let actionsClarity = 'противоречивые сигналы';
+      let actionsClarityDisplay = 'противоречивые сигналы';
+
+      if (validAnswers.length < 3) {
+        actionsClarity = 'недостаточно информации';
+        actionsClarityDisplay = 'пока недостаточно информации';
+      } else {
+        const avg = validAnswers.reduce((a,b) => a + b, 0) / validAnswers.length;
+        if (avg < 0.75) {
+          actionsClarity = 'мало последовательности';
+          actionsClarityDisplay = 'мало последовательности';
+        } else if (avg <= 1.39) {
+          actionsClarity = 'противоречивые сигналы';
+          actionsClarityDisplay = 'противоречивые сигналы';
+        } else {
+          actionsClarity = 'достаточно последовательное поведение';
+          actionsClarityDisplay = 'последовательное';
+        }
+      }
+
+      // 4 Result Scenarios
+      let resultTitle = '';
+      let resultText = '';
+
+      if (bodyLevel === 'выраженное' && (actionsClarity === 'мало последовательности' || actionsClarity === 'противоречивые сигналы')) {
+        // Option 1
+        resultTitle = 'Притяжение усиливается неопределённостью';
+        resultText = 'Ваше тело реагирует достаточно сильно, но поведение человека пока не даёт устойчивой ясности. Интенсивность чувств может усиливаться ожиданием и непредсказуемостью. Она ещё не доказывает совместимость.';
+      } else if ((bodyLevel === 'умеренное' || bodyLevel === 'выраженное') && actionsClarity === 'достаточно последовательное поведение') {
+        // Option 2
+        resultTitle = 'Притяжение подтверждается поступками';
+        resultText = 'Вы замечаете эмоциональное и телесное притяжение, при этом человек проявляет инициативу, последовательность и уважение. Продолжайте узнавать друг друга, наблюдая, сохраняется ли это со временем.';
+      } else if (bodyLevel === 'низкое' && actionsClarity === 'достаточно последовательное поведение') {
+        // Option 3
+        resultTitle = 'Спокойный контакт';
+        resultText = 'Рядом с человеком нет сильных эмоциональных перепадов, а его поступки достаточно надёжны. Такое спокойствие иногда кажется непривычным и ошибочно принимается за отсутствие чувств.';
+      } else {
+        // Option 4 (Other combinations or < 3 content answers)
+        resultTitle = 'Наблюдение продолжается';
+        resultText = 'Сейчас недостаточно информации, чтобы отделить притяжение к человеку от реакции на ситуацию. Не торопитесь с выводами: обратите внимание на его регулярные поступки во время следующих контактов.';
+      }
+
+      // Update Result UI
+      document.getElementById('resTitle').textContent = resultTitle;
+      document.getElementById('resText').textContent = resultText;
+      document.getElementById('resBodyLevel').textContent = `${bodyLevelDisplay} (${bodySum}/20)`;
+      document.getElementById('resActionsLevel').textContent = actionsClarityDisplay;
+      document.getElementById('resCriteriaList').textContent = selectedCriteria.join(', ');
+
+      // Store in calculatedData
+      calculatedData = {
+        situation: userSituation,
+        bodyScore: bodySum,
+        bodyLevel: bodyLevel,
+        bodyLevelDisplay: bodyLevelDisplay,
+        actionsClarity: actionsClarity,
+        actionsClarityDisplay: actionsClarityDisplay,
+        criteria: selectedCriteria,
+        resultTitle: resultTitle,
+        resultText: resultText,
+        userName: window.currentUserName || 'Участник'
+      };
+
+      // Switch to Result View
+      document.getElementById('stage5Card').style.display = 'none';
+      const resCont = document.getElementById('resultContainer');
+      resCont.style.display = 'flex';
+
+      // Reveal button to go to Lesson 3
+      revealNextLessonBtn();
+
+      window.scrollTo({ top: 80, behavior: 'smooth' });
+    }
+
+    function revealNextLessonBtn() {
+      const nextBtn = document.getElementById('nextLessonBlock');
+      if (nextBtn) {
+        nextBtn.style.display = 'block';
+        requestAnimationFrame(function() {
+          nextBtn.style.opacity = '1';
+          nextBtn.style.transform = 'translateY(0)';
+        });
+      }
+    }
+
+    // ==========================================
+    // AI COMPANION STRATEGY ANALYSIS
+    // ==========================================
+    async function analyzeAttractionMap(e) {
+      e.preventDefault();
+      if (aiCredits <= 0) {
+        safeHaptic('selection');
+        window.location.href = '05_lesson3.html';
+        return;
+      }
+      safeHaptic('impactLight');
+
+      const btn = document.getElementById('btnSubmitAttractionMap');
+      btn.disabled = true;
+      btn.textContent = 'Попутчик анализирует карту...';
+
+      const payload = calculatedData || {
+        situation: userSituation,
+        bodyScore: 10,
+        bodyLevel: 'умеренное',
+        actionsClarity: 'противоречивые сигналы',
+        criteria: selectedCriteria,
+        resultTitle: 'Карта притяжения',
+        resultText: '',
+        userName: window.currentUserName || 'Участник'
+      };
+
+      try {
+        const data = await window.apiPost('/api/lesson2-strategy', payload);
+        if (data && (data.analysis || data.result)) {
+          showAiResult(data.analysis || JSON.stringify(data.result));
+        } else {
+          showAiFallback(payload);
+        }
+      } catch (err) {
+        showAiFallback(payload);
+      } finally {
+        aiCredits = Math.max(0, aiCredits - 1);
+        localStorage.setItem(AI_CREDITS_KEY, aiCredits);
+        updateCreditsUI();
+        if (aiCredits > 0) {
+          btn.disabled = false;
+          btn.textContent = 'Разобрать карту с Попутчиком →';
+        }
+      }
+    }
+
+    function showAiFallback(p) {
+      const fallback = `🔍 **Разбор «Карты притяжения» с Попутчиком:**\n\n• **Что показывает тело**: Реакция тела (${p.bodyLevel || 'умеренная'}) сигнализирует о включении нервной системы в неопределённость контакта.\n• **Что подтверждают поступки**: В поведении человека (${p.actionsClarity || 'противоречивые сигналы'}) пока не хватает устойчивой последовательности.\n• **На что обратить внимание при следующих встречах**: Сверяйтесь с вашими главными ориентирами (${(p.criteria || []).join(', ') || 'надёжность, ясность, уважение'}). Отслеживайте, расслабляются ли плечи и челюсть, и подтверждает ли человек слова делами без вашей спешки.`;
+      showAiResult(fallback);
+    }
+
+    function showAiResult(text) {
+      safeHaptic('success');
+      const block = document.getElementById('aiResultBlock');
+      const textContainer = document.getElementById('aiAnalysisText');
+      
+      let htmlContent = text;
+      if (aiCredits <= 0) {
+        htmlContent += '\n\n<div style="margin-top:14px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей помощью.</div>';
+        textContainer.innerHTML = htmlContent;
+      } else {
+        textContainer.textContent = htmlContent;
+      }
+      block.classList.remove('hidden');
+      block.style.display = 'flex';
+
+      revealNextLessonBtn();
+      block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   </script>
 
