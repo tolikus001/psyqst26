@@ -19,10 +19,787 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="theme.css">
-  <script src="leaves-bg.js"></script>
-  <script src="telegram-user.js"></script>
-  <script src="api-config.js"></script>
+  <style id="inlined-theme">
+:root {
+  --nb-bg: #F3F6F5;
+  --nb-text: #243139;
+  --nb-text-2: #68767C;
+  --nb-accent: #7F9B8E;
+  --nb-deep: #243139;
+  --nb-sea: #45656D;
+  --nb-line: rgba(14, 31, 46, 0.10);
+  --nb-gold: #C8B28F;
+  --danger: #B42318;
+  --warning: #B7791F;
+  --success: #2F7D59;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100% !important;
+  background: #E8EDE7 !important;
+  color: var(--nb-text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#maisonArtBackground {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  background-image: url("https://inter01-anatolyfedorov.amvera.io/data/leaves_birch.jpg"), url("leaves_birch.jpg");
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
+  opacity: 0.22 !important;
+  filter: saturate(0.85) contrast(0.92) brightness(1.04) !important;
+  transform: translateZ(0);
+  pointer-events: none !important;
+  transition: opacity 0.4s ease, background-image 0.65s ease !important;
+}
+
+
+
+body > *:not(#maisonArtBackground) {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+button, input, textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Master Shell */
+.app-shell {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  padding: max(18px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom));
+  background: transparent !important;
+}
+
+.app {
+  width: 100%;
+  max-width: 448px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: transparent !important;
+}
+
+/* Headings & Subheadings - strictly centered */
+h1, h2, h3, h4, h5, h6,
+.question-title,
+.hero h1,
+.lead,
+.subtle,
+.section-subtitle,
+.eyebrow {
+  text-align: center !important;
+}
+
+h1 {
+  margin: 16px 0 10px;
+  font-size: 28px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--nb-deep);
+}
+
+h2 {
+  margin-bottom: 8px;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--nb-deep);
+}
+
+h3 {
+  margin-bottom: 6px;
+  font-size: 17px;
+  line-height: 1.25;
+  color: var(--nb-deep);
+}
+
+.lead {
+  color: var(--nb-text-2);
+  font-size: 15px;
+  line-height: 1.5;
+  margin-top: 0;
+}
+
+.eyebrow {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid #E8DDD5;
+  background: rgba(255, 255, 255, 0.65);
+  color: #9E6747;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center !important;
+  margin: 0 auto 12px !important;
+  align-self: center !important;
+}
+
+.choice-notice {
+  background: #E2EAE2;
+  border: 1px solid #C8D8C8;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #385045;
+  text-align: center;
+  margin: 14px auto;
+}
+
+/* Cards & Panels — Velvet Frosted Glass */
+.glass, .card, .hero {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(20px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(135%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 16px 38px rgba(45, 62, 54, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+  border-radius: 28px !important;
+  padding: 32px 24px !important;
+  text-align: center;
+}
+
+.hero h1, .hero h2 {
+  color: #1E2B37 !important;
+}
+
+.hero .lead, .hero .subtle {
+  color: #55666F !important;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 15px;
+  background: #42555F;
+  box-shadow: 0 4px 12px rgba(66, 85, 95, 0.2);
+}
+
+.greeting {
+  font-size: 18px;
+  font-weight: 800;
+  color: #243139;
+}
+
+.subtle {
+  color: var(--nb-text-2);
+  font-size: 12px;
+}
+
+/* Buttons — Warm Terracotta as in Psyquest 5.6 */
+.primary-btn,
+#startBtn,
+#nextBtn,
+#guideNextBtn,
+#telegramBtn {
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  border-radius: 18px !important;
+  font-size: 16px;
+  font-weight: 800 !important;
+  background: linear-gradient(105deg, #B5663E 0%, #BD7249 50%, #CB8760 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #A95531 !important;
+  border-top-color: #E3A578 !important;
+  box-shadow: 0 12px 24px rgba(123, 67, 39, .22), inset 0 1px 0 rgba(255, 255, 255, .30), inset 0 -1px 0 rgba(104, 48, 23, .13) !important;
+  text-shadow: 0 1px 0 rgba(91, 40, 18, .18) !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.primary-btn:hover,
+#startBtn:hover,
+#nextBtn:hover {
+  background: linear-gradient(105deg, #BC6C43 0%, #C57A50 50%, #D08D66 100%) !important;
+  box-shadow: 0 15px 28px rgba(123, 67, 39, .25), inset 0 1px 0 rgba(255, 255, 255, .32) !important;
+}
+
+.primary-btn:active,
+#startBtn:active,
+#nextBtn:active {
+  transform: scale(0.985);
+}
+
+/* Progress bar */
+.progress-wrap {
+  padding: 12px 16px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(14, 31, 46, 0.08);
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--nb-sea), var(--nb-accent));
+  transition: width 0.35s ease;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  color: var(--nb-text-2);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Buttons */
+.primary-btn, .secondary-btn, .ghost-btn {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 16px;
+  padding: 13px 18px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.primary-btn {
+  color: #FFFFFF;
+  background: var(--nb-accent);
+  box-shadow: 0 12px 28px rgba(127, 155, 142, 0.28);
+}
+
+.primary-btn:hover {
+  box-shadow: 0 16px 34px rgba(127, 155, 142, 0.34);
+}
+
+.primary-btn:active, .secondary-btn:active, .ghost-btn:active {
+  transform: scale(0.985);
+}
+
+.primary-btn:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.secondary-btn {
+  color: var(--nb-deep);
+  background: #FFFFFF;
+  border: 1px solid rgba(14, 31, 46, 0.12);
+  box-shadow: 0 4px 14px rgba(14, 31, 46, 0.04);
+}
+
+.secondary-btn:hover {
+  background: #F8FAFC;
+}
+
+.ghost-btn {
+  color: var(--nb-text-2);
+  background: transparent;
+  min-height: 44px;
+}
+
+/* Answers list */
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.answer {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 15px;
+  border-radius: 16px;
+  border: 1px solid rgba(14, 31, 46, 0.10);
+  background: #FFFFFF;
+  color: var(--nb-text);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  overflow-wrap: anywhere;
+}
+
+.answer:hover {
+  border-color: rgba(18, 68, 83, 0.28);
+  box-shadow: 0 6px 18px rgba(14, 31, 46, 0.05);
+}
+
+.answer.selected {
+  border-color: var(--nb-sea);
+  background: rgba(18, 68, 83, 0.07);
+  box-shadow: 0 8px 22px rgba(18, 68, 83, 0.10);
+}
+
+.answer-dot {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  border-radius: 6px;
+  border: 2px solid rgba(14, 31, 46, 0.24);
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.answer.selected .answer-dot {
+  border-color: var(--nb-sea);
+  background: var(--nb-sea);
+}
+
+.answer.selected .answer-dot:after {
+  content: "";
+  width: 8px;
+  height: 4px;
+  border-left: 2px solid #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+/* Form Inputs */
+textarea, input {
+  width: 100%;
+  border: 1px solid rgba(14, 31, 46, 0.12);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: #FFFFFF;
+  color: var(--nb-text);
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+textarea:focus, input:focus {
+  border-color: var(--nb-sea);
+  box-shadow: 0 0 0 3px rgba(18, 68, 83, 0.10);
+}
+
+/* Choice notice */
+.choice-notice {
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(18, 68, 83, 0.07);
+  color: var(--nb-sea);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Nav row */
+.nav-row {
+  display: flex !important;
+  gap: 10px !important;
+  margin-top: 14px !important;
+  width: 100% !important;
+  align-items: stretch !important;
+}
+
+.nav-row .ghost-btn {
+  flex: 0 0 100px !important;
+  width: 100px !important;
+  min-height: 48px !important;
+  padding: 0 12px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(36, 49, 57, 0.15) !important;
+  border-radius: 16px !important;
+  color: var(--nb-deep) !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+}
+
+.nav-row .primary-btn,
+.nav-row .secondary-btn {
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  padding: 12px 14px !important;
+  font-size: 14px !important;
+}
+
+/* Badges */
+.strategy-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(127, 155, 142, 0.15);
+  color: var(--nb-accent);
+  font-weight: 800;
+  font-size: 12px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pulse {
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 12px 28px rgba(127, 155, 142, 0.22); transform: scale(1); }
+  50% { box-shadow: 0 16px 34px rgba(127, 155, 142, 0.32); transform: scale(1.01); }
+}
+
+@keyframes enter {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+</style>
+  <script>
+(function() {
+  const backgrounds = {
+    birch: "https://inter01-anatolyfedorov.amvera.io/data/leaves_birch.jpg",
+    oak: "https://inter01-anatolyfedorov.amvera.io/data/leaves_oak.jpg"
+  };
+
+  // Alternating mapping across screens
+  const pageMapping = {
+    '': 'birch',
+    'index.html': 'birch',
+    '01_psyquest.html': 'oak',
+    '02_landing_partner.html': 'birch',
+    '03_lesson1.html': 'oak',
+    '04_lesson2.html': 'birch',
+    '05_lesson3.html': 'oak',
+    '06_lesson4.html': 'birch',
+    '07_lesson5.html': 'oak',
+    '08_portrait_quest.html': 'birch',
+    '09_bonuses.html': 'oak',
+    '10_bonus1.html': 'birch',
+    '11_bonus2.html': 'oak',
+    '12_bonus3.html': 'birch',
+    '13_bonus4.html': 'oak',
+    '14_individual_offer.html': 'birch'
+  };
+
+  function setBackground(themeKey) {
+    let layer = document.getElementById('maisonArtBackground');
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.id = 'maisonArtBackground';
+      layer.setAttribute('aria-hidden', 'true');
+      if (document.body) {
+        document.body.insertBefore(layer, document.body.firstChild);
+      }
+    }
+
+    let bgFile = backgrounds.birch;
+    if (typeof themeKey === 'number') {
+      bgFile = themeKey % 2 === 0 ? backgrounds.birch : backgrounds.oak;
+    } else if (typeof themeKey === 'string' && backgrounds[themeKey]) {
+      bgFile = backgrounds[themeKey];
+    } else {
+      const page = window.location.pathname.split('/').pop() || 'index.html';
+      const mapped = pageMapping[page] || (page.match(/\d+/) && parseInt(page.match(/\d+/)[0], 10) % 2 === 1 ? 'oak' : 'birch');
+      bgFile = backgrounds[mapped] || backgrounds.birch;
+    }
+
+    if (layer) {
+      layer.style.backgroundImage = "url('" + bgFile + "')";
+    }
+  }
+
+  function init() {
+    new Image().src = backgrounds.birch;
+    new Image().src = backgrounds.oak;
+    setBackground();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+  window.setLeavesBackground = setBackground;
+})();
+</script>
+  <script>
+/**
+ * Telegram & Notibot Real-Time Personalization Engine
+ * Automatically extracts user name & avatar from Telegram WebApp, Notibot Bridge SDK, URL params, or LocalStorage.
+ */
+(function() {
+  function getUrlParam(param) {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function extractTelegramUser() {
+    // 1. Telegram WebApp
+    try {
+      if (window.Telegram && window.Telegram.WebApp) {
+        if (typeof window.Telegram.WebApp.ready === 'function') {
+          window.Telegram.WebApp.ready();
+          window.Telegram.WebApp.expand();
+        }
+        if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+          return window.Telegram.WebApp.initDataUnsafe.user;
+        }
+      }
+    } catch (e) {}
+
+    // 2. Notibot Init Data (via postMessage)
+    try {
+      if (window.notibotInitData && window.notibotInitData.user) {
+        return window.notibotInitData.user;
+      }
+    } catch (e) {}
+
+    // 3. Notibot global bridge object
+    try {
+      if (window.notibot && window.notibot.user) {
+        return window.notibot.user;
+      }
+    } catch (e) {}
+
+    // 4. URL Search Query (?name=... or ?first_name=... or ?user=...)
+    try {
+      const qName = getUrlParam('first_name') || getUrlParam('name') || getUrlParam('user');
+      if (qName) {
+        return { first_name: decodeURIComponent(qName) };
+      }
+    } catch (e) {}
+
+    // 5. LocalStorage Cache
+    try {
+      const cached = localStorage.getItem('psy_user_data');
+      if (cached) {
+        return JSON.parse(cached);
+      }
+      const cachedName = localStorage.getItem('psy_user_name');
+      if (cachedName) {
+        return { first_name: cachedName };
+      }
+    } catch (e) {}
+
+    return null;
+  }
+
+  function applyPersonalization(user) {
+    user = user || extractTelegramUser();
+
+    let firstName = '';
+    let photoUrl = '';
+
+    if (user) {
+      firstName = user.first_name || user.firstName || user.name || user.username || '';
+      photoUrl = user.photo_url || user.photoURL || user.avatar_url || user.avatarUrl || '';
+      try {
+        localStorage.setItem('psy_user_data', JSON.stringify(user));
+        if (firstName) localStorage.setItem('psy_user_name', firstName);
+      } catch (e) {}
+    }
+
+    firstName = String(firstName || '').trim().split(/\s+/)[0];
+
+    // Update Greeting in Header
+    const greetingEl = document.getElementById('userGreeting');
+    if (greetingEl) {
+      greetingEl.textContent = firstName ? `Привет, ${firstName}!` : 'Привет!';
+    }
+
+    // Update Avatar in Header
+    const avatarEl = document.getElementById('userAvatar');
+    if (avatarEl) {
+      avatarEl.innerHTML = '';
+      if (photoUrl) {
+        const img = document.createElement('img');
+        img.src = photoUrl;
+        img.alt = firstName || 'Avatar';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '9999px';
+        img.onerror = function() {
+          avatarEl.innerHTML = '';
+          avatarEl.textContent = firstName ? firstName.charAt(0).toUpperCase() : '?';
+        };
+        avatarEl.appendChild(img);
+      } else {
+        avatarEl.textContent = firstName ? firstName.charAt(0).toUpperCase() : '?';
+      }
+    }
+
+    // Optional personalization elements with data-user-name
+    document.querySelectorAll('[data-user-name]').forEach(el => {
+      el.textContent = firstName || el.getAttribute('data-default') || 'Участник';
+    });
+
+    window.currentUser = user || (firstName ? { first_name: firstName } : null);
+    window.currentUserName = firstName || 'Участник';
+  }
+
+  // Initialize immediately & on events
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => applyPersonalization());
+  } else {
+    applyPersonalization();
+  }
+
+  // Listen for Notibot async initialization
+  window.addEventListener('message', function(event) {
+    if (event.data && (event.data.type === 'NOTIBOT_INIT' || event.data.type === 'NOTIBOT_READY')) {
+      if (event.data.data && event.data.data.user) {
+        window.notibotInitData = event.data.data;
+        applyPersonalization(event.data.data.user);
+      }
+    }
+  });
+
+  window.applyPersonalization = applyPersonalization;
+  window.extractTelegramUser = extractTelegramUser;
+})();
+
+</script>
+  <script>
+/**
+ * Unified API & Media Connector for Local, Notibot and Amvera Environments
+ */
+(function() {
+  // Determine backend base URL
+  const isLocal = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' || 
+                  window.location.protocol === 'file:';
+
+  const AMVERA_HOST = 'https://inter01-anatolyfedorov.amvera.io';
+  const LOCAL_HOST = 'http://localhost:3000';
+
+  const API_BASE = (window.location.protocol === 'file:')
+    ? (window.USE_AMVERA_FOR_FILE ? AMVERA_HOST : LOCAL_HOST)
+    : (isLocal ? '' : AMVERA_HOST);
+
+  window.API_BASE = API_BASE;
+  window.AMVERA_HOST = AMVERA_HOST;
+
+  /**
+   * Safe Fetch with Timeout and Automatic Error Handling
+   */
+  async function apiPost(endpoint, bodyData, timeoutMs = 12000) {
+    const targetUrl = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const response = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'NotibotMiniApp'
+        },
+        body: JSON.stringify(bodyData),
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return await response.json();
+    } catch (err) {
+      clearTimeout(timer);
+      console.warn(`[API Warning] Request to ${targetUrl} failed (${err.message}). Trying fallback endpoint...`);
+
+      // If local failed on file:// or network, try Amvera host as secondary
+      if (API_BASE !== AMVERA_HOST && !endpoint.startsWith('http')) {
+        try {
+          const fallbackRes = await fetch(`${AMVERA_HOST}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyData)
+          });
+          if (fallbackRes.ok) {
+            return await fallbackRes.json();
+          }
+        } catch (e) {
+          console.warn('[API Warning] Amvera fallback also unreachable:', e.message);
+        }
+      }
+      throw err;
+    }
+  }
+
+  /**
+   * Resolve Media URL (Local or Amvera)
+   */
+  function resolveMediaUrl(filename) {
+    const clean = filename.replace(/^\/+(data|media)\/+/, '');
+    if (isLocal && window.location.protocol !== 'file:') {
+      return `/data/${clean}`;
+    }
+    return `${AMVERA_HOST}/data/${clean}`;
+  }
+
+  window.apiPost = apiPost;
+  window.resolveMediaUrl = resolveMediaUrl;
+})();
+
+</script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://list.notibot.ru/notibot-bridge.js"></script>
