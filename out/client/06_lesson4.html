@@ -149,10 +149,20 @@
             Иногда нас особенно притягивают люди, которые позволяют себе то, что мы запрещаем себе: быть заметными, свободными, дерзкими или независимыми. Задача — не перенять чужую резкость, а вернуть себе здоровую форму собственной силы.
           </p>
 
-          <button onclick="goToInteractive()" class="primary-btn pulse" style="width:100%;">
-            <span>Интеллектуальный попутчик ждёт ➔</span>
-          </button>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-top:14px;">
+            <button onclick="goToInteractive()" class="primary-btn pulse" style="width:100%;">
+              <span>Интеллектуальный попутчик ждёт ➔</span>
+            </button>
+          </div>
         </section>
+
+        <!-- Next Lesson Transition (Always visible on Screen 1) -->
+        <div style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); window.location.href='07_lesson5.html';" class="secondary-btn"
+            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
+            <span>Переходим к пятому уроку ➔</span>
+          </button>
+        </div>
 
       </div>
 
