@@ -30,14 +30,9 @@ html, body {
   position: fixed !important;
   inset: 0 !important;
   z-index: 0 !important;
-  background-repeat: repeat !important;
-  background-position: center top !important;
-  background-size: 580px auto !important;
-  filter: saturate(1.05) contrast(1.02) !important;
-  opacity: 0.92 !important;
-  transform: translateZ(0);
   pointer-events: none !important;
-  transition: background-image .65s ease !important;
+  overflow: hidden !important;
+  transform: translateZ(0);
 }
 
 
