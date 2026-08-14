@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob: https://*.kinescopecdn.net;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Видео-бонусы курса «Новый сценарий» — Анатолий Фёдоров</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="leaves-bg.js"></script>
+  <script src="telegram-user.js"></script>
+  <script src="api-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <!-- Early Interceptor for Notibot Bridge -->
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred(type || 'light');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
+        }
+      } catch (e) {}
+    }
+  </script>
+</head>
+<body>
+  <div id="maisonArtBackground" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Top Header -->
+      <header class="header">
+        <div class="identity">
+          <div id="userAvatar" class="avatar">?</div>
+          <div style="min-width:0">
+            <div id="userGreeting" class="greeting">Привет!</div>
+            <div class="subtle">Библиотека бонусов</div>
+          </div>
+        </div>
+        <div class="strategy-badge" style="margin-left:auto; background:rgba(184,115,76,0.12); color:#B8734C;">4 Бонуса</div>
+      </header>
+
+      <!-- Welcome Hero Card -->
+      <section class="glass hero">
+        <div class="eyebrow">🎁 Специальные материалы</div>
+        <h1>Видео-бонусы курса</h1>
+        <p class="lead">Прикладные практики для укрепления эмоционального суверенитета и выхода из повторяющихся сценариев</p>
+      </section>
+
+      <!-- BONUS 1 -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Бонус 1</div>
+        <h2>Как создавать зону безопасности и уверенности в себе</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Практика формирования внутреннего ядра и устойчивости без оглядки на реакцию партнёра</p>
+
+        <!-- Kinescope Player -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe src="https://kinescope.io/embed/u6RzSwLE9DpSemaR4xrcDj" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+      </section>
+
+      <!-- BONUS 2 -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Бонус 2</div>
+        <h2>Как спокойно реагировать на сообщения из прошлого</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Пошаговый алгоритм: как не свалиться в эмоциональный откат, когда объявляются бывшие или холодные партнеры</p>
+
+        <!-- Kinescope Player -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe src="https://kinescope.io/embed/gJuTii2CB5xh7imx32QG9A" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+      </section>
+
+      <!-- BONUS 3 -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Бонус 3</div>
+        <h2>Как быстро заземлить тревогу через тело</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Экспресс-техника соматического снятия спазма в груди и животе за 3 минуты</p>
+
+        <!-- Kinescope Player -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe src="https://kinescope.io/embed/rg3Zn187P3qTTsKzCEwRF2" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+      </section>
+
+      <!-- BONUS 4 -->
+      <section id="bonus4Section" class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Бонус 4</div>
+        <h2>Как комфортно завершать общение, если вам не по пути</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Выход из бесперспективного контакта с достоинством и без чувства вины</p>
+
+        <!-- Kinescope Player -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe src="https://kinescope.io/embed/tSmPqiSNmmTqSWWBPCebzj" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+      </section>
+
+      <!-- Back to Course Navigation -->
+      <div style="padding-top:6px; display:flex; flex-direction:column; gap:8px;">
+        <button onclick="safeHaptic('selection'); window.location.href='02_landing_partner.html';" class="primary-btn">
+          <span>← Назад к лендингу курса</span>
+        </button>
+        <button onclick="safeHaptic('selection'); window.location.href='03_lesson1.html';" class="secondary-btn">
+          <span>Перейти к Уроку 1 ➔</span>
+        </button>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>
