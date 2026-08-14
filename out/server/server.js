@@ -18,7 +18,18 @@ function setCorsHeaders(res) {
 
 // Resolve Media/Data File Path
 function resolveFilePath(targetName) {
-  const cleanName = path.basename(targetName).trim();
+  let cleanName = path.basename(targetName).trim();
+  
+  // Alias mapping to avoid heavy duplicate files
+  const aliases = {
+    'video0.mp4': 'lesson0.mp4',
+    'урок 0.mp4': 'lesson0.mp4',
+    'lesson0_v2.mp4': 'lesson0.mp4'
+  };
+  if (aliases[cleanName.toLowerCase()]) {
+    cleanName = aliases[cleanName.toLowerCase()];
+  }
+
   const searchDirs = [
     '/data',
     path.join(__dirname, 'files'),
