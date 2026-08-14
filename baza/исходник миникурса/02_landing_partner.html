@@ -109,8 +109,8 @@
         </div>
       </section>
 
-      <!-- Gift Meditation Section (From Lesson 0 transcript) -->
-      <section class="glass card text-center">
+      <!-- Gift Meditation Section (From Lesson 0 transcript - Delayed by 5s) -->
+      <section id="giftMeditationSection" class="glass card text-center" style="display:none; opacity:0; transform:translateY(16px); transition:opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);">
         <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2);">
           🎁 Ваш подарок
         </div>
@@ -321,6 +321,18 @@
         window.location.href = '03_lesson1.html';
       }
     }
+
+    // 5-Second Delayed Reveal for Gift Meditation Block
+    setTimeout(function() {
+      const giftSec = document.getElementById('giftMeditationSection');
+      if (giftSec) {
+        giftSec.style.display = 'block';
+        requestAnimationFrame(function() {
+          giftSec.style.opacity = '1';
+          giftSec.style.transform = 'translateY(0)';
+        });
+      }
+    }, 5000);
   </script>
 
 </body>
