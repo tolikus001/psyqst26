@@ -125,61 +125,56 @@ h3 {
 }
 
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 6px 14px;
+  display: inline-block;
+  padding: 6px 16px;
   border-radius: 999px;
-  background: rgba(18, 68, 83, 0.08);
-  color: var(--nb-sea);
-  border: 1px solid rgba(18, 68, 83, 0.12);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  margin: 0 auto;
-}
-
-/* Cards & Panels */
-.glass {
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid var(--nb-line);
-  box-shadow: 0 18px 50px rgba(14, 31, 46, 0.08);
-  border-radius: 24px;
-}
-
-.card {
-  padding: 22px 20px;
-}
-
-.hero {
-  padding: 28px 20px 24px;
+  border: 1px solid #E8DDD5;
+  background: rgba(255, 255, 255, 0.65);
+  color: #9E6747;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
   text-align: center;
-  background: linear-gradient(160deg, rgba(14, 31, 46, 0.98), rgba(18, 68, 83, 0.96));
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 24px 60px rgba(14, 31, 46, 0.22);
+  margin: 0 auto 16px;
+}
+
+.choice-notice {
+  background: #E2EAE2;
+  border: 1px solid #C8D8C8;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #385045;
+  text-align: center;
+  margin: 14px auto;
+}
+
+/* Cards & Panels — Pure Frosted Glass */
+.glass, .card, .hero {
+  background: rgba(250, 250, 246, 0.76) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.72) !important;
+  box-shadow: 0 18px 45px rgba(56, 72, 65, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+  border-radius: 28px !important;
+  padding: 32px 24px !important;
+  text-align: center;
 }
 
 .hero h1, .hero h2 {
-  color: #FFFFFF !important;
+  color: #1E2B37 !important;
 }
 
 .hero .lead, .hero .subtle {
-  color: rgba(255, 255, 255, 0.76) !important;
-}
-
-.hero .eyebrow {
-  background: rgba(255, 255, 255, 0.12);
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.2);
+  color: #55666F !important;
 }
 
 /* Header */
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 12px;
   padding: 8px 4px;
 }
@@ -188,34 +183,72 @@ h3 {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-width: 0;
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: 800;
-  font-size: 13px;
-  background: linear-gradient(145deg, var(--nb-deep), var(--nb-sea));
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(14, 31, 46, 0.16);
+  font-size: 15px;
+  background: #42555F;
+  box-shadow: 0 4px 12px rgba(66, 85, 95, 0.2);
 }
 
 .greeting {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 800;
-  color: var(--nb-deep);
+  color: #243139;
 }
 
 .subtle {
   color: var(--nb-text-2);
   font-size: 12px;
+}
+
+/* Buttons — Warm Terracotta as in Psyquest 5.6 */
+.primary-btn,
+#startBtn,
+#nextBtn,
+#guideNextBtn,
+#telegramBtn {
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  border-radius: 18px !important;
+  font-size: 16px;
+  font-weight: 800 !important;
+  background: linear-gradient(105deg, #B5663E 0%, #BD7249 50%, #CB8760 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #A95531 !important;
+  border-top-color: #E3A578 !important;
+  box-shadow: 0 12px 24px rgba(123, 67, 39, .22), inset 0 1px 0 rgba(255, 255, 255, .30), inset 0 -1px 0 rgba(104, 48, 23, .13) !important;
+  text-shadow: 0 1px 0 rgba(91, 40, 18, .18) !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.primary-btn:hover,
+#startBtn:hover,
+#nextBtn:hover {
+  background: linear-gradient(105deg, #BC6C43 0%, #C57A50 50%, #D08D66 100%) !important;
+  box-shadow: 0 15px 28px rgba(123, 67, 39, .25), inset 0 1px 0 rgba(255, 255, 255, .32) !important;
+}
+
+.primary-btn:active,
+#startBtn:active,
+#nextBtn:active {
+  transform: scale(0.985);
 }
 
 /* Progress bar */

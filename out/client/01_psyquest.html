@@ -74,36 +74,34 @@
       <!-- Top Header -->
       <header class="header">
         <div class="identity">
-          <div class="avatar">АФ</div>
+          <div id="userAvatar" class="avatar">?</div>
           <div style="min-width:0">
-            <div class="greeting">Анатолий Фёдоров</div>
-            <div class="subtle">Системно-поведенческий анализ</div>
+            <div id="userGreeting" class="greeting">Привет!</div>
           </div>
         </div>
-        <div class="strategy-badge">Псиквест</div>
       </header>
 
       <!-- Progress Section -->
       <section id="progressWrap" class="progress-wrap glass card hidden">
         <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
         <div class="progress-meta">
-          <span id="progressLabel">Вопрос 1 из 8</span>
-          <span id="progressPercent">12%</span>
+          <span id="progressLabel">Вопрос 1</span>
+          <span id="progressPercent">0%</span>
         </div>
       </section>
 
       <!-- SCREEN 1: Hero Cover Screen -->
       <section id="screenWelcome" class="screen active glass hero">
-        <div class="eyebrow">✨ 2–3 минуты • персональный разбор</div>
+        <div class="eyebrow">2–3 минуты<br>персональный результат</div>
         <h1>Куда движется ваша личная жизнь?</h1>
-        <p class="lead">8 точных вопросов, которые выявят ваш скрытый сценарий в отношениях, подсветят причину эмоциональных качелей и определят персональный маршрут.</p>
+        <p class="lead">Узнайте, что запускает повторяющиеся ситуации и где находится Ваша точка выбора.</p>
 
-        <div class="choice-notice" style="margin-top:14px; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.15);">
-          Основано на методологии системно-поведенческого анализа
+        <div class="choice-notice">
+          Можно выбрать до трёх вариантов ответа
         </div>
 
-        <button onclick="startQuiz()" class="primary-btn pulse" type="button" style="margin-top:8px;">
-          Начать диагностику ➔
+        <button onclick="startQuiz()" id="startBtn" class="primary-btn" type="button">
+          Узнать свой сценарий
         </button>
       </section>
 
