@@ -16,99 +16,111 @@
     .bonuses-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 16px;
       margin-bottom: 20px;
     }
     @media (min-width: 640px) {
       .bonuses-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 16px;
+        gap: 24px;
       }
     }
-    .bonus-tile {
-      background: rgba(255, 255, 255, 0.95);
+    .bonus-card-premium {
+      background: #FFFFFF;
       border: 1px solid rgba(36, 49, 57, 0.1);
       border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 10px 28px rgba(36, 49, 57, 0.08);
+      box-shadow: 0 10px 30px rgba(36, 49, 57, 0.08);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 12px;
+      overflow: hidden;
       cursor: pointer;
       text-decoration: none;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
       text-align: left;
-      position: relative;
-      overflow: hidden;
+      height: 100%;
     }
-    .bonus-tile-1 {
-      background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.94)), url('https://inter01-anatolyfedorov.amvera.io/data/bonus1.png'), url('bonus1.png');
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
+    .bonus-card-premium:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 42px rgba(36, 49, 57, 0.16);
+      border-color: rgba(217, 131, 78, 0.45);
     }
-    .bonus-tile-2 {
-      background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.94)), url('https://inter01-anatolyfedorov.amvera.io/data/bonus2.png'), url('bonus2.png');
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-    .bonus-tile-3 {
-      background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.94)), url('https://inter01-anatolyfedorov.amvera.io/data/bonus3.png'), url('bonus3.png');
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-    .bonus-tile-4 {
-      background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.94)), url('https://inter01-anatolyfedorov.amvera.io/data/bonus4.png'), url('bonus4.png');
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-    .bonus-tile:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 36px rgba(36, 49, 57, 0.15);
-      border-color: rgba(217, 131, 78, 0.5);
-    }
-    .bonus-tile:active {
+    .bonus-card-premium:active {
       transform: scale(0.985);
     }
-    .bonus-tile-icon {
-      font-size: 28px;
-      line-height: 1;
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: rgba(217, 131, 78, 0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .bonus-card-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 170px;
+      overflow: hidden;
+      background: #1B2832;
     }
-    .bonus-tile-title {
-      font-size: 16px;
+    @media (min-width: 640px) {
+      .bonus-card-img-wrap {
+        height: 190px;
+      }
+    }
+    .bonus-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      opacity: 1;
+      transition: transform 0.35s ease;
+    }
+    .bonus-card-premium:hover .bonus-card-img {
+      transform: scale(1.04);
+    }
+    .bonus-card-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(254, 250, 246, 0.95);
+      color: var(--nb-deep);
+      border: 1px solid rgba(217, 131, 78, 0.4);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 2;
+    }
+    .bonus-card-body {
+      padding: 24px;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+      gap: 12px;
+    }
+    .bonus-card-title {
+      font-size: 16.5px;
       font-weight: 800;
       color: var(--nb-deep);
       line-height: 1.35;
       margin: 0;
     }
-    .bonus-tile-desc {
+    .bonus-card-desc {
       font-size: 13px;
       line-height: 1.5;
       color: var(--nb-slate);
       margin: 0;
       flex: 1;
     }
-    .bonus-tile-link {
+    .bonus-card-link {
       font-size: 13.5px;
       font-weight: 800;
       color: var(--nb-terracotta);
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      margin-top: 4px;
+      margin-top: auto;
+      padding-top: 4px;
     }
-    .bonus-tile:hover .bonus-tile-link {
+    .bonus-card-premium:hover .bonus-card-link {
       text-decoration: underline;
     }
   </style>
@@ -137,74 +149,74 @@
         </p>
       </section>
 
-      <!-- 4 Large Bonus Tiles (2x2 grid on desktop, 1 column on mobile) -->
+      <!-- 4 Large Bonus Cards with Crystal Illustrations (2x2 grid on desktop, 1 col on mobile) -->
       <div class="bonuses-grid">
 
         <!-- Bonus 1 -->
-        <a href="10_bonus1.html" onclick="safeHaptic('selection');" class="bonus-tile bonus-tile-1">
-          <div style="display:flex; align-items:center; justify-content:space-between;">
-            <div class="bonus-tile-icon">💬</div>
-            <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 1</span>
+        <a href="10_bonus1.html" onclick="safeHaptic('selection');" class="bonus-card-premium">
+          <div class="bonus-card-img-wrap">
+            <img src="bonus1.png" onerror="if(!this.dataset.failed){this.dataset.failed=1;this.src='https://inter01-anatolyfedorov.amvera.io/data/bonus1.png';}" alt="Если написал человек из прошлого" class="bonus-card-img" />
+            <div class="bonus-card-badge">Бонус 1</div>
           </div>
-          <div>
-            <h3 class="bonus-tile-title">Если написал человек из прошлого</h3>
-          </div>
-          <p class="bonus-tile-desc">
-            Пять готовых ответов, которые помогут сохранить границу и не вернуться в прежний сценарий.
-          </p>
-          <div class="bonus-tile-link">
-            Открыть бонус →
+          <div class="bonus-card-body">
+            <h3 class="bonus-card-title">Если написал человек из прошлого</h3>
+            <p class="bonus-card-desc">
+              Пять готовых ответов, которые помогут сохранить границу и не вернуться в прежний сценарий.
+            </p>
+            <div class="bonus-card-link">
+              Открыть бонус →
+            </div>
           </div>
         </a>
 
         <!-- Bonus 2 -->
-        <a href="11_bonus2.html" onclick="safeHaptic('selection');" class="bonus-tile bonus-tile-2">
-          <div style="display:flex; align-items:center; justify-content:space-between;">
-            <div class="bonus-tile-icon">🌿</div>
-            <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 2</span>
+        <a href="11_bonus2.html" onclick="safeHaptic('selection');" class="bonus-card-premium">
+          <div class="bonus-card-img-wrap">
+            <img src="bonus2.png" onerror="if(!this.dataset.failed){this.dataset.failed=1;this.src='https://inter01-anatolyfedorov.amvera.io/data/bonus2.png';}" alt="Экстренное заземление за 2 минуты" class="bonus-card-img" />
+            <div class="bonus-card-badge">Бонус 2</div>
           </div>
-          <div>
-            <h3 class="bonus-tile-title">Экстренное заземление за 2 минуты</h3>
-          </div>
-          <p class="bonus-tile-desc">
-            Три шага, чтобы снизить напряжение и не отправить импульсивное сообщение.
-          </p>
-          <div class="bonus-tile-link">
-            Открыть бонус →
+          <div class="bonus-card-body">
+            <h3 class="bonus-card-title">Экстренное заземление за 2 минуты</h3>
+            <p class="bonus-card-desc">
+              Три шага, чтобы снизить напряжение и не отправить импульсивное сообщение.
+            </p>
+            <div class="bonus-card-link">
+              Открыть бонус →
+            </div>
           </div>
         </a>
 
         <!-- Bonus 3 -->
-        <a href="12_bonus3.html" onclick="safeHaptic('selection');" class="bonus-tile bonus-tile-3">
-          <div style="display:flex; align-items:center; justify-content:space-between;">
-            <div class="bonus-tile-icon">🚪</div>
-            <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 3</span>
+        <a href="12_bonus3.html" onclick="safeHaptic('selection');" class="bonus-card-premium">
+          <div class="bonus-card-img-wrap">
+            <img src="bonus3.png" onerror="if(!this.dataset.failed){this.dataset.failed=1;this.src='https://inter01-anatolyfedorov.amvera.io/data/bonus3.png';}" alt="Как завершить общение без чувства вины" class="bonus-card-img" />
+            <div class="bonus-card-badge">Бонус 3</div>
           </div>
-          <div>
-            <h3 class="bonus-tile-title">Как завершить общение без чувства вины</h3>
-          </div>
-          <p class="bonus-tile-desc">
-            Правила и готовые фразы для честного и уважительного отказа.
-          </p>
-          <div class="bonus-tile-link">
-            Открыть бонус →
+          <div class="bonus-card-body">
+            <h3 class="bonus-card-title">Как завершить общение без чувства вины</h3>
+            <p class="bonus-card-desc">
+              Правила и готовые фразы для честного и уважительного отказа.
+            </p>
+            <div class="bonus-card-link">
+              Открыть бонус →
+            </div>
           </div>
         </a>
 
         <!-- Bonus 4 -->
-        <a href="13_bonus4.html" onclick="safeHaptic('selection');" class="bonus-tile bonus-tile-4">
-          <div style="display:flex; align-items:center; justify-content:space-between;">
-            <div class="bonus-tile-icon">🧭</div>
-            <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 4</span>
+        <a href="13_bonus4.html" onclick="safeHaptic('selection');" class="bonus-card-premium">
+          <div class="bonus-card-img-wrap">
+            <img src="bonus4.png" onerror="if(!this.dataset.failed){this.dataset.failed=1;this.src='https://inter01-anatolyfedorov.amvera.io/data/bonus4.png';}" alt="Чек-лист нового знакомства" class="bonus-card-img" />
+            <div class="bonus-card-badge">Бонус 4</div>
           </div>
-          <div>
-            <h3 class="bonus-tile-title">Чек-лист нового знакомства</h3>
-          </div>
-          <p class="bonus-tile-desc">
-            Три уровня, которые помогут оценить человека без спешки и эмоциональных качелей.
-          </p>
-          <div class="bonus-tile-link">
-            Открыть бонус →
+          <div class="bonus-card-body">
+            <h3 class="bonus-card-title">Чек-лист нового знакомства</h3>
+            <p class="bonus-card-desc">
+              Три уровня, которые помогут оценить человека без спешки и эмоциональных качелей.
+            </p>
+            <div class="bonus-card-link">
+              Открыть бонус →
+            </div>
           </div>
         </a>
 
