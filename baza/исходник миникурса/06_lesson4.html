@@ -301,7 +301,7 @@
               <button onclick="goToStage(2)" class="ghost-btn">
                 ← Назад
               </button>
-              <button onclick="showStage4Local()" class="primary-btn pulse">
+              <button onclick="fetchStage4Resource()" id="btnFindHealthyForm" class="primary-btn pulse">
                 <span>Найти здоровую форму →</span>
               </button>
             </div>
@@ -309,25 +309,39 @@
 
           <!-- ==================== ЭТАП 4. ЗДОРОВАЯ ФОРМА КАЧЕСТВА ==================== -->
           <div id="stage4" class="step-card" style="display:none;">
-            <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-              💎 Здоровая форма вашей силы
+            <!-- Loading State -->
+            <div id="stage4Loading" style="display:none; padding:24px 10px; text-align:center;">
+              <div style="display:inline-block; width:34px; height:34px; border:3px solid var(--nb-line); border-top-color:var(--nb-sea); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;"></div>
+              <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик находит здоровую форму качества...</div>
             </div>
 
-            <div style="padding:14px 16px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); text-align:left; margin-bottom:14px;">
-              <div style="font-size:14px; font-weight:900; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
-                <span>✨</span> <span id="aiResourceTitle">Здоровая форма силы</span>
+            <!-- Content Container -->
+            <div id="stage4Content">
+              <!-- Offline / Fallback Notice Banner -->
+              <div id="aiOfflineNoticeStage4" style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+                🚂 <strong>Попутчик ищет путь... (проблемы с интернетом)</strong> А пока обратите внимание на этот ориентир. Вы сможете снова обратиться к Попутчику попозже.
               </div>
-              <p id="aiExplanationText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">
-              </p>
-            </div>
 
-            <div class="nav-row">
-              <button onclick="goToStage(3)" class="ghost-btn">
-                ← Назад
-              </button>
-              <button onclick="goToStage(5)" class="primary-btn pulse">
-                <span>Примерить это состояние →</span>
-              </button>
+              <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+                💎 Здоровая форма вашей силы
+              </div>
+
+              <div style="padding:14px 16px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); text-align:left; margin-bottom:14px;">
+                <div style="font-size:14px; font-weight:900; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                  <span>✨</span> <span id="aiResourceTitle">Здоровая форма силы</span>
+                </div>
+                <p id="aiExplanationText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">
+                </p>
+              </div>
+
+              <div class="nav-row">
+                <button onclick="goToStage(3)" class="ghost-btn">
+                  ← Назад
+                </button>
+                <button onclick="goToStage(5)" class="primary-btn pulse">
+                  <span>Примерить это состояние →</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -670,23 +684,57 @@
       };
     }
 
-    // Stage 3 -> Stage 4 (Instant local calculation, ZERO external AI calls)
-    function showStage4Local() {
+    // Stage 3 -> Stage 4 (AI-powered healthy form generator with fallback)
+    async function fetchStage4Resource() {
       const rules = getFinalRules();
       if (rules.length === 0) {
         alert('Пожалуйста, выберите хотя бы одно внутреннее правило или напишите свой вариант.');
         return;
       }
 
+      goToStage(4);
+      const loadingEl = document.getElementById('stage4Loading');
+      const contentEl = document.getElementById('stage4Content');
+      const noticeEl = document.getElementById('aiOfflineNoticeStage4');
+
+      if (loadingEl) loadingEl.style.display = 'block';
+      if (contentEl) contentEl.style.display = 'none';
+      if (noticeEl) noticeEl.style.display = 'none';
+
       const quality = getFinalQuality();
-      const localForm = getLocalHealthyForm(quality);
-      stage4Result.resource = localForm.resource;
-      stage4Result.explanation = localForm.explanation;
+      const allowedBehavior = (document.getElementById('inpAllowedBehavior').value || '').trim();
+
+      const payload = {
+        mode: 'resource',
+        quality: quality,
+        allowedBehavior: allowedBehavior,
+        rules: rules,
+        userName: window.tgUser?.first_name || 'Участник'
+      };
+
+      try {
+        const data = await window.apiPost('/api/lesson4-strategy', payload, 10000);
+        if (data && data.result) {
+          stage4Result.resource = data.result.resource;
+          stage4Result.explanation = data.result.explanation;
+          stage4Result.isAi = !!data.isAi;
+        } else {
+          throw new Error('INVALID_RESPONSE');
+        }
+      } catch (err) {
+        console.warn('[Lesson 4 Stage 4] Fallback to local healthy form:', err.message);
+        const localForm = getLocalHealthyForm(quality);
+        stage4Result.resource = localForm.resource;
+        stage4Result.explanation = localForm.explanation;
+        stage4Result.isAi = false;
+        if (noticeEl) noticeEl.style.display = 'block';
+      }
 
       document.getElementById('aiResourceTitle').textContent = stage4Result.resource;
       document.getElementById('aiExplanationText').textContent = stage4Result.explanation;
 
-      goToStage(4);
+      if (loadingEl) loadingEl.style.display = 'none';
+      if (contentEl) contentEl.style.display = 'block';
     }
 
     function goToStage(targetStage) {

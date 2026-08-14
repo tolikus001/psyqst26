@@ -503,12 +503,14 @@ const server = http.createServer(async (req, res) => {
         }));
       }
 
-      // Route: /api/lesson4-strategy (Вернуть себе свою силу — ЕДИНЫЙ ЗАПРОС)
+      // Route: /api/lesson4-strategy (Вернуть себе свою силу — ИИ Разбор)
       if (pathname === '/api/lesson4-strategy') {
         const {
+          mode = 'resource',
           quality = '',
           allowedBehavior = '',
           rules = [],
+          resource = '',
           bodyChange = '',
           newAction = '',
           userName = 'Участник'
@@ -521,17 +523,84 @@ const server = http.createServer(async (req, res) => {
           return str.replace(/[*#_`]/g, '').trim();
         }
 
+        // Mode 1: Resource & Explanation (Stage 4)
+        if (mode === 'resource') {
+          const systemPrompt = [
+            'Ты — «Интеллектуальный попутчик» в курсе «Я выбираю».',
+            'Твоя задача — помочь участнику отделить полезный ресурс от разрушительного поведения и найти здоровую форму качества, которое привлекает его в других людях.',
+            '',
+            'СТРОГИЕ ТРЕБОВАНИЯ К ФОРМАТУ:',
+            'Верни ответ ИСКЛЮЧИТЕЛЬНО в формате валидного JSON со строгой структурой без Markdown-разметки:',
+            '{',
+            '  "resource": "Здоровая форма выбранного качества (краткая ёмкая формулировка)",',
+            '  "explanation": "Краткое бережное объяснение связи с внутренним запретом участника в 1–2 предложениях"',
+            '}',
+            '',
+            'ОГРАНИЧЕНИЯ (ЗАПРЕЩЕНО):',
+            '- Не ставить диагнозы и не искать травмы в детстве.',
+            '- Не советовать копировать резкость, агрессию или неуважение.',
+            '- Не использовать категоричные слова «точно», «всегда», «однозначно».',
+            '- НЕ использовать символы ** и # в тексте.'
+          ].join('\n');
+
+          const userPrompt = `Участник: ${userName}\nКачество-магнит: ${quality}\nЧто позволяет себе другой человек (а участник запрещает): ${allowedBehavior}\nВнутренние правила и запреты: ${rulesStr}`;
+
+          let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
+          let aiParsed = null;
+          if (aiRaw) {
+            try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
+          }
+
+          const qLower = (quality || '').toLowerCase();
+          let fallbackResource = 'Внимание к собственным потребностям';
+          let fallbackExplanation = 'Это способность замечать и уважать свои желания, выстраивая ясный и честный контакт с окружающими.';
+
+          if (qLower.includes('дерзост')) {
+            fallbackResource = 'Право прямо говорить «нет»';
+            fallbackExplanation = 'Это способность спокойно обозначать свои границы и открыто выражать несогласие без агрессии и чувства вины.';
+          } else if (qLower.includes('независим')) {
+            fallbackResource = 'Способность принимать решения с опорой на себя';
+            fallbackExplanation = 'Это внутренняя автономия и готовность делать выбор, не нуждаясь в постоянном внешнем одобрении.';
+          } else if (qLower.includes('яркост')) {
+            fallbackResource = 'Право быть заметной и занимать пространство';
+            fallbackExplanation = 'Это естественное проявление своей индивидуальности и открытое присутствие в общении.';
+          } else if (qLower.includes('спонтан')) {
+            fallbackResource = 'Разрешение иногда отступать от жесткого плана';
+            fallbackExplanation = 'Это гибкость и способность доверять моменту, сохраняя внутреннее спокойствие.';
+          } else if (qLower.includes('уверен')) {
+            fallbackResource = 'Право на собственное мнение и ценность';
+            fallbackExplanation = 'Это устойчивое признание своей значимости без потребности что-либо доказывать другим.';
+          } else if (qLower.includes('эмоциональн')) {
+            fallbackResource = 'Способность открыто проживать и называть свои чувства';
+            fallbackExplanation = 'Это честный контакт со своими переживаниями и право делиться ими в безопасной форме.';
+          } else if (qLower.includes('решительн')) {
+            fallbackResource = 'Право действовать без бесконечных сомнений';
+            fallbackExplanation = 'Это готовность делать первый шаг и брать ответственность за свои решения.';
+          }
+
+          const resObj = {
+            resource: cleanSimple(aiParsed?.resource) || fallbackResource,
+            explanation: cleanSimple(aiParsed?.explanation) || fallbackExplanation
+          };
+
+          res.writeHead(200);
+          return res.end(JSON.stringify({
+            success: true,
+            isAi: !!aiParsed,
+            result: resObj
+          }));
+        }
+
+        // Mode 2: Permission Phrase & Final Synthesis (Stage 6 / Result)
         const systemPrompt = [
           'Ты — «Интеллектуальный попутчик» в курсе «Я выбираю».',
-          'Твоя задача — составить персональный разбор практики «Вернуть себе свою силу».',
+          'Твоя задача — составить персональную фразу-разрешение и безопасный шаг для практики «Вернуть себе свою силу».',
           '',
           'СТРОГИЕ ТРЕБОВАНИЯ К ФОРМАТУ:',
           'Верни ответ ИСКЛЮЧИТЕЛЬНО в формате валидного JSON со строгой структурой без Markdown-разметки:',
           '{',
-          '  "resource": "Здоровая форма выбранного качества",',
-          '  "explanation": "Краткое объяснение связи между качеством и внутренним запретом (1-2 предложения)",',
-          '  "safe_action": "Безопасный способ проявить это качество (1-2 предложения)",',
-          '  "permission": "Персональная фраза-разрешение от первого лица (одно предложение, начинающееся с «Я разрешаю себе...»)"',
+          '  "permission": "Персональная фраза-разрешение от первого лица (строго одно предложение, начинающееся с «Я разрешаю себе...»)",',
+          '  "safe_action": "Безопасный способ проявить это качество (1 предложение)"',
           '}',
           '',
           'ТРЕБОВАНИЯ К ФРАЗЕ-РАЗРЕШЕНИЮ:',
@@ -541,14 +610,11 @@ const server = http.createServer(async (req, res) => {
           '- Пример: «Я разрешаю себе быть заметной, сохраняя уважение к себе и другим».',
           '',
           'ОГРАНИЧЕНИЯ (ЗАПРЕЩЕНО):',
-          '- Не ставить диагнозы и не искать травмы в детстве.',
-          '- Не советовать копировать резкость, агрессию или неуважение.',
-          '- Не объявлять любое раздражающее качество подавленной частью личности.',
-          '- Не использовать категоричные слова «точно», «всегда», «однозначно».',
+          '- Не использовать слова «точно», «всегда», «однозначно».',
           '- НЕ использовать символы ** и # в тексте.'
         ].join('\n');
 
-        const userPrompt = `Участник: ${userName}\nКачество-магнит: ${quality}\nЧто позволял другой человек: ${allowedBehavior}\nВнутренние правила и запреты: ${rulesStr}\nОщущение в теле: ${bodyChange}\nВыбранный новый поступок: ${newAction}`;
+        const userPrompt = `Участник: ${userName}\nКачество: ${quality}\nЧто позволял другой человек: ${allowedBehavior}\nВнутренние правила: ${rulesStr}\nЗдоровая форма: ${resource}\nОщущение в теле: ${bodyChange}\nНовый поступок: ${newAction}`;
 
         let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
         let aiParsed = null;
@@ -556,62 +622,27 @@ const server = http.createServer(async (req, res) => {
           try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
         }
 
-        // Smart fallback dictionary based on quality
         const qLower = (quality || '').toLowerCase();
-        let fallbackResource = 'Внимание к собственным потребностям';
-        let fallbackExplanation = 'Это способность замечать и уважать свои желания, выстраивая ясный и честный контакт с окружающими.';
-        let fallbackSafeAction = newAction || 'Спокойно сказать о своём намерении без оправданий и чувства вины.';
-        let fallbackPerm = 'Я разрешаю себе опираться на свои желания, сохраняя уважение к себе и другим.';
+        let fallbackPerm = `Я разрешаю себе ${resource ? resource.toLowerCase().replace(/^(право|способность|разрешение)\s+/i, '') : 'проявлять свою силу'}, сохраняя уважение к себе и другим.`;
+        if (qLower.includes('дерзост')) fallbackPerm = 'Я разрешаю себе прямо говорить «нет» и защищать свои границы, сохраняя уважение к себе и другим.';
+        else if (qLower.includes('независим')) fallbackPerm = 'Я разрешаю себе принимать решения с опорой на себя, сохраняя уважение к себе и другим.';
+        else if (qLower.includes('яркост')) fallbackPerm = 'Я разрешаю себе быть заметной и занимать своё место, сохраняя уважение к себе и другим.';
+        else if (qLower.includes('спонтан')) fallbackPerm = 'Я разрешаю себе быть живой и естественной в своих проявлениях, сохраняя уважение к себе и другим.';
+        else if (qLower.includes('уверен')) fallbackPerm = 'Я разрешаю себе опираться на свою ценность, сохраняя уважение к себе и другим.';
+        else if (qLower.includes('эмоциональн')) fallbackPerm = 'Я разрешаю себе открыто называть свои чувства, сохраняя бережность к себе и окружающим.';
+        else if (qLower.includes('решительн')) fallbackPerm = 'Я разрешаю себе действовать и делать выбор, сохраняя уважение к себе и другим.';
 
-        if (qLower.includes('дерзост')) {
-          fallbackResource = 'Право прямо говорить «нет»';
-          fallbackExplanation = 'Это способность спокойно обозначать свои границы и открыто выражать несогласие без агрессии и чувства вины.';
-          fallbackSafeAction = newAction || 'Прямо и спокойно отказаться от неудобной просьбы.';
-          fallbackPerm = 'Я разрешаю себе прямо говорить «нет» и защищать свои границы, сохраняя уважение к себе и другим.';
-        } else if (qLower.includes('независим')) {
-          fallbackResource = 'Способность принимать решения с опорой на себя';
-          fallbackExplanation = 'Это внутренняя автономия и готовность делать выбор, не нуждаясь в постоянном внешнем одобрении.';
-          fallbackSafeAction = newAction || 'Принять небольшое решение самостоятельно, не советуясь со всеми вокруг.';
-          fallbackPerm = 'Я разрешаю себе принимать решения с опорой на себя, сохраняя уважение к себе и другим.';
-        } else if (qLower.includes('яркост')) {
-          fallbackResource = 'Право быть заметной и занимать пространство';
-          fallbackExplanation = 'Это естественное проявление своей индивидуальности и открытое присутствие в общении.';
-          fallbackSafeAction = newAction || 'Высказать своё мнение в разговоре или надеть то, что нравится.';
-          fallbackPerm = 'Я разрешаю себе быть заметной и занимать своё место, сохраняя уважение к себе и другим.';
-        } else if (qLower.includes('спонтан')) {
-          fallbackResource = 'Разрешение иногда отступать от жесткого плана';
-          fallbackExplanation = 'Это гибкость и способность доверять моменту, сохраняя внутреннее спокойствие.';
-          fallbackSafeAction = newAction || 'Позволить себе небольшую незапланированную паузу или спонтанную прогулку.';
-          fallbackPerm = 'Я разрешаю себе быть живой и естественной в своих проявлениях, сохраняя уважение к себе и другим.';
-        } else if (qLower.includes('уверен')) {
-          fallbackResource = 'Право на собственное мнение и ценность';
-          fallbackExplanation = 'Это устойчивое признание своей значимости без потребности что-либо доказывать другим.';
-          fallbackSafeAction = newAction || 'Озвучить свою позицию без извинений и оправданий.';
-          fallbackPerm = 'Я разрешаю себе опираться на свою ценность, сохраняя уважение к себе и другим.';
-        } else if (qLower.includes('эмоциональн')) {
-          fallbackResource = 'Способность открыто проживать и называть свои чувства';
-          fallbackExplanation = 'Это честный контакт со своими переживаниями и право делиться ими в безопасной форме.';
-          fallbackSafeAction = newAction || 'Честно сказать о том, что вы чувствуете, не переходя на обвинения.';
-          fallbackPerm = 'Я разрешаю себе открыто называть свои чувства, сохраняя бережность к себе и окружающим.';
-        } else if (qLower.includes('решительн')) {
-          fallbackResource = 'Право действовать без бесконечных сомнений';
-          fallbackExplanation = 'Это готовность делать первый шаг и брать ответственность за свои решения.';
-          fallbackSafeAction = newAction || 'Сделать один конкретный шаг, который давно откладывался.';
-          fallbackPerm = 'Я разрешаю себе действовать и делать выбор, сохраняя уважение к себе и другим.';
-        }
-
-        const resObj = {
-          resource: cleanSimple(aiParsed?.resource) || fallbackResource,
-          explanation: cleanSimple(aiParsed?.explanation) || fallbackExplanation,
-          safe_action: cleanSimple(aiParsed?.safe_action) || fallbackSafeAction,
-          permission: cleanSimple(aiParsed?.permission) || fallbackPerm
-        };
+        const finalPerm = cleanSimple(aiParsed?.permission) || fallbackPerm;
+        const finalAction = cleanSimple(aiParsed?.safe_action) || newAction;
 
         res.writeHead(200);
         return res.end(JSON.stringify({
           success: true,
           isAi: !!aiParsed,
-          result: resObj
+          result: {
+            permission: finalPerm,
+            safe_action: finalAction
+          }
         }));
       }
 
