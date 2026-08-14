@@ -14,7 +14,7 @@
       media-src 'self' https: data: blob: https://*.kinescopecdn.net;
       connect-src 'self' https: http://localhost:3000;
     " />
-  <title>Видео-бонусы курса «Новый сценарий» — Анатолий Фёдоров</title>
+  <title>4 практических видео-бонуса — Анатолий Фёдоров</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,6 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://list.notibot.ru/notibot-bridge.js"></script>
 
-  <!-- Early Interceptor for Notibot Bridge -->
   <script>
     window.notibotInitData = null;
     window.addEventListener('message', function(event) {
@@ -53,6 +52,63 @@
       } catch (e) {}
     }
   </script>
+
+  <style>
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .bonus-tile {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      min-height: 140px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(18, 68, 83, 0.06);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+      text-align: left;
+    }
+    .bonus-tile:active {
+      transform: scale(0.96);
+      box-shadow: 0 4px 14px rgba(18, 68, 83, 0.1);
+      border-color: rgba(217, 131, 78, 0.4);
+    }
+    .bonus-tile-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(184, 115, 76, 0.12);
+      color: var(--nb-terracotta);
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .bonus-tile-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--nb-deep);
+      margin-bottom: 8px;
+    }
+    .bonus-tile-cta {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--nb-sea);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: auto;
+    }
+  </style>
 </head>
 <body>
   <div id="maisonArtBackground" aria-hidden="true"></div>
@@ -60,89 +116,264 @@
   <main class="app-shell">
     <div class="app">
 
-      <!-- Navigation & Header (4 Бонуса) -->
+      <!-- Navigation & Header -->
       <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
         <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
           <a href="02_landing_partner.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
             ← К курсу
           </a>
-          <div class="strategy-badge" style="margin:0; background:rgba(184,115,76,0.12); color:#B8734C;">
+          <div id="headerBadge" class="strategy-badge" style="margin:0; background:rgba(184,115,76,0.12); color:#B8734C;">
             🎁 4 видео-бонуса
           </div>
         </div>
 
         <!-- Progress Track -->
         <div style="width:100%; height:6px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
-          <div style="width:100%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px;"></div>
+          <div id="bonusProgressBar" style="width:100%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px;"></div>
         </div>
       </header>
 
-      <!-- Welcome Hero Card -->
-      <section class="glass hero">
-        <div class="eyebrow">🎁 Специальные материалы</div>
-        <h1>Видео-бонусы курса</h1>
-        <p class="lead">Прикладные практики для укрепления эмоционального суверенитета и выхода из повторяющихся сценариев</p>
-      </section>
+      <!-- ==========================================
+           SCREEN 0: 4-TILE GRID MENU (1 SCREEN)
+           ========================================== -->
+      <div id="screenBonusGrid" style="display:flex; flex-direction:column; gap:14px;">
 
-      <!-- BONUS 1 -->
-      <section class="glass card text-center">
-        <div class="eyebrow" style="margin-bottom:8px;">Бонус 1</div>
-        <h2>Как вернуть внутреннюю опору и уверенность в себе</h2>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Практика формирования внутреннего ядра и устойчивости без оглядки на реакцию партнёра</p>
+        <!-- Hero Card -->
+        <section class="glass card text-center" style="padding:18px 16px;">
+          <div class="eyebrow" style="margin-bottom:8px;">🎁 Специальные материалы</div>
+          <h2 style="font-size:20px; margin-bottom:6px;">4 практических видео-бонуса</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:0;">Прикладные практики для укрепления эмоционального суверенитета и выхода из сценариев</p>
+        </section>
 
-        <!-- Kinescope Player -->
-        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-          <iframe src="https://kinescope.io/embed/u6RzSwLE9DpSemaR4xrcDj?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        <!-- 2x2 Grid of 4 Bonus Tiles -->
+        <div class="bonus-grid">
+          <!-- Tile 1 -->
+          <div onclick="openBonus(1)" class="bonus-tile">
+            <div>
+              <span class="bonus-tile-badge">Бонус 1</span>
+              <div class="bonus-tile-title">Внутренняя опора и уверенность</div>
+            </div>
+            <div class="bonus-tile-cta">Смотреть ➔</div>
+          </div>
+
+          <!-- Tile 2 -->
+          <div onclick="openBonus(2)" class="bonus-tile">
+            <div>
+              <span class="bonus-tile-badge">Бонус 2</span>
+              <div class="bonus-tile-title">Ответ на сообщения из прошлого</div>
+            </div>
+            <div class="bonus-tile-cta">Смотреть ➔</div>
+          </div>
+
+          <!-- Tile 3 -->
+          <div onclick="openBonus(3)" class="bonus-tile">
+            <div>
+              <span class="bonus-tile-badge">Бонус 3</span>
+              <div class="bonus-tile-title">Снижение тревоги через тело</div>
+            </div>
+            <div class="bonus-tile-cta">Смотреть ➔</div>
+          </div>
+
+          <!-- Tile 4 -->
+          <div onclick="openBonus(4)" class="bonus-tile">
+            <div>
+              <span class="bonus-tile-badge">Бонус 4</span>
+              <div class="bonus-tile-title">Завершение общения без вины</div>
+            </div>
+            <div class="bonus-tile-cta">Смотреть ➔</div>
+          </div>
         </div>
-      </section>
 
-      <!-- BONUS 2 -->
-      <section class="glass card text-center">
-        <div class="eyebrow" style="margin-bottom:8px;">Бонус 2</div>
-        <h2>Как спокойно отвечать на сообщения из прошлого</h2>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Пошаговый алгоритм: как не свалиться в эмоциональный откат, когда объявляются бывшие или холодные партнеры</p>
-
-        <!-- Kinescope Player -->
-        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-          <iframe src="https://kinescope.io/embed/gJuTii2CB5xh7imx32QG9A?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        <!-- Return to Course Navigation -->
+        <div style="padding-top:8px; display:flex; flex-direction:column; gap:8px;">
+          <button onclick="safeHaptic('selection'); window.location.href='02_landing_partner.html';" class="primary-btn">
+            <span>← Назад к программе курса</span>
+          </button>
         </div>
-      </section>
 
-      <!-- BONUS 3 -->
-      <section class="glass card text-center">
-        <div class="eyebrow" style="margin-bottom:8px;">Бонус 3</div>
-        <h2>Как быстро снизить тревогу через тело</h2>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Экспресс-техника соматического снятия спазма в груди и животе за 3 минуты</p>
-
-        <!-- Kinescope Player -->
-        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-          <iframe src="https://kinescope.io/embed/rg3Zn187P3qTTsKzCEwRF2?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-        </div>
-      </section>
-
-      <!-- BONUS 4 -->
-      <section id="bonus4Section" class="glass card text-center">
-        <div class="eyebrow" style="margin-bottom:8px;">Бонус 4</div>
-        <h2>Как завершить общение, если человек вам не подходит</h2>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Выход из бесперспективного контакта с достоинством и без чувства вины</p>
-
-        <!-- Kinescope Player -->
-        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-          <iframe src="https://kinescope.io/embed/tSmPqiSNmmTqSWWBPCebzj?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-        </div>
-      </section>
-
-      <!-- Back to Course Navigation -->
-      <div style="padding-top:6px; display:flex; flex-direction:column; gap:8px;">
-        <button onclick="safeHaptic('selection'); window.location.href='02_landing_partner.html';" class="primary-btn">
-          <span>← Назад к лендингу курса</span>
-        </button>
-        <button onclick="safeHaptic('selection'); window.location.href='03_lesson1.html';" class="secondary-btn">
-          <span>Перейти к Уроку 1 ➔</span>
-        </button>
       </div>
+
+      <!-- ==========================================
+           SCREEN 1: BONUS 1 DETAIL
+           ========================================== -->
+      <div id="screenBonus1" style="display:none; flex-direction:column; gap:14px;">
+        <div>
+          <button onclick="backToGrid()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0;">
+            ← Назад ко всем бонусам
+          </button>
+        </div>
+
+        <section class="glass card text-center">
+          <div class="eyebrow" style="margin-bottom:8px;">Бонус 1 из 4</div>
+          <h2>Как вернуть внутреннюю опору и уверенность в себе</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Практика формирования внутреннего ядра и устойчивости без оглядки на реакцию партнёра</p>
+
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="videoBonus1" src="https://kinescope.io/embed/u6RzSwLE9DpSemaR4xrcDj?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          </div>
+        </section>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button onclick="openBonus(2)" class="primary-btn">
+            <span>Перейти к Бонусу 2 ➔</span>
+          </button>
+          <button onclick="backToGrid()" class="secondary-btn">
+            <span>← Все 4 бонуса</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           SCREEN 2: BONUS 2 DETAIL
+           ========================================== -->
+      <div id="screenBonus2" style="display:none; flex-direction:column; gap:14px;">
+        <div>
+          <button onclick="backToGrid()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0;">
+            ← Назад ко всем бонусам
+          </button>
+        </div>
+
+        <section class="glass card text-center">
+          <div class="eyebrow" style="margin-bottom:8px;">Бонус 2 из 4</div>
+          <h2>Как спокойно отвечать на сообщения из прошлого</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Пошаговый алгоритм: как не свалиться в эмоциональный откат, когда объявляются бывшие или холодные партнеры</p>
+
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="videoBonus2" src="https://kinescope.io/embed/gJuTii2CB5xh7imx32QG9A?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          </div>
+        </section>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button onclick="openBonus(3)" class="primary-btn">
+            <span>Перейти к Бонусу 3 ➔</span>
+          </button>
+          <button onclick="backToGrid()" class="secondary-btn">
+            <span>← Все 4 бонуса</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           SCREEN 3: BONUS 3 DETAIL
+           ========================================== -->
+      <div id="screenBonus3" style="display:none; flex-direction:column; gap:14px;">
+        <div>
+          <button onclick="backToGrid()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0;">
+            ← Назад ко всем бонусам
+          </button>
+        </div>
+
+        <section class="glass card text-center">
+          <div class="eyebrow" style="margin-bottom:8px;">Бонус 3 из 4</div>
+          <h2>Как быстро снизить тревогу через тело</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Экспресс-техника соматического снятия спазма в груди и животе за 3 минуты</p>
+
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="videoBonus3" src="https://kinescope.io/embed/rg3Zn187P3qTTsKzCEwRF2?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          </div>
+        </section>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button onclick="openBonus(4)" class="primary-btn">
+            <span>Перейти к Бонусу 4 ➔</span>
+          </button>
+          <button onclick="backToGrid()" class="secondary-btn">
+            <span>← Все 4 бонуса</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           SCREEN 4: BONUS 4 DETAIL
+           ========================================== -->
+      <div id="screenBonus4" style="display:none; flex-direction:column; gap:14px;">
+        <div>
+          <button onclick="backToGrid()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0;">
+            ← Назад ко всем бонусам
+          </button>
+        </div>
+
+        <section class="glass card text-center">
+          <div class="eyebrow" style="margin-bottom:8px;">Бонус 4 из 4</div>
+          <h2>Как завершить общение, если человек вам не подходит</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Выход из бесперспективного контакта с достоинством и без чувства вины</p>
+
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="videoBonus4" src="https://kinescope.io/embed/tSmPqiSNmmTqSWWBPCebzj?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          </div>
+        </section>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button onclick="safeHaptic('selection'); window.location.href='02_landing_partner.html';" class="primary-btn">
+            <span>← Назад к лендингу курса</span>
+          </button>
+          <button onclick="backToGrid()" class="secondary-btn">
+            <span>← Все 4 бонуса</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • ПСИквест
+      </footer>
 
     </div>
   </main>
+
+  <script>
+    function pauseAllVideos() {
+      for (let i = 1; i <= 4; i++) {
+        const iframe = document.getElementById('videoBonus' + i);
+        if (iframe && iframe.contentWindow) {
+          try {
+            iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+            iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+          } catch(e){}
+        }
+      }
+    }
+
+    function hideAllScreens() {
+      document.getElementById('screenBonusGrid').style.display = 'none';
+      document.getElementById('screenBonus1').style.display = 'none';
+      document.getElementById('screenBonus2').style.display = 'none';
+      document.getElementById('screenBonus3').style.display = 'none';
+      document.getElementById('screenBonus4').style.display = 'none';
+    }
+
+    function openBonus(num) {
+      safeHaptic('selection');
+      pauseAllVideos();
+      hideAllScreens();
+      const target = document.getElementById('screenBonus' + num);
+      if (target) {
+        target.style.display = 'flex';
+        document.getElementById('headerBadge').textContent = 'Бонус ' + num + ' из 4';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        history.replaceState(null, '', '#bonus' + num);
+      }
+    }
+
+    function backToGrid() {
+      safeHaptic('selection');
+      pauseAllVideos();
+      hideAllScreens();
+      document.getElementById('screenBonusGrid').style.display = 'flex';
+      document.getElementById('headerBadge').textContent = '🎁 4 видео-бонуса';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      history.replaceState(null, '', window.location.pathname);
+    }
+
+    // Auto open bonus if hash present (e.g., #bonus2)
+    window.addEventListener('DOMContentLoaded', function() {
+      const hash = window.location.hash;
+      if (hash === '#bonus1') openBonus(1);
+      else if (hash === '#bonus2') openBonus(2);
+      else if (hash === '#bonus3') openBonus(3);
+      else if (hash === '#bonus4') openBonus(4);
+    });
+  </script>
+
 </body>
 </html>
