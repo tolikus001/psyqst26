@@ -161,45 +161,50 @@
             Используйте их в конкретных ситуациях, когда нужна быстрая поддержка.
           </p>
 
-          <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
             
             <!-- Card 1: Точка безопасности -->
-            <div class="bonus-card">
-              <div class="bonus-card-title">Точка безопасности</div>
+            <div onclick="openBonus(1)" class="bonus-card" style="cursor:pointer;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="bonus-card-title">Точка безопасности</div>
+                <span style="font-size:12px; color:var(--nb-sea); font-weight:700;">Бонус 1 ➔</span>
+              </div>
               <div class="bonus-card-desc">Как вернуть внутреннюю опору и уверенность в себе.</div>
-              <button onclick="openBonus(1)" class="primary-btn pulse" style="width:100%; min-height:44px; margin-top:4px;">
-                <span>Открыть «Точку безопасности» →</span>
-              </button>
             </div>
 
             <!-- Card 2: Сообщение из прошлого -->
-            <div class="bonus-card">
-              <div class="bonus-card-title">Сообщение из прошлого</div>
+            <div onclick="openBonus(2)" class="bonus-card" style="cursor:pointer;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="bonus-card-title">Сообщение из прошлого</div>
+                <span style="font-size:12px; color:var(--nb-sea); font-weight:700;">Бонус 2 ➔</span>
+              </div>
               <div class="bonus-card-desc">Как ответить спокойно и не вернуться в прежний сценарий.</div>
-              <button onclick="openBonus(2)" class="primary-btn pulse" style="width:100%; min-height:44px; margin-top:4px;">
-                <span>Открыть «Сообщение из прошлого» →</span>
-              </button>
             </div>
 
             <!-- Card 3: Тревога в теле -->
-            <div class="bonus-card">
-              <div class="bonus-card-title">Тревога в теле</div>
+            <div onclick="openBonus(3)" class="bonus-card" style="cursor:pointer;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="bonus-card-title">Тревога в теле</div>
+                <span style="font-size:12px; color:var(--nb-sea); font-weight:700;">Бонус 3 ➔</span>
+              </div>
               <div class="bonus-card-desc">Короткая практика для снижения телесного напряжения.</div>
-              <button onclick="openBonus(3)" class="primary-btn pulse" style="width:100%; min-height:44px; margin-top:4px;">
-                <span>Открыть практику →</span>
-              </button>
             </div>
 
             <!-- Card 4: Если вам не по пути -->
-            <div class="bonus-card">
-              <div class="bonus-card-title">Если вам не по пути</div>
+            <div onclick="openBonus(4)" class="bonus-card" style="cursor:pointer;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="bonus-card-title">Если вам не по пути</div>
+                <span style="font-size:12px; color:var(--nb-sea); font-weight:700;">Бонус 4 ➔</span>
+              </div>
               <div class="bonus-card-desc">Как спокойно и ясно завершить общение.</div>
-              <button onclick="openBonus(4)" class="primary-btn pulse" style="width:100%; min-height:44px; margin-top:4px;">
-                <span>Открыть бонус →</span>
-              </button>
             </div>
 
           </div>
+
+          <!-- Single Main Button: Получить бонусы -->
+          <button onclick="openBonus(1)" class="primary-btn pulse" style="width:100%; min-height:48px;">
+            <span>Получить бонусы →</span>
+          </button>
         </section>
 
         <!-- Divider -->
