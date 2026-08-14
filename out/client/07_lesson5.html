@@ -137,9 +137,9 @@
             <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
               ☀️ Интеллектуальный попутчик
             </div>
-            <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
-              Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">3</span>
-            </div>
+            <div class="strategy-badge" id="lesson5CreditsBadge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
+            Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">1</span>
+          </div>
           </div>
           <p style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
             Он соединит результаты всех пройденных уроков в единую карту вашего нового сценария.
@@ -268,7 +268,16 @@
 
     function updateCreditsUI() {
       const el = document.getElementById('aiCreditsLeft');
-      if (el) el.textContent = aiCredits;
+      const badge = document.getElementById('lesson5CreditsBadge');
+      const alreadyDone = localStorage.getItem('psyquest_lesson5_synthesis_done') === 'true';
+
+      if (alreadyDone) {
+        if (el) el.textContent = '0';
+        if (badge) badge.innerHTML = 'Итоговый разбор завершён';
+      } else {
+        if (el) el.textContent = '1';
+        if (badge) badge.innerHTML = 'Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">1</span>';
+      }
     }
 
     // Check if Synthesis was already completed previously
