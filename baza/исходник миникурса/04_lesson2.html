@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Урок 2: Бабочки в животе или спазм тревоги? — Анатолий Фёдоров</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="leaves-bg.js"></script>
+  <script src="telegram-user.js"></script>
+  <script src="api-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred(type || 'light');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
+        }
+      } catch (e) {}
+    }
+  </script>
+</head>
+<body>
+  <div id="maisonArtBackground" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Header -->
+      <header class="header">
+        <a href="03_lesson1.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+          ← К уроку 1
+        </a>
+        <div class="strategy-badge">Урок 2 из 5</div>
+      </header>
+
+      <!-- Video Card -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Модуль 2: Физиология выбора</div>
+        <h2>«Бабочки в животе» или спазм тревоги? Синдром «скучного парня»</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Узнайте, почему нервная система путает тревогу с влюбленностью</p>
+
+        <!-- Video Player Wrapper (Kinescope) -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe src="https://kinescope.io/embed/xkP3RBdibqvFYLizjBpFsW" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+
+        <div style="margin-top:14px; padding:14px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); text-align:left;">
+          <strong style="color:var(--nb-sea); font-size:12px; display:block; margin-bottom:4px;">💡 Главный инсайт урока:</strong>
+          <span style="font-size:13px; color:var(--nb-text); line-height:1.45;">
+            «Бабочки в животе» в 90% случаев — это спазм от неизвестности и холода партнера. А спокойного и надежного человека мозг ошибочно клеймит «скучным», потому что нет кортизолового шока.
+          </span>
+        </div>
+      </section>
+
+      <!-- Somatic Checklist Card -->
+      <section class="glass card">
+        <div class="eyebrow" style="margin-bottom:8px;">Практика урока</div>
+        <h3 class="question-title">Телесный чек-лист безопасности</h3>
+        <p class="lead" style="font-size:13px; margin-bottom:14px;">Оцените свои соматические реакции рядом с человеком</p>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:12px; font-weight:800; color:var(--nb-deep); text-align:center;">1. Соматические маркеры тела:</div>
+          
+          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+            <span style="font-size:13px;">🫁 Дыхание: глубокое и ровное (не поверхностное)</span>
+            <div class="answer-dot"></div>
+          </div>
+
+          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+            <span style="font-size:13px;">🧘 Плечи и челюсть: мягкие и опущенные (без спазма)</span>
+            <div class="answer-dot"></div>
+          </div>
+
+          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+            <span style="font-size:13px;">🌱 Ощущение в теле: заземление и безопасность</span>
+            <div class="answer-dot"></div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px; padding-top:12px; border-top:1px solid var(--nb-line);">
+          <div style="font-size:12px; font-weight:800; color:var(--nb-deep); text-align:center;">2. Человеческие критерии партнера:</div>
+          
+          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+            <span style="font-size:13px;">🤝 Предсказуемость: держит слово, не играет в прятки</span>
+            <div class="answer-dot"></div>
+          </div>
+
+          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+            <span style="font-size:13px;">💬 Ясность: прямо говорит о планах и чувствах</span>
+            <div class="answer-dot"></div>
+          </div>
+
+          <div onclick="toggleCheck(this)" class="answer" style="justify-content:space-between; align-items:center;">
+            <span style="font-size:13px;">🛡 Опора: с ним можно спокойно жить и проходить штормы</span>
+            <div class="answer-dot"></div>
+          </div>
+        </div>
+
+        <div id="checklistScore" style="margin-top:14px; padding:12px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); font-size:12px; text-align:center; color:var(--nb-text-2);">
+          Отметьте пункты, чтобы рассчитать индекс соматической совместимости
+        </div>
+      </section>
+
+      <!-- Next Step -->
+      <div style="padding-top:4px;">
+        <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn">
+          <span>Перейти к Уроку 3: «Качели и медитация» ➔</span>
+        </button>
+      </div>
+
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • Системно-поведенческий анализ
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    function toggleCheck(el) {
+      safeHaptic('selection');
+      el.classList.toggle('selected');
+      calcScore();
+    }
+
+    function calcScore() {
+      const activeCount = document.querySelectorAll('.answer.selected').length;
+      const scoreBox = document.getElementById('checklistScore');
+      if (activeCount >= 5) {
+        scoreBox.innerHTML = '<strong style="color:var(--success);">🛡 Высокий индекс безопасности (' + activeCount + '/6):</strong> Ваше тело считывает надежный фундамент. Здесь можно строить долгосрочный союз.';
+      } else if (activeCount >= 3) {
+        scoreBox.innerHTML = '<strong style="color:var(--warning);">⚖️ Средний индекс (' + activeCount + '/6):</strong> Есть точки напряжения. Обращайте внимание на сигналы тела.';
+      } else {
+        scoreBox.innerHTML = '<strong style="color:var(--danger);">⚠️ Преобладание тревожного спазма (' + activeCount + '/6):</strong> Тело находится в режиме мобилизации и обороны.';
+      }
+    }
+  </script>
+
+</body>
+</html>

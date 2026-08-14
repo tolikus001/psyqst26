@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Урок 5: Закрепление сценария и психологический портрет — Анатолий Фёдоров</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="leaves-bg.js"></script>
+  <script src="telegram-user.js"></script>
+  <script src="api-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred(type || 'light');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
+        }
+      } catch (e) {}
+    }
+  </script>
+</head>
+<body>
+  <div id="maisonArtBackground" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Header -->
+      <header class="header">
+        <a href="06_lesson4.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+          ← К уроку 4
+        </a>
+        <div class="strategy-badge" style="background:rgba(47,125,89,0.12); color:var(--success);">Финал курса</div>
+      </header>
+
+      <!-- Video Card -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Модуль 5: Фиксация и мастерство</div>
+        <h2>Закрепление нового сценария без срывов и самообвинений</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Как закрепить новые навыки и реагировать на откаты</p>
+
+        <!-- Video Player Wrapper (Kinescope) -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe src="https://kinescope.io/embed/vD5EN9PU6rUpzhFax8s7Yb" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+
+        <div style="margin-top:14px; padding:14px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); text-align:left;">
+          <strong style="color:var(--nb-sea); font-size:12px; display:block; margin-bottom:4px;">💡 Главный инсайт урока:</strong>
+          <span style="font-size:13px; color:var(--nb-text); line-height:1.45;">
+            Срыв — это не провал, а диагностический тест. Добавьте один шаг: вдох, задержка дыхания, длинный выдох. Не принимайте решений из точки аффекта.
+          </span>
+        </div>
+      </section>
+
+      <!-- Integration Meditation -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2);">
+          🎧 Финальная медитация
+        </div>
+        <h3 style="margin-top:8px;">Интеграция полученного опыта</h3>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Фиксация знаний и новых навыков на уровне бессознательного</p>
+
+        <div style="padding:10px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+          <audio controls preload="none" style="width:100%; accent-color:var(--nb-accent);">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation_lesson5.mp3" type="audio/mpeg">
+            Ваш браузер не поддерживает аудио.
+          </audio>
+        </div>
+      </section>
+
+      <!-- High-Ticket Offer: 10,000 ₽ Personal Portrait + Consultation -->
+      <section class="glass hero">
+        <div class="eyebrow">💎 Индивидуальная работа</div>
+        <h1>Психологический портрет + Консультация Анатолия Фёдорова</h1>
+        
+        <div style="margin:16px 0; padding:14px; border-radius:18px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); text-align:left; display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; gap:10px;">
+            <span style="font-size:18px;">📊</span>
+            <div>
+              <strong style="color:#fff; font-size:13px; display:block;">Отчёт на 10+ страниц:</strong>
+              <span style="font-size:12px; color:rgba(255,255,255,0.75);">Глубокий анализ по 21 вопросу системно-поведенческого анализа с подсвечиванием узловых точек.</span>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;">
+            <span style="font-size:18px;">🗣</span>
+            <div>
+              <strong style="color:#fff; font-size:13px; display:block;">Личная онлайн-сессия:</strong>
+              <span style="font-size:12px; color:rgba(255,255,255,0.75);">60-минутный персональный разбор от Анатолия Фёдорова для решения вашей ситуации.</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px solid rgba(255,255,255,0.15); padding-top:14px;">
+          <div style="text-align:left;">
+            <span style="font-size:24px; font-weight:900; line-height:1; color:#fff; display:block;">10 000 ₽</span>
+            <span style="font-size:11px; color:rgba(255,255,255,0.6);">Полный пакет</span>
+          </div>
+          <button onclick="handlePortraitPurchase()" class="primary-btn pulse" style="background:#fff; color:var(--nb-deep); box-shadow:0 12px 28px rgba(0,0,0,0.25); flex:1;">
+            <span>Записаться ➔</span>
+          </button>
+        </div>
+      </section>
+
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • Системно-поведенческий анализ
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    function handlePortraitPurchase() {
+      safeHaptic('success');
+      if (window.notibot && typeof window.notibot.openProduct === 'function') {
+        window.notibot.openProduct('portrait_consultation_10000');
+      } else {
+        window.location.href = '08_portrait_quest.html';
+      }
+    }
+  </script>
+
+</body>
+</html>

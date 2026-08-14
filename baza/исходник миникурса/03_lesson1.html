@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Урок 1: Отлепляем факты от интерпретаций — Анатолий Фёдоров</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="leaves-bg.js"></script>
+  <script src="telegram-user.js"></script>
+  <script src="api-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(25);
+        }
+      } catch (e) {
+        console.log('Haptic silent catch:', e);
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="maisonArtBackground" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Navigation Bar -->
+      <header class="header">
+        <a href="02_landing_partner.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+          ← Назад к курсу
+        </a>
+        <div class="strategy-badge">Урок 1 из 5</div>
+      </header>
+
+      <!-- Video Card -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Модуль 1: Базовая устойчивость</div>
+        <h2>Как перестать накручивать себя: отлепляем факты от интерпретаций</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Смотрите урок и выполняйте практическое задание под видео</p>
+
+        <!-- Video Player Wrapper (Kinescope) -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+
+        <div style="margin-top:14px; padding:14px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); text-align:left;">
+          <strong style="color:var(--nb-sea); font-size:12px; display:block; margin-bottom:4px;">💡 Главный инсайт урока:</strong>
+          <span style="font-size:13px; color:var(--nb-text); line-height:1.45;">
+            Человек не отвечает 30 минут — это сухой факт. Всё остальное («он потерял интерес», «со мной что-то не так») — это фантазия испуганного мозга. Написав импульсивное сообщение, вы получаете сиюминутное облегчение, но отдаете инициативу.
+          </span>
+        </div>
+      </section>
+
+      <!-- Interactive 5-Step AI Strategy Tool (From transcript) -->
+      <section class="glass card">
+        <div class="eyebrow" style="margin-bottom:8px;">Интерактивный шаг</div>
+        <h3 class="question-title">Разбор твоей стратегии с ИИ</h3>
+        <p class="lead" style="font-size:13px; margin-bottom:14px;">Заполните 5 пунктов формулы Анатолия Фёдорова, чтобы подсветить узловую точку сценария</p>
+
+        <form id="strategyForm" onsubmit="analyzeStrategy(event)" style="display:flex; flex-direction:column; gap:12px;">
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">1. Реальный факт (Что произошло?):</label>
+            <input type="text" id="inpFact" required placeholder="Например: Он не отвечает на сообщение 40 минут" />
+          </div>
+
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">2. Я становлюсь той, которая... (Чувства и мысли):</label>
+            <input type="text" id="inpFeeling" required placeholder="Например: Боится потери, накручивает себя" />
+          </div>
+
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">3. Поэтому я начинаю... (Твои действия):</label>
+            <input type="text" id="inpAction" required placeholder="Например: Мониторю статус, пишу «ты куда пропал?»" />
+          </div>
+
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">4. Сразу это мне дает чувство... (Облегчение):</label>
+            <input type="text" id="inpRelief" required placeholder="Например: Иллюзия контроля, спад напряжения" />
+          </div>
+
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">5. В итоге я получаю... (Фактический результат):</label>
+            <input type="text" id="inpResult" required placeholder="Например: Роль догоняющей, холодность партнера" />
+          </div>
+
+          <button type="submit" id="btnSubmitStrategy" class="primary-btn pulse" style="margin-top:6px;">
+            Разобрать сценарий с ИИ ➔
+          </button>
+        </form>
+
+        <!-- AI Feedback -->
+        <div id="aiResultBlock" class="hidden" style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:8px;">
+          <strong style="color:var(--nb-deep); font-size:13px;">✨ Ответ ИИ-помощника:</strong>
+          <div id="aiAnalysisText" style="font-size:13px; color:var(--nb-text); line-height:1.5; white-space:pre-line;"></div>
+        </div>
+      </section>
+
+      <!-- Next Step Navigation -->
+      <div style="padding-top:4px;">
+        <button onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="secondary-btn">
+          <span>Перейти к Уроку 2: «Бабочки в животе» ➔</span>
+        </button>
+      </div>
+
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • Системно-поведенческий анализ
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    async function analyzeStrategy(e) {
+      e.preventDefault();
+      safeHaptic('impactLight');
+
+      const btn = document.getElementById('btnSubmitStrategy');
+      btn.disabled = true;
+      btn.textContent = 'Анализируем стратегию...';
+
+      const payload = {
+        fact: document.getElementById('inpFact').value,
+        feeling: document.getElementById('inpFeeling').value,
+        action: document.getElementById('inpAction').value,
+        relief: document.getElementById('inpRelief').value,
+        result: document.getElementById('inpResult').value,
+        userName: window.currentUserName || 'Участник'
+      };
+
+      try {
+        const data = await window.apiPost('/api/lesson1-strategy', payload);
+        if (data && (data.analysis || data.result)) {
+          showAiResult(data.analysis || JSON.stringify(data.result));
+        } else {
+          showAiFallback(payload);
+        }
+      } catch (err) {
+        showAiFallback(payload);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Разобрать сценарий с ИИ ➔';
+      }
+    }
+
+    function showAiFallback(p) {
+      const fallback = `🔍 Точный разбор твоего сценария:\n\n• Факт: «${p.fact}» — в реальности произошло только это.\n• Ловушка: Мозг подменил факт тревогой («${p.feeling}») и толкнул на реактивное действие («${p.action}»).\n• Цена иллюзии контроля: Быстрое облегчение («${p.relief}») привело к нежелательному результату («${p.result}»).\n\nНа 2-м уроке мы научимся отслеживать этот импульс в теле и делать заземляющую паузу.`;
+      showAiResult(fallback);
+    }
+
+    function showAiResult(text) {
+      safeHaptic('success');
+      const block = document.getElementById('aiResultBlock');
+      const textContainer = document.getElementById('aiAnalysisText');
+      textContainer.textContent = text;
+      block.classList.remove('hidden');
+      block.style.display = 'flex';
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Куда движется ваша личная жизнь? — Анатолий Фёдоров</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="leaves-bg.js"></script>
+  <script src="telegram-user.js"></script>
+  <script src="api-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <!-- Early interceptor for Notibot Bridge -->
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(25);
+        }
+      } catch (e) {
+        console.log('Haptic silent catch:', e);
+      }
+    }
+  </script>
+
+  <style>
+    .screen { display: none; animation: enter 0.35s ease; }
+    .screen.active { display: block; }
+    .spinner {
+      width: 38px; height: 38px;
+      border: 3px solid rgba(127, 155, 142, 0.2);
+      border-top-color: var(--nb-accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div id="maisonArtBackground" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <div class="app">
+      
+      <!-- Top Header -->
+      <header class="header">
+        <div class="identity">
+          <div id="userAvatar" class="avatar">?</div>
+          <div style="min-width:0">
+            <div id="userGreeting" class="greeting">Привет!</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Progress Section -->
+      <section id="progressWrap" class="progress-wrap glass card hidden">
+        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+        <div class="progress-meta">
+          <span id="progressLabel">Вопрос 1</span>
+          <span id="progressPercent">0%</span>
+        </div>
+      </section>
+
+      <!-- SCREEN 1: Hero Cover Screen -->
+      <section id="screenWelcome" class="screen active glass hero">
+        <div class="eyebrow">2–3 минуты<br>персональный результат</div>
+        <h1>Куда движется ваша личная жизнь?</h1>
+        <p class="lead">Узнайте, что запускает повторяющиеся ситуации и где находится Ваша точка выбора.</p>
+
+        <div class="choice-notice">
+          Можно выбрать до трёх вариантов ответа
+        </div>
+
+        <button onclick="startQuiz()" id="startBtn" class="primary-btn" type="button">
+          Узнать свой сценарий
+        </button>
+      </section>
+
+      <!-- SCREEN 2: Question Screen -->
+      <section id="screenQuestion" class="screen glass card">
+        <div id="questionCategory" class="choice-notice">Контекст</div>
+        <h2 id="questionText" class="question-title">Что сейчас беспокоит Вас в отношениях?</h2>
+        
+        <div id="answersList" class="answers"></div>
+
+        <div class="nav-row">
+          <button id="btnBack" onclick="prevQuestion()" class="secondary-btn">Назад</button>
+          <button id="btnNext" onclick="nextQuestion()" disabled class="primary-btn">Дальше</button>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: Analyzing Screen -->
+      <section id="screenAnalyzing" class="screen glass card text-center py-10">
+        <div class="flex flex-col items-center justify-center gap-3">
+          <div class="spinner"></div>
+          <h2>Анализируем ответы...</h2>
+          <p class="lead">Система системно-поведенческого анализа определяет ваш сценарий</p>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: Results Screen -->
+      <section id="screenResult" class="screen glass card text-center">
+        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2);">
+          ✅ Анализ завершен
+        </div>
+        
+        <div style="margin-top:12px;">
+          <span class="subtle" style="text-transform:uppercase; letter-spacing:0.04em; font-weight:800; font-size:11px;">Ваш ведущий сценарий:</span>
+          <h2 id="resTitle" style="color:var(--nb-sea); margin-top:4px;">Поиск и выбор партнёра</h2>
+        </div>
+
+        <div style="padding:16px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); margin-top:12px; text-align:left;">
+          <p id="resSummary" style="font-size:14px; line-height:1.5; color:var(--nb-text); margin:0;">
+            Когда ситуация становится неопределённой, вы стремитесь вернуть безопасность через немедленную ясность.
+          </p>
+          <div style="margin-top:12px; padding-top:10px; border-top:1px solid rgba(36,49,57,0.08);">
+            <strong style="font-size:12px; color:var(--nb-sea); display:block; margin-bottom:4px;">⚡ Узловой момент сценария:</strong>
+            <p id="resDanger" class="subtle" style="font-size:13px; margin:0; line-height:1.45;">
+              Вместо спокойного присматривания к человеку вы переходите в позицию «догоняющего» и отдаете инициативу.
+            </p>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); text-align:left;">
+          <strong style="font-size:12px; color:var(--nb-deep); display:block; margin-bottom:3px;">🎁 Персональный маршрут готов:</strong>
+          <span class="subtle" style="font-size:12px;">Для вас открыт доступ к персональному видео-разбору Анатолия Фёдорова и медитации.</span>
+        </div>
+
+        <button onclick="goToPersonalLanding()" class="primary-btn pulse" type="button" style="margin-top:16px;">
+          Открыть персональный разбор ➔
+        </button>
+      </section>
+
+      <footer class="text-center subtle py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • Системно-поведенческий анализ
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    const questions = [
+      {
+        block: "Текущая ситуация",
+        text: "Что сейчас беспокоит Вас в отношениях?",
+        options: [
+          { text: "В целом всё нормально, иногда есть недопонимание.", route: "family" },
+          { text: "Не хватает тепла и ощущения близости.", route: "family" },
+          { text: "Была измена или угроза разрыва, мне до сих пор тяжело.", route: "crisis" },
+          { text: "Всё держится только на мне, я устала тянуть.", route: "emotions" },
+          { text: "Не понимаю, стоит ли продолжать эти отношения.", route: "crisis" },
+          { text: "Постоянно выбираю не тех: эмоциональные качели и холод.", route: "partner" }
+        ]
+      },
+      {
+        block: "Ваша реакция",
+        text: "Если в отношениях возникает дистанция или холодность, что Вы обычно делаете?",
+        options: [
+          { text: "Прямо спрашиваю, в чём дело, требую ясности.", route: "partner" },
+          { text: "Ищу способ мягко поговорить и снова стать ближе.", route: "family" },
+          { text: "Начинаю больше стараться и подстраиваться.", route: "emotions" },
+          { text: "Наблюдаю и пытаюсь понять, что изменилось.", route: "family" },
+          { text: "Злюсь и начинаю предъявлять претензии.", route: "emotions" },
+          { text: "Закрываюсь в себе, думаю, что близости и не было.", route: "crisis" }
+        ]
+      },
+      {
+        block: "Внутренний диалог",
+        text: "Какие мысли появляются, когда чувствуете, что назревает конфликт?",
+        options: [
+          { text: "Если я сейчас хоть что-то не сделаю, всему конец.", route: "crisis" },
+          { text: "Надо спокойно поговорить — разберёмся.", route: "family" },
+          { text: "Надо быть мягче и мудрее, и всё наладится.", route: "emotions" },
+          { text: "Сначала надо заземлиться и прийти в себя.", route: "partner" },
+          { text: "Похоже, опять только мне одной это нужно.", route: "emotions" },
+          { text: "Почему меня вечно тянет к тем, с кем трудно?", route: "partner" }
+        ]
+      },
+      {
+        block: "После разговора",
+        text: "Что обычно остаётся внутри после попытки объясниться?",
+        options: [
+          { text: "Временное облегчение, а потом снова всё по-старому.", route: "family" },
+          { text: "Мы шаг за шагом находим общий язык.", route: "family" },
+          { text: "Всё беру на себя и сама вытягиваю ситуацию.", route: "emotions" },
+          { text: "Хочу закрыться, побыть одной и восстановиться.", route: "crisis" },
+          { text: "Злюсь ещё сильнее: опять меня не услышали.", route: "partner" },
+          { text: "Чувствую вину и думаю, что со мной что-то не так.", route: "emotions" }
+        ]
+      },
+      {
+        block: "Реакция партнёра",
+        text: "Как реагирует партнёр на Ваши попытки поговорить?",
+        options: [
+          { text: "Со всем соглашается, но ничего не меняет.", route: "family" },
+          { text: "Откладывает разговор до последнего, пока не рванёт.", route: "emotions" },
+          { text: "Закрывается и уходит в глухую оборону.", route: "partner" },
+          { text: "Не слышит меня — в итоге виновата остаюсь я.", route: "emotions" },
+          { text: "Обещает измениться, но хватает ненадолго.", route: "family" },
+          { text: "Игнорирует сообщения или пропадает на часы/дни.", route: "partner" }
+        ]
+      },
+      {
+        block: "После примирения",
+        text: "Что происходит внутри после того, как буря утихла?",
+        options: [
+          { text: "Всё время жду нового подвоха или срыва.", route: "emotions" },
+          { text: "Всё быстро возвращается в нормальное русло.", route: "family" },
+          { text: "Я снова отодвигаю свои желания на второй план.", route: "emotions" },
+          { text: "Думаю: «А стоит ли вообще доверять?»", route: "crisis" },
+          { text: "Кажется, что настоящей глубины и безопасности нет.", route: "partner" },
+          { text: "Чувствую опустошение и усталость.", route: "crisis" }
+        ]
+      },
+      {
+        block: "Главная потребность",
+        text: "Чего Вам сейчас острее всего не хватает?",
+        options: [
+          { text: "Перестать накручивать себя из-за молчания и сообщений.", route: "partner" },
+          { text: "Понять, что вообще происходит и чего ждать дальше.", route: "crisis" },
+          { text: "Почувствовать, что меня искренне любят и выбирают.", route: "emotions" },
+          { text: "Вернуть уважение к себе и своим границам.", route: "emotions" },
+          { text: "Принять ясное решение: сохранять отношения или уходить.", route: "crisis" },
+          { text: "Понять, как выбирать партнёра и не наступать на грабли.", route: "partner" }
+        ]
+      },
+      {
+        block: "Финальный шаг",
+        text: "С чем Вам важнее всего разобраться прямо сейчас?",
+        options: [
+          { text: "Как выбирать надёжного партнёра и отключить тягу к сложным.", route: "partner" },
+          { text: "Как перестать зависеть от его внимания, звонков и настроения.", route: "emotions" },
+          { text: "Как вернуть тепло в семью и перестать ходить по кругу ссор.", route: "family" },
+          { text: "Что делать после измены, шока или угрозы расставания.", route: "crisis" }
+        ]
+      }
+    ];
+
+    let currentStep = 0;
+    const userAnswers = [];
+    const scores = { partner: 0, emotions: 0, family: 0, crisis: 0 };
+    let selectedOptionIndex = null;
+    let finalRoute = 'partner';
+
+    function startQuiz() {
+      safeHaptic('selection');
+      document.getElementById('screenWelcome').classList.remove('active');
+      document.getElementById('screenQuestion').classList.add('active');
+      document.getElementById('progressWrap').classList.remove('hidden');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentStep];
+      document.getElementById('progressLabel').textContent = `Вопрос ${currentStep + 1} из ${questions.length}`;
+      const pct = Math.round(((currentStep + 1) / questions.length) * 100);
+      document.getElementById('progressPercent').textContent = `${pct}%`;
+      document.getElementById('progressBar').style.width = `${pct}%`;
+
+      document.getElementById('questionCategory').textContent = q.block;
+      document.getElementById('questionText').textContent = q.text;
+
+      const list = document.getElementById('answersList');
+      list.innerHTML = '';
+      selectedOptionIndex = null;
+      document.getElementById('btnNext').disabled = true;
+      document.getElementById('btnBack').style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('div');
+        btn.className = 'answer';
+        btn.innerHTML = `
+          <div class="answer-dot"></div>
+          <span style="flex:1; line-height:1.4;">${opt.text}</span>
+        `;
+        btn.onclick = () => selectOption(idx);
+        list.appendChild(btn);
+      });
+    }
+
+    function selectOption(idx) {
+      safeHaptic('selection');
+      selectedOptionIndex = idx;
+      const cards = document.querySelectorAll('.answer');
+      cards.forEach((c, i) => {
+        if (i === idx) {
+          c.classList.add('selected');
+        } else {
+          c.classList.remove('selected');
+        }
+      });
+      document.getElementById('btnNext').disabled = false;
+    }
+
+    function prevQuestion() {
+      if (currentStep > 0) {
+        safeHaptic('impactLight');
+        currentStep--;
+        userAnswers.pop();
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      if (selectedOptionIndex === null) return;
+      safeHaptic('impactLight');
+
+      const q = questions[currentStep];
+      const selected = q.options[selectedOptionIndex];
+      userAnswers.push(selected.text);
+      scores[selected.route] = (scores[selected.route] || 0) + (currentStep === 7 ? 3 : 1);
+
+      currentStep++;
+      if (currentStep < questions.length) {
+        renderQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    async function finishQuiz() {
+      safeHaptic('success');
+      document.getElementById('screenQuestion').classList.remove('active');
+      document.getElementById('progressWrap').classList.add('hidden');
+      document.getElementById('screenAnalyzing').classList.add('active');
+
+      let highest = -1;
+      for (const [route, score] of Object.entries(scores)) {
+        if (score > highest) {
+          highest = score;
+          finalRoute = route;
+        }
+      }
+
+      try {
+        const data = await window.apiPost('/api/psyquest', { 
+          answers: userAnswers, 
+          userName: window.currentUserName || 'Участник' 
+        });
+        if (data && data.route) finalRoute = data.route;
+      } catch (e) {
+        console.log('Using calculated score route:', finalRoute);
+      }
+
+      setTimeout(() => {
+        showResults();
+      }, 1000);
+    }
+
+    function showResults() {
+      document.getElementById('screenAnalyzing').classList.remove('active');
+      document.getElementById('screenResult').classList.add('active');
+
+      const map = {
+        partner: {
+          title: "Сценарий 1: «Поиск и выбор партнёра»",
+          summary: "В неопределенности вы пытаетесь немедленно получить ясность или спасаетесь активностью. Из-за этого вы пропускаете тревожные сигналы и привязываетесь к эмоционально недоступным людям.",
+          danger: "Смещение фокуса с вопроса «Подходит ли он мне?» на вопрос «Как его завоевать и что со мной не так?»"
+        },
+        emotions: {
+          title: "Сценарий 2: «Эмоциональная устойчивость»",
+          summary: "Ваша нервная система попала в дофамино-кортизоловую петлю. Паузы в общении вызывают спазм тревоги, а редкие сообщения — мгновенный салют дофамина.",
+          danger: "Потеря эмоционального суверенитета и накопление скрытого напряжения перед взрывом."
+        },
+        family: {
+          title: "Сценарий 3: «Перезагрузка отношений»",
+          summary: "Отношения застряли в цикле бытовой усталости, взаимных претензий и дистанции.",
+          danger: "Попытка спасти контакт через бесконечные уступки или уход в молчание."
+        },
+        crisis: {
+          title: "Сценарий 4: «Кризис и сложные решения»",
+          summary: "Острая ситуация неопределенности или шока. Психика требует немедленных судьбоносных решений.",
+          danger: "Принятие решений на пике эмоционального шторма из страха и безысходности."
+        }
+      };
+
+      const res = map[finalRoute] || map.partner;
+      document.getElementById('resTitle').textContent = res.title;
+      document.getElementById('resSummary').textContent = res.summary;
+      document.getElementById('resDanger').textContent = res.danger;
+    }
+
+    function goToPersonalLanding() {
+      safeHaptic('selection');
+      localStorage.setItem('psy_route', finalRoute);
+      localStorage.setItem('psy_answers', JSON.stringify(userAnswers));
+      window.location.href = '02_landing_partner.html';
+    }
+  </script>
+
+</body>
+</html>
