@@ -57,12 +57,21 @@
   <main class="app-shell">
     <div class="app">
 
-      <!-- Header -->
-      <header class="header">
-        <a href="03_lesson1.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
-          ← К уроку 1
-        </a>
-        <div class="strategy-badge">Урок 2 из 5</div>
+      <!-- Navigation & Progress Bar (40% | 2 из 5) -->
+      <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
+        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+          <a href="02_landing_partner.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+            ← К курсу
+          </a>
+          <div class="strategy-badge" style="margin:0;">
+            2 из 5 • 40%
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div style="width:100%; height:6px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
+          <div style="width:40%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px; transition:width 0.4s ease;"></div>
+        </div>
       </header>
 
       <!-- Video Card -->
