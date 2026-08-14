@@ -301,7 +301,7 @@
               <button onclick="goToStage(2)" class="ghost-btn" style="min-width:90px; border:1px solid rgba(36,49,57,0.15); border-radius:14px; font-size:13px; font-weight:700;">
                 ← Назад
               </button>
-              <button onclick="fetchStage4Resource()" class="primary-btn pulse" style="flex:1;">
+              <button onclick="showStage4Local()" class="primary-btn pulse" style="flex:1;">
                 <span>Найти здоровую форму →</span>
               </button>
             </div>
@@ -309,39 +309,25 @@
 
           <!-- ==================== ЭТАП 4. ЗДОРОВАЯ ФОРМА КАЧЕСТВА ==================== -->
           <div id="stage4" class="step-card" style="display:none;">
-            <!-- Loading State -->
-            <div id="stage4Loading" style="display:none; padding:24px 10px; text-align:center;">
-              <div style="display:inline-block; width:32px; height:32px; border:3px solid var(--nb-line); border-top-color:var(--nb-sea); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;"></div>
-              <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик находит здоровую форму качества...</div>
+            <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+              💎 Здоровая форма вашей силы
             </div>
 
-            <!-- Result Content -->
-            <div id="stage4Content" style="display:none;">
-              <!-- Offline / Fallback Notice Banner -->
-              <div id="aiOfflineNoticeLesson4" style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
-                🚂 <strong>Попутчик ищет путь... (проблемы с интернетом)</strong> А пока обратите внимание на этот ориентир. Вы сможете снова обратиться к Попутчику попозже.
+            <div style="padding:14px 16px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); text-align:left; margin-bottom:14px;">
+              <div style="font-size:14px; font-weight:900; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>✨</span> <span id="aiResourceTitle">Здоровая форма силы</span>
               </div>
+              <p id="aiExplanationText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">
+              </p>
+            </div>
 
-              <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-                💎 Здоровая форма вашей силы
-              </div>
-
-              <div style="padding:14px 16px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); text-align:left; margin-bottom:14px;">
-                <div style="font-size:14px; font-weight:900; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
-                  <span>✨</span> <span id="aiResourceTitle">Здоровая форма силы</span>
-                </div>
-                <p id="aiExplanationText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">
-                </p>
-              </div>
-
-              <div style="display:flex; gap:10px;">
-                <button onclick="goToStage(3)" class="ghost-btn" style="min-width:90px; border:1px solid rgba(36,49,57,0.15); border-radius:14px; font-size:13px; font-weight:700;">
-                  ← Назад
-                </button>
-                <button onclick="goToStage(5)" class="primary-btn pulse" style="flex:1;">
-                  <span>Примерить это состояние →</span>
-                </button>
-              </div>
+            <div style="display:flex; gap:10px;">
+              <button onclick="goToStage(3)" class="ghost-btn" style="min-width:90px; border:1px solid rgba(36,49,57,0.15); border-radius:14px; font-size:13px; font-weight:700;">
+                ← Назад
+              </button>
+              <button onclick="goToStage(5)" class="primary-btn pulse" style="flex:1;">
+                <span>Примерить это состояние →</span>
+              </button>
             </div>
           </div>
 
@@ -379,21 +365,26 @@
               <button onclick="goToStage(5)" class="ghost-btn" style="min-width:90px; border:1px solid rgba(36,49,57,0.15); border-radius:14px; font-size:13px; font-weight:700;">
                 ← Назад
               </button>
-              <button onclick="finishInteractiveAndGetPermission()" id="btnFinishLesson4" class="primary-btn pulse" style="flex:1;">
-                <span>Вернуть себе это качество →</span>
+              <button onclick="getSingleAiBreakdown()" id="btnGetAiBreakdown" class="primary-btn pulse" style="flex:1;">
+                <span>Получить мой разбор ➔</span>
               </button>
             </div>
           </div>
 
           <!-- ==================== ЭТАП 7. ПЕРСОНАЛЬНЫЙ РЕЗУЛЬТАТ ==================== -->
           <div id="stageResult" class="step-card" style="display:none;">
-            <!-- Loading Permission -->
-            <div id="permissionLoading" style="display:none; padding:24px 10px; text-align:center;">
-              <div style="display:inline-block; width:32px; height:32px; border:3px solid var(--nb-line); border-top-color:var(--nb-terracotta); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;"></div>
-              <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик формулирует вашу фразу-разрешение...</div>
+            <!-- Loading State -->
+            <div id="aiLoadingBlock" style="display:none; padding:24px 10px; text-align:center;">
+              <div style="display:inline-block; width:34px; height:34px; border:3px solid var(--nb-line); border-top-color:var(--nb-terracotta); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;"></div>
+              <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик формирует ваш персональный разбор...</div>
             </div>
 
             <div id="finalResultContent">
+              <!-- Notice when offline or fallback -->
+              <div id="aiNoticeStatusBlock" style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+                Персональный разбор сейчас недоступен. Ответы сохранены.
+              </div>
+
               <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
                 🏆 Результат практики
               </div>
@@ -480,15 +471,17 @@
     let currentStage = 1;
     let selectedQuality = '';
     let selectedRules = [];
-    let stage4Result = { resource: '', explanation: '', isAi: false };
-    let finalPermissionPhrase = '';
-    let aiCredits = 5;
+    let stage4Result = { resource: '', explanation: '', safe_action: '', permission: '', isAi: false };
+    let isSubmitting = false;
 
-    // Load AI Credits
+    // Load AI Credits (Max 5 across the entire course)
+    let aiCredits = 5;
     try {
       const savedCredits = localStorage.getItem('psyquest_ai_credits');
       if (savedCredits !== null) {
-        aiCredits = Math.max(0, parseInt(savedCredits, 10));
+        aiCredits = Math.max(0, Math.min(5, parseInt(savedCredits, 10)));
+      } else {
+        localStorage.setItem('psyquest_ai_credits', '5');
       }
       updateCreditsUI();
     } catch (e) {}
@@ -497,6 +490,19 @@
       const el = document.getElementById('aiCreditsLeft');
       if (el) el.textContent = aiCredits;
     }
+
+    // Check if Lesson 4 was already completed before
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        const savedRes = localStorage.getItem('psyquest_lesson4_result');
+        if (savedRes) {
+          const parsed = JSON.parse(savedRes);
+          if (parsed && parsed.resource) {
+            stage4Result = parsed;
+          }
+        }
+      } catch (e) {}
+    });
 
     // Screen 1 -> Screen 2 Transition
     function goToInteractive() {
@@ -613,6 +619,76 @@
       }
     }
 
+    // Deterministic local dictionary for Stage 4 (zero network calls)
+    function getLocalHealthyForm(quality) {
+      const q = (quality || '').toLowerCase();
+      if (q.includes('дерзост')) {
+        return {
+          resource: 'Право прямо говорить «нет»',
+          explanation: 'Это способность спокойно обозначать свои границы и открыто выражать несогласие без агрессии и чувства вины.'
+        };
+      }
+      if (q.includes('независим')) {
+        return {
+          resource: 'Способность принимать решения с опорой на себя',
+          explanation: 'Это внутренняя автономия и готовность делать выбор, не нуждаясь в постоянном внешнем одобрении.'
+        };
+      }
+      if (q.includes('яркост')) {
+        return {
+          resource: 'Право быть заметной и занимать пространство',
+          explanation: 'Это естественное проявление своей индивидуальности и открытое присутствие в общении.'
+        };
+      }
+      if (q.includes('спонтан')) {
+        return {
+          resource: 'Разрешение иногда отступать от жесткого плана',
+          explanation: 'Это гибкость и способность доверять моменту, сохраняя внутреннее спокойствие.'
+        };
+      }
+      if (q.includes('уверен')) {
+        return {
+          resource: 'Право на собственное мнение и ценность',
+          explanation: 'Это устойчивое признание своей значимости без потребности что-либо доказывать другим.'
+        };
+      }
+      if (q.includes('эмоциональн')) {
+        return {
+          resource: 'Способность открыто проживать и называть свои чувства',
+          explanation: 'Это честный контакт со своими переживаниями и право делиться ими в безопасной форме.'
+        };
+      }
+      if (q.includes('решительн')) {
+        return {
+          resource: 'Право действовать без бесконечных сомнений',
+          explanation: 'Это готовность делать первый шаг и брать ответственность за свои решения.'
+        };
+      }
+      return {
+        resource: 'Внимание к собственным потребностям',
+        explanation: 'Это способность замечать и уважать свои желания, выстраивая ясный и честный контакт с окружающими.'
+      };
+    }
+
+    // Stage 3 -> Stage 4 (Instant local calculation, ZERO external AI calls)
+    function showStage4Local() {
+      const rules = getFinalRules();
+      if (rules.length === 0) {
+        alert('Пожалуйста, выберите хотя бы одно внутреннее правило или напишите свой вариант.');
+        return;
+      }
+
+      const quality = getFinalQuality();
+      const localForm = getLocalHealthyForm(quality);
+      stage4Result.resource = localForm.resource;
+      stage4Result.explanation = localForm.explanation;
+
+      document.getElementById('aiResourceTitle').textContent = stage4Result.resource;
+      document.getElementById('aiExplanationText').textContent = stage4Result.explanation;
+
+      goToStage(4);
+    }
+
     function goToStage(targetStage) {
       safeHaptic('selection');
 
@@ -672,136 +748,157 @@
       window.scrollTo({ top: document.getElementById('practiceMainCard').offsetTop - 60, behavior: 'smooth' });
     }
 
-    // Stage 4: AI Companion Fetch
-    async function fetchStage4Resource() {
-      const rules = getFinalRules();
-      if (rules.length === 0) {
-        alert('Пожалуйста, выберите хотя бы одно внутреннее правило.');
-        return;
-      }
+    // =========================================================================
+    // THE ONLY EXTERNAL AI REQUEST FOR LESSON 4: «Получить мой разбор»
+    // =========================================================================
+    async function getSingleAiBreakdown() {
+      if (isSubmitting) return;
 
-      goToStage(4);
-      const loadingEl = document.getElementById('stage4Loading');
-      const contentEl = document.getElementById('stage4Content');
-      loadingEl.style.display = 'block';
-      contentEl.style.display = 'none';
-
-      const payload = {
-        mode: 'resource',
-        quality: getFinalQuality(),
-        allowedBehavior: (document.getElementById('inpAllowedBehavior').value || '').trim(),
-        rules: rules,
-        userName: window.tgUser?.first_name || 'Участник'
-      };
-
-      try {
-        const data = await window.apiPost('/api/lesson4-strategy', payload);
-        if (data && data.result) {
-          stage4Result = {
-            resource: data.result.resource,
-            explanation: data.result.explanation,
-            isAi: !!data.isAi
-          };
-
-          // Deduct credit only if real AI responded
-          if (data.isAi && aiCredits > 0) {
-            aiCredits--;
-            try { localStorage.setItem('psyquest_ai_credits', aiCredits); } catch (e) {}
-            updateCreditsUI();
-          }
-        } else {
-          throw new Error('No result');
-        }
-      } catch (err) {
-        console.warn('Fallback resource generator activated:', err.message);
-        stage4Result = {
-          resource: 'Право прямо говорить о своих потребностях',
-          explanation: 'Это способность спокойно обозначать свои границы и открыто выражать себя без агрессии и чувства вины.',
-          isAi: false
-        };
-      }
-
-      // Populate Stage 4 UI
-      document.getElementById('aiResourceTitle').textContent = stage4Result.resource;
-      document.getElementById('aiExplanationText').textContent = stage4Result.explanation;
-      
-      const offlineNotice = document.getElementById('aiOfflineNoticeLesson4');
-      if (offlineNotice) {
-        offlineNotice.style.display = stage4Result.isAi ? 'none' : 'block';
-      }
-
-      loadingEl.style.display = 'none';
-      contentEl.style.display = 'block';
-    }
-
-    // Stage 6 -> 7: Finish and Generate Permission Phrase
-    async function finishInteractiveAndGetPermission() {
       const newAction = (document.getElementById('inpNewAction').value || '').trim();
       if (!newAction) {
         alert('Пожалуйста, опишите один новый поступок.');
         return;
       }
 
-      safeHaptic('success');
+      const quality = getFinalQuality();
+      const allowedBehavior = (document.getElementById('inpAllowedBehavior').value || '').trim();
+      const rules = getFinalRules();
+      const bodyChange = (document.getElementById('inpBodyChange').value || '').trim();
+
+      // Lock button and set submitting flag
+      isSubmitting = true;
+      const btn = document.getElementById('btnGetAiBreakdown');
+      if (btn) {
+        btn.disabled = true;
+        btn.classList.remove('pulse');
+        btn.innerHTML = '<span>⏳ Формирование разбора...</span>';
+      }
+
+      safeHaptic('selection');
       goToStage(7);
 
-      const permLoading = document.getElementById('permissionLoading');
+      const loadingBlock = document.getElementById('aiLoadingBlock');
       const finalContent = document.getElementById('finalResultContent');
-      permLoading.style.display = 'block';
+      const noticeBlock = document.getElementById('aiNoticeStatusBlock');
 
-      // Populate 5 summary items
-      document.getElementById('resQuality').textContent = getFinalQuality();
-      document.getElementById('resRules').textContent = getFinalRules().join('; ');
-      document.getElementById('resResource').textContent = stage4Result.resource || 'Здоровая форма качества';
+      loadingBlock.style.display = 'block';
+      finalContent.style.display = 'none';
+      noticeBlock.style.display = 'none';
+
+      // Populate base fields in summary card
+      document.getElementById('resQuality').textContent = quality;
+      document.getElementById('resRules').textContent = rules.join('; ');
       document.getElementById('resNewAction').textContent = newAction;
-      document.getElementById('resBodyChange').textContent = (document.getElementById('inpBodyChange').value || '').trim();
+      document.getElementById('resBodyChange').textContent = bodyChange;
+
+      // 1. Check if AI request was ALREADY done previously for Lesson 4
+      const alreadyDone = localStorage.getItem('psyquest_lesson4_ai_done') === 'true';
+      const savedResult = localStorage.getItem('psyquest_lesson4_result');
+
+      if (alreadyDone && savedResult) {
+        try {
+          const cached = JSON.parse(savedResult);
+          renderFinalResult(cached, true, false);
+          return;
+        } catch (e) {}
+      }
+
+      // 2. Decrement credit immediately for the outgoing request (even if service fails)
+      let usedRealCredit = false;
+      if (aiCredits > 0 && !alreadyDone) {
+        aiCredits--;
+        usedRealCredit = true;
+        try {
+          localStorage.setItem('psyquest_ai_credits', aiCredits.toString());
+          localStorage.setItem('psyquest_lesson4_ai_done', 'true');
+        } catch (e) {}
+        updateCreditsUI();
+      }
 
       const payload = {
-        mode: 'permission',
-        quality: getFinalQuality(),
-        allowedBehavior: (document.getElementById('inpAllowedBehavior').value || '').trim(),
-        rules: getFinalRules(),
-        resource: stage4Result.resource,
-        bodyChange: (document.getElementById('inpBodyChange').value || '').trim(),
+        quality: quality,
+        allowedBehavior: allowedBehavior,
+        rules: rules,
+        bodyChange: bodyChange,
         newAction: newAction,
         userName: window.tgUser?.first_name || 'Участник'
       };
 
       try {
-        const data = await window.apiPost('/api/lesson4-strategy', payload);
-        if (data && data.permission) {
-          finalPermissionPhrase = data.permission;
-          if (data.isAi && aiCredits > 0) {
-            aiCredits--;
-            try { localStorage.setItem('psyquest_ai_credits', aiCredits); } catch (e) {}
-            updateCreditsUI();
-          }
+        if (!usedRealCredit && aiCredits <= 0) {
+          throw new Error('LIMIT_EXCEEDED');
+        }
+
+        // Single external fetch with timeout (no automatic retries)
+        const data = await window.apiPost('/api/lesson4-strategy', payload, 10000);
+        if (data && data.result) {
+          stage4Result = {
+            resource: data.result.resource || stage4Result.resource,
+            explanation: data.result.explanation || stage4Result.explanation,
+            safe_action: data.result.safe_action || newAction,
+            permission: data.result.permission || '',
+            isAi: !!data.isAi
+          };
+          renderFinalResult(stage4Result, false, false);
         } else {
-          throw new Error('No permission');
+          throw new Error('INVALID_AI_RESPONSE');
         }
       } catch (err) {
-        console.warn('Fallback permission activated:', err.message);
-        finalPermissionPhrase = `«Я разрешаю себе ${stage4Result.resource ? stage4Result.resource.toLowerCase().replace(/^(право|способность|разрешение)\s+/i, '') : 'быть собой'}, сохраняя уважение к себе и другим».`;
+        console.warn('[Lesson 4] AI request error or limit reached:', err.message);
+        // Fallback local deterministic result
+        const localForm = getLocalHealthyForm(quality);
+        stage4Result = {
+          resource: localForm.resource,
+          explanation: localForm.explanation,
+          safe_action: newAction,
+          permission: `«Я разрешаю себе ${localForm.resource.toLowerCase().replace(/^(право|способность|разрешение)\s+/i, '')}, сохраняя уважение к себе и другим».`,
+          isAi: false
+        };
+        renderFinalResult(stage4Result, false, true);
+      }
+    }
+
+    function renderFinalResult(resultObj, isCached, isErrorFallback) {
+      // Save locally to guarantee no repeat requests
+      try {
+        localStorage.setItem('psyquest_lesson4_result', JSON.stringify(resultObj));
+        localStorage.setItem('psyquest_lesson4_ai_done', 'true');
+      } catch (e) {}
+
+      document.getElementById('resResource').textContent = resultObj.resource || 'Здоровая форма качества';
+      
+      let perm = resultObj.permission || '«Я разрешаю себе быть собой, сохраняя уважение к себе и другим»';
+      if (!perm.startsWith('«')) perm = `«${perm.replace(/^["'«]+|["'»]+$/g, '')}»`;
+      document.getElementById('aiPermissionPhrase').textContent = perm;
+
+      const loadingBlock = document.getElementById('aiLoadingBlock');
+      const finalContent = document.getElementById('finalResultContent');
+      const noticeBlock = document.getElementById('aiNoticeStatusBlock');
+
+      loadingBlock.style.display = 'none';
+      finalContent.style.display = 'block';
+
+      if (isErrorFallback) {
+        noticeBlock.style.display = 'block';
+        noticeBlock.textContent = 'Персональный разбор сейчас недоступен. Ответы сохранены.';
+      } else {
+        noticeBlock.style.display = 'none';
       }
 
-      if (!finalPermissionPhrase.startsWith('«')) {
-        finalPermissionPhrase = `«${finalPermissionPhrase.replace(/^["'«]+|["'»]+$/g, '')}»`;
-      }
-      document.getElementById('aiPermissionPhrase').textContent = finalPermissionPhrase;
-
-      permLoading.style.display = 'none';
-
-      // Show next lesson navigation block
+      // Show next lesson button only after result
       const nextBtnBlock = document.getElementById('nextLessonBlock');
       if (nextBtnBlock) {
         nextBtnBlock.style.display = 'block';
       }
+
+      safeHaptic('success');
+      isSubmitting = false;
     }
 
     // Save Phrase to Clipboard
     async function savePhraseToClipboard() {
       safeHaptic('success');
-      const phrase = finalPermissionPhrase || document.getElementById('aiPermissionPhrase').textContent;
+      const phrase = document.getElementById('aiPermissionPhrase').textContent;
       try {
         if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
           await navigator.clipboard.writeText(phrase);
@@ -831,10 +928,10 @@
 
       const quality = getFinalQuality();
       const rules = getFinalRules().join(', ');
-      const resource = stage4Result.resource;
+      const resource = stage4Result.resource || document.getElementById('resResource').textContent;
       const bodyChange = (document.getElementById('inpBodyChange').value || '').trim();
       const newAction = (document.getElementById('inpNewAction').value || '').trim();
-      const phrase = finalPermissionPhrase;
+      const phrase = document.getElementById('aiPermissionPhrase').textContent;
 
       const fullMessage = [
         '✨ Разбор Урока 4: «Вернуть себе свою силу»',
