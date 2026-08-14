@@ -217,11 +217,11 @@
 
         <!-- Price & CTA Button -->
         <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; border-top:1px solid rgba(14,31,46,0.08); padding-top:16px;">
-          <div style="text-align:left;">
+          <div id="priceContainer" style="text-align:left;">
             <span id="mainPrice" style="font-size:26px; font-weight:900; line-height:1; color:var(--nb-deep); display:block;">2 400 ₽</span>
             <span id="oldPrice" style="font-size:12px; color:var(--nb-text-2); text-decoration:line-through;">5 000 ₽</span>
           </div>
-          <button id="btnBuy" onclick="handlePurchase()" class="primary-btn" style="flex:1;">
+          <button id="btnBuy" onclick="handlePurchase()" class="primary-btn pulse" style="flex:1; min-height:48px;">
             <span>Начать курс «Я выбираю» →</span>
           </button>
         </div>
@@ -337,6 +337,9 @@
     // Purchase via Notibot Bridge SDK
     function handlePurchase() {
       safeHaptic('success');
+      try {
+        localStorage.setItem('psy_course_purchased', 'true');
+      } catch(e){}
       const isExpired = Date.now() >= expireTime;
       const productId = isExpired ? 'course_partner_5000' : 'course_partner_2400';
       if (window.notibot && typeof window.notibot.openProduct === 'function') {
@@ -346,10 +349,51 @@
       }
     }
 
-    // 5-Second Delayed Reveal for Gift Meditation Block
+    // Check if course is already purchased or started
+    function checkPurchasedState() {
+      const isPurchased = localStorage.getItem('psy_course_purchased') === 'true' || 
+                          localStorage.getItem('psyquest_lesson5_synthesis_done') === 'true' ||
+                          localStorage.getItem('lesson1_inpFact') !== null ||
+                          localStorage.getItem('psyquest_lesson4_ai_done') === 'true';
+
+      if (isPurchased) {
+        // Reveal sections immediately
+        showOfferCard();
+        const giftSec = document.getElementById('giftMeditationSection');
+        if (giftSec) {
+          giftSec.style.display = 'block';
+          giftSec.style.opacity = '1';
+          giftSec.style.transform = 'translateY(0)';
+        }
+
+        const priceWrap = document.getElementById('priceContainer');
+        const btnBuy = document.getElementById('btnBuy');
+        const timerWrap = document.getElementById('timerBadgeWrap');
+
+        if (timerWrap) {
+          timerWrap.innerHTML = '<span style="color:var(--success); font-weight:800;">✓ Доступ к курсу открыт</span>';
+        }
+        if (priceWrap) {
+          priceWrap.style.display = 'none';
+        }
+        if (btnBuy) {
+          btnBuy.className = 'primary-btn pulse';
+          btnBuy.style.width = '100%';
+          btnBuy.innerHTML = '<span>Посмотреть уроки снова →</span>';
+          btnBuy.onclick = function() {
+            safeHaptic('selection');
+            window.location.href = '03_lesson1.html';
+          };
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', checkPurchasedState);
+
+    // 5-Second Delayed Reveal for Gift Meditation Block (if not already opened)
     setTimeout(function() {
       const giftSec = document.getElementById('giftMeditationSection');
-      if (giftSec) {
+      if (giftSec && giftSec.style.display !== 'block') {
         giftSec.style.display = 'block';
         requestAnimationFrame(function() {
           giftSec.style.opacity = '1';
