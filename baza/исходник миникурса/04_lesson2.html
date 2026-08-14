@@ -52,34 +52,81 @@
   </script>
 
   <style>
-    /* Scale segment styles */
-    .scale-row {
+    /* Mobile Range Slider Styles */
+    .touch-slider-container {
+      background: #FFFFFF;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(36, 49, 57, 0.08);
+      box-shadow: 0 4px 14px rgba(18, 68, 83, 0.03);
+    }
+    .slider-header {
       display: flex;
       justify-content: space-between;
-      gap: 6px;
-      margin: 8px 0;
-    }
-    .scale-btn {
-      flex: 1;
-      height: 38px;
-      border-radius: 10px;
-      border: 1px solid rgba(36, 49, 57, 0.14);
-      background: #FFFFFF;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--nb-deep);
-      display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-bottom: 6px;
     }
-    .scale-btn.active {
+    .slider-val-badge {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 8px;
+      background: rgba(18, 68, 83, 0.08);
+      color: var(--nb-sea);
+      min-width: 38px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .slider-val-badge.touched {
       background: var(--nb-sea);
       color: #FFFFFF;
-      border-color: var(--nb-sea);
-      box-shadow: 0 4px 12px rgba(18, 68, 83, 0.2);
-      transform: scale(1.04);
+      box-shadow: 0 2px 8px rgba(18, 68, 83, 0.25);
+    }
+    .touch-range {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: #E2E8F0;
+      outline: none;
+      margin: 12px 0 6px;
+      cursor: pointer;
+    }
+    .touch-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 3.5px solid var(--nb-sea);
+      box-shadow: 0 4px 12px rgba(18, 68, 83, 0.28);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .touch-range::-webkit-slider-thumb:active {
+      transform: scale(1.22);
+      box-shadow: 0 6px 20px rgba(18, 68, 83, 0.4);
+      border-color: var(--nb-terracotta);
+    }
+    .touch-range::-moz-range-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 3.5px solid var(--nb-sea);
+      box-shadow: 0 4px 12px rgba(18, 68, 83, 0.28);
+      cursor: pointer;
+    }
+    .slider-ticks {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--nb-slate);
+      margin-top: 4px;
     }
     .scale-labels {
       display: flex;
@@ -317,7 +364,7 @@
         </section>
 
         <!-- -----------------------------------------
-             STAGE 3: BODY REACTION (5 SCALES 0..4)
+             STAGE 3: BODY REACTION (5 TOUCH SLIDERS 0..4)
              ----------------------------------------- -->
         <section id="stage3Card" class="glass card" style="display:none; flex-direction:column; gap:14px;">
           <div class="step-dots">
@@ -330,91 +377,111 @@
           <div class="eyebrow" style="margin-bottom:2px;">Шаг 3 из 5 • Реакция тела</div>
           <h3 class="question-title" style="font-size:16px; margin:0;">Реакция вашего тела</h3>
           <p class="lead" style="font-size:12.5px; margin:0; color:var(--nb-slate);">
-            Отметьте своё обычное состояние рядом с этим человеком или после общения с ним:
+            Передвигайте ползунок пальцем, отмечая своё состояние рядом с этим человеком или после общения:
           </p>
 
-          <!-- Scale 1 -->
-          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">1. Дыхание</div>
+          <!-- Slider 1 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">1. Дыхание</span>
+              <span id="sliderVal1" class="slider-val-badge">0 / 4</span>
+            </div>
             <div class="scale-labels">
               <span>Свободное и ровное</span>
               <span>Поверхностное / сбивается</span>
             </div>
-            <div class="scale-row">
-              <button onclick="setScale(1, 0, this)" class="scale-btn">0</button>
-              <button onclick="setScale(1, 1, this)" class="scale-btn">1</button>
-              <button onclick="setScale(1, 2, this)" class="scale-btn">2</button>
-              <button onclick="setScale(1, 3, this)" class="scale-btn">3</button>
-              <button onclick="setScale(1, 4, this)" class="scale-btn">4</button>
+            <input type="range" id="range1" min="0" max="4" step="1" value="0" oninput="handleSliderChange(1, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0</span>
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
             </div>
           </div>
 
-          <!-- Scale 2 -->
-          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">2. Плечи и челюсть</div>
+          <!-- Slider 2 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">2. Плечи и челюсть</span>
+              <span id="sliderVal2" class="slider-val-badge">0 / 4</span>
+            </div>
             <div class="scale-labels">
               <span>Расслаблены</span>
               <span>Заметно напрягаются</span>
             </div>
-            <div class="scale-row">
-              <button onclick="setScale(2, 0, this)" class="scale-btn">0</button>
-              <button onclick="setScale(2, 1, this)" class="scale-btn">1</button>
-              <button onclick="setScale(2, 2, this)" class="scale-btn">2</button>
-              <button onclick="setScale(2, 3, this)" class="scale-btn">3</button>
-              <button onclick="setScale(2, 4, this)" class="scale-btn">4</button>
+            <input type="range" id="range2" min="0" max="4" step="1" value="0" oninput="handleSliderChange(2, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0</span>
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
             </div>
           </div>
 
-          <!-- Scale 3 -->
-          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">3. Внимание</div>
+          <!-- Slider 3 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">3. Внимание</span>
+              <span id="sliderVal3" class="slider-val-badge">0 / 4</span>
+            </div>
             <div class="scale-labels">
               <span>Присутствую в общении</span>
               <span>Постоянно слежу за реакцией</span>
             </div>
-            <div class="scale-row">
-              <button onclick="setScale(3, 0, this)" class="scale-btn">0</button>
-              <button onclick="setScale(3, 1, this)" class="scale-btn">1</button>
-              <button onclick="setScale(3, 2, this)" class="scale-btn">2</button>
-              <button onclick="setScale(3, 3, this)" class="scale-btn">3</button>
-              <button onclick="setScale(3, 4, this)" class="scale-btn">4</button>
+            <input type="range" id="range3" min="0" max="4" step="1" value="0" oninput="handleSliderChange(3, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0</span>
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
             </div>
           </div>
 
-          <!-- Scale 4 -->
-          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">4. Состояние после встречи</div>
+          <!-- Slider 4 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">4. Состояние после встречи</span>
+              <span id="sliderVal4" class="slider-val-badge">0 / 4</span>
+            </div>
             <div class="scale-labels">
               <span>Спокойствие и ясность</span>
               <span>Тревога и прокручивание</span>
             </div>
-            <div class="scale-row">
-              <button onclick="setScale(4, 0, this)" class="scale-btn">0</button>
-              <button onclick="setScale(4, 1, this)" class="scale-btn">1</button>
-              <button onclick="setScale(4, 2, this)" class="scale-btn">2</button>
-              <button onclick="setScale(4, 3, this)" class="scale-btn">3</button>
-              <button onclick="setScale(4, 4, this)" class="scale-btn">4</button>
+            <input type="range" id="range4" min="0" max="4" step="1" value="0" oninput="handleSliderChange(4, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0</span>
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
             </div>
           </div>
 
-          <!-- Scale 5 -->
-          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
-            <div style="font-size:12.5px; font-weight:800; color:var(--nb-deep); margin-bottom:4px;">5. Реакция на паузу</div>
+          <!-- Slider 5 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">5. Реакция на паузу</span>
+              <span id="sliderVal5" class="slider-val-badge">0 / 4</span>
+            </div>
             <div class="scale-labels">
               <span>Спокойно занимаюсь делами</span>
               <span>Хочется проверить / написать</span>
             </div>
-            <div class="scale-row">
-              <button onclick="setScale(5, 0, this)" class="scale-btn">0</button>
-              <button onclick="setScale(5, 1, this)" class="scale-btn">1</button>
-              <button onclick="setScale(5, 2, this)" class="scale-btn">2</button>
-              <button onclick="setScale(5, 3, this)" class="scale-btn">3</button>
-              <button onclick="setScale(5, 4, this)" class="scale-btn">4</button>
+            <input type="range" id="range5" min="0" max="4" step="1" value="0" oninput="handleSliderChange(5, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0</span>
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
             </div>
           </div>
 
           <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
-            <button id="btnStage3Next" onclick="goToStage(4)" class="primary-btn" style="width:100%; opacity:0.6;" disabled>
+            <button id="btnStage3Next" onclick="goToStage(4)" class="primary-btn pulse" style="width:100%;">
               <span>Перейти к поступкам →</span>
             </button>
             <button onclick="goToStage(2)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
@@ -725,7 +792,7 @@
     // INTERACTIVE STATE & STAGES
     // ==========================================
     let userSituation = '';
-    let scaleAnswers = { 1: null, 2: null, 3: null, 4: null, 5: null };
+    let scaleAnswers = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
     let actionAnswers = { 1: undefined, 2: undefined, 3: undefined, 4: undefined, 5: undefined };
     let selectedCriteria = [];
     let customCriteriaText = '';
@@ -763,19 +830,15 @@
       }
     }
 
-    // Stage 3 Scales (0..4)
-    function setScale(qIndex, val, el) {
+    // Stage 3 Touch Slider Handler (0..4)
+    function handleSliderChange(qIndex, val) {
       safeHaptic('selection');
-      scaleAnswers[qIndex] = val;
-      const parentRow = el.parentElement;
-      parentRow.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('active'));
-      el.classList.add('active');
-
-      const allSet = [1,2,3,4,5].every(i => scaleAnswers[i] !== null);
-      const btn = document.getElementById('btnStage3Next');
-      if (allSet) {
-        btn.disabled = false;
-        btn.style.opacity = '1';
+      const num = parseInt(val, 10);
+      scaleAnswers[qIndex] = num;
+      const badge = document.getElementById('sliderVal' + qIndex);
+      if (badge) {
+        badge.textContent = num + ' / 4';
+        badge.classList.add('touched');
       }
     }
 
