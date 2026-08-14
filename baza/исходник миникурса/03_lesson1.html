@@ -59,84 +59,129 @@
   <main class="app-shell">
     <div class="app">
 
-      <!-- Navigation Bar -->
-      <header class="header">
-        <a href="02_landing_partner.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
-          ← Назад к курсу
-        </a>
-        <div class="strategy-badge">Урок 1 из 5</div>
+      <!-- Navigation & Progress Bar (20% | 1 из 5) -->
+      <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
+        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+          <a href="02_landing_partner.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+            ← К курсу
+          </a>
+          <div class="strategy-badge" style="margin:0;">
+            1 из 5 • 20%
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div style="width:100%; height:6px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
+          <div style="width:20%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px; transition:width 0.4s ease;"></div>
+        </div>
       </header>
 
-      <!-- Video Card -->
-      <section class="glass card text-center">
-        <div class="eyebrow" style="margin-bottom:8px;">Урок 1 из 5</div>
-        <h2>Молчание, которое запускает ваш сценарий</h2>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Как один факт превращается в тревогу, догадки и попытку догнать человека.</p>
+      <!-- ==========================================
+           SCREEN 1: VIDEO & 20s INSIGHT
+           ========================================== -->
+      <div id="step1VideoScreen" style="display:flex; flex-direction:column; gap:14px;">
 
-        <!-- Video Player Wrapper (Kinescope) -->
-        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-          <iframe src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-        </div>
+        <!-- Video Card -->
+        <section class="glass card text-center">
+          <div class="eyebrow" style="margin-bottom:8px;">Урок 1 из 5</div>
+          <h2>Молчание, которое запускает ваш сценарий</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как один факт превращается в тревогу, догадки и попытку догнать человека.</p>
 
-        <div style="margin-top:14px; padding:14px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); text-align:left;">
-          <strong style="color:var(--nb-sea); font-size:12px; display:block; margin-bottom:4px;">💡 Главный инсайт урока:</strong>
-          <span style="font-size:13px; color:var(--nb-text); line-height:1.45;">
-            Человек не отвечает 30 минут — это сухой факт. Всё остальное («он потерял интерес», «со мной что-то не так») — это фантазия испуганного мозга. Написав импульсивное сообщение, вы получаете сиюминутное облегчение, но отдаете инициативу.
-          </span>
-        </div>
-      </section>
-
-      <!-- Interactive 5-Step AI Strategy Tool (From transcript) -->
-      <section class="glass card">
-        <div class="eyebrow" style="margin-bottom:8px;">Практика</div>
-        <h3 class="question-title">Практика: «Карта моего сценария»</h3>
-        <p class="lead" style="font-size:13px; margin-bottom:14px;">Заполните 5 пунктов формулы Анатолия Фёдорова, чтобы подсветить узловую точку сценария</p>
-
-        <form id="strategyForm" onsubmit="analyzeStrategy(event)" style="display:flex; flex-direction:column; gap:12px;">
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">1. Реальный факт (Что произошло?):</label>
-            <input type="text" id="inpFact" required placeholder="Например: Он не отвечает на сообщение 40 минут" />
+          <!-- Video Player Wrapper (Kinescope) -->
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="lesson1VideoIframe" src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
           </div>
+        </section>
 
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">2. Я становлюсь той, которая... (Чувства и мысли):</label>
-            <input type="text" id="inpFeeling" required placeholder="Например: Боится потери, накручивает себя" />
+        <!-- Insight & Actions Card (Appears strictly after 20 seconds) -->
+        <section id="insightSection" class="glass card text-center" style="display:none; opacity:0; transform:translateY(16px); transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+            💡 Главный вывод
           </div>
+          <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
+          <p class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
+            Человек не отвечает 30 минут — это факт. Всё остальное пока только ваши предположения. Когда вы разделяете факт и интерпретацию, тревога перестаёт управлять вашими действиями.
+          </p>
 
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">3. Поэтому я начинаю... (Твои действия):</label>
-            <input type="text" id="inpAction" required placeholder="Например: Мониторю статус, пишу «ты куда пропал?»" />
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <a href="https://cloud.amvera.ru/projects/applications/msk0/inter01/list1-1.pdf" download="Чек-лист_Урок1.pdf" target="_blank" onclick="safeHaptic('selection');" class="secondary-btn" style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px;">
+              <span>📥 Скачать Чек-лист</span>
+            </a>
+            
+            <button onclick="goToStep2()" class="primary-btn pulse" style="width:100%;">
+              <span>Заполнить чек-лист ➔</span>
+            </button>
           </div>
+        </section>
 
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">4. Сразу это мне дает чувство... (Облегчение):</label>
-            <input type="text" id="inpRelief" required placeholder="Например: Иллюзия контроля, спад напряжения" />
-          </div>
-
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">5. В итоге я получаю... (Фактический результат):</label>
-            <input type="text" id="inpResult" required placeholder="Например: Роль догоняющей, холодность партнера" />
-          </div>
-
-          <button type="submit" id="btnSubmitStrategy" class="primary-btn pulse" style="margin-top:6px;">
-            Разобрать сценарий с ИИ ➔
-          </button>
-        </form>
-
-        <!-- AI Feedback -->
-        <div id="aiResultBlock" class="hidden" style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:8px;">
-          <strong style="color:var(--nb-deep); font-size:13px;">✨ Ответ ИИ-помощника:</strong>
-          <div id="aiAnalysisText" style="font-size:13px; color:var(--nb-text); line-height:1.5; white-space:pre-line;"></div>
-        </div>
-      </section>
-
-      <!-- Next Step Navigation -->
-      <div style="padding-top:4px;">
-        <button onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="secondary-btn">
-          <span>Перейти к Уроку 2: Бабочки или тревога? ➔</span>
-        </button>
       </div>
 
+      <!-- ==========================================
+           SCREEN 2: INTERACTIVE PRACTICE (5 STEPS)
+           ========================================== -->
+      <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
+
+        <!-- Back to Video Button -->
+        <div>
+          <button onclick="goToStep1()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
+            ← Назад к видео урока
+          </button>
+        </div>
+
+        <!-- Interactive 5-Step AI Strategy Tool -->
+        <section class="glass card">
+          <div class="eyebrow" style="margin-bottom:8px;">Практика</div>
+          <h3 class="question-title">Практика: «Карта моего сценария»</h3>
+          <p class="lead" style="font-size:13px; margin-bottom:14px;">Заполните 5 пунктов формулы Анатолия Фёдорова, чтобы подсветить узловую точку сценария</p>
+
+          <form id="strategyForm" onsubmit="analyzeStrategy(event)" style="display:flex; flex-direction:column; gap:12px;">
+            <div>
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">1. Реальный факт (Что произошло?):</label>
+              <input type="text" id="inpFact" required placeholder="Например: Он не отвечает на сообщение 40 минут" />
+            </div>
+
+            <div>
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">2. Я становлюсь той, которая... (Чувства и мысли):</label>
+              <input type="text" id="inpFeeling" required placeholder="Например: Боится потери, накручивает себя" />
+            </div>
+
+            <div>
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">3. Поэтому я начинаю... (Твои действия):</label>
+              <input type="text" id="inpAction" required placeholder="Например: Мониторю статус, пишу «ты куда пропал?»" />
+            </div>
+
+            <div>
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">4. Сразу это мне дает чувство... (Облегчение):</label>
+              <input type="text" id="inpRelief" required placeholder="Например: Иллюзия контроля, спад напряжения" />
+            </div>
+
+            <div>
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">5. В итоге я получаю... (Фактический результат):</label>
+              <input type="text" id="inpResult" required placeholder="Например: Роль догоняющей, холодность партнера" />
+            </div>
+
+            <button type="submit" id="btnSubmitStrategy" class="primary-btn pulse" style="margin-top:6px;">
+              <span>Разобрать сценарий с Интеллектуальным попутчиком ➔</span>
+            </button>
+          </form>
+
+          <!-- AI Feedback -->
+          <div id="aiResultBlock" class="hidden" style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:8px;">
+            <strong style="color:var(--nb-deep); font-size:13px;">✨ Ответ Интеллектуального попутчика:</strong>
+            <div id="aiAnalysisText" style="font-size:13px; color:var(--nb-text); line-height:1.5; white-space:pre-line;"></div>
+          </div>
+        </section>
+
+        <!-- Next Step Navigation -->
+        <div style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="primary-btn">
+            <span>Переходим ко второму уроку ➔</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
       <footer class="subtle text-center py-2" style="font-size:11px;">
         © Анатолий Фёдоров • ПСИквест
       </footer>
@@ -145,6 +190,51 @@
   </main>
 
   <script>
+    // 20-Second Delayed Reveal for Insight Section
+    setTimeout(function() {
+      const insight = document.getElementById('insightSection');
+      if (insight) {
+        insight.style.display = 'block';
+        requestAnimationFrame(function() {
+          insight.style.opacity = '1';
+          insight.style.transform = 'translateY(0)';
+        });
+        safeHaptic('selection');
+      }
+    }, 20000);
+
+    // Transition from Video (Screen 1) to Interactive Practice (Screen 2)
+    function goToStep2() {
+      safeHaptic('selection');
+      pauseVideo();
+      document.getElementById('step1VideoScreen').style.display = 'none';
+      const s2 = document.getElementById('step2InteractiveScreen');
+      s2.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Return to Video Screen (Screen 1)
+    function goToStep1() {
+      safeHaptic('selection');
+      document.getElementById('step2InteractiveScreen').style.display = 'none';
+      document.getElementById('step1VideoScreen').style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Pause Kinescope Video Player
+    function pauseVideo() {
+      const iframe = document.getElementById('lesson1VideoIframe');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+          iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+        } catch (e) {
+          console.log('Pause message error:', e);
+        }
+      }
+    }
+
+    // AI Strategy Analysis
     async function analyzeStrategy(e) {
       e.preventDefault();
       safeHaptic('impactLight');
@@ -173,12 +263,12 @@
         showAiFallback(payload);
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Разобрать сценарий с ИИ ➔';
+        btn.textContent = 'Разобрать сценарий с Интеллектуальным попутчиком ➔';
       }
     }
 
     function showAiFallback(p) {
-      const fallback = `🔍 Точный разбор твоего сценария:\n\n• Факт: «${p.fact}» — в реальности произошло только это.\n• Ловушка: Мозг подменил факт тревогой («${p.feeling}») и толкнул на реактивное действие («${p.action}»).\n• Цена иллюзии контроля: Быстрое облегчение («${p.relief}») привело к нежелательному результату («${p.result}»).\n\nНа 2-м уроке мы научимся отслеживать этот импульс в теле и делать заземляющую паузу.`;
+      const fallback = `🔍 Точный разбор вашего сценария:\n\n• ФАКТ: «${p.fact}» — это объективная реальность без домыслов.\n• ЛОВУШКА ИНТЕРПРЕТАЦИИ: Мозг подменил факт тревогой («${p.feeling}») и запустил автоматическое действие («${p.action}»).\n• ЦЕНА ИЛЛЮЗИИ КОНТРОЛЯ: Мгновенное облегчение («${p.relief}») закрепило нежелательный результат («${p.result}»).\n\n💡 На 2-м уроке мы научимся замечать этот соматический спазм в теле и выбирать новое действие.`;
       showAiResult(fallback);
     }
 
@@ -189,6 +279,7 @@
       textContainer.textContent = text;
       block.classList.remove('hidden');
       block.style.display = 'flex';
+      block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   </script>
 
