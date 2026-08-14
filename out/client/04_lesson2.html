@@ -683,13 +683,41 @@
             </button>
           </div>
 
-          <!-- AI Result Output Block -->
-          <div id="aiResultBlock" class="glass card hidden" style="display:none; flex-direction:column; gap:10px; border-left:4px solid var(--nb-terracotta);">
-            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+          <!-- AI Result Output Block (3 Distinct Visual Subcards) -->
+          <div id="aiResultBlock" class="glass card hidden" style="display:none; flex-direction:column; gap:12px; border-left:4px solid var(--nb-terracotta);">
+            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25); align-self:flex-start;">
               💡 Разбор Интеллектуального попутчика
             </div>
-            <div id="aiAnalysisText" style="font-size:13.5px; line-height:1.55; color:var(--nb-text); white-space:pre-line;">
-              Попутчик формирует персональный разбор вашей карты притяжения...
+
+            <!-- Block 1: Body -->
+            <div style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
+              <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>🫀</span> <span>Что показывает тело</span>
+              </div>
+              <p id="aiBodyText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
+              </p>
+            </div>
+
+            <!-- Block 2: Behavior -->
+            <div style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
+              <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>👣</span> <span>Что показывают поступки</span>
+              </div>
+              <p id="aiBehaviorText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
+              </p>
+            </div>
+
+            <!-- Block 3: Focus -->
+            <div style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
+              <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>🎯</span> <span>На что обратить внимание</span>
+              </div>
+              <p id="aiFocusText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
+              </p>
+            </div>
+
+            <div id="aiCreditsDepletedNotice" style="display:none; margin-top:4px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">
+              🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей помощью.
             </div>
           </div>
 
@@ -1085,7 +1113,9 @@
         situation: userSituation,
         bodyScore: 10,
         bodyLevel: 'умеренное',
+        bodyLevelDisplay: 'умеренная',
         actionsClarity: 'противоречивые сигналы',
+        actionsClarityDisplay: 'противоречивые сигналы',
         criteria: selectedCriteria,
         resultTitle: 'Карта притяжения',
         resultText: '',
@@ -1094,8 +1124,8 @@
 
       try {
         const data = await window.apiPost('/api/lesson2-strategy', payload);
-        if (data && (data.analysis || data.result)) {
-          showAiResult(data.analysis || JSON.stringify(data.result));
+        if (data && data.result) {
+          showAiResult(data.result);
         } else {
           showAiFallback(payload);
         }
@@ -1112,24 +1142,65 @@
       }
     }
 
-    function showAiFallback(p) {
-      const fallback = `🔍 **Разбор «Карты притяжения» с Попутчиком:**\n\n• **Что показывает тело**: Реакция тела (${p.bodyLevel || 'умеренная'}) сигнализирует о включении нервной системы в неопределённость контакта.\n• **Что подтверждают поступки**: В поведении человека (${p.actionsClarity || 'противоречивые сигналы'}) пока не хватает устойчивой последовательности.\n• **На что обратить внимание при следующих встречах**: Сверяйтесь с вашими главными ориентирами (${(p.criteria || []).join(', ') || 'надёжность, ясность, уважение'}). Отслеживайте, расслабляются ли плечи и челюсть, и подтверждает ли человек слова делами без вашей спешки.`;
-      showAiResult(fallback);
+    function cleanMarkdownText(str) {
+      if (!str || typeof str !== 'string') return '';
+      return str
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/\*(.*?)\*/g, '$1')
+        .replace(/__(.*?)__/g, '$1')
+        .replace(/_(.*?)_/g, '$1')
+        .replace(/#+\s*/g, '')
+        .replace(/^•\s*/gm, '')
+        .replace(/`+/g, '')
+        .trim();
     }
 
-    function showAiResult(text) {
+    function showAiFallback(p) {
+      const criteriaStr = (p.criteria || []).join(', ') || 'эмоциональная доступность, взаимная инициатива и способность обсуждать сложное';
+      const fallbackObj = {
+        body: p.bodyLevel === 'выраженное'
+          ? `Телесное напряжение выраженное. Оно может сопровождать и сильное притяжение, и тревожную неопределённость, поэтому одной реакции тела пока недостаточно для вывода о совместимости.`
+          : (p.bodyLevel === 'низкое'
+            ? `Телесное напряжение низкое, дыхание и тело остаются спокойными. Такое спокойствие может свидетельствовать о безопасности контакта, но само по себе требует наблюдения за динамикой общения.`
+            : `Телесное напряжение умеренное. Оно может сопровождать и интерес к человеку, и реакцию на паузы в общении, поэтому только по реакции тела пока рано делать выводы.`),
+        behavior: p.actionsClarity === 'достаточно последовательное поведение'
+          ? `В поведении человека прослеживается достаточная последовательность и инициатива. Его слова подкрепляются конкретными поступками и договоренностями.`
+          : (p.actionsClarity === 'мало последовательности'
+            ? `В поведении человека пока мало последовательности и ясности. Сейчас недостаточно фактов, чтобы считать контакт устойчивым и надежным.`
+            : `Сигналы и поступки человека пока противоречивы: проявления внимания сменяются дистанцией. Для понимания ситуации требуется больше времени и фактов.`),
+        focus: `Ваши главные ориентиры: ${criteriaStr}. Во время следующих контактов наблюдайте, проявляет ли человек инициативу, совпадают ли его слова с поступками и становится ли вам спокойнее после общения.`
+      };
+      showAiResult(fallbackObj);
+    }
+
+    function showAiResult(resultData) {
       safeHaptic('success');
       const block = document.getElementById('aiResultBlock');
-      const textContainer = document.getElementById('aiAnalysisText');
-      
-      let htmlContent = text;
-      if (aiCredits <= 0) {
-        htmlContent += '\n\n<div style="margin-top:14px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей помощью.</div>';
-        textContainer.innerHTML = htmlContent;
-      } else {
-        textContainer.textContent = htmlContent;
+      const bodyEl = document.getElementById('aiBodyText');
+      const behaviorEl = document.getElementById('aiBehaviorText');
+      const focusEl = document.getElementById('aiFocusText');
+      const noticeEl = document.getElementById('aiCreditsDepletedNotice');
+
+      let parsed = resultData;
+      if (typeof resultData === 'string') {
+        try {
+          parsed = JSON.parse(resultData);
+        } catch (e) {
+          parsed = { body: resultData, behavior: '', focus: '' };
+        }
       }
+
+      if (bodyEl) bodyEl.textContent = cleanMarkdownText(parsed?.body || '');
+      if (behaviorEl) behaviorEl.textContent = cleanMarkdownText(parsed?.behavior || parsed?.actions || '');
+      if (focusEl) focusEl.textContent = cleanMarkdownText(parsed?.focus || '');
+
+      if (noticeEl) {
+        noticeEl.style.display = aiCredits <= 0 ? 'block' : 'none';
+      }
+
       block.classList.remove('hidden');
+      block.style.display = 'flex';
+
       revealNextLessonBtn();
       const btn3 = document.getElementById('btnNextLesson3');
       if (btn3) {
