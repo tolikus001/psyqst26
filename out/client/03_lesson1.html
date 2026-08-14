@@ -19,6 +19,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="theme.css">
+  <script src="leaves-bg.js"></script>
+  <script src="telegram-user.js"></script>
+  <script src="api-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://list.notibot.ru/notibot-bridge.js"></script>
@@ -51,6 +54,7 @@
   </script>
 </head>
 <body>
+  <div id="maisonArtBackground" aria-hidden="true"></div>
 
   <main class="app-shell">
     <div class="app">
@@ -157,19 +161,13 @@
         action: document.getElementById('inpAction').value,
         relief: document.getElementById('inpRelief').value,
         result: document.getElementById('inpResult').value,
-        userName: 'Участник'
+        userName: window.currentUserName || 'Участник'
       };
 
       try {
-        const res = await fetch('/api/lesson1-strategy', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          showAiResult(data.analysis);
+        const data = await window.apiPost('/api/lesson1-strategy', payload);
+        if (data && (data.analysis || data.result)) {
+          showAiResult(data.analysis || JSON.stringify(data.result));
         } else {
           showAiFallback(payload);
         }

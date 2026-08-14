@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="theme.css">
   <script src="leaves-bg.js"></script>
   <script src="telegram-user.js"></script>
+  <script src="api-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://list.notibot.ru/notibot-bridge.js"></script>
@@ -363,17 +364,13 @@
       }
 
       try {
-        const response = await fetch('/api/psyquest', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ answers: userAnswers, userName: 'Участник' })
+        const data = await window.apiPost('/api/psyquest', { 
+          answers: userAnswers, 
+          userName: window.currentUserName || 'Участник' 
         });
-        if (response.ok) {
-          const data = await response.json();
-          if (data.route) finalRoute = data.route;
-        }
+        if (data && data.route) finalRoute = data.route;
       } catch (e) {
-        console.log('Using direct client analysis fallback:', e);
+        console.log('Using calculated score route:', finalRoute);
       }
 
       setTimeout(() => {

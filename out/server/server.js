@@ -3,6 +3,35 @@ const fs = require('fs');
 const path = require('path');
 const { URL } = require('url');
 
+// Auto-load .env file without external dependencies
+function loadEnv() {
+  const envPaths = [
+    path.join(__dirname, '.env'),
+    path.join(__dirname, '..', '.env'),
+    path.join(__dirname, '..', '..', '.env')
+  ];
+  for (const envPath of envPaths) {
+    try {
+      if (fs.existsSync(envPath)) {
+        const content = fs.readFileSync(envPath, 'utf8');
+        content.split('\n').forEach(line => {
+          const trimmed = line.trim();
+          if (trimmed && !trimmed.startsWith('#') && trimmed.includes('=')) {
+            const idx = trimmed.indexOf('=');
+            const key = trimmed.slice(0, idx).trim();
+            const val = trimmed.slice(idx + 1).trim().replace(/^['"]|['"]$/g, '');
+            if (!process.env[key]) {
+              process.env[key] = val;
+            }
+          }
+        });
+        break;
+      }
+    } catch (e) {}
+  }
+}
+loadEnv();
+
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const POLZA_URL = process.env.POLZA_URL || process.env.POLZA_BASE_URL || 'https://api.polza.ai/v1';
 const POLZA_API_KEY = process.env.POLZA_API_KEY || '';
