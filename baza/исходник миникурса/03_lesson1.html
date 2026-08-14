@@ -194,10 +194,10 @@
           </div>
         </section>
 
-        <!-- Next Step Navigation (Hidden until analysis is completed) -->
-        <div id="nextLessonBlock" style="display:none; padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="primary-btn pulse" style="width:100%;">
-            <span>Перейти к уроку 2 →</span>
+        <!-- Next Step Navigation (Appears after 3 seconds on Screen 2) -->
+        <div id="nextLessonBlock" style="display:none; opacity:0; transform:translateY(12px); transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); padding-top:4px;">
+          <button id="btnNextLesson2" onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="secondary-btn" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти ко второму уроку →</span>
           </button>
         </div>
 
@@ -225,6 +225,17 @@
       }
     }, 3000);
 
+    function revealNextLessonBtn() {
+      const nextBtn = document.getElementById('nextLessonBlock');
+      if (nextBtn) {
+        nextBtn.style.display = 'block';
+        requestAnimationFrame(function() {
+          nextBtn.style.opacity = '1';
+          nextBtn.style.transform = 'translateY(0)';
+        });
+      }
+    }
+
     // Transition from Video (Screen 1) to Interactive Practice (Screen 2)
     function goToStep2() {
       safeHaptic('selection');
@@ -233,6 +244,9 @@
       const s2 = document.getElementById('step2InteractiveScreen');
       s2.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Automatically reveal "Перейти ко второму уроку →" button after 3 seconds on Screen 2
+      setTimeout(revealNextLessonBtn, 3000);
     }
 
     // Return to Video Screen (Screen 1)
@@ -355,9 +369,11 @@
       block.classList.remove('hidden');
       block.style.display = 'flex';
 
-      // Reveal button to go to Lesson 2
-      if (nextBtn) {
-        nextBtn.style.display = 'block';
+      // Reveal and highlight button to go to Lesson 2
+      revealNextLessonBtn();
+      const btn2 = document.getElementById('btnNextLesson2');
+      if (btn2) {
+        btn2.className = 'primary-btn pulse';
       }
 
       block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
