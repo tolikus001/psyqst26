@@ -14,7 +14,7 @@
     " />
   <title>Куда движется ваша личная жизнь? — Анатолий Фёдоров</title>
 
-  <!-- Typography -->
+  <!-- Typography & Design System -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -46,23 +46,118 @@
             window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
           }
         } else if (navigator.vibrate) {
-          navigator.vibrate(25);
+          navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
         }
-      } catch (e) {
-        console.log('Haptic silent catch:', e);
-      }
+      } catch (e) {}
     }
   </script>
 
   <style>
     .screen { display: none; animation: enter 0.35s ease; }
     .screen.active { display: block; }
+
+    /* Checkbox & Options Styling matching original source */
+    .answers {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 18px 0 14px;
+    }
+
+    .answer {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1.5px solid rgba(110, 133, 121, 0.28);
+      color: #243139;
+      font-size: 15px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .answer:hover {
+      background: #FFFFFF;
+      border-color: #7F9B8E;
+    }
+
+    .answer.selected {
+      background: #E2EAE4 !important;
+      border-color: #5B7A6C !important;
+      color: #1A2621 !important;
+      font-weight: 500;
+    }
+
+    .answer-dot {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1.5px solid #7F9B8E;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .answer.selected .answer-dot {
+      background: #5B7A6C;
+      border-color: #5B7A6C;
+    }
+
+    .answer.selected .answer-dot::after {
+      content: "✓";
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    /* Custom Input Box matching original */
+    .custom-answer-wrap {
+      display: none;
+      margin-top: 10px;
+      animation: enter 0.25s ease;
+    }
+
+    .custom-answer-wrap.show {
+      display: block;
+    }
+
+    .custom-answer-wrap textarea {
+      width: 100%;
+      min-height: 84px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1.5px solid #7F9B8E;
+      background: #FFFFFF;
+      color: #243139;
+      font-size: 15px;
+      line-height: 1.45;
+      font-family: inherit;
+      outline: none;
+      resize: vertical;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .custom-answer-wrap textarea::placeholder {
+      color: #94A3B8;
+    }
+
     .spinner {
-      width: 38px; height: 38px;
-      border: 3px solid rgba(127, 155, 142, 0.2);
-      border-top-color: var(--nb-accent);
+      width: 42px; height: 42px;
+      border: 3.5px solid rgba(127, 155, 142, 0.2);
+      border-top-color: #B5663E;
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin 0.85s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
@@ -79,6 +174,7 @@
           <div id="userAvatar" class="avatar">?</div>
           <div style="min-width:0">
             <div id="userGreeting" class="greeting">Привет!</div>
+            <div class="subtle">Диагностика сценария</div>
           </div>
         </div>
       </header>
@@ -87,34 +183,40 @@
       <section id="progressWrap" class="progress-wrap glass card hidden">
         <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
         <div class="progress-meta">
-          <span id="progressLabel">Вопрос 1</span>
-          <span id="progressPercent">0%</span>
+          <span id="progressLabel">Вопрос 1 из 8</span>
+          <span id="progressPercent">13%</span>
         </div>
       </section>
 
       <!-- SCREEN 1: Hero Cover Screen -->
       <section id="screenWelcome" class="screen active glass hero">
-        <div class="eyebrow">2–3 минуты<br>персональный результат</div>
+        <div class="eyebrow">2–3 минуты • ИИ-анализ</div>
         <h1>Куда движется ваша личная жизнь?</h1>
         <p class="lead">Узнайте, что запускает повторяющиеся ситуации и где находится Ваша точка выбора.</p>
 
-        <div class="choice-notice">
-          Можно выбрать до трёх вариантов ответа
+        <div class="choice-notice" style="margin-top:14px;">
+          Можно выбрать до трёх вариантов ответа или написать свой
         </div>
 
-        <button onclick="startQuiz()" id="startBtn" class="primary-btn" type="button">
-          Узнать свой сценарий
+        <button onclick="startQuiz()" id="startBtn" class="primary-btn" type="button" style="margin-top:16px;">
+          Узнать свой сценарий ➔
         </button>
       </section>
 
       <!-- SCREEN 2: Question Screen -->
       <section id="screenQuestion" class="screen glass card">
-        <div id="questionCategory" class="choice-notice">Контекст</div>
+        <div id="questionCategory" class="choice-notice">Текущая ситуация</div>
         <h2 id="questionText" class="question-title">Что сейчас беспокоит Вас в отношениях?</h2>
         
+        <!-- Answers Container -->
         <div id="answersList" class="answers"></div>
 
-        <div class="nav-row">
+        <!-- Custom Answer Textarea (matches source) -->
+        <div id="customAnswerWrap" class="custom-answer-wrap">
+          <textarea id="customAnswerInput" placeholder="Напишите свой вариант здесь" oninput="handleCustomInput()"></textarea>
+        </div>
+
+        <div class="nav-row" style="margin-top:18px;">
           <button id="btnBack" onclick="prevQuestion()" class="secondary-btn">Назад</button>
           <button id="btnNext" onclick="nextQuestion()" disabled class="primary-btn">Дальше</button>
         </div>
@@ -124,15 +226,17 @@
       <section id="screenAnalyzing" class="screen glass card text-center py-10">
         <div class="flex flex-col items-center justify-center gap-3">
           <div class="spinner"></div>
-          <h2>Анализируем ответы...</h2>
-          <p class="lead">Система системно-поведенческого анализа определяет ваш сценарий</p>
+          <h2>ИИ анализирует ваши ответы...</h2>
+          <p class="lead" style="font-size:13px; max-width:320px; margin:0 auto;">
+            Система сопоставляет ваши выборы и персональные комментарии с 4-мя базовыми сценариями отношений Анатолия Фёдорова.
+          </p>
         </div>
       </section>
 
       <!-- SCREEN 4: Results Screen -->
       <section id="screenResult" class="screen glass card text-center">
         <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2);">
-          ✅ Анализ завершен
+          ✅ ИИ-Анализ завершен
         </div>
         
         <div style="margin-top:12px;">
@@ -140,12 +244,12 @@
           <h2 id="resTitle" style="color:var(--nb-sea); margin-top:4px;">Поиск и выбор партнёра</h2>
         </div>
 
-        <div style="padding:16px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); margin-top:12px; text-align:left;">
-          <p id="resSummary" style="font-size:14px; line-height:1.5; color:var(--nb-text); margin:0;">
+        <div style="padding:16px; border-radius:18px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); margin-top:14px; text-align:left;">
+          <p id="resSummary" style="font-size:14px; line-height:1.55; color:var(--nb-text); margin:0;">
             Когда ситуация становится неопределённой, вы стремитесь вернуть безопасность через немедленную ясность.
           </p>
           <div style="margin-top:12px; padding-top:10px; border-top:1px solid rgba(36,49,57,0.08);">
-            <strong style="font-size:12px; color:var(--nb-sea); display:block; margin-bottom:4px;">⚡ Узловой момент сценария:</strong>
+            <strong style="font-size:12px; color:var(--nb-sea); display:block; margin-bottom:4px;">⚡ Главная ловушка сценария:</strong>
             <p id="resDanger" class="subtle" style="font-size:13px; margin:0; line-height:1.45;">
               Вместо спокойного присматривания к человеку вы переходите в позицию «догоняющего» и отдаете инициативу.
             </p>
@@ -153,12 +257,12 @@
         </div>
 
         <div style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); text-align:left;">
-          <strong style="font-size:12px; color:var(--nb-deep); display:block; margin-bottom:3px;">🎁 Персональный маршрут готов:</strong>
-          <span class="subtle" style="font-size:12px;">Для вас открыт доступ к персональному видео-разбору Анатолия Фёдорова и медитации.</span>
+          <strong style="font-size:12px; color:var(--nb-deep); display:block; margin-bottom:3px;">🎁 Персональный видео-разбор готов:</strong>
+          <span id="resTransition" class="subtle" style="font-size:12px;">Для вас открыт доступ к видео-разбору Анатолия Фёдорова и практическому курсу «Новый сценарий».</span>
         </div>
 
         <button onclick="goToPersonalLanding()" class="primary-btn pulse" type="button" style="margin-top:16px;">
-          Открыть персональный разбор ➔
+          Перейти к видео-разбору ➔
         </button>
       </section>
 
@@ -170,6 +274,7 @@
   </main>
 
   <script>
+    // Exact 8 Questions from Source
     const questions = [
       {
         block: "Текущая ситуация",
@@ -177,101 +282,107 @@
         options: [
           { text: "В целом всё нормально, иногда есть недопонимание.", route: "family" },
           { text: "Не хватает тепла и ощущения близости.", route: "family" },
-          { text: "Была измена или угроза разрыва, мне до сих пор тяжело.", route: "crisis" },
-          { text: "Всё держится только на мне, я устала тянуть.", route: "emotions" },
+          { text: "Была измена, мне до сих пор плохо.", route: "crisis" },
+          { text: "Всё держится на мне.", route: "emotions" },
           { text: "Не понимаю, стоит ли продолжать эти отношения.", route: "crisis" },
-          { text: "Постоянно выбираю не тех: эмоциональные качели и холод.", route: "partner" }
+          { text: "То всё хорошо, то снова начинаются конфликты и напряжение.", route: "emotions" }
         ]
       },
       {
         block: "Ваша реакция",
-        text: "Если в отношениях возникает дистанция или холодность, что Вы обычно делаете?",
+        text: "Если в отношениях возникает пустота, что Вы обычно делаете?",
         options: [
-          { text: "Прямо спрашиваю, в чём дело, требую ясности.", route: "partner" },
+          { text: "Прямо спрашиваю, в чём дело.", route: "family" },
           { text: "Ищу способ мягко поговорить и снова стать ближе.", route: "family" },
-          { text: "Начинаю больше стараться и подстраиваться.", route: "emotions" },
+          { text: "Начинаю больше стараться и опять всё вытягиваю на себе.", route: "emotions" },
           { text: "Наблюдаю и пытаюсь понять, что изменилось.", route: "family" },
-          { text: "Злюсь и начинаю предъявлять претензии.", route: "emotions" },
-          { text: "Закрываюсь в себе, думаю, что близости и не было.", route: "crisis" }
+          { text: "Злюсь и начинаю предъявлять претензии.", route: "family" },
+          { text: "Думаю, что близости между нами и не было.", route: "crisis" }
         ]
       },
       {
-        block: "Внутренний диалог",
-        text: "Какие мысли появляются, когда чувствуете, что назревает конфликт?",
+        block: "Мысли",
+        text: "Какие мысли появляются, когда чувствуете, что скоро рванёт?",
         options: [
           { text: "Если я сейчас хоть что-то не сделаю, всему конец.", route: "crisis" },
           { text: "Надо спокойно поговорить — разберёмся.", route: "family" },
-          { text: "Надо быть мягче и мудрее, и всё наладится.", route: "emotions" },
-          { text: "Сначала надо заземлиться и прийти в себя.", route: "partner" },
-          { text: "Похоже, опять только мне одной это нужно.", route: "emotions" },
-          { text: "Почему меня вечно тянет к тем, с кем трудно?", route: "partner" }
+          { text: "Надо быть мягче и мудрее, и всё станет как раньше.", route: "emotions" },
+          { text: "Сначала надо разобраться с собой и прийти в себя.", route: "crisis" },
+          { text: "Подумаю, соберу факты, поговорю с подругами и потом решу.", route: "crisis" },
+          { text: "Похоже, опять только мне это и надо.", route: "emotions" }
         ]
       },
       {
         block: "После разговора",
-        text: "Что обычно остаётся внутри после попытки объясниться?",
+        text: "Что обычно остаётся внутри после серьёзного разговора?",
         options: [
-          { text: "Временное облегчение, а потом снова всё по-старому.", route: "family" },
-          { text: "Мы шаг за шагом находим общий язык.", route: "family" },
-          { text: "Всё беру на себя и сама вытягиваю ситуацию.", route: "emotions" },
+          { text: "Если честно, сначала спокойно, потом снова всё по-старому.", route: "family" },
+          { text: "Мы шаг за шагом всё меняем.", route: "family" },
+          { text: "Всё беру на себя и сама как-нибудь разберусь.", route: "emotions" },
           { text: "Хочу закрыться, побыть одной и восстановиться.", route: "crisis" },
-          { text: "Злюсь ещё сильнее: опять меня не услышали.", route: "partner" },
-          { text: "Чувствую вину и думаю, что со мной что-то не так.", route: "emotions" }
+          { text: "Злюсь ещё сильнее: опять меня не поняли.", route: "family" },
+          { text: "Чувствую вину и думаю, что снова сказала или сделала что-то не так.", route: "emotions" }
         ]
       },
       {
         block: "Реакция партнёра",
-        text: "Как реагирует партнёр на Ваши попытки поговорить?",
+        text: "Какая реакция у партнёра на Ваши попытки разобраться?",
         options: [
-          { text: "Со всем соглашается, но ничего не меняет.", route: "family" },
-          { text: "Откладывает разговор до последнего, пока не рванёт.", route: "emotions" },
-          { text: "Закрывается и уходит в глухую оборону.", route: "partner" },
-          { text: "Не слышит меня — в итоге виновата остаюсь я.", route: "emotions" },
-          { text: "Обещает измениться, но хватает ненадолго.", route: "family" },
-          { text: "Игнорирует сообщения или пропадает на часы/дни.", route: "partner" }
+          { text: "Как обычно, со всем соглашается.", route: "family" },
+          { text: "Откладывает разговор до последнего, пока я не взорвусь.", route: "family" },
+          { text: "Закрывается и уходит в себя.", route: "family" },
+          { text: "Не слышит меня — в итоге виновата снова я.", route: "emotions" },
+          { text: "Обещает измениться.", route: "family" },
+          { text: "Нормально разговаривает, и после разговора мы приходим к общему решению.", route: "family" }
         ]
       },
       {
         block: "После примирения",
-        text: "Что происходит внутри после того, как буря утихла?",
+        text: "Что происходит после того, как вы вроде бы помирились?",
         options: [
-          { text: "Всё время жду нового подвоха или срыва.", route: "emotions" },
-          { text: "Всё быстро возвращается в нормальное русло.", route: "family" },
-          { text: "Я снова отодвигаю свои желания на второй план.", route: "emotions" },
-          { text: "Думаю: «А стоит ли вообще доверять?»", route: "crisis" },
-          { text: "Кажется, что настоящей глубины и безопасности нет.", route: "partner" },
-          { text: "Чувствую опустошение и усталость.", route: "crisis" }
+          { text: "Жду подвоха.", route: "emotions" },
+          { text: "Всё быстро возвращается в норму.", route: "family" },
+          { text: "Я снова отодвигаю свои желания и подстраиваюсь.", route: "emotions" },
+          { text: "Думаю: «А стоит ли вообще ему доверять?»", route: "crisis" },
+          { text: "Кажется, что всё уже умерло и нормальных отношений не бывает.", route: "crisis" },
+          { text: "Да я и сама уже ничего не понимаю.", route: "crisis" }
         ]
       },
       {
         block: "Главная потребность",
-        text: "Чего Вам сейчас острее всего не хватает?",
+        text: "Чего Вам сейчас больше всего не хватает?",
         options: [
-          { text: "Перестать накручивать себя из-за молчания и сообщений.", route: "partner" },
+          { text: "Просто успокоиться и всё будет нормально.", route: "crisis" },
           { text: "Понять, что вообще происходит и чего ждать дальше.", route: "crisis" },
-          { text: "Почувствовать, что меня искренне любят и выбирают.", route: "emotions" },
+          { text: "Почувствовать, что меня любят и действительно выбирают.", route: "emotions" },
           { text: "Вернуть уважение к себе и своим границам.", route: "emotions" },
-          { text: "Принять ясное решение: сохранять отношения или уходить.", route: "crisis" },
-          { text: "Понять, как выбирать партнёра и не наступать на грабли.", route: "partner" }
+          { text: "Наконец решить: сохранять эти отношения или уходить.", route: "crisis" },
+          { text: "Понять, как начать новые отношения и снова не ошибиться.", route: "partner" }
         ]
       },
       {
-        block: "Финальный шаг",
-        text: "С чем Вам важнее всего разобраться прямо сейчас?",
+        block: "Следующий шаг",
+        text: "С чем Вам сейчас важнее всего разобраться?",
         options: [
-          { text: "Как выбирать надёжного партнёра и отключить тягу к сложным.", route: "partner" },
-          { text: "Как перестать зависеть от его внимания, звонков и настроения.", route: "emotions" },
-          { text: "Как вернуть тепло в семью и перестать ходить по кругу ссор.", route: "family" },
-          { text: "Что делать после измены, шока или угрозы расставания.", route: "crisis" }
+          { text: "Как выбирать партнёра и снова не попадать в похожие отношения.", route: "partner" },
+          { text: "Как перестать зависеть от его внимания, сообщений и настроения.", route: "emotions" },
+          { text: "Как вернуть близость и перестать ходить по кругу в конфликтах.", route: "family" },
+          { text: "Что делать после измены, угрозы развода или расставания.", route: "crisis" },
+          { text: "Как понять, сохранять эти отношения или завершать их.", route: "crisis" },
+          { text: "Сначала хочу прийти в себя, а потом решать.", route: "crisis" }
         ]
       }
     ];
 
     let currentStep = 0;
-    const userAnswers = [];
+    // state.answers stores array of chosen indices per question, e.g. [ [0, 2], [1, "custom"] ]
+    const state = {
+      answers: {},
+      custom: {}
+    };
     const scores = { partner: 0, emotions: 0, family: 0, crisis: 0 };
-    let selectedOptionIndex = null;
     let finalRoute = 'partner';
+    let aiAnalysisResult = null;
 
     function startQuiz() {
       safeHaptic('selection');
@@ -293,53 +404,106 @@
 
       const list = document.getElementById('answersList');
       list.innerHTML = '';
-      selectedOptionIndex = null;
-      document.getElementById('btnNext').disabled = true;
+
+      const selected = state.answers[currentStep] || [];
+      const customWrap = document.getElementById('customAnswerWrap');
+      const customInput = document.getElementById('customAnswerInput');
+
+      customInput.value = state.custom[currentStep] || '';
+      customWrap.classList.toggle('show', selected.includes('custom'));
+
       document.getElementById('btnBack').style.visibility = currentStep === 0 ? 'hidden' : 'visible';
 
+      // Render predefined options
       q.options.forEach((opt, idx) => {
-        const btn = document.createElement('div');
-        btn.className = 'answer';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'answer' + (selected.includes(idx) ? ' selected' : '');
         btn.innerHTML = `
-          <div class="answer-dot"></div>
+          <span class="answer-dot"></span>
           <span style="flex:1; line-height:1.4;">${opt.text}</span>
         `;
-        btn.onclick = () => selectOption(idx);
+        btn.onclick = () => toggleOption(idx, btn);
         list.appendChild(btn);
       });
+
+      // Render "Ваш вариант" (matching source)
+      const customBtn = document.createElement('button');
+      customBtn.type = 'button';
+      customBtn.id = 'customAnswerBtn';
+      customBtn.className = 'answer' + (selected.includes('custom') ? ' selected' : '');
+      customBtn.innerHTML = `
+        <span class="answer-dot"></span>
+        <span style="flex:1; line-height:1.4;">Ваш вариант</span>
+      `;
+      customBtn.onclick = () => toggleOption('custom', customBtn);
+      list.appendChild(customBtn);
+
+      validateCurrent();
     }
 
-    function selectOption(idx) {
+    function toggleOption(optionIndex, btnElement) {
       safeHaptic('selection');
-      selectedOptionIndex = idx;
-      const cards = document.querySelectorAll('.answer');
-      cards.forEach((c, i) => {
-        if (i === idx) {
-          c.classList.add('selected');
-        } else {
-          c.classList.remove('selected');
+      let selected = state.answers[currentStep] || [];
+      const pos = selected.indexOf(optionIndex);
+
+      if (pos >= 0) {
+        selected.splice(pos, 1);
+        if (btnElement) btnElement.classList.remove('selected');
+      } else {
+        if (selected.length >= 3) {
+          safeHaptic('warning');
+          return;
         }
-      });
-      document.getElementById('btnNext').disabled = false;
+        selected.push(optionIndex);
+        if (btnElement) btnElement.classList.add('selected');
+      }
+
+      state.answers[currentStep] = selected;
+
+      if (optionIndex === 'custom') {
+        const isCustom = selected.includes('custom');
+        const customWrap = document.getElementById('customAnswerWrap');
+        const customInput = document.getElementById('customAnswerInput');
+        customWrap.classList.toggle('show', isCustom);
+
+        if (isCustom) {
+          setTimeout(() => {
+            customInput.focus();
+            customWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 60);
+        }
+      }
+
+      validateCurrent();
+    }
+
+    function handleCustomInput() {
+      state.custom[currentStep] = document.getElementById('customAnswerInput').value;
+      validateCurrent();
+    }
+
+    function validateCurrent() {
+      const selected = state.answers[currentStep] || [];
+      let ok = selected.length > 0;
+      if (selected.includes('custom')) {
+        const customText = (document.getElementById('customAnswerInput').value || '').trim();
+        ok = ok && customText.length >= 2;
+      }
+      document.getElementById('btnNext').disabled = !ok;
     }
 
     function prevQuestion() {
       if (currentStep > 0) {
         safeHaptic('impactLight');
         currentStep--;
-        userAnswers.pop();
         renderQuestion();
       }
     }
 
     function nextQuestion() {
-      if (selectedOptionIndex === null) return;
       safeHaptic('impactLight');
-
-      const q = questions[currentStep];
-      const selected = q.options[selectedOptionIndex];
-      userAnswers.push(selected.text);
-      scores[selected.route] = (scores[selected.route] || 0) + (currentStep === 7 ? 3 : 1);
+      state.custom[currentStep] = (document.getElementById('customAnswerInput').value || '').trim();
 
       currentStep++;
       if (currentStep < questions.length) {
@@ -355,6 +519,31 @@
       document.getElementById('progressWrap').classList.add('hidden');
       document.getElementById('screenAnalyzing').classList.add('active');
 
+      // Prepare comprehensive answers list for AI
+      const fullAnswerReport = [];
+      for (let qi = 0; qi < questions.length; qi++) {
+        const q = questions[qi];
+        const selected = state.answers[qi] || [];
+        const chosenTexts = [];
+
+        selected.forEach(si => {
+          if (si === 'custom') {
+            if (state.custom[qi]) {
+              chosenTexts.push(`Свой вариант: ${state.custom[qi]}`);
+            }
+          } else if (q.options[si]) {
+            chosenTexts.push(q.options[si].text);
+            const r = q.options[si].route;
+            if (r) scores[r] = (scores[r] || 0) + (qi >= 6 ? 2 : 1);
+          }
+        });
+
+        if (chosenTexts.length > 0) {
+          fullAnswerReport.push(`[${q.block}] ${q.text} -> ${chosenTexts.join(' | ')}`);
+        }
+      }
+
+      // Determine local fallback route
       let highest = -1;
       for (const [route, score] of Object.entries(scores)) {
         if (score > highest) {
@@ -363,58 +552,76 @@
         }
       }
 
+      // Send to Polza AI
       try {
         const data = await window.apiPost('/api/psyquest', { 
-          answers: userAnswers, 
+          answers: fullAnswerReport, 
           userName: window.currentUserName || 'Участник' 
         });
-        if (data && data.route) finalRoute = data.route;
+        if (data && data.route) {
+          finalRoute = data.route;
+        }
+        if (data && data.result) {
+          aiAnalysisResult = data.result;
+        }
       } catch (e) {
-        console.log('Using calculated score route:', finalRoute);
+        console.log('Using local fallback route:', finalRoute);
       }
 
       setTimeout(() => {
         showResults();
-      }, 1000);
+      }, 1200);
     }
 
     function showResults() {
       document.getElementById('screenAnalyzing').classList.remove('active');
       document.getElementById('screenResult').classList.add('active');
 
-      const map = {
+      const defaultScenarios = {
         partner: {
           title: "Сценарий 1: «Поиск и выбор партнёра»",
           summary: "В неопределенности вы пытаетесь немедленно получить ясность или спасаетесь активностью. Из-за этого вы пропускаете тревожные сигналы и привязываетесь к эмоционально недоступным людям.",
-          danger: "Смещение фокуса с вопроса «Подходит ли он мне?» на вопрос «Как его завоевать и что со мной не так?»"
+          danger: "Смещение фокуса с вопроса «Подходит ли он мне?» на вопрос «Как его завоевать и что со мной не так?».",
+          transition: "Для вас открыт доступ к персональному видео-разбору Анатолия Фёдорова и практическому курсу «Новый сценарий»."
         },
         emotions: {
           title: "Сценарий 2: «Эмоциональная устойчивость»",
           summary: "Ваша нервная система попала в дофамино-кортизоловую петлю. Паузы в общении вызывают спазм тревоги, а редкие сообщения — мгновенный салют дофамина.",
-          danger: "Потеря эмоционального суверенитета и накопление скрытого напряжения перед взрывом."
+          danger: "Потеря эмоционального суверенитета и накопление скрытого напряжения перед взрывом.",
+          transition: "Для вас открыты уроки курса «Новый сценарий» для возврата внутреннего ядра и опор."
         },
         family: {
           title: "Сценарий 3: «Перезагрузка отношений»",
-          summary: "Отношения застряли в цикле бытовой усталости, взаимных претензий и дистанции.",
-          danger: "Попытка спасти контакт через бесконечные уступки или уход в молчание."
+          summary: "Отношения застряли в цикле бытовой усталости, взаимных претензий и эмоциональной дистанции в паре.",
+          danger: "Попытка спасти контакт через бесконечные уступки или уход в глухую оборону.",
+          transition: "Для вас открыта программа системной перезагрузки отношений с Анатолием Фёдоровым."
         },
         crisis: {
           title: "Сценарий 4: «Кризис и сложные решения»",
-          summary: "Острая ситуация неопределенности или шока. Психика требует немедленных судьбоносных решений.",
-          danger: "Принятие решений на пике эмоционального шторма из страха и безысходности."
+          summary: "Острая ситуация неопределенности или шока. Психика требует немедленных судьбоносных решений на пике боли.",
+          danger: "Принятие решений в состоянии аффекта из страха одиночества или безысходности.",
+          transition: "Для вас подготовлен персональный план выхода из кризиса и возврата ясности."
         }
       };
 
-      const res = map[finalRoute] || map.partner;
-      document.getElementById('resTitle').textContent = res.title;
-      document.getElementById('resSummary').textContent = res.summary;
-      document.getElementById('resDanger').textContent = res.danger;
+      const base = defaultScenarios[finalRoute] || defaultScenarios.partner;
+      const res = aiAnalysisResult || base;
+
+      document.getElementById('resTitle').textContent = res.title || base.title;
+      document.getElementById('resSummary').textContent = res.summary || base.summary;
+      document.getElementById('resDanger').textContent = res.danger || base.danger;
+      if (res.transition) {
+        document.getElementById('resTransition').textContent = res.transition;
+      }
     }
 
     function goToPersonalLanding() {
       safeHaptic('selection');
       localStorage.setItem('psy_route', finalRoute);
-      localStorage.setItem('psy_answers', JSON.stringify(userAnswers));
+      localStorage.setItem('psy_answers', JSON.stringify(state));
+      if (aiAnalysisResult) {
+        localStorage.setItem('psy_ai_result', JSON.stringify(aiAnalysisResult));
+      }
       window.location.href = '02_landing_partner.html';
     }
   </script>
