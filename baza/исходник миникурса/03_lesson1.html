@@ -142,11 +142,11 @@
               ☀️ Интеллектуальный попутчик
             </div>
             <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
-              Осталось разборов: <span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">5</span> / 5
+              Осталось разборов: <span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">5</span>
             </div>
           </div>
           <p id="aiCreditsCardText" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
-            Интеллектуальный попутчик поможет тебе потренироваться анализировать ситуацию. Его рекомендации только помогающие и не являются диагнозом, хотя он очень старается. И чтоб он не перестарался, он сможет ответить только 5 раз.
+            Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.
           </p>
         </div>
 
@@ -159,27 +159,27 @@
           <form id="strategyForm" onsubmit="analyzeStrategy(event)" style="display:flex; flex-direction:column; gap:12px;">
             <div>
               <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что произошло в реальности?</label>
-              <input type="text" id="inpFact" required placeholder="Пример: он не отвечает на сообщение 40 минут." />
+              <textarea id="inpFact" rows="2" required placeholder="Пример: он не отвечает на сообщение 40 минут." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <div>
               <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я подумала и почувствовала?</label>
-              <input type="text" id="inpFeeling" required placeholder="Пример: «Он потерял интерес». Я почувствовала тревогу." />
+              <textarea id="inpFeeling" rows="2" required placeholder="Пример: «Он потерял интерес». Я почувствовала тревогу." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <div>
               <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я начала делать?</label>
-              <input type="text" id="inpAction" required placeholder="Пример: проверять статус и писать снова." />
+              <textarea id="inpAction" rows="2" required placeholder="Пример: проверять статус и писать снова." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <div>
               <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что это дало мне сразу?</label>
-              <input type="text" id="inpRelief" required placeholder="Пример: на несколько минут стало спокойнее." />
+              <textarea id="inpRelief" rows="2" required placeholder="Пример: на несколько минут стало спокойнее." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <div>
               <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">К чему это привело в итоге?</label>
-              <input type="text" id="inpResult" required placeholder="Пример: я оказалась в позиции догоняющей." />
+              <textarea id="inpResult" rows="2" required placeholder="Пример: я оказалась в позиции догоняющей." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <button type="submit" id="btnSubmitStrategy" class="primary-btn pulse" style="margin-top:6px;">
@@ -194,10 +194,10 @@
           </div>
         </section>
 
-        <!-- Next Step Navigation -->
-        <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="primary-btn">
-            <span>Переходим ко второму уроку ➔</span>
+        <!-- Next Step Navigation (Hidden until analysis is completed) -->
+        <div id="nextLessonBlock" style="display:none; padding-top:4px;">
+          <button onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="primary-btn pulse" style="width:100%;">
+            <span>Перейти к уроку 2 →</span>
           </button>
         </div>
 
@@ -264,8 +264,14 @@
       const el = document.getElementById('aiCreditsLeft');
       const textEl = document.getElementById('aiCreditsCardText');
       const btn = document.getElementById('btnSubmitStrategy');
+      const nextBtn = document.getElementById('nextLessonBlock');
 
       if (el) el.textContent = aiCredits;
+
+      // Reveal next lesson button if user already completed at least 1 analysis
+      if (aiCredits < 5 && nextBtn) {
+        nextBtn.style.display = 'block';
+      }
 
       if (aiCredits <= 0) {
         if (textEl) {
@@ -276,7 +282,7 @@
         }
       } else {
         if (textEl) {
-          textEl.textContent = 'Интеллектуальный попутчик поможет тебе потренироваться анализировать ситуацию. Его рекомендации только помогающие и не являются диагнозом, хотя он очень старается. И чтоб он не перестарался, он сможет ответить только 5 раз.';
+          textEl.textContent = 'Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.';
         }
         if (btn) {
           btn.style.display = 'block';
@@ -337,6 +343,7 @@
       safeHaptic('success');
       const block = document.getElementById('aiResultBlock');
       const textContainer = document.getElementById('aiAnalysisText');
+      const nextBtn = document.getElementById('nextLessonBlock');
       
       let htmlContent = text;
       if (aiCredits <= 0) {
@@ -347,6 +354,12 @@
       }
       block.classList.remove('hidden');
       block.style.display = 'flex';
+
+      // Reveal button to go to Lesson 2
+      if (nextBtn) {
+        nextBtn.style.display = 'block';
+      }
+
       block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   </script>
