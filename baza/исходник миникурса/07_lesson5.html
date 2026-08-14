@@ -183,7 +183,7 @@
           </div>
 
           <!-- Support Phrase Card (Special Highlight) -->
-          <div style="padding:16px; border-radius:16px; background:rgba(217, 131, 78, 0.12); border:1.5px solid rgba(217, 131, 78, 0.35); text-align:center; margin-bottom:18px;">
+          <div style="padding:16px; border-radius:16px; background:rgba(217, 131, 78, 0.12); border:1.5px solid rgba(217, 131, 78, 0.35); text-align:center; margin-bottom:14px;">
             <div style="font-size:12px; font-weight:800; color:var(--nb-terracotta); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">
               ✨ Ваша поддерживающая фраза
             </div>
@@ -191,10 +191,24 @@
             </div>
           </div>
 
-          <!-- Proceed to Course Completion Button -->
-          <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="primary-btn pulse" style="width:100%; min-height:48px; display:flex; align-items:center; justify-content:center;">
-            <span>Перейти к завершению курса →</span>
-          </button>
+          <!-- ==========================================
+               ЧАСТЬ 9: ПРОЩАНИЕ ИНТЕЛЛЕКТУАЛЬНОГО ПОПУТЧИКА
+               ========================================== -->
+          <div id="aiFarewellCard" style="margin-top:14px; padding:18px 16px; border-radius:18px; background:rgba(217,131,78,0.08); border:1.5px solid rgba(217,131,78,0.25); text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px;">
+            <div class="eyebrow" style="margin:0; background:rgba(217,131,78,0.14); color:var(--nb-terracotta); border-color:rgba(217,131,78,0.3);">
+              🚂 Интеллектуальный попутчик
+            </div>
+            <h4 style="font-size:17px; font-weight:800; color:var(--nb-deep); margin:0;">
+              Путешествие завершено
+            </h4>
+            <p style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0; text-align:center;">
+              На этом маршруте Интеллектуальный попутчик прощается с вами. Сохраните свой новый сценарий и возвращайтесь к нему, когда понадобится опора. До новой встречи — мы будем ждать вас снова!
+            </p>
+            <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="primary-btn pulse" style="width:100%; min-height:48px; margin-top:4px;">
+              <span>Перейти к завершению курса →</span>
+            </button>
+          </div>
+
         </div>
       </section>
 
