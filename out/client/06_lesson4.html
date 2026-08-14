@@ -470,7 +470,7 @@
 
         <!-- Next Step Button (Appears ONLY after completing the interactive) -->
         <div id="nextLessonBlock" style="display:none; padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='07_lesson5.html';" class="primary-btn pulse" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+          <button onclick="safeNavigate('07_lesson5.html')" class="primary-btn pulse" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
             <span>Перейти к уроку 5 →</span>
           </button>
         </div>
@@ -548,16 +548,34 @@
 
     // Pause Kinescope Video Player
     function pauseVideo() {
-      const iframe = document.getElementById('lesson4VideoIframe');
-      if (iframe && iframe.contentWindow) {
-        try {
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
-          iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
-        } catch (e) {
-          console.log('Pause message error:', e);
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        if (iframe && iframe.contentWindow) {
+          try {
+            iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+            iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+            iframe.contentWindow.postMessage({ event: 'command', command: 'pause' }, '*');
+            iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+          } catch(e) {}
         }
-      }
+      });
+      const audios = document.querySelectorAll('audio');
+      audios.forEach(a => { try { a.pause(); } catch(e){} });
     }
+
+    function safeNavigate(url) {
+      safeHaptic('selection');
+      pauseVideo();
+      setTimeout(function() {
+        window.location.href = url;
+      }, 30);
+    }
+
+    window.addEventListener('pagehide', pauseVideo);
+    window.addEventListener('beforeunload', pauseVideo);
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) pauseVideo();
+    });
 
     function selectQuality(val, element) {
       safeHaptic('selection');

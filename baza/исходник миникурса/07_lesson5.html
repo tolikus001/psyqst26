@@ -285,14 +285,34 @@
     });
 
     function pauseVideo() {
-      const iframe = document.getElementById('lesson5Video');
-      if (iframe && iframe.contentWindow) {
-        try {
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
-          iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
-        } catch(e) {}
-      }
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        if (iframe && iframe.contentWindow) {
+          try {
+            iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+            iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+            iframe.contentWindow.postMessage({ event: 'command', command: 'pause' }, '*');
+            iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+          } catch(e) {}
+        }
+      });
+      const audios = document.querySelectorAll('audio');
+      audios.forEach(a => { try { a.pause(); } catch(e){} });
     }
+
+    function safeNavigate(url) {
+      safeHaptic('selection');
+      pauseVideo();
+      setTimeout(function() {
+        window.location.href = url;
+      }, 30);
+    }
+
+    window.addEventListener('pagehide', pauseVideo);
+    window.addEventListener('beforeunload', pauseVideo);
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) pauseVideo();
+    });
 
     // Screen 1 -> Screen 2 Transition
     function goToInteractive() {
@@ -307,6 +327,7 @@
     // Screen 2 -> Screen 1 Return
     function goToVideo() {
       safeHaptic('selection');
+      pauseVideo();
       document.getElementById('step2InteractiveScreen').style.display = 'none';
       document.getElementById('step1VideoScreen').style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
