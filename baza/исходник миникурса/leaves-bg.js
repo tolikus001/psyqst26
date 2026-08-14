@@ -1,7 +1,7 @@
 (function() {
   const backgrounds = [
-    'leaves_birch.png',
-    'leaves_oak.png'
+    'leaves_birch.jpg',
+    'leaves_oak.jpg'
   ];
 
   function setBackground(index) {
@@ -25,7 +25,7 @@
       const img = new Image();
       img.src = src;
     });
-    setBackground(0); // Default: Birch with dewdrops
+    setBackground(0); // 0 = Birch
   }
 
   if (document.readyState === "loading") {

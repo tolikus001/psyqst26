@@ -100,6 +100,8 @@ function handleMediaStream(req, res, filePath, isHead = false) {
   else if (ext === '.mp3') contentType = 'audio/mpeg';
   else if (ext === '.jpg' || ext === '.jpeg') contentType = 'image/jpeg';
   else if (ext === '.png') contentType = 'image/png';
+  else if (ext === '.webp') contentType = 'image/webp';
+  else if (ext === '.svg') contentType = 'image/svg+xml';
   else if (ext === '.html') contentType = 'text/html; charset=utf-8';
   else if (ext === '.css') contentType = 'text/css; charset=utf-8';
   else if (ext === '.js') contentType = 'application/javascript; charset=utf-8';
@@ -210,8 +212,9 @@ const server = http.createServer(async (req, res) => {
     return res.end(JSON.stringify({ ok: true, status: 'running', service: 'psyquest-media-ai-zero-dep', timestamp: new Date().toISOString() }));
   }
 
-  // Serve Client Files or Index
-  if (pathname === '/' || pathname.endsWith('.html') || pathname.endsWith('.css') || pathname.endsWith('.js')) {
+  // Serve Client Files (HTML, CSS, JS, Images, etc.)
+  const staticExts = ['.html', '.css', '.js', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.ico', '.mp4', '.json'];
+  if (pathname === '/' || staticExts.some(ext => pathname.toLowerCase().endsWith(ext))) {
     const filename = pathname === '/' ? 'index.html' : path.basename(pathname);
     const clientPath = path.join(__dirname, '..', 'client', filename);
     if (fs.existsSync(clientPath)) {
