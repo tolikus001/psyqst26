@@ -414,6 +414,12 @@
         userName: window.currentUserName || 'Участник'
       };
 
+      try {
+        localStorage.setItem('lesson1_inpFact', payload.fact);
+        localStorage.setItem('lesson1_inpFeeling', payload.feeling);
+        localStorage.setItem('lesson1_inpAction', payload.action);
+      } catch(e) {}
+
       let isRealAi = false;
       try {
         const data = await window.apiPost('/api/lesson1-strategy', payload);

@@ -1195,6 +1195,12 @@
         userName: window.currentUserName || 'Участник'
       };
 
+      try {
+        localStorage.setItem('lesson2_selected_criteria', JSON.stringify(selectedCriteria));
+        localStorage.setItem('lesson2_body_signal', `Телесный отклик: ${bodyLevelDisplay} (${avgPct}%)`);
+        localStorage.setItem('lesson2_body_score', normalizedScore.toString());
+      } catch(e) {}
+
       // Switch to Result View
       document.getElementById('stage5Card').style.display = 'none';
       const resCont = document.getElementById('resultContainer');

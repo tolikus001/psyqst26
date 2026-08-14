@@ -701,13 +701,13 @@ const server = http.createServer(async (req, res) => {
 
         // Deterministic fallback based on supplied data
         const fallbackObj = {
-          trigger: trigger !== 'Пока не определено' ? trigger : 'Неопределённость или тревожные сигналы в поведении другого',
-          body_signal: bodySignal !== 'Пока не определено' ? bodySignal : 'Напряжение в груди, спазм в животе или задержка дыхания',
-          old_reaction: oldAction !== 'Пока не определено' ? oldAction : 'Попытка немедленно выяснить отношения или подстроиться',
+          trigger: trigger,
+          body_signal: bodySignal,
+          old_reaction: oldAction,
           pause: 'Заметить напряжение в теле, сделать длинный выдох и отложить действие до возвращения спокойствия',
-          criteria: criteriaList.length > 0 && criteriaList[0] !== 'Пока не определено' ? criteriaList : ['Ясность и предсказуемость', 'Уважение к границам', 'Спокойствие рядом'],
-          strength: strength !== 'Пока не определено' ? strength : 'Опора на собственную ценность и право на границы',
-          new_action: newAction !== 'Пока не определено' ? newAction : 'Сделать паузу и открыто сказать о своих потребностях без чувства вины',
+          criteria: criteriaList.length > 0 && criteriaList[0] !== 'Пока не определено' ? criteriaList : ['Пока не определено'],
+          strength: strength,
+          new_action: newAction,
           support_phrase: `«Я разрешаю себе делать выбор из спокойствия и уважения к себе, сохраняя свою силу».`
         };
 
