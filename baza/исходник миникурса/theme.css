@@ -43,12 +43,13 @@ html, body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(250, 250, 246, 0.04) 0%,
-    rgba(250, 250, 246, 0.13) 35%,
-    rgba(243, 243, 237, 0.28) 100%
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    rgba(244, 247, 244, 0.38) 0%,
+    rgba(244, 247, 244, 0.18) 45%,
+    rgba(232, 237, 231, 0.04) 100%
   );
+  pointer-events: none;
 }
 
 body > *:not(#maisonArtBackground) {

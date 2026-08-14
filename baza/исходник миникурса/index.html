@@ -3,14 +3,57 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob: https://*.kinescopecdn.net;
+      connect-src 'self' https: http://localhost:3000;
+    " />
   <title>Курс Анатолия Фёдорова — Навигатор воронки</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="theme.css">
+  <script src="leaves-bg.js"></script>
+  <script src="telegram-user.js"></script>
+  <script src="api-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred(type || 'light');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
+        }
+      } catch (e) {}
+    }
+  </script>
 </head>
 <body>
+  <div id="maisonArtBackground" aria-hidden="true"></div>
 
   <main class="app-shell">
     <div class="app">
@@ -18,81 +61,89 @@
       <!-- Top Header -->
       <header class="header">
         <div class="identity">
-          <div class="avatar">АФ</div>
+          <div id="userAvatar" class="avatar">?</div>
           <div style="min-width:0">
-            <div class="greeting">Анатолий Фёдоров</div>
+            <div id="userGreeting" class="greeting">Привет!</div>
             <div class="subtle">Карта воронки и курса</div>
           </div>
         </div>
       </header>
 
+      <!-- Welcome Hero Banner -->
+      <section class="glass hero">
+        <div class="eyebrow">✨ Навигатор проекта</div>
+        <h1>«Новый сценарий»</h1>
+        <p class="lead">Все экраны мини-приложения собраны по базовому дизайну и готовы к тестированию</p>
+      </section>
+
       <!-- Step 1: Entry / Quiz -->
-      <section class="glass card">
+      <section class="glass card text-center">
         <div class="eyebrow" style="margin-bottom:8px;">1. Диагностика (Вход)</div>
-        <h3 class="question-title">Входной Псиквест</h3>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">8 вопросов • определение сценария • связь с бэкендом</p>
+        <h2>Входной Псиквест</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:14px;">8 вопросов • выявление сценария • авто-персонализация</p>
         
-        <a href="01_psyquest.html" class="primary-btn" style="text-decoration:none;">
+        <a href="01_psyquest.html" onclick="safeHaptic('selection');" class="primary-btn" style="text-decoration:none;">
           <span>01_psyquest.html ➔</span>
         </a>
       </section>
 
       <!-- Step 2: Bridge Landing -->
-      <section class="glass card">
+      <section class="glass card text-center">
         <div class="eyebrow" style="margin-bottom:8px;">2. Продающий лендинг</div>
-        <h3 class="question-title">Bridge Landing (Сценарий 1)</h3>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Видео 0, подарок 12 мин, таймер 1 час, оффер 2 400 ₽, 4 бонуса</p>
+        <h2>Bridge Landing (Сценарий 1)</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:14px;">Kinescope Урок 0 • Подарок 12 мин • Таймер 1 час • Оффер 2 400 ₽</p>
         
-        <a href="02_landing_partner.html" class="primary-btn" style="text-decoration:none;">
+        <a href="02_landing_partner.html" onclick="safeHaptic('selection');" class="primary-btn" style="text-decoration:none;">
           <span>02_landing_partner.html ➔</span>
         </a>
       </section>
 
       <!-- Step 3: Lessons -->
-      <section class="glass card">
+      <section class="glass card text-center">
         <div class="eyebrow" style="margin-bottom:8px;">3. Программа уроков</div>
-        <h3 class="question-title">5 видео-уроков (по транскрибациям)</h3>
+        <h2>5 видео-уроков курса</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:14px;">Оригинальные видео Kinescope и интерактивные практики</p>
         
-        <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
-          <a href="03_lesson1.html" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
-            <span style="font-size:13px;">Урок 1: Отлепляем факты от интерпретаций + ИИ-разбор</span>
+        <div style="display:flex; flex-direction:column; gap:8px; text-align:left;">
+          <a href="03_lesson1.html" onclick="safeHaptic('selection');" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
+            <span style="font-size:13px;">Урок 1: Отлепляем факты от интерпретаций + ИИ</span>
             <span>➔</span>
           </a>
 
-          <a href="04_lesson2.html" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
-            <span style="font-size:13px;">Урок 2: «Бабочки» vs тревога + Соматический чек-лист</span>
+          <a href="04_lesson2.html" onclick="safeHaptic('selection');" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
+            <span style="font-size:13px;">Урок 2: «Бабочки» vs тревога + Чек-лист</span>
             <span>➔</span>
           </a>
 
-          <a href="05_lesson3.html" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
-            <span style="font-size:13px;">Урок 3: Качели (3 шага срыва) + Ресурсная медитация</span>
+          <a href="05_lesson3.html" onclick="safeHaptic('selection');" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
+            <span style="font-size:13px;">Урок 3: Качели (3 шага срыва) + Медитация</span>
             <span>➔</span>
           </a>
 
-          <a href="06_lesson4.html" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
-            <span style="font-size:13px;">Урок 4: Внутренние запреты + Возврат теневой силы</span>
+          <a href="06_lesson4.html" onclick="safeHaptic('selection');" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
+            <span style="font-size:13px;">Урок 4: Внутренние запреты + Теневая сила</span>
             <span>➔</span>
           </a>
 
-          <a href="07_lesson5.html" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
-            <span style="font-size:13px;">Урок 5: Закрепление сценария + Медитация + Оффер</span>
+          <a href="07_lesson5.html" onclick="safeHaptic('selection');" class="secondary-btn" style="text-decoration:none; justify-content:space-between;">
+            <span style="font-size:13px;">Урок 5: Закрепление сценария + Медитация</span>
             <span>➔</span>
           </a>
 
-          <a href="09_bonuses.html" class="secondary-btn" style="text-decoration:none; justify-content:space-between; background:#EBF2ED; border-color:#D5E2D8; color:#2D453B;">
-            <span style="font-size:13px; font-weight:800;">🎁 Видео-бонусы курса (4 видео Kinescope)</span>
+          <a href="09_bonuses.html" onclick="safeHaptic('selection');" class="secondary-btn" style="text-decoration:none; justify-content:space-between; background:#EBF2ED; border-color:#D5E2D8; color:#2D453B;">
+            <span style="font-size:13px; font-weight:800;">🎁 4 Видео-бонуса (Kinescope)</span>
             <span>➔</span>
           </a>
         </div>
       </section>
 
       <!-- Step 4: High Ticket -->
-      <section class="glass card" style="background:rgba(127,155,142,0.12); border-color:rgba(127,155,142,0.3);">
+      <section class="glass card text-center">
         <div class="eyebrow" style="margin-bottom:8px;">4. High-Ticket Оффер</div>
-        <h3 class="question-title">Психологический портрет (10 000 ₽)</h3>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">21 вопрос → 10-страничный отчёт ИИ + Консультация Анатолия</p>
+        <h2>Психологический портрет (10 000 ₽)</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:14px;">21 вопрос → 10-страничный отчёт ИИ + Консультация Анатолия</p>
         
-        <a href="08_portrait_quest.html" class="primary-btn pulse" style="text-decoration:none;">
+        <a href="08_portrait_quest.html" onclick="safeHaptic('selection');" class="primary-btn" style="text-decoration:none;">
           <span>08_portrait_quest.html ➔</span>
         </a>
       </section>
