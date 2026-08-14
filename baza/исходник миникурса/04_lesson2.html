@@ -263,8 +263,8 @@
           </div>
         </section>
 
-        <!-- Insight Card (Appears strictly after 3 seconds) -->
-        <section id="insightSection" class="glass card text-center" style="display:none; opacity:0; transform:translateY(16px); transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);">
+        <!-- Insight Card (Immediately visible) -->
+        <section id="insightSection" class="glass card text-center">
           <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
             💡 Главный вывод
           </div>
@@ -726,6 +726,342 @@
               🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей помощью.
             </div>
           </div>
+
+          <div style="text-align:center;">
+            <button onclick="goToStage(1)" class="ghost-btn" style="color:var(--nb-slate); font-size:12.5px;">
+              🔄 Пройти наблюдение заново
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Next Step Navigation (Immediately visible) -->
+        <div id="nextLessonBlock" style="padding-top:4px;">
+          <button id="btnNextLesson3" onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="secondary-btn" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти к третьему уроку →</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • ПСИквест
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    // Screen Transition: Video (Screen 1) <-> Interactive (Screen 2)
+    function goToStep2() {
+      safeHaptic('selection');
+      pauseVideo();
+      document.getElementById('step1VideoScreen').style.display = 'none';
+      const s2 = document.getElementById('step2InteractiveScreen');
+      s2.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToStep1() {
+      safeHaptic('selection');
+      document.getElementById('step2InteractiveScreen').style.display = 'none';
+      document.getElementById('step1VideoScreen').style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function pauseVideo() {
+      const iframe = document.getElementById('lesson2VideoIframe');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+          iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+        } catch (e) {
+          console.log('Pause message error:', e);
+        }
+      }
+    }
+
+    // AI Credits System (5 requests limit)
+    const AI_CREDITS_KEY = 'lesson2_ai_credits_v1';
+    let aiCredits = parseInt(localStorage.getItem(AI_CREDITS_KEY) || '5', 10);
+
+    function updateCreditsUI() {
+      const el = document.getElementById('aiCreditsLeft');
+      const textEl = document.getElementById('aiCreditsCardText');
+      const btn = document.getElementById('btnSubmitAttractionMap');
+
+      if (el) el.textContent = aiCredits;
+
+      if (aiCredits <= 0) {
+        if (textEl) {
+          textEl.innerHTML = '🚂 <strong style="color:var(--nb-terracotta);">Интеллектуальный попутчик поехал в следующий урок</strong> и будет ждать вас там с новыми вопросами и своей помощью.';
+        }
+        if (btn) {
+          btn.style.display = 'none';
+        }
+      } else {
+        if (textEl) {
+          textEl.textContent = 'Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.';
+        }
+        if (btn) {
+          btn.style.display = 'block';
+        }
+      }
+    }
+    updateCreditsUI();
+
+    // ==========================================
+    // INTERACTIVE STATE & STAGES
+    // ==========================================
+    let userSituation = '';
+    let scaleAnswers = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    let actionAnswers = { 1: undefined, 2: undefined, 3: undefined, 4: undefined, 5: undefined };
+    let selectedCriteria = [];
+    let customCriteriaText = '';
+    let calculatedData = null;
+
+    function goToStage(stageNum) {
+      safeHaptic('selection');
+      document.getElementById('stage1Card').style.display = 'none';
+      document.getElementById('stage2Card').style.display = 'none';
+      document.getElementById('stage3Card').style.display = 'none';
+      document.getElementById('stage4Card').style.display = 'none';
+      document.getElementById('stage5Card').style.display = 'none';
+      document.getElementById('resultContainer').style.display = 'none';
+
+      if (stageNum === 1) document.getElementById('stage1Card').style.display = 'flex';
+      if (stageNum === 2) document.getElementById('stage2Card').style.display = 'flex';
+      if (stageNum === 3) document.getElementById('stage3Card').style.display = 'flex';
+      if (stageNum === 4) document.getElementById('stage4Card').style.display = 'flex';
+      if (stageNum === 5) document.getElementById('stage5Card').style.display = 'flex';
+
+      window.scrollTo({ top: 100, behavior: 'smooth' });
+    }
+
+    // Stage 2 Validation
+    function checkStage2Valid() {
+      const val = document.getElementById('inpSituation').value.trim();
+      userSituation = val;
+      const btn = document.getElementById('btnStage2Next');
+      if (val.length > 0) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+      }
+    }
+
+    // Stage 3 Smooth Touch Slider Handler (0..100 with RGB color interpolation)
+    function interpolateColor(pct) {
+      const t = Math.min(100, Math.max(0, pct)) / 100;
+      let r, g, b;
+      if (t < 0.5) {
+        const factor = t / 0.5;
+        r = Math.round(47 + (234 - 47) * factor);
+        g = Math.round(125 + (179 - 125) * factor);
+        b = Math.round(89 + (8 - 89) * factor);
+      } else {
+        const factor = (t - 0.5) / 0.5;
+        r = Math.round(234 + (239 - 234) * factor);
+        g = Math.round(179 + (68 - 179) * factor);
+        b = Math.round(8 + (68 - 8) * factor);
+      }
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function handleSliderChange(qIndex, val) {
+      const num = parseInt(val, 10);
+      scaleAnswers[qIndex] = num;
+      const badge = document.getElementById('sliderVal' + qIndex);
+      if (badge) {
+        badge.textContent = num + '%';
+        const color = interpolateColor(num);
+        badge.style.background = color;
+        badge.style.boxShadow = `0 3px 10px ${color.replace('rgb', 'rgba').replace(')', ', 0.35)')}`;
+      }
+    }
+
+    // Stage 4 Actions (2, 1, 0, null)
+    function setActionAnswer(qIndex, val, el) {
+      safeHaptic('selection');
+      actionAnswers[qIndex] = val;
+      const parentGroup = el.parentElement;
+      parentGroup.querySelectorAll('.action-choice').forEach(choice => choice.classList.remove('active'));
+      el.classList.add('active');
+
+      const allAnswered = [1,2,3,4,5].every(i => actionAnswers[i] !== undefined);
+      const btn = document.getElementById('btnStage4Next');
+      if (allAnswered) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    }
+
+    // Stage 5 Criteria Selection (Exactly 3)
+    function toggleCriteria(name, el) {
+      safeHaptic('selection');
+      const idx = selectedCriteria.indexOf(name);
+      if (idx > -1) {
+        selectedCriteria.splice(idx, 1);
+        el.classList.remove('active');
+      } else {
+        if (selectedCriteria.length < 3) {
+          selectedCriteria.push(name);
+          el.classList.add('active');
+        } else {
+          safeHaptic('error');
+        }
+      }
+      updateCriteriaUI();
+    }
+
+    function toggleCriteriaCustom(el) {
+      safeHaptic('selection');
+      const inputBlock = document.getElementById('customCriteriaInputBlock');
+      const isSelected = el.classList.contains('active');
+
+      if (isSelected) {
+        el.classList.remove('active');
+        inputBlock.style.display = 'none';
+        selectedCriteria = selectedCriteria.filter(c => c !== customCriteriaText && c !== 'Свой вариант');
+        customCriteriaText = '';
+        document.getElementById('inpCustomCriteria').value = '';
+      } else {
+        if (selectedCriteria.length < 3) {
+          el.classList.add('active');
+          inputBlock.style.display = 'block';
+          document.getElementById('inpCustomCriteria').focus();
+          handleCustomCriteriaInput();
+        } else {
+          safeHaptic('error');
+        }
+      }
+      updateCriteriaUI();
+    }
+
+    function handleCustomCriteriaInput() {
+      const val = document.getElementById('inpCustomCriteria').value.trim() || 'Свой вариант';
+      selectedCriteria = selectedCriteria.filter(c => c !== customCriteriaText && c !== 'Свой вариант');
+      customCriteriaText = val;
+      selectedCriteria.push(customCriteriaText);
+      updateCriteriaUI();
+    }
+
+    function updateCriteriaUI() {
+      const countEl = document.getElementById('criteriaCount');
+      countEl.textContent = selectedCriteria.length;
+      const btn = document.getElementById('btnStage5Submit');
+      if (selectedCriteria.length === 3) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.classList.add('pulse');
+      } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        btn.classList.remove('pulse');
+      }
+    }
+
+    // ==========================================
+    // CALCULATION LOGIC & RESULT PRESENTATION
+    // ==========================================
+    function calculateAndShowResult() {
+      safeHaptic('success');
+
+      // Metric 1: Body Arousal (Sum 5 scales 0..100 -> 0..500)
+      const bodySum = [1,2,3,4,5].reduce((sum, i) => sum + (scaleAnswers[i] || 0), 0);
+      const avgPct = Math.round(bodySum / 5);
+      const normalizedScore = Math.round(bodySum / 25); // 0..20 scale for AI
+
+      let bodyLevel = 'умеренное';
+      let bodyLevelDisplay = 'умеренная';
+      if (bodySum <= 150) {
+        bodyLevel = 'низкое';
+        bodyLevelDisplay = 'низкая';
+      } else if (bodySum >= 340) {
+        bodyLevel = 'выраженное';
+        bodyLevelDisplay = 'выраженная';
+      }
+
+      // Metric 2: Behavior Clarity
+      const validAnswers = [1,2,3,4,5].map(i => actionAnswers[i]).filter(val => val !== null && val !== undefined);
+      let actionsClarity = 'противоречивые сигналы';
+      let actionsClarityDisplay = 'противоречивые сигналы';
+
+      if (validAnswers.length < 3) {
+        actionsClarity = 'недостаточно информации';
+        actionsClarityDisplay = 'пока недостаточно информации';
+      } else {
+        const avg = validAnswers.reduce((a,b) => a + b, 0) / validAnswers.length;
+        if (avg < 0.75) {
+          actionsClarity = 'мало последовательности';
+          actionsClarityDisplay = 'мало последовательности';
+        } else if (avg <= 1.39) {
+          actionsClarity = 'противоречивые сигналы';
+          actionsClarityDisplay = 'противоречивые сигналы';
+        } else {
+          actionsClarity = 'достаточно последовательное поведение';
+          actionsClarityDisplay = 'последовательное';
+        }
+      }
+
+      // 4 Result Scenarios
+      let resultTitle = '';
+      let resultText = '';
+
+      if (bodyLevel === 'выраженное' && (actionsClarity === 'мало последовательности' || actionsClarity === 'противоречивые сигналы')) {
+        // Option 1
+        resultTitle = 'Притяжение усиливается неопределённостью';
+        resultText = 'Ваше тело реагирует достаточно сильно, но поведение человека пока не даёт устойчивой ясности. Интенсивность чувств может усиливаться ожиданием и непредсказуемостью. Она ещё не доказывает совместимость.';
+      } else if ((bodyLevel === 'умеренное' || bodyLevel === 'выраженное') && actionsClarity === 'достаточно последовательное поведение') {
+        // Option 2
+        resultTitle = 'Притяжение подтверждается поступками';
+        resultText = 'Вы замечаете эмоциональное и телесное притяжение, при этом человек проявляет инициативу, последовательность и уважение. Продолжайте узнавать друг друга, наблюдая, сохраняется ли это со временем.';
+      } else if (bodyLevel === 'низкое' && actionsClarity === 'достаточно последовательное поведение') {
+        // Option 3
+        resultTitle = 'Спокойный контакт';
+        resultText = 'Рядом с человеком нет сильных эмоциональных перепадов, а его поступки достаточно надёжны. Такое спокойствие иногда кажется непривычным и ошибочно принимается за отсутствие чувств.';
+      } else {
+        // Option 4 (Other combinations or < 3 content answers)
+        resultTitle = 'Наблюдение продолжается';
+        resultText = 'Сейчас недостаточно информации, чтобы отделить притяжение к человеку от реакции на ситуацию. Не торопитесь с выводами: обратите внимание на его регулярные поступки во время следующих контактов.';
+      }
+
+      // Update Result UI
+      document.getElementById('resTitle').textContent = resultTitle;
+      document.getElementById('resText').textContent = resultText;
+      document.getElementById('resBodyLevel').textContent = `${bodyLevelDisplay} (${avgPct}%)`;
+      document.getElementById('resActionsLevel').textContent = actionsClarityDisplay;
+      document.getElementById('resCriteriaList').textContent = selectedCriteria.join(', ');
+
+      // Store in calculatedData
+      calculatedData = {
+        situation: userSituation,
+        bodyScore: normalizedScore,
+        bodyLevel: bodyLevel,
+        bodyLevelDisplay: bodyLevelDisplay,
+        actionsClarity: actionsClarity,
+        actionsClarityDisplay: actionsClarityDisplay,
+        criteria: selectedCriteria,
+        resultTitle: resultTitle,
+        resultText: resultText,
+        userName: window.currentUserName || 'Участник'
+      };
+
+      // Switch to Result View
+      document.getElementById('stage5Card').style.display = 'none';
+      const resCont = document.getElementById('resultContainer');
+      resCont.style.display = 'flex';
+
+      const btn3 = document.getElementById('btnNextLesson3');
+      if (btn3) {
+        btn3.className = 'primary-btn pulse';
+      }
+
+      window.scrollTo({ top: 80, behavior: 'smooth' });
+    }
 
     // ==========================================
     // AI COMPANION STRATEGY ANALYSIS
