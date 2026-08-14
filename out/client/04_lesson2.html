@@ -722,6 +722,12 @@
               </p>
             </div>
 
+            <!-- Send AI Breakdown to Telegram Button -->
+            <button id="btnSendLesson2TelegramAI" onclick="sendLesson2ToTelegram(event)" class="secondary-btn" style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span>✈️ Прислать этот разбор мне в Telegram</span>
+            </button>
+            <div id="tgStatusLesson2AI" style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;"></div>
+
             <div id="aiCreditsDepletedNotice" style="display:none; margin-top:4px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">
               🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей помощью.
             </div>
@@ -1118,12 +1124,17 @@
     async function sendLesson2ToTelegram(e) {
       if (e) e.preventDefault();
       safeHaptic('selection');
-      const btn = document.getElementById('btnSendLesson2Telegram');
-      const statusEl = document.getElementById('tgStatusLesson2');
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span>⏳ Отправляем в Telegram...</span>';
-      }
+      const btn1 = document.getElementById('btnSendLesson2Telegram');
+      const btn2 = document.getElementById('btnSendLesson2TelegramAI');
+      const status1 = document.getElementById('tgStatusLesson2');
+      const status2 = document.getElementById('tgStatusLesson2AI');
+
+      [btn1, btn2].forEach(b => {
+        if (b) {
+          b.disabled = true;
+          b.innerHTML = '<span>⏳ Отправляем в Telegram...</span>';
+        }
+      });
 
       const title = calculatedData?.resultTitle || document.getElementById('resTitle')?.textContent || 'Карта притяжения';
       const bodyText = document.getElementById('aiBodyText')?.textContent || '';
@@ -1200,16 +1211,20 @@
       } catch (err) {}
 
       safeHaptic('success');
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = '<span>✅ Разбор отправлен в ваш Telegram!</span>';
-        btn.style.borderColor = 'var(--success)';
-        btn.style.color = 'var(--success)';
-      }
-      if (statusEl) {
-        statusEl.style.display = 'block';
-        statusEl.textContent = 'Сообщение с разбором направлено в ваш диалог с ботом.';
-      }
+      [btn1, btn2].forEach(b => {
+        if (b) {
+          b.disabled = false;
+          b.innerHTML = '<span>✅ Разбор отправлен в ваш Telegram!</span>';
+          b.style.borderColor = 'var(--success)';
+          b.style.color = 'var(--success)';
+        }
+      });
+      [status1, status2].forEach(s => {
+        if (s) {
+          s.style.display = 'block';
+          s.textContent = 'Сообщение с разбором направлено в ваш диалог с ботом.';
+        }
+      });
     }
 
     function cleanMarkdownText(str) {
