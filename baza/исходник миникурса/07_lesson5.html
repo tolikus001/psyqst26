@@ -103,7 +103,7 @@
           </p>
 
           <div style="display:flex; flex-direction:column; gap:10px; margin-top:14px;">
-            <button onclick="goToInteractive()" class="primary-btn pulse" style="width:100%;">
+            <button onclick="goToInteractive()" class="secondary-btn" style="width:100%; min-height:46px;">
               <span>Интеллектуальный попутчик ждёт ➔</span>
             </button>
           </div>
@@ -111,9 +111,9 @@
 
         <!-- Next Step Transition (Screen 1) -->
         <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="secondary-btn"
-            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
-            <span>Перейти к завершению курса ➔</span>
+          <button onclick="safeNavigate('09_bonuses.html');" class="primary-btn pulse"
+            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:48px;">
+            <span>Перейти к бонусам курса →</span>
           </button>
         </div>
 
@@ -233,8 +233,8 @@
               <p style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0; text-align:center;">
                 На этом маршруте Интеллектуальный попутчик прощается с вами. Сохраните свой новый сценарий и возвращайтесь к нему, когда понадобится опора. До новой встречи — мы будем ждать вас снова!
               </p>
-              <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="primary-btn pulse" style="width:100%; min-height:48px; margin-top:4px;">
-                <span>Перейти к завершению курса →</span>
+              <button onclick="safeNavigate('09_bonuses.html');" class="primary-btn pulse" style="width:100%; min-height:48px; margin-top:4px;">
+                <span>Перейти к бонусам курса →</span>
               </button>
             </div>
 
