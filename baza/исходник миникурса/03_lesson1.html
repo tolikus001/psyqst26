@@ -145,7 +145,7 @@
               Осталось разборов: <span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">5</span> / 5
             </div>
           </div>
-          <p style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
+          <p id="aiCreditsCardText" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
             Интеллектуальный попутчик поможет тебе потренироваться анализировать ситуацию. Его рекомендации только помогающие и не являются диагнозом, хотя он очень старается. И чтоб он не перестарался, он сможет ответить только 5 раз.
           </p>
         </div>
@@ -262,11 +262,29 @@
 
     function updateCreditsUI() {
       const el = document.getElementById('aiCreditsLeft');
-      if (el) el.textContent = aiCredits;
+      const textEl = document.getElementById('aiCreditsCardText');
       const btn = document.getElementById('btnSubmitStrategy');
-      if (aiCredits <= 0 && btn) {
-        btn.disabled = true;
-        btn.textContent = 'Лимит разборов исчерпан (5/5)';
+
+      if (el) el.textContent = aiCredits;
+
+      if (aiCredits <= 0) {
+        if (textEl) {
+          textEl.innerHTML = '🚂 <strong style="color:var(--nb-terracotta);">Интеллектуальный попутчик поехал в следующий урок</strong> и будет ждать вас там с новыми вопросами и своей помощью.';
+        }
+        if (btn) {
+          btn.classList.remove('pulse');
+          btn.style.background = 'linear-gradient(135deg, var(--nb-sea), var(--nb-accent))';
+          btn.innerHTML = '<span>Попутчик ждёт вас во 2-м уроке ➔</span>';
+          btn.type = 'button';
+          btn.onclick = function() {
+            safeHaptic('selection');
+            window.location.href = '04_lesson2.html';
+          };
+        }
+      } else {
+        if (textEl) {
+          textEl.textContent = 'Интеллектуальный попутчик поможет тебе потренироваться анализировать ситуацию. Его рекомендации только помогающие и не являются диагнозом, хотя он очень старается. И чтоб он не перестарался, он сможет ответить только 5 раз.';
+        }
       }
     }
     updateCreditsUI();
@@ -275,7 +293,8 @@
     async function analyzeStrategy(e) {
       e.preventDefault();
       if (aiCredits <= 0) {
-        alert('Вы использовали все 5 доступных разборов Интеллектуального попутчика.');
+        safeHaptic('selection');
+        window.location.href = '04_lesson2.html';
         return;
       }
       safeHaptic('impactLight');
@@ -322,7 +341,14 @@
       safeHaptic('success');
       const block = document.getElementById('aiResultBlock');
       const textContainer = document.getElementById('aiAnalysisText');
-      textContainer.textContent = text;
+      
+      let htmlContent = text;
+      if (aiCredits <= 0) {
+        htmlContent += '\n\n<div style="margin-top:14px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей помощью.</div>';
+        textContainer.innerHTML = htmlContent;
+      } else {
+        textContainer.textContent = htmlContent;
+      }
       block.classList.remove('hidden');
       block.style.display = 'flex';
       block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
