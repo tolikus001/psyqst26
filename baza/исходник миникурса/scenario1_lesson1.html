@@ -68,6 +68,17 @@
   </script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
 <title>Урок 1 • Подсознательный фильтр — Анатолий Фёдоров</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
