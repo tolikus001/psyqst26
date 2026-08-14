@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta http-equiv="Content-Security-Policy"
-    content="
+  <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
       script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
       frame-src 'self' https://kinescope.io https://*.kinescope.io;
@@ -17,7 +17,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="theme.css">
   <script src="leaves-bg.js"></script>
   <script src="telegram-user.js"></script>
@@ -28,7 +29,7 @@
 
   <script>
     window.notibotInitData = null;
-    window.addEventListener('message', function(event) {
+    window.addEventListener('message', function (event) {
       if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
         window.notibotInitData = event.data.data;
       }
@@ -53,6 +54,7 @@
     }
   </script>
 </head>
+
 <body>
   <div id="maisonArtBackground" aria-hidden="true"></div>
 
@@ -62,7 +64,8 @@
       <!-- Navigation & Progress Bar (20% | 1 из 5) -->
       <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
         <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <a href="02_landing_partner.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+          <a href="02_landing_partner.html" onclick="safeHaptic('selection');" class="subtle"
+            style="font-weight:700; font-size:13px; text-decoration:none;">
             ← К курсу
           </a>
           <div class="strategy-badge" style="margin:0;">
@@ -72,7 +75,9 @@
 
         <!-- Progress Track -->
         <div style="width:100%; height:6px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
-          <div style="width:20%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px; transition:width 0.4s ease;"></div>
+          <div
+            style="width:20%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px; transition:width 0.4s ease;">
+          </div>
         </div>
       </header>
 
@@ -85,29 +90,38 @@
         <section class="glass card text-center">
           <div class="eyebrow" style="margin-bottom:8px;">Урок 1 из 5</div>
           <h2>Молчание, которое запускает ваш сценарий</h2>
-          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как один факт превращается в тревогу, догадки и попытку догнать человека.</p>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как один факт превращается в тревогу, догадки и
+            попытку догнать человека.</p>
 
           <!-- Video Player Wrapper (Kinescope) -->
-          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="lesson1VideoIframe" src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          <div
+            style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="lesson1VideoIframe" src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720"
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+              frameborder="0" allowfullscreen
+              style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
           </div>
         </section>
 
         <!-- Insight & Actions Card (Immediately visible) -->
         <section id="insightSection" class="glass card text-center">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+          <div class="eyebrow"
+            style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
             💡 Главный вывод
           </div>
           <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
           <p class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
-            Человек не отвечает 30 минут — это факт. Всё остальное пока только ваши предположения. Когда вы разделяете факт и интерпретацию, тревога перестаёт управлять вашими действиями.
+            Человек не отвечает 30 минут — это факт. Всё остальное пока только ваши предположения. Когда вы разделяете
+            факт и интерпретацию, тревога перестаёт управлять вашими действиями.
           </p>
 
           <div style="display:flex; flex-direction:column; gap:10px;">
-            <a href="https://disk.yandex.ru/i/qn8yFi5w31aAfQ" target="_blank" onclick="safeHaptic('selection');" class="secondary-btn" style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px;">
+            <a href="https://disk.yandex.ru/i/qn8yFi5w31aAfQ" target="_blank" onclick="safeHaptic('selection');"
+              class="secondary-btn"
+              style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px;">
               <span>📥 Скачать Чек-лист</span>
             </a>
-            
+
             <button onclick="goToStep2()" class="primary-btn pulse" style="width:100%;">
               <span>Заполнить чек-лист ➔</span>
             </button>
@@ -116,7 +130,8 @@
 
         <!-- Next Lesson Transition (Always immediately visible on Screen 1) -->
         <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="secondary-btn" style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
+          <button onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="secondary-btn"
+            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
             <span>Переходим ко второму уроку ➔</span>
           </button>
         </div>
@@ -130,23 +145,30 @@
 
         <!-- Back to Video Button -->
         <div>
-          <button onclick="goToStep1()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
+          <button onclick="goToStep1()" class="ghost-btn"
+            style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
             ← Назад к видеоуроку
           </button>
         </div>
 
         <!-- AI Helper Top Info Card (Project Glass Theme Centered) -->
         <div class="glass card text-center" style="padding: 18px 20px;">
-          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
-            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+          <div
+            style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
+            <div class="eyebrow"
+              style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
               ☀️ Интеллектуальный попутчик
             </div>
-            <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
-              Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">5</span>
+            <div class="strategy-badge"
+              style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
+              Осталось разборов:&nbsp;<span id="aiCreditsLeft"
+                style="color:var(--nb-terracotta); font-weight:900;">3</span>
             </div>
           </div>
-          <p id="aiCreditsCardText" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
-            Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.
+          <p id="aiCreditsCardText"
+            style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
+            Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит
+            диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.
           </p>
         </div>
 
@@ -154,32 +176,49 @@
         <section class="glass card">
           <div class="eyebrow" style="margin-bottom:8px;">Практика</div>
           <h3 class="question-title">Карта моего сценария</h3>
-          <p class="lead" style="font-size:13px; margin-bottom:14px;">Ответьте на пять вопросов, чтобы увидеть, где факт превращается в тревогу и привычную реакцию.</p>
+          <p class="lead" style="font-size:13px; margin-bottom:14px;">Ответьте на пять вопросов, чтобы увидеть, где факт
+            превращается в тревогу и привычную реакцию.</p>
 
-          <form id="strategyForm" onsubmit="analyzeStrategy(event)" style="display:flex; flex-direction:column; gap:12px;">
+          <form id="strategyForm" onsubmit="analyzeStrategy(event)"
+            style="display:flex; flex-direction:column; gap:12px;">
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что произошло в реальности?</label>
-              <textarea id="inpFact" rows="2" required placeholder="Пример: он не отвечает на сообщение 40 минут." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
+              <label
+                style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что
+                произошло в реальности?</label>
+              <textarea id="inpFact" rows="2" required placeholder="Пример: он не отвечает на сообщение 40 минут."
+                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я подумала и почувствовала?</label>
-              <textarea id="inpFeeling" rows="2" required placeholder="Пример: «Он потерял интерес». Я почувствовала тревогу." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
+              <label
+                style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я
+                подумала и почувствовала?</label>
+              <textarea id="inpFeeling" rows="2" required
+                placeholder="Пример: «Он потерял интерес». Я почувствовала тревогу."
+                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я начала делать?</label>
-              <textarea id="inpAction" rows="2" required placeholder="Пример: проверять статус и писать снова." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
+              <label
+                style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я
+                начала делать?</label>
+              <textarea id="inpAction" rows="2" required placeholder="Пример: проверять статус и писать снова."
+                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что это дало мне сразу?</label>
-              <textarea id="inpRelief" rows="2" required placeholder="Пример: на несколько минут стало спокойнее." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
+              <label
+                style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что это
+                дало мне сразу?</label>
+              <textarea id="inpRelief" rows="2" required placeholder="Пример: на несколько минут стало спокойнее."
+                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">К чему это привело в итоге?</label>
-              <textarea id="inpResult" rows="2" required placeholder="Пример: я оказалась в позиции догоняющей." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
+              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">К
+                чему это привело в итоге?</label>
+              <textarea id="inpResult" rows="2" required placeholder="Пример: я оказалась в позиции догоняющей."
+                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
             </div>
 
             <button type="submit" id="btnSubmitStrategy" class="primary-btn pulse" style="margin-top:6px;">
@@ -188,27 +227,36 @@
           </form>
 
           <!-- AI Feedback -->
-          <div id="aiResultBlock" class="hidden" style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:10px;">
+          <div id="aiResultBlock" class="hidden"
+            style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:10px;">
             <strong style="color:var(--nb-deep); font-size:13px;">✨ Ответ Интеллектуального попутчика:</strong>
 
             <!-- Offline / Fallback Notice Banner -->
-            <div id="aiOfflineNoticeLesson1" style="display:none; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
-              🚂 <strong>Попутчик ищет путь... (проблемы с интернетом)</strong> А пока обратите внимание на этот ориентир. Вы сможете снова обратиться к Попутчику попозже.
+            <div id="aiOfflineNoticeLesson1"
+              style="display:none; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+              🚂 <strong>Попутчик ищет путь... (проблемы с интернетом)</strong> А пока обратите внимание на этот
+              ориентир. Вы сможете снова обратиться к Попутчику попозже.
             </div>
 
-            <div id="aiAnalysisText" style="font-size:13px; color:var(--nb-text); line-height:1.5; white-space:pre-line;"></div>
+            <div id="aiAnalysisText"
+              style="font-size:13px; color:var(--nb-text); line-height:1.5; white-space:pre-line;"></div>
 
             <!-- Send to Telegram Button -->
-            <button id="btnSendLesson1Telegram" onclick="sendLesson1ToTelegram(event)" class="secondary-btn" style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <button id="btnSendLesson1Telegram" onclick="sendLesson1ToTelegram(event)" class="secondary-btn"
+              style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
               <span>✈️ Прислать этот разбор мне в Telegram</span>
             </button>
-            <div id="tgStatusLesson1" style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;"></div>
+            <div id="tgStatusLesson1"
+              style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;">
+            </div>
           </div>
         </section>
 
         <!-- Next Step Navigation (Immediately visible) -->
         <div id="nextLessonBlock" style="padding-top:4px;">
-          <button id="btnNextLesson2" onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="secondary-btn" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+          <button id="btnNextLesson2" onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';"
+            class="secondary-btn"
+            style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
             <span>Перейти ко второму уроку →</span>
           </button>
         </div>
@@ -225,11 +273,11 @@
 
   <script>
     // 3-Second Delayed Reveal for Insight Section
-    setTimeout(function() {
+    setTimeout(function () {
       const insight = document.getElementById('insightSection');
       if (insight) {
         insight.style.display = 'block';
-        requestAnimationFrame(function() {
+        requestAnimationFrame(function () {
           insight.style.opacity = '1';
           insight.style.transform = 'translateY(0)';
         });
@@ -241,7 +289,7 @@
       const nextBtn = document.getElementById('nextLessonBlock');
       if (nextBtn) {
         nextBtn.style.display = 'block';
-        requestAnimationFrame(function() {
+        requestAnimationFrame(function () {
           nextBtn.style.opacity = '1';
           nextBtn.style.transform = 'translateY(0)';
         });
@@ -282,9 +330,17 @@
       }
     }
 
-    // AI Credits System (5 requests limit)
-    const AI_CREDITS_KEY = 'lesson1_ai_credits_v1';
-    let aiCredits = parseInt(localStorage.getItem(AI_CREDITS_KEY) || '5', 10);
+    // AI Credits System (3 requests limit across the whole course)
+    const AI_CREDITS_KEY = 'psyquest_ai_credits';
+    let aiCredits = 3;
+    try {
+      const savedCredits = localStorage.getItem(AI_CREDITS_KEY);
+      if (savedCredits !== null) {
+        aiCredits = Math.max(0, Math.min(3, parseInt(savedCredits, 10)));
+      } else {
+        localStorage.setItem(AI_CREDITS_KEY, '3');
+      }
+    } catch (e) {}
 
     function updateCreditsUI() {
       const el = document.getElementById('aiCreditsLeft');
@@ -295,7 +351,7 @@
       if (el) el.textContent = aiCredits;
 
       // Reveal next lesson button if user already completed at least 1 analysis
-      if (aiCredits < 5 && nextBtn) {
+      if (aiCredits < 3 && nextBtn) {
         nextBtn.style.display = 'block';
       }
 
@@ -379,7 +435,7 @@
       if (offlineNotice) {
         offlineNotice.style.display = isRealAi ? 'none' : 'block';
       }
-      
+
       let htmlContent = text;
       if (aiCredits <= 0) {
         htmlContent += '\n\n<div style="margin-top:14px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей помощью.</div>';
@@ -483,7 +539,7 @@
         if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
           await navigator.clipboard.writeText(fullMessage);
         }
-      } catch (err) {}
+      } catch (err) { }
 
       safeHaptic('success');
       if (btn) {
@@ -500,4 +556,5 @@
   </script>
 
 </body>
+
 </html>
