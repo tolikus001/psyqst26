@@ -75,149 +75,172 @@
         </div>
       </header>
 
-      <!-- AI Companion Top Header Card -->
-      <div class="glass card text-center" style="padding: 16px 20px;">
-        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
-          <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
-            ☀️ Интеллектуальный попутчик
-          </div>
-          <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
-            Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">3</span>
-          </div>
-        </div>
-        <p style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
-          Он соединит все ключевые точки пройденных уроков в единую карту вашего нового сценария.
-        </p>
-      </div>
-
-      <!-- Video Card -->
-      <section class="glass card text-center">
-        <div class="eyebrow" style="margin-bottom:8px;">Урок 5 из 5</div>
-        <h2>Урок 5. Выбирать по-новому</h2>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Как переживать возврат к прежней реакции без обесценивания пройденного пути.</p>
-
-        <!-- Video Player Wrapper (Kinescope) -->
-        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-          <iframe id="lesson5Video" src="https://kinescope.io/embed/vD5EN9PU6rUpzhFax8s7Yb?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-        </div>
-      </section>
-
-      <!-- Block: Что важно забрать из урока -->
-      <section class="glass card text-center">
-        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-          💡 Главный вывод
-        </div>
-        <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
-        <p class="lead" style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0; text-align:left;">
-          Возврат к прежней реакции не отменяет произошедших изменений. Он показывает точку, в которой привычный сценарий пока включается автоматически. Новый выбор начинается с небольшой паузы: заметить напряжение, сделать длинный выдох и отложить действие до возвращения спокойствия.
-        </p>
-      </section>
-
       <!-- ==========================================
-           BLOCK: МОЙ НОВЫЙ СЦЕНАРИЙ (ИТОГОВЫЙ РАЗБОР)
+           SCREEN 1: VIDEO LESSON & MAIN INSIGHT
            ========================================== -->
-      <section class="glass card text-center" id="synthesisSection">
-        <div class="eyebrow" style="margin-bottom:8px;">✨ Итоговый разбор</div>
-        <h3 style="font-size:18px; margin-bottom:4px;">Мой новый сценарий</h3>
-        <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin-bottom:14px;">
-          Интеллектуальный попутчик соединит результаты пройденных уроков в единую карту.
-        </p>
+      <div id="step1VideoScreen" style="display:flex; flex-direction:column; gap:14px;">
 
-        <!-- Synthesis Action Button (Before Run) -->
-        <div id="synthesisInitBlock">
-          <button onclick="synthesizeNewScenario()" id="btnSynthesize" class="primary-btn pulse" style="width:100%; min-height:48px;">
-            <span>Собрать мой новый сценарий →</span>
+        <!-- Video Card -->
+        <section class="glass card text-center">
+          <div class="eyebrow" style="margin-bottom:8px;">Урок 5 из 5</div>
+          <h2>Урок 5. Выбирать по-новому</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как переживать возврат к прежней реакции без обесценивания пройденного пути.</p>
+
+          <!-- Video Player Wrapper (Kinescope) -->
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="lesson5Video" src="https://kinescope.io/embed/vD5EN9PU6rUpzhFax8s7Yb?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          </div>
+        </section>
+
+        <!-- Block: Что важно забрать из урока -->
+        <section class="glass card text-center">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+            💡 Главный вывод
+          </div>
+          <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
+          <p class="lead" style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0 0 14px 0; text-align:left;">
+            Возврат к прежней реакции не отменяет произошедших изменений. Он показывает точку, в которой привычный сценарий пока включается автоматически. Новый выбор начинается с небольшой паузы: заметить напряжение, сделать длинный выдох и отложить действие до возвращения спокойствия.
+          </p>
+
+          <div style="display:flex; flex-direction:column; gap:10px; margin-top:14px;">
+            <button onclick="goToInteractive()" class="primary-btn pulse" style="width:100%;">
+              <span>Интеллектуальный попутчик ждёт ➔</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Next Step Transition (Screen 1) -->
+        <div style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="secondary-btn"
+            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
+            <span>Перейти к завершению курса ➔</span>
           </button>
         </div>
 
-        <!-- Loading State -->
-        <div id="aiLoadingBlock" style="display:none; padding:24px 10px; text-align:center;">
-          <div style="display:inline-block; width:34px; height:34px; border:3px solid var(--nb-line); border-top-color:var(--nb-terracotta); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;"></div>
-          <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик соединяет карту вашего нового сценария...</div>
+      </div>
+
+      <!-- ==========================================
+           SCREEN 2: INTERACTIVE PRACTICE «МОЙ НОВЫЙ СЦЕНАРИЙ»
+           ========================================== -->
+      <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
+
+        <!-- Back to Video Button -->
+        <div>
+          <button onclick="goToVideo()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
+            ← Назад к видеоуроку
+          </button>
         </div>
 
-        <!-- Result Container -->
-        <div id="synthesisResultContainer" style="display:none; text-align:left; margin-top:8px;">
-
-          <!-- Offline Notice Banner -->
-          <div id="aiNoticeStatusBlock" style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
-            🚂 <strong>Помощник в пути... (проблемы с интернетом)</strong> А пока прислал такую мысль и фразу:
-          </div>
-
-          <!-- Structured 7 Points Card -->
-          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
-            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🎯 Мой триггер:</strong>
-              <span id="resTrigger" style="font-size:13.5px; font-weight:700; color:var(--nb-deep);"></span>
+        <!-- AI Companion Top Header Card -->
+        <div class="glass card text-center" style="padding: 16px 20px;">
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
+            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+              ☀️ Интеллектуальный попутчик
             </div>
-
-            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🫀 Первый сигнал тела:</strong>
-              <span id="resBodySignal" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
-            </div>
-
-            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🔄 Прежняя реакция:</strong>
-              <span id="resOldReaction" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
-            </div>
-
-            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">⏸ Моя точка остановки:</strong>
-              <span id="resPause" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
-            </div>
-
-            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🧭 Мои ориентиры:</strong>
-              <span id="resCriteria" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
-            </div>
-
-            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">💎 Моя возвращённая сила:</strong>
-              <span id="resStrength" style="font-size:13.5px; font-weight:800; color:var(--nb-sea);"></span>
-            </div>
-
-            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🚀 Новый выбор:</strong>
-              <span id="resNewAction" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+            <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
+              Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">3</span>
             </div>
           </div>
+          <p style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
+            Он соединит результаты всех пройденных уроков в единую карту вашего нового сценария.
+          </p>
+        </div>
 
-          <!-- Support Phrase Card (Special Highlight) -->
-          <div style="padding:16px; border-radius:16px; background:rgba(217, 131, 78, 0.12); border:1.5px solid rgba(217, 131, 78, 0.35); text-align:center; margin-bottom:14px;">
-            <div style="font-size:12px; font-weight:800; color:var(--nb-terracotta); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">
-              ✨ Ваша поддерживающая фраза
-            </div>
-            <div id="resSupportPhrase" style="font-size:15px; font-weight:800; color:var(--nb-deep); line-height:1.45; font-style:italic;">
-            </div>
-          </div>
+        <!-- Main Synthesis Section -->
+        <section class="glass card text-center" id="synthesisSection">
+          <div class="eyebrow" style="margin-bottom:8px;">✨ Итоговый разбор</div>
+          <h3 style="font-size:18px; margin-bottom:4px;">Мой новый сценарий</h3>
+          <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin-bottom:14px;">
+            Интеллектуальный попутчик соединит результаты пройденных уроков в единую карту.
+          </p>
 
-          <!-- ==========================================
-               ЧАСТЬ 9: ПРОЩАНИЕ ИНТЕЛЛЕКТУАЛЬНОГО ПОПУТЧИКА
-               ========================================== -->
-          <div id="aiFarewellCard" style="margin-top:14px; padding:18px 16px; border-radius:18px; background:rgba(217,131,78,0.08); border:1.5px solid rgba(217,131,78,0.25); text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px;">
-            <div class="eyebrow" style="margin:0; background:rgba(217,131,78,0.14); color:var(--nb-terracotta); border-color:rgba(217,131,78,0.3);">
-              🚂 Интеллектуальный попутчик
-            </div>
-            <h4 style="font-size:17px; font-weight:800; color:var(--nb-deep); margin:0;">
-              Путешествие завершено
-            </h4>
-            <p style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0; text-align:center;">
-              На этом маршруте Интеллектуальный попутчик прощается с вами. Сохраните свой новый сценарий и возвращайтесь к нему, когда понадобится опора. До новой встречи — мы будем ждать вас снова!
-            </p>
-            <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="primary-btn pulse" style="width:100%; min-height:48px; margin-top:4px;">
-              <span>Перейти к завершению курса →</span>
+          <!-- Synthesis Action Button (Before Run) -->
+          <div id="synthesisInitBlock">
+            <button onclick="synthesizeNewScenario()" id="btnSynthesize" class="primary-btn pulse" style="width:100%; min-height:48px;">
+              <span>Собрать мой новый сценарий →</span>
             </button>
           </div>
 
-        </div>
-      </section>
+          <!-- Loading State -->
+          <div id="aiLoadingBlock" style="display:none; padding:24px 10px; text-align:center;">
+            <div style="display:inline-block; width:34px; height:34px; border:3px solid var(--nb-line); border-top-color:var(--nb-terracotta); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;"></div>
+            <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик соединяет карту вашего нового сценария...</div>
+          </div>
 
-      <!-- Direct Transition to Completion Button (Always visible on Screen) -->
-      <div style="padding-top:4px;">
-        <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="secondary-btn"
-          style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
-          <span>Перейти к завершению курса ➔</span>
-        </button>
+          <!-- Result Container -->
+          <div id="synthesisResultContainer" style="display:none; text-align:left; margin-top:8px;">
+
+            <!-- Offline Notice Banner -->
+            <div id="aiNoticeStatusBlock" style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+              🚂 <strong>Помощник в пути... (проблемы с интернетом)</strong> А пока прислал такую мысль и фразу:
+            </div>
+
+            <!-- Structured 7 Points Card -->
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+              <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🎯 Мой триггер:</strong>
+                <span id="resTrigger" style="font-size:13.5px; font-weight:700; color:var(--nb-deep);"></span>
+              </div>
+
+              <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🫀 Первый сигнал тела:</strong>
+                <span id="resBodySignal" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+              </div>
+
+              <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🔄 Прежняя реакция:</strong>
+                <span id="resOldReaction" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+              </div>
+
+              <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">⏸ Моя точка остановки:</strong>
+                <span id="resPause" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+              </div>
+
+              <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🧭 Мои ориентиры:</strong>
+                <span id="resCriteria" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+              </div>
+
+              <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">💎 Моя возвращённая сила:</strong>
+                <span id="resStrength" style="font-size:13.5px; font-weight:800; color:var(--nb-sea);"></span>
+              </div>
+
+              <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🚀 Новый выбор:</strong>
+                <span id="resNewAction" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+              </div>
+            </div>
+
+            <!-- Support Phrase Card (Special Highlight) -->
+            <div style="padding:16px; border-radius:16px; background:rgba(217, 131, 78, 0.12); border:1.5px solid rgba(217, 131, 78, 0.35); text-align:center; margin-bottom:14px;">
+              <div style="font-size:12px; font-weight:800; color:var(--nb-terracotta); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">
+                ✨ Ваша поддерживающая фраза
+              </div>
+              <div id="resSupportPhrase" style="font-size:15px; font-weight:800; color:var(--nb-deep); line-height:1.45; font-style:italic;">
+              </div>
+            </div>
+
+            <!-- FAREWELL BLOCK: Прощание Интеллектуального попутчика -->
+            <div id="aiFarewellCard" style="margin-top:14px; padding:18px 16px; border-radius:18px; background:rgba(217,131,78,0.08); border:1.5px solid rgba(217,131,78,0.25); text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px;">
+              <div class="eyebrow" style="margin:0; background:rgba(217,131,78,0.14); color:var(--nb-terracotta); border-color:rgba(217,131,78,0.3);">
+                🚂 Интеллектуальный попутчик
+              </div>
+              <h4 style="font-size:17px; font-weight:800; color:var(--nb-deep); margin:0;">
+                Путешествие завершено
+              </h4>
+              <p style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0; text-align:center;">
+                На этом маршруте Интеллектуальный попутчик прощается с вами. Сохраните свой новый сценарий и возвращайтесь к нему, когда понадобится опора. До новой встречи — мы будем ждать вас снова!
+              </p>
+              <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="primary-btn pulse" style="width:100%; min-height:48px; margin-top:4px;">
+                <span>Перейти к завершению курса →</span>
+              </button>
+            </div>
+
+          </div>
+        </section>
+
       </div>
 
       <!-- Footer -->
@@ -269,6 +292,24 @@
           iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
         } catch(e) {}
       }
+    }
+
+    // Screen 1 -> Screen 2 Transition
+    function goToInteractive() {
+      safeHaptic('selection');
+      pauseVideo();
+      document.getElementById('step1VideoScreen').style.display = 'none';
+      const s2 = document.getElementById('step2InteractiveScreen');
+      s2.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Screen 2 -> Screen 1 Return
+    function goToVideo() {
+      safeHaptic('selection');
+      document.getElementById('step2InteractiveScreen').style.display = 'none';
+      document.getElementById('step1VideoScreen').style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     async function synthesizeNewScenario() {
@@ -405,7 +446,7 @@
       }
       document.getElementById('resCriteria').textContent = critText;
 
-      document.getElementById('resStrength').textContent = resultObj.strength || 'Пока не определено';
+      document.getElementById('resStrength').textContent = resultObj.resource || resultObj.strength || 'Пока не определено';
       document.getElementById('resNewAction').textContent = resultObj.new_action || 'Пока не определено';
 
       let phrase = resultObj.support_phrase || '«Я разрешаю себе делать выбор из спокойствия и уважения к себе»';
