@@ -30,14 +30,15 @@ html, body {
   position: fixed !important;
   inset: 0 !important;
   z-index: 0 !important;
-  background-image: url('leaves_birch.png');
+  background-image: url('leaves_birch.jpg');
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
-  filter: saturate(0.92) contrast(0.96) brightness(1.03) !important;
+  opacity: 0.32 !important;
+  filter: saturate(0.85) contrast(0.92) brightness(1.04) !important;
   transform: translateZ(0);
   pointer-events: none !important;
-  transition: background-image 0.65s ease !important;
+  transition: opacity 0.4s ease, background-image 0.65s ease !important;
 }
 
 
