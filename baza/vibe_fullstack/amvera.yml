@@ -1,0 +1,11 @@
+meta:
+  environment: node
+  toolchain:
+    name: npm
+    version: 20
+
+build:
+  additionalCommands: npx prisma generate && npx prisma db push && npm run build
+
+run:
+  command: npm start

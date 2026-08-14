@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Практический курс «Новый сценарий» — Анатолий Фёдоров</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <!-- Early Interceptor for Notibot Bridge -->
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(25);
+        }
+      } catch (e) {
+        console.log('Haptic silent catch:', e);
+      }
+    }
+  </script>
+
+  <style>
+    .discount-pill {
+      background: linear-gradient(135deg, #C8B28F 0%, #7F9B8E 100%);
+      color: #FFFFFF;
+      font-weight: 900;
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      display: inline-block;
+      box-shadow: 0 2px 8px rgba(127, 155, 142, 0.25);
+    }
+    .timer-badge {
+      background: rgba(18, 68, 83, 0.08);
+      border: 1px solid rgba(18, 68, 83, 0.14);
+      color: var(--nb-sea);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Header with Telegram Context -->
+      <header class="header">
+        <div class="identity">
+          <div class="avatar">АФ</div>
+          <div style="min-width:0">
+            <div class="greeting">Анатолий Фёдоров</div>
+            <div class="subtle">Результат: Сценарий выбора</div>
+          </div>
+        </div>
+        <div class="strategy-badge">Шаг 2 из 2</div>
+      </header>
+
+      <!-- Video Section (Spoken in Lesson 0) -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Персональный видео-разбор</div>
+        <h2>Почему мы выбираем «не тех» и как отключить эмоциональные качели</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Посмотрите видео-обращение Анатолия перед началом практики</p>
+
+        <!-- Video Player Wrapper -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.15);">
+          <video id="introVideo" controls playsinline webkit-playsinline preload="metadata" style="width:100%; height:100%; object-fit:cover;">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/%D1%83%D1%80%D0%BE%D0%BA%200.mp4" type="video/mp4">
+            Ваш браузер не поддерживает встроенное видео.
+          </video>
+        </div>
+      </section>
+
+      <!-- Gift Meditation Section (From Lesson 0 transcript) -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2);">
+          🎁 Ваш подарок
+        </div>
+        <h3 style="margin-top:8px;">Практика снятия тревоги и отдыха</h3>
+        <p class="lead" style="font-size:13px; margin-bottom:8px;">Включите расслабляющую практику для снятия соматического спазма</p>
+
+        <div style="display:inline-block; font-size:11px; font-weight:800; color:var(--nb-sea); background:rgba(18,68,83,0.07); padding:4px 12px; border-radius:999px; margin-bottom:12px;">
+          Длительность записи: около 12 минут
+        </div>
+
+        <div style="padding:10px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+          <audio controls preload="none" style="width:100%; accent-color:var(--nb-accent);">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation_audio.MP3" type="audio/mpeg">
+            Ваш браузер не поддерживает аудио.
+          </audio>
+        </div>
+      </section>
+
+      <!-- Practical Course Offer Card -->
+      <section class="glass hero">
+        <div class="eyebrow">🎬 Практический курс</div>
+        <h1>«Новый сценарий»</h1>
+        
+        <div style="margin:6px 0 10px;">
+          <span class="discount-pill">🔥 СКИДКА -52%</span>
+        </div>
+
+        <div class="timer-badge" style="background:rgba(255,255,255,0.15); color:#fff; border-color:rgba(255,255,255,0.2);">
+          <span>⏳ До сгорания спеццены:</span>
+          <span id="countdownTimer" style="font-weight:900; font-family:monospace;">59:59</span>
+        </div>
+
+        <!-- 3 Items strictly as spoken by Anatoly -->
+        <div style="margin:16px 0 12px; padding:12px; border-radius:16px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);">
+          <div style="display:flex; justify-content:center; gap:16px; font-size:13px; font-weight:700; color:#fff;">
+            <span>• 5 видео-уроков</span>
+            <span>• 2 медитации</span>
+            <span>• 4 видео-бонуса</span>
+          </div>
+          <div style="margin-top:10px; border-top:1px solid rgba(255,255,255,0.15); padding-top:8px; text-align:center;">
+            <button onclick="toggleDetails()" class="ghost-btn" style="color:rgba(255,255,255,0.9); font-size:12px; text-decoration:underline; min-height:auto; padding:4px;">
+              <span id="toggleText">👉 Программа уроков и бонусы (подробнее)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Program Accordion -->
+        <div id="lessonAccordion" class="hidden" style="flex-direction:column; gap:8px; text-align:left; background:rgba(255,255,255,0.06); padding:14px; border-radius:18px; border:1px solid rgba(255,255,255,0.12); margin-bottom:14px;">
+          <div style="padding:8px 10px; border-radius:10px; background:rgba(0,0,0,0.2); font-size:12px;">
+            <strong>Урок 1:</strong> Как перестать накручивать себя в ожидании сообщений (отлепляем факты от интерпретаций)
+          </div>
+          <div style="padding:8px 10px; border-radius:10px; background:rgba(0,0,0,0.2); font-size:12px;">
+            <strong>Урок 2:</strong> «Бабочки в животе» или спазм тревоги? Синдром «скучного парня»
+          </div>
+          <div style="padding:8px 10px; border-radius:10px; background:rgba(0,0,0,0.2); font-size:12px;">
+            <strong>Урок 3:</strong> Дофамино-кортизоловые качели и 3 шага срыва + Медитация заземления
+          </div>
+          <div style="padding:8px 10px; border-radius:10px; background:rgba(0,0,0,0.2); font-size:12px;">
+            <strong>Урок 4:</strong> Внутренние запреты: почему магнитом тянет к «сложным» людям
+          </div>
+          <div style="padding:8px 10px; border-radius:10px; background:rgba(0,0,0,0.2); font-size:12px;">
+            <strong>Урок 5:</strong> Закрепление нового сценария без срывов + Интеграционная медитация
+          </div>
+
+          <div style="padding:10px; border-radius:12px; background:rgba(127,155,142,0.25); border:1px solid rgba(127,155,142,0.4); font-size:11px; margin-top:4px;">
+            <strong style="color:#fff; display:block; margin-bottom:4px;">🎁 4 Видео-бонуса курса:</strong>
+            <ul style="padding-left:16px; margin:0; line-height:1.45;">
+              <li>Как создавать зону безопасности и уверенности в себе</li>
+              <li>Как спокойно реагировать на сообщения из прошлого</li>
+              <li>Как быстро заземлить тревогу через тело</li>
+              <li>Как комфортно завершать общение, если вам не по пути</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Price & CTA Button -->
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px solid rgba(255,255,255,0.15); padding-top:14px;">
+          <div style="text-align:left;">
+            <span style="font-size:26px; font-weight:900; line-height:1; color:#fff; display:block;">2 400 ₽</span>
+            <span style="font-size:12px; color:rgba(255,255,255,0.6); text-decoration:line-through;">5 000 ₽</span>
+          </div>
+          <button id="btnBuy" onclick="handlePurchase()" class="primary-btn pulse" style="background:#fff; color:var(--nb-deep); box-shadow:0 12px 28px rgba(0,0,0,0.25); flex:1;">
+            <span>Участвую ➔</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Social & Support Links -->
+      <footer style="display:flex; flex-direction:column; gap:8px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <a href="https://t.me/smplthing" target="_blank" onclick="safeHaptic('selection');" class="secondary-btn" style="min-height:44px; font-size:12px; text-decoration:none;">
+            <span>📢 Канал автора</span>
+          </a>
+          <a href="https://t.me/smplthing" target="_blank" onclick="safeHaptic('selection');" class="secondary-btn" style="min-height:44px; font-size:12px; text-decoration:none;">
+            <span>💬 Поддержка</span>
+          </a>
+        </div>
+        <div class="subtle text-center py-2" style="font-size:11px;">
+          © Анатолий Фёдоров • Системно-поведенческий анализ
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    // 1-Hour Live Countdown Timer
+    const TIMER_KEY = 'psy_timer_expire_v2';
+    let expireTime = localStorage.getItem(TIMER_KEY);
+
+    if (!expireTime) {
+      expireTime = Date.now() + 60 * 60 * 1000;
+      localStorage.setItem(TIMER_KEY, expireTime);
+    } else {
+      expireTime = parseInt(expireTime, 10);
+    }
+
+    function updateTimer() {
+      const now = Date.now();
+      const remaining = Math.max(0, expireTime - now);
+      const totalSec = Math.floor(remaining / 1000);
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
+      
+      const str = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+      const el = document.getElementById('countdownTimer');
+      if (el) el.textContent = str;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    // Accordion Toggle
+    let isDetailsOpen = false;
+    function toggleDetails() {
+      safeHaptic('selection');
+      const acc = document.getElementById('lessonAccordion');
+      const txt = document.getElementById('toggleText');
+      isDetailsOpen = !isDetailsOpen;
+      if (isDetailsOpen) {
+        acc.classList.remove('hidden');
+        acc.style.display = 'flex';
+        txt.textContent = '✕ Свернуть программу уроков';
+      } else {
+        acc.classList.add('hidden');
+        acc.style.display = 'none';
+        txt.textContent = '👉 Программа уроков и бонусы (подробнее)';
+      }
+    }
+
+    // Purchase via Notibot Bridge SDK
+    function handlePurchase() {
+      safeHaptic('success');
+      if (window.notibot && typeof window.notibot.openProduct === 'function') {
+        window.notibot.openProduct('course_partner_2400');
+      } else {
+        window.location.href = '03_lesson1.html';
+      }
+    }
+  </script>
+
+</body>
+</html>

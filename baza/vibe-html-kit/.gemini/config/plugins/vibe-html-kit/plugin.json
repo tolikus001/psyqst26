@@ -1,0 +1,36 @@
+{
+  "name": "vibe-html-kit",
+  "displayName": "🚀 Vibe HTML Kit",
+  "description": "Стартер-кит уровня Новичок. HTML + Tailwind CDN + Notibot Bridge. Многокомпонентная архитектура без сборщиков.",
+  "version": "1.0.0",
+  "skills": [
+    {
+      "name": "rules",
+      "path": "skills/rules/SKILL.md"
+    },
+    {
+      "name": "audit",
+      "path": "skills/audit/SKILL.md"
+    },
+    {
+      "name": "notibot",
+      "path": "skills/notibot/SKILL.md"
+    },
+    {
+      "name": "github",
+      "path": "skills/github/SKILL.md"
+    },
+    {
+      "name": "deploy",
+      "path": "skills/deploy/SKILL.md"
+    },
+    {
+      "name": "drawer",
+      "path": "skills/drawer/SKILL.md"
+    },
+    {
+      "name": "pro-list",
+      "path": "skills/pro-list/SKILL.md"
+    }
+  ]
+}

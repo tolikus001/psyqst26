@@ -1,0 +1,13 @@
+{
+  "name": "notibot-diagnostic-ai",
+  "version": "1.0.0",
+  "description": "Media & AI Backend for Psyquest Funnel",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

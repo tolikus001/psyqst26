@@ -1,0 +1,113 @@
+/* ===========================================
+   styles.css — Базовые стили проекта
+   Tailwind utilities — в HTML/JS разметке.
+   Здесь: CSS-переменные, анимации, утилиты.
+   =========================================== */
+
+/* ── Переменные темы ─────────────────────────
+   По умолчанию — светлая тема.
+   При подключении Notibot Bridge эти значения
+   перезаписываются из app.colors автоматически.
+   ────────────────────────────────────────── */
+:root {
+  --color-bg:      #ffffff;
+  --color-text:    #0f172a;
+  --color-muted:   #64748b;
+  --color-accent:  #6366f1;
+  --color-surface: rgba(0, 0, 0, 0.04);
+  --color-border:  rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg:      #0f172a;
+    --color-text:    #f1f5f9;
+    --color-muted:   #94a3b8;
+    --color-accent:  #818cf8;
+    --color-surface: rgba(255, 255, 255, 0.06);
+    --color-border:  rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* ── Базовые стили ───────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Safe Areas (iOS) ────────────────────── */
+.safe-top    { padding-top:    env(safe-area-inset-top,    0px); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* ── Анимации ────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1;   }
+  50%       { opacity: 0.5; }
+}
+
+.fade-in   { animation: fadeIn  0.35s ease forwards; }
+.slide-up  { animation: slideUp 0.4s  ease forwards; }
+.pulse     { animation: pulse   1.5s  ease infinite; }
+
+/* ── Эффект нажатия на кнопки ────────────── */
+.btn-press {
+  transition: transform 0.1s ease, opacity 0.1s ease;
+  cursor: pointer;
+}
+.btn-press:active {
+  transform: scale(0.96);
+  opacity: 0.8;
+}
+
+/* ── Переиспользуемые UI-блоки ───────────── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.btn-primary {
+  display: block;
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+.btn-primary:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 16px 0;
+}

@@ -1,0 +1,11 @@
+{
+  "name": "vibe-html-kit",
+  "version": "1.0.0",
+  "description": "Vibe HTML Kit — стартер для вайбкодинга",
+  "type": "module",
+  "scripts": {
+    "audit": "node scripts/audit.js",
+    "hooks": "sh scripts/setup-hooks.sh",
+    "start": "npx serve . --listen 3000"
+  }
+}

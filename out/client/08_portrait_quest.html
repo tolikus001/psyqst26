@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>21 вопрос: Составление психологического портрета — Анатолий Фёдоров</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(25);
+        }
+      } catch (e) {
+        console.log('Haptic silent catch:', e);
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Header -->
+      <header class="header">
+        <a href="07_lesson5.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+          ← К уроку 5
+        </a>
+        <div class="strategy-badge">21 вопрос</div>
+      </header>
+
+      <!-- Progress Section -->
+      <section class="progress-wrap glass card">
+        <div class="progress-track"><div id="progBar" class="progress-bar" style="width:5%;"></div></div>
+        <div class="progress-meta">
+          <span id="stepLabel">Вопрос 1 из 21</span>
+          <span class="subtle">Глубокий анализ</span>
+        </div>
+      </section>
+
+      <!-- Question Panel -->
+      <section class="glass card">
+        <div class="choice-notice" style="margin-bottom:12px;">Индивидуальный психологический портрет</div>
+        <h2 id="pQuestionText" class="question-title">Какая главная трудность возникает у вас при построении длительных отношений?</h2>
+
+        <div id="pOptions" class="answers">
+          <!-- Dynamically Generated -->
+        </div>
+
+        <div class="nav-row">
+          <button id="pNextBtn" onclick="nextPQuestion()" disabled class="primary-btn pulse">
+            Дальше ➔
+          </button>
+        </div>
+      </section>
+
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • Системно-поведенческий анализ
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    const pQuestions = [
+      { text: "Какая главная трудность возникает у вас при построении отношений?", options: ["Быстро теряю себя и растворяюсь в партнере", "Притягиваю эмоционально холодных людей", "Боюсь открыться и показаться слабой", "Быстро разочаровываюсь и закрываюсь"] },
+      { text: "Как ваше тело реагирует на длительную паузу в общении?", options: ["Спазм в животе, перехват дыхания", "Сжатие челюсти и готовность к атаке", "Тяжесть и оцепенение во всем теле", "Суета, непреодолимое желание немедленно что-то сделать"] },
+      { text: "Что для вас самое страшное в близости?", options: ["Быть отвергнутой и ненужной", "Потерять свободу и контроль над своей жизнью", "Узнать об обмане или предательстве", "Остаться одной в пустоте"] },
+      { text: "Какое чувство чаще всего поднимается в конфликте?", options: ["Обида и несправедливость", "Глухая злость и раздражение", "Панический страх разрушения связи", "Вина и самобичевание"] },
+      { text: "Как вы относитесь к проявлению своей агрессии и силы?", options: ["С детства запрещаю себе злиться, терплю", "Иногда взрываюсь, а потом испытываю жгучий стыд", "Считаю, что хорошая женщина должна быть мягкой", "Открыто держу границы, но чувствую себя одинокой"] }
+    ];
+
+    let pIndex = 0;
+    let selectedOpt = null;
+    const recordedAnswers = [];
+
+    function renderPQuestion() {
+      const q = pQuestions[pIndex % pQuestions.length];
+      document.getElementById('stepLabel').textContent = `Вопрос ${pIndex + 1} из 21`;
+      document.getElementById('pQuestionText').textContent = q.text;
+      document.getElementById('progBar').style.width = `${Math.round(((pIndex + 1) / 21) * 100)}%`;
+
+      const box = document.getElementById('pOptions');
+      box.innerHTML = '';
+      selectedOpt = null;
+      document.getElementById('pNextBtn').disabled = true;
+
+      q.options.forEach((opt, idx) => {
+        const div = document.createElement('div');
+        div.className = 'answer';
+        div.innerHTML = `
+          <div class="answer-dot"></div>
+          <span style="flex:1; line-height:1.4;">${opt}</span>
+        `;
+        div.onclick = () => {
+          safeHaptic('selection');
+          selectedOpt = opt;
+          document.querySelectorAll('.answer').forEach(el => el.classList.remove('selected'));
+          div.classList.add('selected');
+          document.getElementById('pNextBtn').disabled = false;
+        };
+        box.appendChild(div);
+      });
+    }
+
+    function nextPQuestion() {
+      if (!selectedOpt) return;
+      safeHaptic('impactLight');
+      recordedAnswers.push(selectedOpt);
+      pIndex++;
+      if (pIndex < 21) {
+        renderPQuestion();
+      } else {
+        safeHaptic('success');
+        alert('Спасибо! Ваши ответы переданы в экспертную систему. 10-страничный психологический отчет будет отправлен в Telegram бот, а Анатолий свяжется с вами для согласования времени консультации.');
+        window.location.href = '07_lesson5.html';
+      }
+    }
+
+    renderPQuestion();
+  </script>
+
+</body>
+</html>

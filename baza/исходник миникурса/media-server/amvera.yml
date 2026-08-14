@@ -1,0 +1,11 @@
+meta:
+  environment: python
+  toolchain:
+    name: pip
+    version: 3.11
+  port: 5000
+build:
+  skip: true
+run:
+  command: python server.py
+  persistenceMount: /data

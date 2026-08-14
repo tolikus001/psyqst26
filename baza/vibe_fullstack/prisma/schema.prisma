@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  telegramId   String?       @unique
+  displayName  String?
+  photoURL     String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  
+  aiResponses  AiResponse[]
+}
+
+model AiResponse {
+  id           String        @id @default(uuid())
+  userId       String?
+  user         User?         @relation(fields: [userId], references: [id])
+  prompt       String
+  systemPrompt String?
+  response     String
+  model        String        @default("gpt-4o-mini")
+  createdAt    DateTime      @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}

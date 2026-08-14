@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Урок 3: Дофамино-кортизоловые качели и 3 шага срыва — Анатолий Фёдоров</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(25);
+        }
+      } catch (e) {
+        console.log('Haptic silent catch:', e);
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Header -->
+      <header class="header">
+        <a href="04_lesson2.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+          ← К уроку 2
+        </a>
+        <div class="strategy-badge">Урок 3 из 5</div>
+      </header>
+
+      <!-- Video Card -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Модуль 3: Эмоциональная анатомия</div>
+        <h2>Дофамино-кортизоловые качели и 3 шага срыва</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Как биохимия привязывает к непредсказуемым людям и как соскочить с карусели</p>
+
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <video controls playsinline webkit-playsinline preload="metadata" style="width:100%; height:100%; object-fit:cover;">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/%D1%83%D1%80%D0%BE%D0%BA%203.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+          </video>
+        </div>
+
+        <!-- 3 Steps Breakdown -->
+        <div style="margin-top:14px; padding:14px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); text-align:left;">
+          <strong style="color:var(--nb-deep); font-size:13px; display:block; margin-bottom:8px; text-align:center;">3 шага эмоционального срыва:</strong>
+          <div style="display:flex; flex-direction:column; gap:6px; font-size:12px;">
+            <div style="padding:8px 10px; border-radius:10px; background:#fff; border:1px solid var(--nb-line);">
+              <strong>1. Тихий сигнал:</strong> Микрозажим в теле (живот, челюсть, перехват дыхания).
+            </div>
+            <div style="padding:8px 10px; border-radius:10px; background:#fff; border:1px solid var(--nb-line);">
+              <strong>2. Игнорирование:</strong> «Я сильная, потерплю» — напряжение копится скрыто.
+            </div>
+            <div style="padding:8px 10px; border-radius:10px; background:#fff; border:1px solid var(--nb-line);">
+              <strong>3. Взрыв:</strong> Миндалевидное тело перехватывает контроль, логика отключается.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resource Meditation Player Card (From transcript) -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2);">
+          🧘‍♀️ Главная практика урока
+        </div>
+        <h3 style="margin-top:8px;">Ресурсная медитация заземления</h3>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Снятие соматического зажима страха одиночества и возврат тихой опоры</p>
+
+        <div style="padding:10px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+          <audio controls preload="none" style="width:100%; accent-color:var(--nb-accent);">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation_lesson3.mp3" type="audio/mpeg">
+            Ваш браузер не поддерживает аудио.
+          </audio>
+        </div>
+      </section>
+
+      <!-- Next Step -->
+      <div style="padding-top:4px;">
+        <button onclick="safeHaptic('selection'); window.location.href='06_lesson4.html';" class="secondary-btn">
+          <span>Перейти к Уроку 4: «Внутренние запреты» ➔</span>
+        </button>
+      </div>
+
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • Системно-поведенческий анализ
+      </footer>
+
+    </div>
+  </main>
+
+</body>
+</html>

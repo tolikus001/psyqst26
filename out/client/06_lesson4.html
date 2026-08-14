@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Урок 4: Внутренние запреты и теневая сила — Анатолий Фёдоров</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
+          window.notibot.hapticFeedback(type || 'impactLight');
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
+        } else if (navigator.vibrate) {
+          navigator.vibrate(25);
+        }
+      } catch (e) {
+        console.log('Haptic silent catch:', e);
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Header -->
+      <header class="header">
+        <a href="05_lesson3.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+          ← К уроку 3
+        </a>
+        <div class="strategy-badge">Урок 4 из 5</div>
+      </header>
+
+      <!-- Video Card -->
+      <section class="glass card text-center">
+        <div class="eyebrow" style="margin-bottom:8px;">Модуль 4: Интеграция тени</div>
+        <h2>Внутренние запреты: почему магнитом тянет к «сложным» людям</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Как детские правила формируют нездоровый сценарий выбора</p>
+
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <video controls playsinline webkit-playsinline preload="metadata" style="width:100%; height:100%; object-fit:cover;">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/%D1%83%D1%80%D0%BE%D0%BA%204.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+          </video>
+        </div>
+
+        <div style="margin-top:14px; padding:14px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); text-align:left;">
+          <strong style="color:var(--nb-sea); font-size:12px; display:block; margin-bottom:4px;">💡 Главный инсайт урока:</strong>
+          <span style="font-size:13px; color:var(--nb-text); line-height:1.45;">
+            Все, что вы запрещаете себе (быть резкой, спонтанной, ставить себя на 1-е место), вы бессознательно ищете в других. Как только вы разрешаете себе свою собственную силу — магия недоступных людей моментально исчезает.
+          </span>
+        </div>
+      </section>
+
+      <!-- 6 Steps Shadow Practice -->
+      <section class="glass card">
+        <div class="eyebrow" style="margin-bottom:8px;">Практика 6 шагов</div>
+        <h3 class="question-title">Возврат своей теневой силы</h3>
+        <p class="lead" style="font-size:13px; margin-bottom:14px;">Пошаговый соматический алгоритм интеграции подавленного ресурса</p>
+
+        <div style="display:flex; flex-direction:column; gap:8px; font-size:13px;">
+          <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid var(--nb-line);">
+            <strong style="color:var(--nb-deep); display:block; margin-bottom:2px;">Шаг 1: Качество-магнит</strong>
+            <span class="subtle">Что тебя одновременно раздражает и восхищает в других? (Наглость, дерзость, пофигизм, яркость)</span>
+          </div>
+
+          <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid var(--nb-line);">
+            <strong style="color:var(--nb-deep); display:block; margin-bottom:2px;">Шаг 2: Момент запрета</strong>
+            <span class="subtle">Вспомни, когда в детстве или юности тебе впервые запретили проявлять эту силу («девочки так себя не ведут»).</span>
+          </div>
+
+          <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid var(--nb-line);">
+            <strong style="color:var(--nb-deep); display:block; margin-bottom:2px;">Шаг 3: Соматический зажим</strong>
+            <span class="subtle">Где в теле возникает спазм при мысли о проявлении своего «Я»? (Сжатие горла, челюсти, задержка дыхания).</span>
+          </div>
+
+          <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid var(--nb-line);">
+            <strong style="color:var(--nb-deep); display:block; margin-bottom:2px;">Шаг 4: Разрешение на примерку</strong>
+            <span class="subtle">Позволь себе на 2 минуты примерить это состояние. Почувствуй себя сильной, независимой, устойчивой.</span>
+          </div>
+
+          <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid var(--nb-line);">
+            <strong style="color:var(--nb-deep); display:block; margin-bottom:2px;">Шаг 5: Фиксация энергии</strong>
+            <span class="subtle">Заметь, как в теле появляется свобода и опора, когда ты не прячешь свои грани.</span>
+          </div>
+
+          <div style="margin-top:4px; padding:12px; border-radius:14px; background:rgba(127,155,142,0.15); border:1px solid rgba(127,155,142,0.3); text-align:center; font-weight:800; color:var(--nb-deep); font-size:13px;">
+            ✨ Шаг 6: Манифест: «Я разрешаю себе быть разной. Мне можно!»
+          </div>
+        </div>
+      </section>
+
+      <!-- Next Step -->
+      <div style="padding-top:4px;">
+        <button onclick="safeHaptic('selection'); window.location.href='07_lesson5.html';" class="secondary-btn">
+          <span>Перейти к финальному Уроку 5: «Закрепление» ➔</span>
+        </button>
+      </div>
+
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • Системно-поведенческий анализ
+      </footer>
+
+    </div>
+  </main>
+
+</body>
+</html>
