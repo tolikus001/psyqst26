@@ -138,10 +138,10 @@
         </h1>
         
         <div style="margin:6px 0 10px;">
-          <span class="discount-pill">🔥 СКИДКА -52%</span>
+          <span id="discountPill" class="discount-pill">🔥 СКИДКА -52%</span>
         </div>
 
-        <div class="timer-badge">
+        <div id="timerBadgeWrap" class="timer-badge">
           <span>⏳ До сгорания спеццены:</span>
           <span id="countdownTimer" style="font-weight:900; font-family:monospace;">59:59</span>
         </div>
@@ -195,8 +195,8 @@
         <!-- Price & CTA Button -->
         <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; border-top:1px solid rgba(14,31,46,0.08); padding-top:16px;">
           <div style="text-align:left;">
-            <span style="font-size:26px; font-weight:900; line-height:1; color:var(--nb-deep); display:block;">2 400 ₽</span>
-            <span style="font-size:12px; color:var(--nb-text-2); text-decoration:line-through;">5 000 ₽</span>
+            <span id="mainPrice" style="font-size:26px; font-weight:900; line-height:1; color:var(--nb-deep); display:block;">2 400 ₽</span>
+            <span id="oldPrice" style="font-size:12px; color:var(--nb-text-2); text-decoration:line-through;">5 000 ₽</span>
           </div>
           <button id="btnBuy" onclick="handlePurchase()" class="primary-btn" style="flex:1;">
             <span>Участвую ➔</span>
@@ -223,7 +223,7 @@
   </main>
 
   <script>
-    // 1-Hour Live Countdown Timer
+    // 1-Hour Live Countdown Timer with automatic price flip to 5 000 ₽
     const TIMER_KEY = 'psy_timer_expire_v2';
     let expireTime = localStorage.getItem(TIMER_KEY);
 
@@ -242,8 +242,23 @@
       const sec = totalSec % 60;
       
       const str = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-      const el = document.getElementById('countdownTimer');
-      if (el) el.textContent = str;
+      const timerEl = document.getElementById('countdownTimer');
+      const timerWrap = document.getElementById('timerBadgeWrap');
+      const priceEl = document.getElementById('mainPrice');
+      const oldPriceEl = document.getElementById('oldPrice');
+      const discountPill = document.getElementById('discountPill');
+
+      if (remaining > 0) {
+        if (timerEl) timerEl.textContent = str;
+        if (priceEl) priceEl.textContent = '2 400 ₽';
+        if (oldPriceEl) oldPriceEl.style.display = 'inline';
+        if (discountPill) discountPill.style.display = 'inline-block';
+      } else {
+        if (timerWrap) timerWrap.innerHTML = '<span>⏳ Срок спеццены истёк</span>';
+        if (priceEl) priceEl.textContent = '5 000 ₽';
+        if (oldPriceEl) oldPriceEl.style.display = 'none';
+        if (discountPill) discountPill.style.display = 'none';
+      }
     }
     setInterval(updateTimer, 1000);
     updateTimer();
@@ -269,8 +284,10 @@
     // Purchase via Notibot Bridge SDK
     function handlePurchase() {
       safeHaptic('success');
+      const isExpired = Date.now() >= expireTime;
+      const productId = isExpired ? 'course_partner_5000' : 'course_partner_2400';
       if (window.notibot && typeof window.notibot.openProduct === 'function') {
-        window.notibot.openProduct('course_partner_2400');
+        window.notibot.openProduct(productId);
       } else {
         window.location.href = '03_lesson1.html';
       }
