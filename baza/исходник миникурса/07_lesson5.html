@@ -14,7 +14,7 @@
       media-src 'self' https: data: blob:;
       connect-src 'self' https: http://localhost:3000;
     " />
-  <title>Урок 5: Закрепление сценария и психологический портрет — Анатолий Фёдоров</title>
+  <title>Урок 5. Выбирать по-новому — Анатолий Фёдоров</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,94 +58,155 @@
   <main class="app-shell">
     <div class="app">
 
-      <!-- Navigation & Progress Bar (100% | 5 из 5) -->
+      <!-- Navigation & Progress Bar (5 из 5 • 100%) -->
       <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
         <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
           <a href="06_lesson4.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
             ← К уроку 4
           </a>
           <div class="strategy-badge" style="margin:0; background:rgba(47,125,89,0.12); color:var(--success);">
-            5 из 5 • 100% (Финал)
+            5 из 5 • 100%
           </div>
         </div>
 
         <!-- Progress Track -->
         <div style="width:100%; height:6px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
-          <div style="width:100%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--success)); border-radius:999px; transition:width 0.4s ease;"></div>
+          <div style="width:100%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--success)); border-radius:999px;"></div>
         </div>
       </header>
+
+      <!-- AI Companion Top Header Card -->
+      <div class="glass card text-center" style="padding: 16px 20px;">
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
+          <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+            ☀️ Интеллектуальный попутчик
+          </div>
+          <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
+            Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">3</span>
+          </div>
+        </div>
+        <p style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
+          Он соединит все ключевые точки пройденных уроков в единую карту вашего нового сценария.
+        </p>
+      </div>
 
       <!-- Video Card -->
       <section class="glass card text-center">
         <div class="eyebrow" style="margin-bottom:8px;">Урок 5 из 5</div>
-        <h2>Выбирать по-новому</h2>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Как переживать возврат к старой реакции без обесценивания пройденного пути.</p>
+        <h2>Урок 5. Выбирать по-новому</h2>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Как переживать возврат к прежней реакции без обесценивания пройденного пути.</p>
 
         <!-- Video Player Wrapper (Kinescope) -->
         <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-          <iframe src="https://kinescope.io/embed/vD5EN9PU6rUpzhFax8s7Yb?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-        </div>
-
-        <div style="margin-top:14px; padding:14px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); text-align:left;">
-          <strong style="color:var(--nb-sea); font-size:12px; display:block; margin-bottom:4px;">💡 Главный инсайт урока:</strong>
-          <span style="font-size:13px; color:var(--nb-text); line-height:1.45;">
-            Срыв — это не провал, а диагностический тест. Добавьте один шаг: вдох, задержка дыхания, длинный выдох. Не принимайте решений из точки аффекта.
-          </span>
+          <iframe id="lesson5Video" src="https://kinescope.io/embed/vD5EN9PU6rUpzhFax8s7Yb?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
         </div>
       </section>
 
-      <!-- Integration Meditation -->
+      <!-- Block: Что важно забрать из урока -->
       <section class="glass card text-center">
-        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2);">
-          🎧 Финальная медитация
+        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+          💡 Главный вывод
         </div>
-        <h3 style="margin-top:8px;">Медитация «Внутренний маяк»</h3>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Закрепление нового сценария</p>
-
-        <div style="padding:10px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-          <audio id="meditationAudio5" controls preload="metadata" style="width:100%; accent-color:var(--nb-accent);">
-            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3" type="audio/mpeg">
-            <source src="/data/meditation1-5.MP3" type="audio/mpeg">
-            <source src="meditation1-5.MP3" type="audio/mpeg">
-            Ваш браузер не поддерживает аудио.
-          </audio>
-        </div>
+        <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
+        <p class="lead" style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0; text-align:left;">
+          Возврат к прежней реакции не отменяет произошедших изменений. Он показывает точку, в которой привычный сценарий пока включается автоматически. Новый выбор начинается с небольшой паузы: заметить напряжение, сделать длинный выдох и отложить действие до возвращения спокойствия.
+        </p>
       </section>
 
-      <!-- High-Ticket Offer: 10,000 ₽ Personal Portrait + Consultation -->
-      <section class="glass hero">
-        <div class="eyebrow">💎 Индивидуальная работа</div>
-        <h1>Психологический портрет + Консультация Анатолия Фёдорова</h1>
-        
-        <div style="margin:16px 0; padding:14px; border-radius:18px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); text-align:left; display:flex; flex-direction:column; gap:10px;">
-          <div style="display:flex; gap:10px;">
-            <span style="font-size:18px;">📊</span>
-            <div>
-              <strong style="color:#fff; font-size:13px; display:block;">Отчёт на 10+ страниц:</strong>
-              <span style="font-size:12px; color:rgba(255,255,255,0.75);">Глубокий анализ по 21 вопросу системно-поведенческого анализа с подсвечиванием узловых точек.</span>
-            </div>
-          </div>
+      <!-- ==========================================
+           BLOCK: МОЙ НОВЫЙ СЦЕНАРИЙ (ИТОГОВЫЙ РАЗБОР)
+           ========================================== -->
+      <section class="glass card text-center" id="synthesisSection">
+        <div class="eyebrow" style="margin-bottom:8px;">✨ Итоговый разбор</div>
+        <h3 style="font-size:18px; margin-bottom:4px;">Мой новый сценарий</h3>
+        <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin-bottom:14px;">
+          Интеллектуальный попутчик соединит результаты пройденных уроков в единую карту.
+        </p>
 
-          <div style="display:flex; gap:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;">
-            <span style="font-size:18px;">🗣</span>
-            <div>
-              <strong style="color:#fff; font-size:13px; display:block;">Личная онлайн-сессия:</strong>
-              <span style="font-size:12px; color:rgba(255,255,255,0.75);">60-минутный персональный разбор от Анатолия Фёдорова для решения вашей ситуации.</span>
-            </div>
-          </div>
+        <!-- Synthesis Action Button (Before Run) -->
+        <div id="synthesisInitBlock">
+          <button onclick="synthesizeNewScenario()" id="btnSynthesize" class="primary-btn pulse" style="width:100%; min-height:48px;">
+            <span>Собрать мой новый сценарий →</span>
+          </button>
         </div>
 
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px solid rgba(255,255,255,0.15); padding-top:14px;">
-          <div style="text-align:left;">
-            <span style="font-size:24px; font-weight:900; line-height:1; color:#fff; display:block;">10 000 ₽</span>
-            <span style="font-size:11px; color:rgba(255,255,255,0.6);">Полный пакет</span>
+        <!-- Loading State -->
+        <div id="aiLoadingBlock" style="display:none; padding:24px 10px; text-align:center;">
+          <div style="display:inline-block; width:34px; height:34px; border:3px solid var(--nb-line); border-top-color:var(--nb-terracotta); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;"></div>
+          <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик соединяет карту вашего нового сценария...</div>
+        </div>
+
+        <!-- Result Container -->
+        <div id="synthesisResultContainer" style="display:none; text-align:left; margin-top:8px;">
+
+          <!-- Offline Notice Banner -->
+          <div id="aiNoticeStatusBlock" style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+            🚂 <strong>Помощник в пути... (проблемы с интернетом)</strong> А пока прислал такую мысль и фразу:
           </div>
-          <button onclick="handlePortraitPurchase()" class="primary-btn pulse" style="background:#fff; color:var(--nb-deep); box-shadow:0 12px 28px rgba(0,0,0,0.25); flex:1;">
-            <span>Записаться ➔</span>
+
+          <!-- Structured 7 Points Card -->
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🎯 Мой триггер:</strong>
+              <span id="resTrigger" style="font-size:13.5px; font-weight:700; color:var(--nb-deep);"></span>
+            </div>
+
+            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🫀 Первый сигнал тела:</strong>
+              <span id="resBodySignal" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+            </div>
+
+            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🔄 Прежняя реакция:</strong>
+              <span id="resOldReaction" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+            </div>
+
+            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">⏸ Моя точка остановки:</strong>
+              <span id="resPause" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+            </div>
+
+            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🧭 Мои ориентиры:</strong>
+              <span id="resCriteria" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+            </div>
+
+            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">💎 Моя возвращённая сила:</strong>
+              <span id="resStrength" style="font-size:13.5px; font-weight:800; color:var(--nb-sea);"></span>
+            </div>
+
+            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+              <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🚀 Новый выбор:</strong>
+              <span id="resNewAction" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+            </div>
+          </div>
+
+          <!-- Support Phrase Card (Special Highlight) -->
+          <div style="padding:16px; border-radius:16px; background:rgba(217, 131, 78, 0.12); border:1.5px solid rgba(217, 131, 78, 0.35); text-align:center; margin-bottom:18px;">
+            <div style="font-size:12px; font-weight:800; color:var(--nb-terracotta); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">
+              ✨ Ваша поддерживающая фраза
+            </div>
+            <div id="resSupportPhrase" style="font-size:15px; font-weight:800; color:var(--nb-deep); line-height:1.45; font-style:italic;">
+            </div>
+          </div>
+
+          <!-- Proceed to Course Completion Button -->
+          <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="primary-btn pulse" style="width:100%; min-height:48px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти к завершению курса →</span>
           </button>
         </div>
       </section>
 
+      <!-- Direct Transition to Completion Button (Always visible on Screen) -->
+      <div style="padding-top:4px;">
+        <button onclick="safeHaptic('selection'); window.location.href='09_bonuses.html';" class="secondary-btn"
+          style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
+          <span>Перейти к завершению курса ➔</span>
+        </button>
+      </div>
+
+      <!-- Footer -->
       <footer class="subtle text-center py-2" style="font-size:11px;">
         © Анатолий Фёдоров • ПСИквест
       </footer>
@@ -154,29 +215,206 @@
   </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const audioEl = document.getElementById('meditationAudio5');
-      if (audioEl) {
-        audioEl.addEventListener('error', function() {
-          const amveraUrl = 'https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3';
-          if (audioEl.src !== amveraUrl) {
-            console.log('[Audio] Falling back to Amvera URL:', amveraUrl);
-            audioEl.src = amveraUrl;
-            audioEl.load();
-          }
-        }, true);
+    let isSubmitting = false;
+
+    // Load AI Credits (Max 3 across the entire course)
+    let aiCredits = 3;
+    try {
+      const savedCredits = localStorage.getItem('psyquest_ai_credits');
+      if (savedCredits !== null) {
+        aiCredits = Math.max(0, Math.min(3, parseInt(savedCredits, 10)));
+      } else {
+        localStorage.setItem('psyquest_ai_credits', '3');
       }
+      updateCreditsUI();
+    } catch (e) {}
+
+    function updateCreditsUI() {
+      const el = document.getElementById('aiCreditsLeft');
+      if (el) el.textContent = aiCredits;
+    }
+
+    // Check if Synthesis was already completed previously
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        const savedRes = localStorage.getItem('psyquest_lesson5_synthesis');
+        if (savedRes) {
+          const parsed = JSON.parse(savedRes);
+          if (parsed && parsed.trigger) {
+            renderSynthesisResult(parsed, true, false);
+          }
+        }
+      } catch (e) {}
     });
 
-    function handlePortraitPurchase() {
-      safeHaptic('success');
-      if (window.notibot && typeof window.notibot.openProduct === 'function') {
-        window.notibot.openProduct('portrait_consultation_10000');
+    function pauseVideo() {
+      const iframe = document.getElementById('lesson5Video');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+          iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+        } catch(e) {}
+      }
+    }
+
+    async function synthesizeNewScenario() {
+      if (isSubmitting) return;
+
+      // Check if already done
+      const alreadyDone = localStorage.getItem('psyquest_lesson5_synthesis_done') === 'true';
+      if (alreadyDone) {
+        try {
+          const saved = JSON.parse(localStorage.getItem('psyquest_lesson5_synthesis') || '{}');
+          if (saved.trigger) {
+            renderSynthesisResult(saved, true, false);
+            return;
+          }
+        } catch(e) {}
+      }
+
+      isSubmitting = true;
+      safeHaptic('impactMedium');
+      pauseVideo();
+
+      const btn = document.getElementById('btnSynthesize');
+      btn.disabled = true;
+      document.getElementById('synthesisInitBlock').style.display = 'none';
+      document.getElementById('aiLoadingBlock').style.display = 'block';
+
+      // 1. Gather all saved user answers from Lessons 1, 2, 4
+      let trigger = 'Пока не определено';
+      let feelings = 'Пока не определено';
+      let oldAction = 'Пока не определено';
+      let bodySignal = 'Пока не определено';
+      let criteria = [];
+      let strength = 'Пока не определено';
+      let newAction = 'Пока не определено';
+
+      // From Lesson 1
+      try {
+        const l1Fact = localStorage.getItem('lesson1_inpFact');
+        const l1Feel = localStorage.getItem('lesson1_inpFeeling');
+        const l1Act = localStorage.getItem('lesson1_inpAction');
+        if (l1Fact) trigger = l1Fact;
+        if (l1Feel) feelings = l1Feel;
+        if (l1Act) oldAction = l1Act;
+      } catch(e) {}
+
+      // From Lesson 2
+      try {
+        const l2Crit = localStorage.getItem('lesson2_selected_criteria');
+        if (l2Crit) {
+          const parsedCrit = JSON.parse(l2Crit);
+          if (Array.isArray(parsedCrit) && parsedCrit.length > 0) criteria = parsedCrit;
+        }
+        const l2Body = localStorage.getItem('lesson2_body_signal');
+        if (l2Body) bodySignal = l2Body;
+        else if (localStorage.getItem('lesson2_body_score')) {
+          bodySignal = 'Телесное напряжение ' + localStorage.getItem('lesson2_body_score') + ' из 10 баллов';
+        }
+      } catch(e) {}
+
+      // From Lesson 4
+      try {
+        const l4Res = localStorage.getItem('psyquest_lesson4_result');
+        if (l4Res) {
+          const parsed4 = JSON.parse(l4Res);
+          if (parsed4.resource) strength = parsed4.resource;
+          if (parsed4.safe_action) newAction = parsed4.safe_action;
+        }
+        const l4Action = localStorage.getItem('psyquest_lesson4_new_action');
+        if (l4Action) newAction = l4Action;
+      } catch(e) {}
+
+      const payload = {
+        trigger: trigger,
+        feelings: feelings,
+        oldAction: oldAction,
+        bodySignal: bodySignal,
+        criteria: criteria,
+        strength: strength,
+        newAction: newAction,
+        userName: window.currentUserName || 'Участник'
+      };
+
+      let usedRealCredit = false;
+      try {
+        const data = await window.apiPost('/api/lesson5-synthesis', payload);
+        if (data && data.result) {
+          usedRealCredit = !!data.isAi;
+          renderSynthesisResult(data.result, false, !data.isAi);
+        } else {
+          throw new Error('Fallback required');
+        }
+      } catch(err) {
+        console.warn('[Lesson 5 AI] Fallback triggered:', err);
+        const fallbackObj = {
+          trigger: trigger !== 'Пока не определено' ? trigger : 'Неопределённость или холодность в поведении другого',
+          body_signal: bodySignal !== 'Пока не определено' ? bodySignal : 'Напряжение в груди, спазм в животе',
+          old_reaction: oldAction !== 'Пока не определено' ? oldAction : 'Попытка немедленно выяснить отношения или подстроиться',
+          pause: 'Заметить напряжение в теле, сделать длинный выдох и отложить действие до возвращения спокойствия',
+          criteria: criteria.length > 0 ? criteria : ['Ясность и предсказуемость', 'Уважение к границам', 'Спокойствие рядом'],
+          strength: strength !== 'Пока не определено' ? strength : 'Опора на собственную ценность и право на границы',
+          new_action: newAction !== 'Пока не определено' ? newAction : 'Сделать паузу и открыто сказать о своих потребностях без чувства вины',
+          support_phrase: '«Я разрешаю себе делать выбор из спокойствия и уважения к себе, сохраняя свою силу».'
+        };
+        renderSynthesisResult(fallbackObj, false, true);
+      } finally {
+        isSubmitting = false;
+        if (aiCredits > 0 && !alreadyDone) {
+          aiCredits--;
+          try {
+            localStorage.setItem('psyquest_ai_credits', aiCredits.toString());
+          } catch(e) {}
+          updateCreditsUI();
+        }
+      }
+    }
+
+    function renderSynthesisResult(resultObj, isCached, isErrorFallback) {
+      // Save locally to guarantee no repeat requests
+      try {
+        localStorage.setItem('psyquest_lesson5_synthesis', JSON.stringify(resultObj));
+        localStorage.setItem('psyquest_lesson5_synthesis_done', 'true');
+      } catch (e) {}
+
+      document.getElementById('resTrigger').textContent = resultObj.trigger || 'Пока не определено';
+      document.getElementById('resBodySignal').textContent = resultObj.body_signal || 'Пока не определено';
+      document.getElementById('resOldReaction').textContent = resultObj.old_reaction || 'Пока не определено';
+      document.getElementById('resPause').textContent = resultObj.pause || 'Пауза и длинный выдох до возвращения спокойствия';
+      
+      let critText = 'Пока не определено';
+      if (Array.isArray(resultObj.criteria)) {
+        critText = resultObj.criteria.filter(Boolean).join(' • ') || 'Пока не определено';
+      } else if (resultObj.criteria) {
+        critText = resultObj.criteria;
+      }
+      document.getElementById('resCriteria').textContent = critText;
+
+      document.getElementById('resStrength').textContent = resultObj.strength || 'Пока не определено';
+      document.getElementById('resNewAction').textContent = resultObj.new_action || 'Пока не определено';
+
+      let phrase = resultObj.support_phrase || '«Я разрешаю себе делать выбор из спокойствия и уважения к себе»';
+      if (!phrase.startsWith('«')) phrase = `«${phrase.replace(/^["'«]+|["'»]+$/g, '')}»`;
+      document.getElementById('resSupportPhrase').textContent = phrase;
+
+      document.getElementById('aiLoadingBlock').style.display = 'none';
+      document.getElementById('synthesisInitBlock').style.display = 'none';
+      const container = document.getElementById('synthesisResultContainer');
+      container.style.display = 'block';
+
+      const noticeBlock = document.getElementById('aiNoticeStatusBlock');
+      if (isErrorFallback) {
+        noticeBlock.style.display = 'block';
+        noticeBlock.innerHTML = '🚂 <strong>Помощник в пути... (проблемы с интернетом)</strong> А пока прислал такую мысль и фразу:';
       } else {
-        window.location.href = '08_portrait_quest.html';
+        noticeBlock.style.display = 'none';
+      }
+
+      if (!isCached) {
+        safeHaptic('success');
       }
     }
   </script>
-
 </body>
 </html>

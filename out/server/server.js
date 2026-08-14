@@ -646,6 +646,94 @@ const server = http.createServer(async (req, res) => {
         }));
       }
 
+      // Route: /api/lesson5-synthesis (Итоговый разбор «Мой новый сценарий»)
+      if (pathname === '/api/lesson5-synthesis') {
+        const {
+          trigger = 'Пока не определено',
+          feelings = 'Пока не определено',
+          oldAction = 'Пока не определено',
+          bodySignal = 'Пока не определено',
+          criteria = [],
+          strength = 'Пока не определено',
+          newAction = 'Пока не определено',
+          userName = 'Участник'
+        } = parsed;
+
+        function cleanSimple(str) {
+          if (!str || typeof str !== 'string') return '';
+          return str.replace(/[*#_`]/g, '').trim();
+        }
+
+        const criteriaList = Array.isArray(criteria) ? criteria : [criteria];
+        const criteriaStr = criteriaList.filter(Boolean).join(', ') || 'Пока не определено';
+
+        const systemPrompt = [
+          'Ты — «Интеллектуальный попутчик» в курсе «Я выбираю» Анатолия Фёдорова.',
+          'Твоя задача — объединить результаты всех пройденных уроков участника в единую бережную карту «Мой новый сценарий».',
+          '',
+          'СТРОГИЕ ТРЕБОВАНИЯ К ФОРМАТУ:',
+          'Верни ответ ИСКЛЮЧИТЕЛЬНО в формате валидного JSON со строгой структурой без Markdown-разметки:',
+          '{',
+          '  "trigger": "Краткая формулировка того, что запускает прежний сценарий",',
+          '  "body_signal": "Первый телесный сигнал напряжения",',
+          '  "old_reaction": "Привычная реакция и автоматическое действие",',
+          '  "pause": "Конкретная точка остановки (пауза, длинный выдох, откладывание решения)",',
+          '  "criteria": ["Ориентир 1", "Ориентир 2", "Ориентир 3"],',
+          '  "strength": "Возвращённая здоровая сила и качество",',
+          '  "new_action": "Новый осознанный способ действия",',
+          '  "support_phrase": "Персональная поддерживающая фраза от первого лица (строго одно предложение, «Я разрешаю себе...»)"',
+          '}',
+          '',
+          'ОГРАНИЧЕНИЯ (ЗАПРЕЩЕНО):',
+          '- Не придумывать данные, если передано «Пока не определено».',
+          '- Не использовать категоричные слова «точно», «всегда», «однозначно».',
+          '- Не ставить диагнозы и ярлыки.',
+          '- НЕ использовать символы ** и # в тексте.'
+        ].join('\n');
+
+        const userPrompt = `Участник: ${userName}\nТриггер (Урок 1): ${trigger}\nМысли и чувства (Урок 1): ${feelings}\nПривычное действие (Урок 1): ${oldAction}\nСигнал тела (Урок 2): ${bodySignal}\nОриентиры в отношениях (Урок 2): ${criteriaStr}\nВозвращенная сила (Урок 4): ${strength}\nНовый поступок (Урок 4): ${newAction}`;
+
+        let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
+        let aiParsed = null;
+        if (aiRaw) {
+          try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
+        }
+
+        // Deterministic fallback based on supplied data
+        const fallbackObj = {
+          trigger: trigger !== 'Пока не определено' ? trigger : 'Неопределённость или тревожные сигналы в поведении другого',
+          body_signal: bodySignal !== 'Пока не определено' ? bodySignal : 'Напряжение в груди, спазм в животе или задержка дыхания',
+          old_reaction: oldAction !== 'Пока не определено' ? oldAction : 'Попытка немедленно выяснить отношения или подстроиться',
+          pause: 'Заметить напряжение в теле, сделать длинный выдох и отложить действие до возвращения спокойствия',
+          criteria: criteriaList.length > 0 && criteriaList[0] !== 'Пока не определено' ? criteriaList : ['Ясность и предсказуемость', 'Уважение к границам', 'Спокойствие рядом'],
+          strength: strength !== 'Пока не определено' ? strength : 'Опора на собственную ценность и право на границы',
+          new_action: newAction !== 'Пока не определено' ? newAction : 'Сделать паузу и открыто сказать о своих потребностях без чувства вины',
+          support_phrase: `«Я разрешаю себе делать выбор из спокойствия и уважения к себе, сохраняя свою силу».`
+        };
+
+        const finalResult = {
+          trigger: cleanSimple(aiParsed?.trigger) || fallbackObj.trigger,
+          body_signal: cleanSimple(aiParsed?.body_signal) || fallbackObj.body_signal,
+          old_reaction: cleanSimple(aiParsed?.old_reaction) || fallbackObj.old_reaction,
+          pause: cleanSimple(aiParsed?.pause) || fallbackObj.pause,
+          criteria: Array.isArray(aiParsed?.criteria) && aiParsed.criteria.length > 0 ? aiParsed.criteria.map(cleanSimple) : fallbackObj.criteria,
+          strength: cleanSimple(aiParsed?.strength) || fallbackObj.strength,
+          new_action: cleanSimple(aiParsed?.new_action) || fallbackObj.new_action,
+          support_phrase: cleanSimple(aiParsed?.support_phrase) || fallbackObj.support_phrase
+        };
+
+        if (!finalResult.support_phrase.startsWith('«')) {
+          finalResult.support_phrase = `«${finalResult.support_phrase.replace(/^["'«]+|["'»]+$/g, '')}»`;
+        }
+
+        res.writeHead(200);
+        return res.end(JSON.stringify({
+          success: true,
+          isAi: !!aiParsed,
+          result: finalResult
+        }));
+      }
+
       // Route: /api/portrait-assessment
       if (pathname === '/api/portrait-assessment') {
         const { answers = [], userName = 'Участник' } = parsed;
