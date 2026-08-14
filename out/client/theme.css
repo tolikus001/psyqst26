@@ -39,18 +39,7 @@ html, body {
   transition: background-image .65s ease !important;
 }
 
-#maisonArtBackground::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 50% 45%,
-    rgba(244, 247, 244, 0.38) 0%,
-    rgba(244, 247, 244, 0.18) 45%,
-    rgba(232, 237, 231, 0.04) 100%
-  );
-  pointer-events: none;
-}
+
 
 body > *:not(#maisonArtBackground) {
   position: relative !important;
