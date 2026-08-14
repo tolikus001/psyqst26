@@ -82,15 +82,19 @@
 
         <!-- Video Player Wrapper (Kinescope) -->
         <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-          <iframe src="https://kinescope.io/embed/xkP3RBdibqvFYLizjBpFsW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          <iframe id="lesson2VideoIframe" src="https://kinescope.io/embed/xkP3RBdibqvFYLizjBpFsW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
         </div>
+      </section>
 
-        <div style="margin-top:14px; padding:14px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.07); text-align:left;">
-          <strong style="color:var(--nb-sea); font-size:12px; display:block; margin-bottom:4px;">💡 Главный инсайт урока:</strong>
-          <span style="font-size:13px; color:var(--nb-text); line-height:1.45;">
-            «Бабочки в животе» в 90% случаев — это спазм от неизвестности и холода партнера. А спокойного и надежного человека мозг ошибочно клеймит «скучным», потому что нет кортизолового шока.
-          </span>
+      <!-- Insight Card (Appears after 3 seconds) -->
+      <section id="insightSection" class="glass card text-center" style="display:none; opacity:0; transform:translateY(16px); transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);">
+        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+          💡 Главный вывод
         </div>
+        <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
+        <p class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:0;">
+          «Бабочки в животе» — это телесное возбуждение. Оно может сопровождать и влюблённость, и тревогу, поэтому само по себе ничего не говорит о совместимости. Надёжнее смотреть на регулярные поступки человека и на своё состояние рядом с ним.
+        </p>
       </section>
 
       <!-- Somatic Checklist Card -->
@@ -157,6 +161,19 @@
   </main>
 
   <script>
+    // 3-Second Delayed Reveal for Insight Section
+    setTimeout(function() {
+      const insight = document.getElementById('insightSection');
+      if (insight) {
+        insight.style.display = 'block';
+        requestAnimationFrame(function() {
+          insight.style.opacity = '1';
+          insight.style.transform = 'translateY(0)';
+        });
+        safeHaptic('selection');
+      }
+    }, 3000);
+
     function toggleCheck(el) {
       safeHaptic('selection');
       el.classList.toggle('selected');
