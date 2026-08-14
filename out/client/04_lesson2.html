@@ -695,6 +695,11 @@
               💡 Разбор Интеллектуального попутчика
             </div>
 
+            <!-- Offline / Fallback Notice Banner -->
+            <div id="aiOfflineNotice" style="display:none; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+              🚂 <strong>Попутчик ищет путь...</strong> А пока обратите внимание на этот ориентир. Вы сможете снова обратиться к Попутчику попозже.
+            </div>
+
             <!-- Block 1: Body -->
             <div style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
               <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
@@ -1098,19 +1103,23 @@
         userName: window.currentUserName || 'Участник'
       };
 
+      let isRealAi = false;
       try {
         const data = await window.apiPost('/api/lesson2-strategy', payload);
         if (data && data.result) {
-          showAiResult(data.result);
+          isRealAi = !!data.isAi;
+          showAiResult(data.result, isRealAi);
         } else {
           showAiFallback(payload);
         }
       } catch (err) {
         showAiFallback(payload);
       } finally {
-        aiCredits = Math.max(0, aiCredits - 1);
-        localStorage.setItem(AI_CREDITS_KEY, aiCredits);
-        updateCreditsUI();
+        if (isRealAi) {
+          aiCredits = Math.max(0, aiCredits - 1);
+          localStorage.setItem(AI_CREDITS_KEY, aiCredits);
+          updateCreditsUI();
+        }
         if (aiCredits > 0) {
           btn.disabled = false;
           btn.textContent = 'Разобрать карту с Попутчиком →';
@@ -1255,16 +1264,21 @@
             : `Сигналы и поступки человека пока противоречивы: проявления внимания сменяются дистанцией. Для понимания ситуации требуется больше времени и фактов.`),
         focus: `Ваши главные ориентиры: ${criteriaStr}. Во время следующих контактов наблюдайте, проявляет ли человек инициативу, совпадают ли его слова с поступками и становится ли вам спокойнее после общения.`
       };
-      showAiResult(fallbackObj);
+      showAiResult(fallbackObj, false);
     }
 
-    function showAiResult(resultData) {
+    function showAiResult(resultData, isRealAi = false) {
       safeHaptic('success');
       const block = document.getElementById('aiResultBlock');
       const bodyEl = document.getElementById('aiBodyText');
       const behaviorEl = document.getElementById('aiBehaviorText');
       const focusEl = document.getElementById('aiFocusText');
       const noticeEl = document.getElementById('aiCreditsDepletedNotice');
+      const offlineNotice = document.getElementById('aiOfflineNotice');
+
+      if (offlineNotice) {
+        offlineNotice.style.display = isRealAi ? 'none' : 'block';
+      }
 
       let parsed = resultData;
       if (typeof resultData === 'string') {

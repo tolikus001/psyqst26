@@ -190,6 +190,12 @@
           <!-- AI Feedback -->
           <div id="aiResultBlock" class="hidden" style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:10px;">
             <strong style="color:var(--nb-deep); font-size:13px;">✨ Ответ Интеллектуального попутчика:</strong>
+
+            <!-- Offline / Fallback Notice Banner -->
+            <div id="aiOfflineNoticeLesson1" style="display:none; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+              🚂 <strong>Попутчик ищет путь...</strong> А пока обратите внимание на этот ориентир. Вы сможете снова обратиться к Попутчику попозже.
+            </div>
+
             <div id="aiAnalysisText" style="font-size:13px; color:var(--nb-text); line-height:1.5; white-space:pre-line;"></div>
 
             <!-- Send to Telegram Button -->
@@ -334,19 +340,23 @@
         userName: window.currentUserName || 'Участник'
       };
 
+      let isRealAi = false;
       try {
         const data = await window.apiPost('/api/lesson1-strategy', payload);
         if (data && (data.analysis || data.result)) {
-          showAiResult(data.analysis || JSON.stringify(data.result));
+          isRealAi = !!data.isAi;
+          showAiResult(data.analysis || JSON.stringify(data.result), isRealAi);
         } else {
           showAiFallback(payload);
         }
       } catch (err) {
         showAiFallback(payload);
       } finally {
-        aiCredits = Math.max(0, aiCredits - 1);
-        localStorage.setItem(AI_CREDITS_KEY, aiCredits);
-        updateCreditsUI();
+        if (isRealAi) {
+          aiCredits = Math.max(0, aiCredits - 1);
+          localStorage.setItem(AI_CREDITS_KEY, aiCredits);
+          updateCreditsUI();
+        }
         if (aiCredits > 0) {
           btn.disabled = false;
           btn.textContent = 'Разобрать с Попутчиком →';
@@ -356,14 +366,19 @@
 
     function showAiFallback(p) {
       const fallback = `🔍 Точный разбор вашего сценария:\n\n• ФАКТ: «${p.fact}» — это объективная реальность без домыслов.\n• ЛОВУШКА ИНТЕРПРЕТАЦИИ: Мозг подменил факт тревогой («${p.feeling}») и запустил автоматическое действие («${p.action}»).\n• ЦЕНА ИЛЛЮЗИИ КОНТРОЛЯ: Мгновенное облегчение («${p.relief}») закрепило нежелательный результат («${p.result}»).\n\n💡 На 2-м уроке мы научимся замечать этот соматический спазм в теле и выбирать новое действие.`;
-      showAiResult(fallback);
+      showAiResult(fallback, false);
     }
 
-    function showAiResult(text) {
+    function showAiResult(text, isRealAi = false) {
       safeHaptic('success');
       const block = document.getElementById('aiResultBlock');
       const textContainer = document.getElementById('aiAnalysisText');
       const nextBtn = document.getElementById('nextLessonBlock');
+      const offlineNotice = document.getElementById('aiOfflineNoticeLesson1');
+
+      if (offlineNotice) {
+        offlineNotice.style.display = isRealAi ? 'none' : 'block';
+      }
       
       let htmlContent = text;
       if (aiCredits <= 0) {

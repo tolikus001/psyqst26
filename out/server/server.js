@@ -409,7 +409,7 @@ const server = http.createServer(async (req, res) => {
         `.trim();
 
         res.writeHead(200);
-        return res.end(JSON.stringify({ success: true, result: resData, analysis: formattedText }));
+        return res.end(JSON.stringify({ success: true, isAi: !!aiParsed, result: resData, analysis: formattedText }));
       }
 
       // Route: /api/lesson2-strategy (Карта притяжения)
@@ -498,6 +498,7 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200);
         return res.end(JSON.stringify({
           success: true,
+          isAi: !!aiParsed,
           result: resultObj
         }));
       }
