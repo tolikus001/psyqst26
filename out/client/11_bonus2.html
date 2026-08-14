@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Бонус 2: Экстренное заземление за 2 минуты • Курс «Я выбираю»</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="theme.css" />
+  <script src="leaves-bg.js"></script>
+
+  <style>
+    .step-box {
+      background: #F8FAFC;
+      border: 1px solid rgba(36, 49, 57, 0.08);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .scale-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(36, 49, 57, 0.15);
+      background: #FFF;
+      color: var(--nb-deep);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .scale-btn.active {
+      background: var(--nb-terracotta);
+      color: #FFF;
+      border-color: var(--nb-terracotta);
+      transform: scale(1.1);
+    }
+    .copy-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--nb-deep);
+      color: #FFF;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      z-index: 1000;
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .copy-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="safe-area">
+  <main class="page-container py-3">
+    <div class="content-wrapper" style="max-width:620px; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
+
+      <!-- Top Navigation -->
+      <div>
+        <a href="09_bonuses.html" onclick="safeNavigate('09_bonuses.html'); return false;" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; text-decoration:none;">
+          ← Все бонусы
+        </a>
+      </div>
+
+      <!-- Main Video Header Section -->
+      <section class="glass card text-center" style="padding: 22px 20px;">
+        <div class="eyebrow" style="margin-bottom:8px;">
+          Видео-бонус 2 из 4
+        </div>
+        <h1 style="font-size:22px; font-weight:900; color:var(--nb-deep); margin-bottom:6px;">
+          Экстренное заземление за 2 минуты
+        </h1>
+        <p class="lead" style="font-size:13.5px; line-height:1.55; color:var(--nb-slate); margin-bottom:14px;">
+          Практика для момента, когда напряжение толкает вас написать или начать выяснять отношения.
+        </p>
+
+        <!-- Video Player -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe id="bonusVideo2" src="https://kinescope.io/embed/rg3Zn187P3qTTsKzCEwRF2?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+      </section>
+
+      <!-- Practice Section -->
+      <section class="glass card" style="padding: 22px 20px;">
+        <div class="text-center" style="margin-bottom:14px;">
+          <div class="eyebrow" style="margin-bottom:6px;">Практика</div>
+          <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); margin:0;">
+            Три шага возвращения в настоящее
+          </h2>
+        </div>
+
+        <!-- Initial Start Button -->
+        <div id="practiceIntro" style="display:flex; flex-direction:column; gap:12px; text-align:center;">
+          <p style="font-size:13.5px; line-height:1.55; color:var(--nb-slate); margin:0;">
+            Короткий интерактивный алгоритм поможет успокоить тело и переключить внимание с импульсивного действия на спокойствие.
+          </p>
+          <button onclick="startPractice()" class="primary-btn pulse" style="min-height:46px; margin-top:4px;">
+            <span>Начать практику →</span>
+          </button>
+        </div>
+
+        <!-- Step 1 Container -->
+        <div id="step1Box" style="display:none; flex-direction:column; gap:14px;">
+          <div class="step-box">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span class="eyebrow" style="margin:0; font-size:11px;">Шаг 1 из 3</span>
+              <span style="font-size:20px;">🌬</span>
+            </div>
+            <strong style="font-size:15px; color:var(--nb-deep);">Шаг 1. Замедлите выдох</strong>
+            <p style="font-size:13px; font-weight:700; color:var(--nb-text); margin:0;">Повторите три раза:</p>
+            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px;">
+              <li style="display:flex; gap:8px; font-size:13px; color:var(--nb-text);">
+                <span style="color:var(--nb-terracotta); font-weight:900;">•</span>
+                <span>вдохните носом на 4 счёта;</span>
+              </li>
+              <li style="display:flex; gap:8px; font-size:13px; color:var(--nb-text);">
+                <span style="color:var(--nb-terracotta); font-weight:900;">•</span>
+                <span>задержите дыхание до 7 счётов;</span>
+              </li>
+              <li style="display:flex; gap:8px; font-size:13px; color:var(--nb-text);">
+                <span style="color:var(--nb-terracotta); font-weight:900;">•</span>
+                <span>медленно выдохните ртом на 8 счётов.</span>
+              </li>
+            </ul>
+            <div style="background:rgba(217, 131, 78, 0.08); border-radius:12px; padding:10px 12px; font-size:12px; line-height:1.45; color:var(--nb-slate); margin-top:4px;">
+              <strong>Примечание:</strong> Если задержка усиливает напряжение или вызывает головокружение, дышите без неё: вдох на 4 счёта, выдох на 6–8.
+            </div>
+          </div>
+          <button onclick="goToStep(2)" class="primary-btn" style="min-height:44px;">
+            <span>Продолжить →</span>
+          </button>
+        </div>
+
+        <!-- Step 2 Container -->
+        <div id="step2Box" style="display:none; flex-direction:column; gap:14px;">
+          <div class="step-box">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span class="eyebrow" style="margin:0; font-size:11px;">Шаг 2 из 3</span>
+              <span style="font-size:20px;">✊</span>
+            </div>
+            <strong style="font-size:15px; color:var(--nb-deep);">Шаг 2. Вернитесь в тело</strong>
+            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px;">
+              <li style="display:flex; gap:8px; font-size:13px; color:var(--nb-text);">
+                <span style="color:var(--nb-terracotta); font-weight:900;">•</span>
+                <span>Сожмите кулаки на 5 секунд.</span>
+              </li>
+              <li style="display:flex; gap:8px; font-size:13px; color:var(--nb-text);">
+                <span style="color:var(--nb-terracotta); font-weight:900;">•</span>
+                <span>Полностью расправьте пальцы.</span>
+              </li>
+              <li style="display:flex; gap:8px; font-size:13px; color:var(--nb-text);">
+                <span style="color:var(--nb-terracotta); font-weight:900;">•</span>
+                <span>Прижмите стопы к полу.</span>
+              </li>
+              <li style="display:flex; gap:8px; font-size:13px; color:var(--nb-text);">
+                <span style="color:var(--nb-terracotta); font-weight:900;">•</span>
+                <span>Почувствуйте опору под ногами.</span>
+              </li>
+            </ul>
+          </div>
+          <button onclick="goToStep(3)" class="primary-btn" style="min-height:44px;">
+            <span>Продолжить →</span>
+          </button>
+        </div>
+
+        <!-- Step 3 Container -->
+        <div id="step3Box" style="display:none; flex-direction:column; gap:14px;">
+          <div class="step-box">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span class="eyebrow" style="margin:0; font-size:11px;">Шаг 3 из 3</span>
+              <span style="font-size:20px;">👁</span>
+            </div>
+            <strong style="font-size:15px; color:var(--nb-deep);">Шаг 3. Вернитесь в реальность</strong>
+            <p style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">
+              Найдите вокруг пять предметов и назовите про себя их цвет.
+            </p>
+            <div style="background:rgba(36, 49, 57, 0.05); border-radius:12px; padding:10px 12px; font-size:12.5px; line-height:1.45; color:var(--nb-slate);">
+              <strong>Пример:</strong> «Серый стол. Синяя ручка. Белая чашка. Прозрачные очки. Зелёное растение».
+            </div>
+          </div>
+          <button onclick="showScale()" class="primary-btn" style="min-height:44px;">
+            <span>Продолжить →</span>
+          </button>
+        </div>
+
+        <!-- Scale Container (Post Step 3) -->
+        <div id="scaleBox" style="display:none; flex-direction:column; gap:12px;">
+          <div class="step-box" style="text-align:center;">
+            <strong style="font-size:14.5px; color:var(--nb-deep); display:block; margin-bottom:4px;">
+              Насколько сильно напряжение сейчас?
+            </strong>
+            <p style="font-size:12px; color:var(--nb-slate); margin:0 0 10px 0;">
+              (0 — полное спокойствие, 10 — максимальная тревога)
+            </p>
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px;">
+              <button type="button" class="scale-btn" onclick="selectScore(this, 0)">0</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 1)">1</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 2)">2</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 3)">3</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 4)">4</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 5)">5</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 6)">6</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 7)">7</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 8)">8</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 9)">9</button>
+              <button type="button" class="scale-btn" onclick="selectScore(this, 10)">10</button>
+            </div>
+            <div id="scaleFeedback" style="font-size:12.5px; font-weight:700; color:var(--success); margin-top:8px; display:none;">
+              Отметка сохранена в вашем наблюдении ✓
+            </div>
+          </div>
+        </div>
+
+        <!-- Copy Memo Button -->
+        <div style="margin-top:18px;">
+          <button onclick="copyAllMemo2()" class="secondary-btn" style="width:100%; min-height:44px;">
+            <span>Скопировать памятку</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Final Insight Card -->
+      <section class="glass card text-center" style="background:rgba(255,255,255,0.95); border:1px solid rgba(36,49,57,0.12); padding:18px 20px; display:flex; flex-direction:column; gap:8px;">
+        <div class="eyebrow" style="margin:0 auto 2px auto;">💡 Главное правило</div>
+        <p style="font-size:14px; font-weight:700; line-height:1.55; color:var(--nb-deep); margin:0;">
+          Отложите сообщение минимум на 10 минут. Затем спросите себя: «Я хочу решить вопрос или просто получить быстрое облегчение?»
+        </p>
+        <div style="font-size:12px; color:var(--nb-slate); border-top:1px solid rgba(36,49,57,0.08); padding-top:6px; margin-top:4px;">
+          🚗 Если вы за рулём — сначала остановитесь в безопасном месте.
+        </div>
+      </section>
+
+      <!-- Bottom Navigation -->
+      <div style="display:flex; flex-direction:column; gap:10px; padding-top:4px;">
+        <button onclick="safeNavigate('12_bonus3.html')" class="primary-btn pulse" style="min-height:48px;">
+          <span>Следующий бонус →</span>
+        </button>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <button onclick="safeNavigate('10_bonus1.html')" class="secondary-btn" style="min-height:44px; font-size:12.5px;">
+            <span>← Предыдущий бонус</span>
+          </button>
+          <button onclick="safeNavigate('09_bonuses.html')" class="secondary-btn" style="min-height:44px; font-size:12.5px;">
+            <span>Все бонусы</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • ПСИквест
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Copy Toast Notification -->
+  <div id="copyToast" class="copy-toast">Памятка скопирована</div>
+
+  <script>
+    function safeHaptic(type) {
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+        try {
+          if (type === 'impactLight') window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+          else if (type === 'selection') window.Telegram.WebApp.HapticFeedback.selectionChanged();
+          else if (type === 'success') window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+        } catch (e) {}
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('copyToast');
+      if (toast) {
+        toast.textContent = msg || 'Памятка скопирована';
+        toast.classList.add('show');
+        setTimeout(function() {
+          toast.classList.remove('show');
+        }, 2200);
+      }
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          safeHaptic('success');
+          showToast('Памятка скопирована');
+        }).catch(function() {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        safeHaptic('success');
+        showToast('Памятка скопирована');
+      } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    function startPractice() {
+      safeHaptic('selection');
+      document.getElementById('practiceIntro').style.display = 'none';
+      document.getElementById('step1Box').style.display = 'flex';
+    }
+
+    function goToStep(step) {
+      safeHaptic('selection');
+      document.getElementById('step1Box').style.display = 'none';
+      document.getElementById('step2Box').style.display = 'none';
+      document.getElementById('step3Box').style.display = 'none';
+
+      const target = document.getElementById('step' + step + 'Box');
+      if (target) target.style.display = 'flex';
+    }
+
+    function showScale() {
+      safeHaptic('selection');
+      document.getElementById('step3Box').style.display = 'none';
+      document.getElementById('scaleBox').style.display = 'flex';
+    }
+
+    function selectScore(btn, score) {
+      safeHaptic('selection');
+      document.querySelectorAll('.scale-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      const fb = document.getElementById('scaleFeedback');
+      if (fb) fb.style.display = 'block';
+    }
+
+    function copyAllMemo2() {
+      const fullText = [
+        'ПАМЯТКА: Экстренное заземление за 2 минуты',
+        'Три шага возвращения в настоящее:',
+        '',
+        'Шаг 1. Замедлите выдох (повторите 3 раза):',
+        '• вдохните носом на 4 счёта;',
+        '• задержите дыхание до 7 счётов;',
+        '• медленно выдохните ртом на 8 счётов.',
+        'Примечание: Если задержка усиливает напряжение или вызывает головокружение, дышите без неё: вдох на 4 счёта, выдох на 6–8.',
+        '',
+        'Шаг 2. Вернитесь в тело:',
+        '• Сожмите кулаки на 5 секунд.',
+        '• Полностью расправьте пальцы.',
+        '• Прижмите стопы к полу.',
+        '• Почувствуйте опору под ногами.',
+        '',
+        'Шаг 3. Вернитесь в реальность:',
+        'Найдите вокруг пять предметов и назовите про себя их цвет.',
+        'Пример: Серый стол. Синяя ручка. Белая чашка. Прозрачные очки. Зелёное растение.',
+        '',
+        'Главное правило: Отложите сообщение минимум на 10 минут. Затем спросите себя: «Я хочу решить вопрос или просто получить быстрое облегчение?»',
+        'Если вы за рулём — сначала остановитесь в безопасном месте.'
+      ].join('\n');
+
+      copyToClipboard(fullText);
+    }
+
+    function pauseVideo() {
+      const iframe = document.getElementById('bonusVideo2');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+          iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+          iframe.contentWindow.postMessage({ event: 'command', command: 'pause' }, '*');
+          iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+        } catch(e) {}
+      }
+    }
+
+    function safeNavigate(url) {
+      safeHaptic('selection');
+      pauseVideo();
+      setTimeout(function() {
+        window.location.href = url;
+      }, 40);
+    }
+
+    window.addEventListener('pagehide', pauseVideo);
+    window.addEventListener('beforeunload', pauseVideo);
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) pauseVideo();
+    });
+  </script>
+</body>
+</html>

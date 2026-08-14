@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Бонус 4: Чек-лист нового знакомства • Курс «Я выбираю»</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="theme.css" />
+  <script src="leaves-bg.js"></script>
+
+  <style>
+    details.checklist-accordion {
+      background: #F8FAFC;
+      border: 1px solid rgba(36, 49, 57, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+    }
+    details.checklist-accordion[open] {
+      background: #FFFFFF;
+      border-color: rgba(217, 131, 78, 0.35);
+      box-shadow: 0 4px 16px rgba(36, 49, 57, 0.06);
+    }
+    summary.checklist-summary {
+      padding: 14px 16px;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--nb-deep);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+    summary.checklist-summary::-webkit-details-marker {
+      display: none;
+    }
+    summary.checklist-summary::after {
+      content: '▼';
+      font-size: 11px;
+      color: var(--nb-sea);
+      transition: transform 0.2s ease;
+    }
+    details[open] summary.checklist-summary::after {
+      transform: rotate(180deg);
+      color: var(--nb-terracotta);
+    }
+    .checklist-items {
+      padding: 4px 16px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .check-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--nb-text);
+      cursor: pointer;
+    }
+    .check-label input[type="checkbox"] {
+      margin-top: 2px;
+      width: 17px;
+      height: 17px;
+      accent-color: var(--nb-terracotta);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .qa-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+    .qa-box label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--nb-deep);
+    }
+    .qa-box textarea {
+      width: 100%;
+      min-height: 64px;
+      border: 1px solid rgba(36, 49, 57, 0.15);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #FFFFFF;
+      color: var(--nb-deep);
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    .qa-box textarea:focus {
+      outline: none;
+      border-color: var(--nb-terracotta);
+      box-shadow: 0 0 0 3px rgba(217, 131, 78, 0.15);
+    }
+    .copy-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--nb-deep);
+      color: #FFF;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      z-index: 1000;
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .copy-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="safe-area">
+  <main class="page-container py-3">
+    <div class="content-wrapper" style="max-width:620px; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
+
+      <!-- Top Navigation -->
+      <div>
+        <a href="09_bonuses.html" onclick="safeNavigate('09_bonuses.html'); return false;" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; text-decoration:none;">
+          ← Все бонусы
+        </a>
+      </div>
+
+      <!-- Main Video Header Section -->
+      <section class="glass card text-center" style="padding: 22px 20px;">
+        <div class="eyebrow" style="margin-bottom:8px;">
+          Видео-бонус 4 из 4
+        </div>
+        <h1 style="font-size:22px; font-weight:900; color:var(--nb-deep); margin-bottom:6px;">
+          Чек-лист нового знакомства
+        </h1>
+        <p class="lead" style="font-size:13.5px; line-height:1.55; color:var(--nb-slate); margin-bottom:14px;">
+          Оценивайте отношения по реальному контакту, а не только по силе эмоционального всплеска.
+        </p>
+
+        <!-- Video Player -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe id="bonusVideo4" src="https://kinescope.io/embed/u6RzSwLE9DpSemaR4xrcDj?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+      </section>
+
+      <!-- Interactive Checklist Section -->
+      <section class="glass card" style="padding: 22px 20px;">
+        <div class="text-center" style="margin-bottom:14px;">
+          <div class="eyebrow" style="margin-bottom:6px;">Инструмент</div>
+          <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); margin:0;">
+            Интерактивный чек-лист
+          </h2>
+          <p style="font-size:12.5px; color:var(--nb-slate); margin:4px 0 0 0;">
+            Отмечайте пункты для личного наблюдения. Данные никуда не отправляются.
+          </p>
+        </div>
+
+        <!-- 3 Accordion Categories -->
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:18px;">
+
+          <!-- Category 1: Голова -->
+          <details class="checklist-accordion" open>
+            <summary class="checklist-summary">
+              <span>🧠 Голова: совместимость</span>
+            </summary>
+            <div class="checklist-items">
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Нам действительно есть о чём разговаривать." />
+                <span>Нам действительно есть о чём разговаривать.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Человек слушает и проявляет встречный интерес." />
+                <span>Человек слушает и проявляет встречный интерес.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Его слова совпадают с поступками." />
+                <span>Его слова совпадают с поступками.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Он соблюдает договорённости." />
+                <span>Он соблюдает договорённости.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Наши ключевые ценности и планы не противоречат друг другу." />
+                <span>Наши ключевые ценности и планы не противоречат друг другу.</span>
+              </label>
+            </div>
+          </details>
+
+          <!-- Category 2: Душа -->
+          <details class="checklist-accordion" open>
+            <summary class="checklist-summary">
+              <span>💛 Душа: эмоциональная безопасность</span>
+            </summary>
+            <div class="checklist-items">
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Я могу открыто говорить о своих желаниях и правилах." />
+                <span>Я могу открыто говорить о своих желаниях и правилах.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Мне не приходится изображать более удобную версию себя." />
+                <span>Мне не приходится изображать более удобную версию себя.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Человек спокойно принимает слово «нет»." />
+                <span>Человек спокойно принимает слово «нет».</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Между нами есть взаимная инициатива." />
+                <span>Между нами есть взаимная инициатива.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Разногласия можно обсуждать без давления, исчезновений и наказания молчанием." />
+                <span>Разногласия можно обсуждать без давления, исчезновений и наказания молчанием.</span>
+              </label>
+            </div>
+          </details>
+
+          <!-- Category 3: Тело -->
+          <details class="checklist-accordion" open>
+            <summary class="checklist-summary">
+              <span>🌿 Тело: состояние рядом</span>
+            </summary>
+            <div class="checklist-items">
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Моё дыхание остаётся свободным." />
+                <span>Моё дыхание остаётся свободным.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Плечи и челюсть постепенно расслабляются." />
+                <span>Плечи и челюсть постепенно расслабляются.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Мне не приходится постоянно контролировать свои слова." />
+                <span>Мне не приходится постоянно контролировать свои слова.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="После встречи остаётся ясность, а не изматывающая неопределённость." />
+                <span>После встречи остаётся ясность, а не изматывающая неопределённость.</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" class="chk-item" data-text="Рядом с человеком есть одновременно интерес и ощущение безопасности." />
+                <span>Рядом с человеком есть одновременно интерес и ощущение безопасности.</span>
+              </label>
+            </div>
+          </details>
+
+        </div>
+
+        <!-- Post-meeting Questions -->
+        <div style="border-top:1px solid rgba(36, 49, 57, 0.08); padding-top:16px;">
+          <h3 style="font-size:15px; font-weight:800; color:var(--nb-deep); margin:0 0 12px 0;">
+            Вопросы после встречи
+          </h3>
+
+          <div class="qa-box">
+            <label for="q1">1. Что мне понравилось в реальных поступках человека?</label>
+            <textarea id="q1" placeholder="Запишите для себя..."></textarea>
+          </div>
+
+          <div class="qa-box">
+            <label for="q2">2. Где я почувствовала напряжение и с чем оно было связано?</label>
+            <textarea id="q2" placeholder="Запишите для себя..."></textarea>
+          </div>
+
+          <div class="qa-box">
+            <label for="q3">3. Хочу ли я ещё одну встречу — или просто боюсь потерять внимание?</label>
+            <textarea id="q3" placeholder="Запишите для себя..."></textarea>
+          </div>
+        </div>
+
+        <!-- Buttons: Copy Checklist and Clear -->
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
+          <button onclick="copyAllChecklist4()" class="primary-btn pulse" style="width:100%; min-height:46px;">
+            <span>Скопировать чек-лист</span>
+          </button>
+          <button onclick="clearChecklistAnswers()" class="secondary-btn" style="width:100%; min-height:42px; font-size:12.5px;">
+            <span>Очистить ответы</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Final Insight Card -->
+      <section class="glass card text-center" style="background:rgba(255,255,255,0.95); border:1px solid rgba(36,49,57,0.12); padding:18px 20px;">
+        <div class="eyebrow" style="margin-bottom:6px;">💡 Главное правило</div>
+        <p style="font-size:14px; font-weight:700; line-height:1.55; color:var(--nb-deep); margin:0;">
+          Сильное волнение не доказывает любовь. Спокойствие само по себе тоже не гарантирует совместимость. Ориентир — сочетание интереса, уважения, последовательности и безопасности.
+        </p>
+      </section>
+
+      <!-- Bottom Navigation -->
+      <div style="display:flex; flex-direction:column; gap:10px; padding-top:4px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <button onclick="safeNavigate('12_bonus3.html')" class="secondary-btn" style="min-height:46px; font-size:12.5px;">
+            <span>← Предыдущий бонус</span>
+          </button>
+          <button onclick="safeNavigate('09_bonuses.html')" class="primary-btn pulse" style="min-height:46px; font-size:12.5px;">
+            <span>Вернуться ко всем бонусам</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • ПСИквест
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Copy Toast Notification -->
+  <div id="copyToast" class="copy-toast">Памятка скопирована</div>
+
+  <script>
+    function safeHaptic(type) {
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+        try {
+          if (type === 'impactLight') window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+          else if (type === 'selection') window.Telegram.WebApp.HapticFeedback.selectionChanged();
+          else if (type === 'success') window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+        } catch (e) {}
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('copyToast');
+      if (toast) {
+        toast.textContent = msg || 'Памятка скопирована';
+        toast.classList.add('show');
+        setTimeout(function() {
+          toast.classList.remove('show');
+        }, 2200);
+      }
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          safeHaptic('success');
+          showToast('Чек-лист скопирован');
+        }).catch(function() {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        safeHaptic('success');
+        showToast('Чек-лист скопирован');
+      } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    function clearChecklistAnswers() {
+      safeHaptic('selection');
+      if (confirm('Очистить отмеченные пункты и ответы?')) {
+        document.querySelectorAll('.chk-item').forEach(function(c) { c.checked = false; });
+        document.getElementById('q1').value = '';
+        document.getElementById('q2').value = '';
+        document.getElementById('q3').value = '';
+        safeHaptic('impactLight');
+        showToast('Ответы очищены');
+      }
+    }
+
+    function copyAllChecklist4() {
+      const lines = [
+        'ЧЕК-ЛИСТ НОВОГО ЗНАКОМСТВА',
+        '',
+        'Голова: совместимость',
+        '• Нам действительно есть о чём разговаривать: ' + (document.querySelectorAll('.chk-item')[0]?.checked ? '[✓]' : '[ ]'),
+        '• Человек слушает и проявляет встречный интерес: ' + (document.querySelectorAll('.chk-item')[1]?.checked ? '[✓]' : '[ ]'),
+        '• Его слова совпадают с поступками: ' + (document.querySelectorAll('.chk-item')[2]?.checked ? '[✓]' : '[ ]'),
+        '• Он соблюдает договорённости: ' + (document.querySelectorAll('.chk-item')[3]?.checked ? '[✓]' : '[ ]'),
+        '• Наши ключевые ценности и планы не противоречат друг другу: ' + (document.querySelectorAll('.chk-item')[4]?.checked ? '[✓]' : '[ ]'),
+        '',
+        'Душа: эмоциональная безопасность',
+        '• Я могу открыто говорить о своих желаниях и правилах: ' + (document.querySelectorAll('.chk-item')[5]?.checked ? '[✓]' : '[ ]'),
+        '• Мне не приходится изображать более удобную версию себя: ' + (document.querySelectorAll('.chk-item')[6]?.checked ? '[✓]' : '[ ]'),
+        '• Человек спокойно принимает слово «нет»: ' + (document.querySelectorAll('.chk-item')[7]?.checked ? '[✓]' : '[ ]'),
+        '• Между нами есть взаимная инициатива: ' + (document.querySelectorAll('.chk-item')[8]?.checked ? '[✓]' : '[ ]'),
+        '• Разногласия можно обсуждать без давления, исчезновений и наказания молчанием: ' + (document.querySelectorAll('.chk-item')[9]?.checked ? '[✓]' : '[ ]'),
+        '',
+        'Тело: состояние рядом',
+        '• Моё дыхание остаётся свободным: ' + (document.querySelectorAll('.chk-item')[10]?.checked ? '[✓]' : '[ ]'),
+        '• Плечи и челюсть постепенно расслабляются: ' + (document.querySelectorAll('.chk-item')[11]?.checked ? '[✓]' : '[ ]'),
+        '• Мне не приходится постоянно контролировать свои слова: ' + (document.querySelectorAll('.chk-item')[12]?.checked ? '[✓]' : '[ ]'),
+        '• После встречи остаётся ясность, а не изматывающая неопределённость: ' + (document.querySelectorAll('.chk-item')[13]?.checked ? '[✓]' : '[ ]'),
+        '• Рядом с человеком есть одновременно интерес и ощущение безопасности: ' + (document.querySelectorAll('.chk-item')[14]?.checked ? '[✓]' : '[ ]'),
+        '',
+        'Вопросы после встречи:',
+        '1. Что мне понравилось в реальных поступках человека?',
+        document.getElementById('q1').value.trim() || '(нет ответа)',
+        '',
+        '2. Где я почувствовала напряжение и с чем оно было связано?',
+        document.getElementById('q2').value.trim() || '(нет ответа)',
+        '',
+        '3. Хочу ли я ещё одну встречу — или просто боюсь потерять внимание?',
+        document.getElementById('q3').value.trim() || '(нет ответа)',
+        '',
+        'Главное правило: Сильное волнение не доказывает любовь. Спокойствие само по себе тоже не гарантирует совместимость. Ориентир — сочетание интереса, уважения, последовательности и безопасности.'
+      ];
+
+      copyToClipboard(lines.join('\n'));
+    }
+
+    function pauseVideo() {
+      const iframe = document.getElementById('bonusVideo4');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+          iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+          iframe.contentWindow.postMessage({ event: 'command', command: 'pause' }, '*');
+          iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+        } catch(e) {}
+      }
+    }
+
+    function safeNavigate(url) {
+      safeHaptic('selection');
+      pauseVideo();
+      setTimeout(function() {
+        window.location.href = url;
+      }, 40);
+    }
+
+    window.addEventListener('pagehide', pauseVideo);
+    window.addEventListener('beforeunload', pauseVideo);
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) pauseVideo();
+    });
+  </script>
+</body>
+</html>

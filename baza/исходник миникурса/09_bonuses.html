@@ -1,358 +1,211 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta http-equiv="Content-Security-Policy"
-    content="
-      default-src 'self';
-      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
-      frame-src 'self' https://kinescope.io https://*.kinescope.io;
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-      font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data: https:;
-      media-src 'self' https: data: blob: https://*.kinescopecdn.net;
-      connect-src 'self' https: http://localhost:3000;
-    " />
-  <title>Завершение курса «Я выбираю» и Бонусы — Анатолий Фёдоров</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Ваши бонусы • Курс «Я выбираю»</title>
 
-  <!-- Typography -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="theme.css" />
   <script src="leaves-bg.js"></script>
-  <script src="telegram-user.js"></script>
-  <script src="api-config.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
-
-  <script>
-    window.notibotInitData = null;
-    window.addEventListener('message', function(event) {
-      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
-        window.notibotInitData = event.data.data;
-      }
-    });
-
-    function safeHaptic(type) {
-      try {
-        if (window.notibot && typeof window.notibot.hapticFeedback === 'function') {
-          window.notibot.hapticFeedback(type || 'impactLight');
-        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-          if (type === 'success' || type === 'error' || type === 'warning') {
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
-          } else {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred(type || 'light');
-          }
-        } else if (navigator.vibrate) {
-          navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
-        }
-      } catch (e) {}
-    }
-  </script>
 
   <style>
-    .bonus-card {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.95);
-      border-radius: 18px;
-      padding: 16px 18px;
+    .bonuses-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    @media (min-width: 640px) {
+      .bonuses-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+    }
+    .bonus-tile {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(36, 49, 57, 0.08);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 28px rgba(36, 49, 57, 0.06);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
       text-align: left;
-      box-shadow: 0 8px 24px rgba(18, 68, 83, 0.05);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .bonus-card-title {
-      font-size: 15px;
+    .bonus-tile:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(36, 49, 57, 0.12);
+      border-color: rgba(217, 131, 78, 0.4);
+    }
+    .bonus-tile:active {
+      transform: scale(0.985);
+    }
+    .bonus-tile-icon {
+      font-size: 28px;
+      line-height: 1;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(217, 131, 78, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bonus-tile-title {
+      font-size: 16px;
       font-weight: 800;
       color: var(--nb-deep);
       line-height: 1.35;
+      margin: 0;
     }
-    .bonus-card-desc {
+    .bonus-tile-desc {
       font-size: 13px;
-      line-height: 1.45;
-      color: var(--nb-text);
+      line-height: 1.5;
+      color: var(--nb-slate);
+      margin: 0;
+      flex: 1;
+    }
+    .bonus-tile-link {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--nb-terracotta);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .bonus-tile:hover .bonus-tile-link {
+      text-decoration: underline;
     }
   </style>
 </head>
-<body>
-  <div id="maisonArtBackground" aria-hidden="true"></div>
+<body class="safe-area">
+  <main class="page-container py-3">
+    <div class="content-wrapper" style="max-width:620px; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
 
-  <main class="app-shell">
-    <div class="app">
+      <!-- Top Navigation -->
+      <div>
+        <a href="07_lesson5.html" onclick="safeHaptic('selection');" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; text-decoration:none;">
+          ← Вернуться к уроку 5
+        </a>
+      </div>
 
-      <!-- Navigation & Header -->
-      <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
-        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <a href="07_lesson5.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
-            ← К уроку 5
-          </a>
-          <div id="headerBadge" class="strategy-badge" style="margin:0; background:rgba(47,125,89,0.12); color:var(--success);">
-            🎉 Курс завершён
-          </div>
+      <!-- Main Header Section -->
+      <section class="glass card text-center" style="padding: 24px 20px;">
+        <div class="eyebrow" style="margin-bottom:10px;">
+          🎁 Материалы курса
         </div>
+        <h1 style="font-size:24px; font-weight:900; color:var(--nb-deep); margin-bottom:8px;">
+          Ваши бонусы
+        </h1>
+        <p class="lead" style="font-size:14px; line-height:1.55; color:var(--nb-slate); margin:0;">
+          Четыре практических инструмента, которые помогут сохранить новый сценарий в реальных ситуациях.
+        </p>
+      </section>
 
-        <!-- Progress Track (100%) -->
-        <div style="width:100%; height:6px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
-          <div style="width:100%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--success)); border-radius:999px;"></div>
-        </div>
-      </header>
+      <!-- 4 Large Bonus Tiles (2x2 grid on desktop, 1 column on mobile) -->
+      <div class="bonuses-grid">
 
-      <!-- ==========================================
-           MAIN COMPLETION SCREEN
-           ========================================== -->
-      <div id="screenCompletionMain" style="display:flex; flex-direction:column; gap:14px;">
-
-        <!-- 1. Final Practice Header Card -->
-        <section class="glass card text-center">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-            🌟 Финальная практика
+        <!-- Bonus 1 -->
+        <a href="10_bonus1.html" onclick="safeHaptic('selection');" class="bonus-tile">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div class="bonus-tile-icon">💬</div>
+            <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 1</span>
           </div>
-          <h2 style="font-size:20px; margin-bottom:6px;">Закрепите новый сценарий</h2>
-          <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin-bottom:0;">
-            Вы уже увидели, как запускается привычная реакция и в какой момент можете вернуть себе выбор. Теперь позвольте этому опыту закрепиться не только в мыслях, но и во внутреннем состоянии.
+          <div>
+            <h3 class="bonus-tile-title">Если написал человек из прошлого</h3>
+          </div>
+          <p class="bonus-tile-desc">
+            Пять готовых ответов, которые помогут сохранить границу и не вернуться в прежний сценарий.
           </p>
-        </section>
-
-        <!-- 2. Meditation «Внутренний маяк» Player Card -->
-        <section class="glass card text-center" style="padding:18px 16px;">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-            🎧 Медитация 15:11
+          <div class="bonus-tile-link">
+            Открыть бонус →
           </div>
-          <h3 style="font-size:18px; margin-bottom:4px;">Медитация «Внутренний маяк»</h3>
-          <p class="lead" style="font-size:13px; line-height:1.45; color:var(--nb-slate); margin-bottom:12px;">
-            Практика закрепления внутренней опоры и позиции выбора.
+        </a>
+
+        <!-- Bonus 2 -->
+        <a href="11_bonus2.html" onclick="safeHaptic('selection');" class="bonus-tile">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div class="bonus-tile-icon">🌿</div>
+            <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 2</span>
+          </div>
+          <div>
+            <h3 class="bonus-tile-title">Экстренное заземление за 2 минуты</h3>
+          </div>
+          <p class="bonus-tile-desc">
+            Три шага, чтобы снизить напряжение и не отправить импульсивное сообщение.
           </p>
-
-          <div style="margin-bottom:14px; padding:10px 12px; border-radius:12px; background:rgba(217,131,78,0.08); border:1px solid rgba(217,131,78,0.2); font-size:12px; line-height:1.45; color:var(--nb-deep); text-align:left;">
-            ⚠️ <strong>Важно:</strong> Выберите место, где вас не будут отвлекать. Не слушайте медитацию за рулём или во время занятий, требующих внимания.
+          <div class="bonus-tile-link">
+            Открыть бонус →
           </div>
+        </a>
 
-          <!-- Native Clean Audio Player -->
-          <div style="padding:12px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); margin-bottom:6px;">
-            <audio id="meditationAudio5" controls preload="metadata" style="width:100%; border-radius:10px;">
-              <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3" type="audio/mp3" />
-              Ваш браузер не поддерживает встроенный аудиоплеер.
-            </audio>
+        <!-- Bonus 3 -->
+        <a href="12_bonus3.html" onclick="safeHaptic('selection');" class="bonus-tile">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div class="bonus-tile-icon">🚪</div>
+            <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 3</span>
           </div>
-        </section>
-
-        <!-- 3. Course Finished Notice Card -->
-        <section class="glass card text-center">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-            🏆 Курс «Я выбираю» завершён
+          <div>
+            <h3 class="bonus-tile-title">Как завершить общение без чувства вины</h3>
           </div>
-          <p class="lead" style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0; text-align:left;">
-            Теперь у вас есть не только понимание своего сценария, но и конкретные точки, в которых можно поступать по-новому. Возвращайтесь к урокам и медитациям, когда заметите, что прежняя реакция снова набирает силу.
+          <p class="bonus-tile-desc">
+            Правила и готовые фразы для честного и уважительного отказа.
           </p>
-        </section>
+          <div class="bonus-tile-link">
+            Открыть бонус →
+          </div>
+        </a>
 
-        <!-- 4. Section: Получить бонусы (Только кнопка) -->
-        <div style="padding-top:4px;">
-          <button onclick="openBonus(1)" class="primary-btn pulse" style="width:100%; min-height:50px; display:flex; align-items:center; justify-content:center;">
-            <span>Получить бонусы →</span>
-          </button>
-        </div>
-
-        <!-- 5. Button: Индивидуальный разбор -->
-        <div style="padding-top:4px;">
-          <button onclick="openIndividualOffer()" class="secondary-btn" style="width:100%; min-height:48px; display:flex; align-items:center; justify-content:center; gap:8px;">
-            <span>💎 Индивидуальный разбор ➔</span>
-          </button>
-        </div>
-
-        <!-- Navigation Buttons -->
-        <div style="display:flex; flex-direction:column; gap:10px; padding-top:8px;">
-          <button onclick="safeHaptic('selection'); window.location.href='07_lesson5.html';" class="ghost-btn">
-            <span>← Вернуться к уроку 5</span>
-          </button>
-          <button onclick="safeHaptic('selection'); pauseAllVideos(); window.location.href='03_lesson1.html';" class="secondary-btn" style="min-height:46px;">
-            <span>Перейти к первому уроку →</span>
-          </button>
-        </div>
+        <!-- Bonus 4 -->
+        <a href="13_bonus4.html" onclick="safeHaptic('selection');" class="bonus-tile">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div class="bonus-tile-icon">🧭</div>
+            <span class="eyebrow" style="margin:0; font-size:10.5px; padding:3px 8px;">Бонус 4</span>
+          </div>
+          <div>
+            <h3 class="bonus-tile-title">Чек-лист нового знакомства</h3>
+          </div>
+          <p class="bonus-tile-desc">
+            Три уровня, которые помогут оценить человека без спешки и эмоциональных качелей.
+          </p>
+          <div class="bonus-tile-link">
+            Открыть бонус →
+          </div>
+        </a>
 
       </div>
 
-      <!-- ==========================================
-           SCREEN 1: BONUS 1 DETAIL (Точка безопасности)
-           ========================================== -->
-      <div id="screenBonus1" style="display:none; flex-direction:column; gap:14px;">
-        <div>
-          <button onclick="backToMain()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0;">
-            ← Назад к бонусам
-          </button>
+      <!-- Dedicated Individual Offer Card (Under the 4 bonuses) -->
+      <section class="glass card text-center" style="border:1.5px solid rgba(217, 131, 78, 0.35); background:rgba(255,255,255,0.95); padding:22px 20px;">
+        <div class="eyebrow" style="margin-bottom:10px; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+          💎 Индивидуальная работа
         </div>
+        <h2 style="font-size:20px; font-weight:800; color:var(--nb-deep); margin-bottom:8px;">
+          Хотите увидеть свой сценарий целиком?
+        </h2>
+        <p class="lead" style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0 0 16px 0; text-align:left;">
+          Курс помог вам заметить отдельные элементы повторяющегося сценария. На индивидуальном разборе мы соберём их в единую картину: определим, как формируется ваш выбор, что удерживает старый сценарий и какие изменения нужны именно вам.
+        </p>
 
-        <section class="glass card text-center">
-          <div class="eyebrow" style="margin-bottom:8px;">Бонус 1 из 4</div>
-          <h2>Точка безопасности</h2>
-          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как вернуть внутреннюю опору и уверенность в себе.</p>
+        <button onclick="safeHaptic('selection'); window.location.href='14_individual_offer.html';" class="primary-btn pulse" style="width:100%; min-height:48px;">
+          <span>Узнать об индивидуальном разборе →</span>
+        </button>
+      </section>
 
-          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="videoBonus1" src="https://kinescope.io/embed/u6RzSwLE9DpSemaR4xrcDj?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-          </div>
-        </section>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <button onclick="openBonus(2)" class="primary-btn pulse">
-            <span>Открыть «Сообщение из прошлого» ➔</span>
-          </button>
-          <button onclick="backToMain()" class="secondary-btn">
-            <span>← Вернуться к бонусам</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           SCREEN 2: BONUS 2 DETAIL (Сообщение из прошлого)
-           ========================================== -->
-      <div id="screenBonus2" style="display:none; flex-direction:column; gap:14px;">
-        <div>
-          <button onclick="backToMain()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0;">
-            ← Назад к бонусам
-          </button>
-        </div>
-
-        <section class="glass card text-center">
-          <div class="eyebrow" style="margin-bottom:8px;">Бонус 2 из 4</div>
-          <h2>Сообщение из прошлого</h2>
-          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как ответить спокойно и не вернуться в прежний сценарий.</p>
-
-          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="videoBonus2" src="https://kinescope.io/embed/gJuTii2CB5xh7imx32QG9A?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-          </div>
-        </section>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <button onclick="openBonus(3)" class="primary-btn pulse">
-            <span>Открыть «Тревога в теле» ➔</span>
-          </button>
-          <button onclick="backToMain()" class="secondary-btn">
-            <span>← Вернуться к бонусам</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           SCREEN 3: BONUS 3 DETAIL (Тревога в теле)
-           ========================================== -->
-      <div id="screenBonus3" style="display:none; flex-direction:column; gap:14px;">
-        <div>
-          <button onclick="backToMain()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0;">
-            ← Назад к бонусам
-          </button>
-        </div>
-
-        <section class="glass card text-center">
-          <div class="eyebrow" style="margin-bottom:8px;">Бонус 3 из 4</div>
-          <h2>Тревога в теле</h2>
-          <p class="lead" style="font-size:13px; margin-bottom:12px;">Короткая практика для снижения телесного напряжения.</p>
-
-          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="videoBonus3" src="https://kinescope.io/embed/rg3Zn187P3qTTsKzCEwRF2?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-          </div>
-        </section>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <button onclick="openBonus(4)" class="primary-btn pulse">
-            <span>Открыть «Если вам не по пути» ➔</span>
-          </button>
-          <button onclick="backToMain()" class="secondary-btn">
-            <span>← Вернуться к бонусам</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           SCREEN 4: BONUS 4 DETAIL (Если вам не по пути)
-           ========================================== -->
-      <div id="screenBonus4" style="display:none; flex-direction:column; gap:14px;">
-        <div>
-          <button onclick="backToMain()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0;">
-            ← Назад к бонусам
-          </button>
-        </div>
-
-        <section class="glass card text-center">
-          <div class="eyebrow" style="margin-bottom:8px;">Бонус 4 из 4</div>
-          <h2>Если вам не по пути</h2>
-          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как спокойно и ясно завершить общение.</p>
-
-          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="videoBonus4" src="https://kinescope.io/embed/tSmPqiSNmmTqSWWBPCebzj?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
-          </div>
-        </section>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <button onclick="backToMain()" class="primary-btn pulse">
-            <span>← Вернуться ко всем бонусам</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           SCREEN: ИНДИВИДУАЛЬНЫЙ РАЗБОР (ПСИХОЛОГИЧЕСКИЙ ПОРТРЕТ ЗА 10 000 ₽)
-           ========================================== -->
-      <div id="screenIndividualOffer" style="display:none; flex-direction:column; gap:14px;">
-        <div>
-          <button onclick="backToMain()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0;">
-            ← Назад к завершению курса
-          </button>
-        </div>
-
-        <section class="glass card text-center" style="border:1.5px solid rgba(217, 131, 78, 0.3); background:rgba(255,255,255,0.95);">
-          <div class="eyebrow" style="margin-bottom:8px; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
-            💎 Индивидуальная работа
-          </div>
-          <h2 style="font-size:20px; margin-bottom:4px; color:var(--nb-deep);">Хотите увидеть картину целиком?</h2>
-          <p style="font-size:14px; font-weight:800; color:var(--nb-sea); margin-bottom:12px;">
-            Психологический портрет и консультация Анатолия Фёдорова
-          </p>
-
-          <p class="lead" style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0 0 16px 0; text-align:left;">
-            Ответьте на 21 вопрос и получите развёрнутый психологический портрет объёмом более 10 страниц. На индивидуальной консультации мы разберём ключевые выводы и определим, что требует внимания именно сейчас.
-          </p>
-
-          <div style="margin-bottom:16px; padding:14px 16px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); display:flex; flex-direction:column; gap:10px; text-align:left;">
-            <div style="display:flex; gap:10px; align-items:flex-start;">
-              <span style="font-size:18px;">📊</span>
-              <div>
-                <strong style="color:var(--nb-deep); font-size:13px; display:block;">Отчёт на 10+ страниц:</strong>
-                <span style="font-size:12.5px; color:var(--nb-slate); line-height:1.45;">Глубокий анализ по 21 вопросу системно-поведенческого анализа с подсвечиванием узловых точек.</span>
-              </div>
-            </div>
-
-            <div style="display:flex; gap:10px; align-items:flex-start; border-top:1px solid rgba(36,49,57,0.08); padding-top:8px;">
-              <span style="font-size:18px;">🗣</span>
-              <div>
-                <strong style="color:var(--nb-deep); font-size:13px; display:block;">Личная онлайн-сессия:</strong>
-                <span style="font-size:12.5px; color:var(--nb-slate); line-height:1.45;">Персональный разбор от Анатолия Фёдорова для решения вашей ситуации.</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; border-top:1px solid rgba(36,49,57,0.1); padding-top:14px;">
-            <div style="text-align:left;">
-              <span style="font-size:24px; font-weight:900; line-height:1; color:var(--nb-deep); display:block;">10 000 ₽</span>
-              <span style="font-size:11.5px; font-weight:600; color:var(--nb-slate);">Полный пакет</span>
-            </div>
-            <button onclick="handlePortraitPurchase()" class="primary-btn pulse" style="flex:1; min-height:48px;">
-              <span>Получить портрет и консультацию →</span>
-            </button>
-          </div>
-        </section>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <button onclick="backToMain()" class="secondary-btn">
-            <span>← Вернуться к завершению курса</span>
-          </button>
-        </div>
+      <!-- Bottom Navigation -->
+      <div style="display:flex; flex-direction:column; gap:10px; padding-top:4px;">
+        <button onclick="safeHaptic('selection'); window.location.href='03_lesson1.html';" class="secondary-btn" style="min-height:46px;">
+          <span>Перейти к первому уроку →</span>
+        </button>
       </div>
 
       <!-- Footer -->
@@ -364,74 +217,13 @@
   </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const audioEl = document.getElementById('meditationAudio5');
-      if (audioEl) {
-        audioEl.addEventListener('error', function() {
-          const amveraUrl = 'https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3';
-          if (audioEl.src !== amveraUrl) {
-            console.log('[Audio] Falling back to Amvera URL:', amveraUrl);
-            audioEl.src = amveraUrl;
-            audioEl.load();
-          }
-        }, true);
-      }
-    });
-
-    function pauseAllVideos() {
-      for (let i = 1; i <= 4; i++) {
-        const iframe = document.getElementById('videoBonus' + i);
-        if (iframe && iframe.contentWindow) {
-          try {
-            iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
-            iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
-          } catch(e){}
-        }
-      }
-    }
-
-    function hideAllScreens() {
-      document.getElementById('screenCompletionMain').style.display = 'none';
-      document.getElementById('screenBonus1').style.display = 'none';
-      document.getElementById('screenBonus2').style.display = 'none';
-      document.getElementById('screenBonus3').style.display = 'none';
-      document.getElementById('screenBonus4').style.display = 'none';
-      document.getElementById('screenIndividualOffer').style.display = 'none';
-    }
-
-    function backToMain() {
-      safeHaptic('selection');
-      pauseAllVideos();
-      hideAllScreens();
-      document.getElementById('screenCompletionMain').style.display = 'flex';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function openBonus(num) {
-      safeHaptic('selection');
-      pauseAllVideos();
-      hideAllScreens();
-      const target = document.getElementById('screenBonus' + num);
-      if (target) {
-        target.style.display = 'flex';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }
-
-    function openIndividualOffer() {
-      safeHaptic('selection');
-      pauseAllVideos();
-      hideAllScreens();
-      document.getElementById('screenIndividualOffer').style.display = 'flex';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function handlePortraitPurchase() {
-      safeHaptic('success');
-      if (window.notibot && typeof window.notibot.openProduct === 'function') {
-        window.notibot.openProduct('portrait_consultation_10000');
-      } else {
-        window.location.href = '08_portrait_quest.html';
+    function safeHaptic(type) {
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+        try {
+          if (type === 'impactLight') window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+          else if (type === 'selection') window.Telegram.WebApp.HapticFeedback.selectionChanged();
+          else if (type === 'success') window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+        } catch (e) {}
       }
     }
   </script>

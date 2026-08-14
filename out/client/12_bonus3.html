@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Бонус 3: Как завершить общение без чувства вины • Курс «Я выбираю»</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="theme.css" />
+  <script src="leaves-bg.js"></script>
+
+  <style>
+    .phrase-card {
+      background: #F8FAFC;
+      border: 1px solid rgba(36, 49, 57, 0.08);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+    }
+    .copy-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--nb-deep);
+      color: #FFF;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      z-index: 1000;
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .copy-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="safe-area">
+  <main class="page-container py-3">
+    <div class="content-wrapper" style="max-width:620px; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
+
+      <!-- Top Navigation -->
+      <div>
+        <a href="09_bonuses.html" onclick="safeNavigate('09_bonuses.html'); return false;" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; text-decoration:none;">
+          ← Все бонусы
+        </a>
+      </div>
+
+      <!-- Main Video Header Section -->
+      <section class="glass card text-center" style="padding: 22px 20px;">
+        <div class="eyebrow" style="margin-bottom:8px;">
+          Видео-бонус 3 из 4
+        </div>
+        <h1 style="font-size:22px; font-weight:900; color:var(--nb-deep); margin-bottom:6px;">
+          Как завершить общение без чувства вины
+        </h1>
+        <p class="lead" style="font-size:13.5px; line-height:1.55; color:var(--nb-slate); margin-bottom:14px;">
+          Короткие формулировки, которые позволяют поставить точку без унижения и ложной надежды.
+        </p>
+
+        <!-- Video Player -->
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+          <iframe id="bonusVideo3" src="https://kinescope.io/embed/tSmPqiSNmmTqSWWBPCebzj?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        </div>
+      </section>
+
+      <!-- Rules Section -->
+      <section class="glass card" style="padding: 22px 20px;">
+        <div class="text-center" style="margin-bottom:14px;">
+          <div class="eyebrow" style="margin-bottom:6px;">Принципы</div>
+          <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); margin:0;">
+            Четыре правила отказа
+          </h2>
+        </div>
+
+        <div style="background:rgba(36, 49, 57, 0.04); border-radius:16px; padding:14px 16px; margin-bottom:18px;">
+          <ol style="padding-left:18px; margin:0; display:flex; flex-direction:column; gap:8px;">
+            <li style="font-size:13px; line-height:1.45; color:var(--nb-deep);">
+              <strong>Говорите о своём решении</strong>, а не оценивайте человека.
+            </li>
+            <li style="font-size:13px; line-height:1.45; color:var(--nb-deep);">
+              <strong>Формулируйте коротко</strong> и однозначно.
+            </li>
+            <li style="font-size:13px; line-height:1.45; color:var(--nb-deep);">
+              <strong>Не предлагайте дружбу</strong> только из вежливости.
+            </li>
+            <li style="font-size:13px; line-height:1.45; color:var(--nb-deep);">
+              <strong>Не оправдывайтесь</strong> и не вступайте в спор о своих чувствах.
+            </li>
+          </ol>
+        </div>
+
+        <div class="text-center" style="margin-bottom:12px;">
+          <div class="eyebrow" style="margin-bottom:4px;">Памятка</div>
+          <h3 style="font-size:16.5px; font-weight:800; color:var(--nb-deep); margin:0;">
+            Готовые фразы
+          </h3>
+        </div>
+
+        <!-- 5 Phrases -->
+        <div style="display:flex; flex-direction:column; gap:12px;">
+
+          <!-- Phrase 1 -->
+          <div class="phrase-card">
+            <strong style="font-size:13px; color:var(--nb-terracotta);">Универсальная формула</strong>
+            <p style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;" id="textPhr1">
+              «Спасибо за встречу. Мне было приятно познакомиться, но я не почувствовала желания продолжать наше общение. Не хочу создавать ложных ожиданий. Желаю тебе встретить подходящего человека».
+            </p>
+            <div style="display:flex; justify-content:flex-end; margin-top:2px;">
+              <button onclick="copySinglePhrase('textPhr1', this)" class="secondary-btn" style="min-height:34px; font-size:11.5px; padding:4px 12px;">
+                <span>Скопировать ответ</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Phrase 2 -->
+          <div class="phrase-card">
+            <strong style="font-size:13px; color:var(--nb-terracotta);">После первого свидания</strong>
+            <p style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;" id="textPhr2">
+              «Спасибо за встречу. Я поняла, что не хочу продолжать знакомство. Желаю тебе всего доброго».
+            </p>
+            <div style="display:flex; justify-content:flex-end; margin-top:2px;">
+              <button onclick="copySinglePhrase('textPhr2', this)" class="secondary-btn" style="min-height:34px; font-size:11.5px; padding:4px 12px;">
+                <span>Скопировать ответ</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Phrase 3 -->
+          <div class="phrase-card">
+            <strong style="font-size:13px; color:var(--nb-terracotta);">Если у вас разные цели</strong>
+            <p style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;" id="textPhr3">
+              «Мне было приятно познакомиться, но я вижу, что мы ищем разного. Не хочу тратить наше время и создавать лишние ожидания».
+            </p>
+            <div style="display:flex; justify-content:flex-end; margin-top:2px;">
+              <button onclick="copySinglePhrase('textPhr3', this)" class="secondary-btn" style="min-height:34px; font-size:11.5px; padding:4px 12px;">
+                <span>Скопировать ответ</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Phrase 4 -->
+          <div class="phrase-card">
+            <strong style="font-size:13px; color:var(--nb-terracotta);">Если человек просит объяснить причину</strong>
+            <p style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;" id="textPhr4">
+              «Здесь нет списка недостатков. Я просто не чувствую, что хочу продолжать это знакомство».
+            </p>
+            <div style="display:flex; justify-content:flex-end; margin-top:2px;">
+              <button onclick="copySinglePhrase('textPhr4', this)" class="secondary-btn" style="min-height:34px; font-size:11.5px; padding:4px 12px;">
+                <span>Скопировать ответ</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Phrase 5 -->
+          <div class="phrase-card">
+            <strong style="font-size:13px; color:var(--nb-terracotta);">Если человек продолжает настаивать</strong>
+            <p style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;" id="textPhr5">
+              «Я уже сообщила своё решение. Оно не изменится. Прошу его уважать».
+            </p>
+            <div style="display:flex; justify-content:flex-end; margin-top:2px;">
+              <button onclick="copySinglePhrase('textPhr5', this)" class="secondary-btn" style="min-height:34px; font-size:11.5px; padding:4px 12px;">
+                <span>Скопировать ответ</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Copy All Memo Button -->
+        <div style="margin-top:18px;">
+          <button onclick="copyAllMemo3()" class="primary-btn pulse" style="width:100%; min-height:46px;">
+            <span>Скопировать памятку</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Final Insight Card -->
+      <section class="glass card text-center" style="background:rgba(255,255,255,0.95); border:1px solid rgba(36,49,57,0.12); padding:18px 20px;">
+        <div class="eyebrow" style="margin-bottom:6px;">💡 Главное правило</div>
+        <p style="font-size:14px; font-weight:700; line-height:1.55; color:var(--nb-deep); margin:0;">
+          Отказ не требует согласия второго человека. Достаточно сказать ясно, уважительно и один раз.
+        </p>
+      </section>
+
+      <!-- Bottom Navigation -->
+      <div style="display:flex; flex-direction:column; gap:10px; padding-top:4px;">
+        <button onclick="safeNavigate('13_bonus4.html')" class="primary-btn pulse" style="min-height:48px;">
+          <span>Следующий бонус →</span>
+        </button>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <button onclick="safeNavigate('11_bonus2.html')" class="secondary-btn" style="min-height:44px; font-size:12.5px;">
+            <span>← Предыдущий бонус</span>
+          </button>
+          <button onclick="safeNavigate('09_bonuses.html')" class="secondary-btn" style="min-height:44px; font-size:12.5px;">
+            <span>Все бонусы</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • ПСИквест
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Copy Toast Notification -->
+  <div id="copyToast" class="copy-toast">Памятка скопирована</div>
+
+  <script>
+    function safeHaptic(type) {
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+        try {
+          if (type === 'impactLight') window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+          else if (type === 'selection') window.Telegram.WebApp.HapticFeedback.selectionChanged();
+          else if (type === 'success') window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+        } catch (e) {}
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('copyToast');
+      if (toast) {
+        toast.textContent = msg || 'Памятка скопирована';
+        toast.classList.add('show');
+        setTimeout(function() {
+          toast.classList.remove('show');
+        }, 2200);
+      }
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          safeHaptic('success');
+          showToast('Памятка скопирована');
+        }).catch(function() {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        safeHaptic('success');
+        showToast('Памятка скопирована');
+      } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    function copySinglePhrase(id, btn) {
+      const el = document.getElementById(id);
+      if (el) {
+        copyToClipboard(el.textContent.trim().replace(/^«|»$/g, ''));
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<span>Скопировано ✓</span>';
+          setTimeout(function() { btn.innerHTML = orig; }, 1800);
+        }
+      }
+    }
+
+    function copyAllMemo3() {
+      const fullText = [
+        'ПАМЯТКА: Как завершить общение без чувства вины',
+        '',
+        'Четыре правила отказа:',
+        '1. Говорите о своём решении, а не оценивайте человека.',
+        '2. Формулируйте коротко и однозначно.',
+        '3. Не предлагайте дружбу только из вежливости.',
+        '4. Не оправдывайтесь и не вступайте в спор о своих чувствах.',
+        '',
+        'Готовые фразы:',
+        '• Универсальная формула:',
+        '«Спасибо за встречу. Мне было приятно познакомиться, но я не почувствовала желания продолжать наше общение. Не хочу создавать ложных ожиданий. Желаю тебе встретить подходящего человека».',
+        '',
+        '• После первого свидания:',
+        '«Спасибо за встречу. Я поняла, что не хочу продолжать знакомство. Желаю тебе всего доброго».',
+        '',
+        '• Если у вас разные цели:',
+        '«Мне было приятно познакомиться, но я вижу, что мы ищем разного. Не хочу тратить наше время и создавать лишние ожидания».',
+        '',
+        '• Если человек просит объяснить причину:',
+        '«Здесь нет списка недостатков. Я просто не чувствую, что хочу продолжать это знакомство».',
+        '',
+        '• Если человек продолжает настаивать:',
+        '«Я уже сообщила своё решение. Оно не изменится. Прошу его уважать».',
+        '',
+        'Главное правило: Отказ не требует согласия второго человека. Достаточно сказать ясно, уважительно и один раз.'
+      ].join('\n');
+
+      copyToClipboard(fullText);
+    }
+
+    function pauseVideo() {
+      const iframe = document.getElementById('bonusVideo3');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+          iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+          iframe.contentWindow.postMessage({ event: 'command', command: 'pause' }, '*');
+          iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+        } catch(e) {}
+      }
+    }
+
+    function safeNavigate(url) {
+      safeHaptic('selection');
+      pauseVideo();
+      setTimeout(function() {
+        window.location.href = url;
+      }, 40);
+    }
+
+    window.addEventListener('pagehide', pauseVideo);
+    window.addEventListener('beforeunload', pauseVideo);
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) pauseVideo();
+    });
+  </script>
+</body>
+</html>

@@ -16,7 +16,12 @@
     '06_lesson4.html': 'birch',
     '07_lesson5.html': 'oak',
     '08_portrait_quest.html': 'birch',
-    '09_bonuses.html': 'oak'
+    '09_bonuses.html': 'oak',
+    '10_bonus1.html': 'birch',
+    '11_bonus2.html': 'oak',
+    '12_bonus3.html': 'birch',
+    '13_bonus4.html': 'oak',
+    '14_individual_offer.html': 'birch'
   };
 
   function setBackground(themeKey) {
