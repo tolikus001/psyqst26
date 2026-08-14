@@ -301,22 +301,34 @@ const server = http.createServer(async (req, res) => {
           try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
         }
 
+        // Extract any custom written text from answers
+        const customAnswers = answers
+          .filter(a => typeof a === 'string' && (a.includes('Свой вариант') || a.includes('Свой ответ')))
+          .map(a => a.replace(/^.*?:\s*/, ''));
+
         // Fallback intelligent classification if AI offline
         const textBlob = JSON.stringify(answers).toLowerCase();
-        let fallbackRoute = 'partner';
-        if (textBlob.includes('измен') || textBlob.includes('кризис') || textBlob.includes('уход') || textBlob.includes('развод') || textBlob.includes('шок')) {
+        let fallbackRoute = 'family';
+        if (textBlob.includes('измен') || textBlob.includes('кризис') || textBlob.includes('уход') || textBlob.includes('развод') || textBlob.includes('шок') || textBlob.includes('плохо') || textBlob.includes('разрыв')) {
           fallbackRoute = 'crisis';
-        } else if (textBlob.includes('семь') || textBlob.includes('быт') || textBlob.includes('брак') || textBlob.includes('дистанц')) {
-          fallbackRoute = 'family';
-        } else if (textBlob.includes('эмоци') || textBlob.includes('дофамин') || textBlob.includes('тревог') || textBlob.includes('сообщен') || textBlob.includes('завис')) {
+        } else if (textBlob.includes('выбираю не тех') || textBlob.includes('не тех') || textBlob.includes('холодн') || textBlob.includes('начать новые') || textBlob.includes('выбирать партн')) {
+          fallbackRoute = 'partner';
+        } else if (textBlob.includes('эмоци') || textBlob.includes('дофамин') || textBlob.includes('тревог') || textBlob.includes('сообщен') || textBlob.includes('завис') || textBlob.includes('качел') || textBlob.includes('всё на мне') || textBlob.includes('все на мне') || textBlob.includes('подстраива')) {
           fallbackRoute = 'emotions';
+        } else {
+          fallbackRoute = 'family';
+        }
+
+        let customNote = '';
+        if (customAnswers.length > 0) {
+          customNote = ` На основе вашего комментария («${customAnswers.join('; ')}») видно, что для вас важна персональная специфика ситуации.`;
         }
 
         const scenarioFallbacks = {
           partner: {
             route: 'partner',
             title: 'Сценарий 1: «Поиск и выбор партнёра»',
-            summary: 'В неопределенности вы пытаетесь немедленно получить ясность или спасаетесь активностью. Из-за этого вы пропускаете тревожные сигналы и привязываетесь к эмоционально недоступным людям.',
+            summary: `В неопределенности вы пытаетесь немедленно получить ясность или спасаетесь активностью. Из-за этого вы пропускаете тревожные сигналы и привязываетесь к эмоционально недоступным людям.${customNote}`,
             danger: 'Смещение фокуса с вопроса «Подходит ли он мне?» на вопрос «Как его завоевать и что со мной не так?».',
             firstStep: 'Перед следующим сообщением сделайте паузу на 2 выдоха и разделите лист на две колонки: «Сухие факты» и «Мои догадки».',
             transition: 'Перейдите к персональному видео-разбору Анатолия Фёдорова и практическому курсу «Новый сценарий».'
@@ -324,23 +336,25 @@ const server = http.createServer(async (req, res) => {
           emotions: {
             route: 'emotions',
             title: 'Сценарий 2: «Эмоциональная устойчивость»',
-            summary: 'Ваша нервная система попала в дофамино-кортизоловую петлю. Паузы в общении вызывают спазм тревоги, а редкие сообщения — мгновенный салют дофамина.',
-            danger: 'Потеря эмоционального суверенитета и накопление скрытого напряжения перед взрывом.',
+            summary: `Ваша нервная система попала в дофамино-кортизоловую петлю. Паузы в общении вызывают спазм тревоги, а редкие сообщения — мгновенный салют дофамина.${customNote}`,
+            danger: 'Потеря эмоционального суверенитета и накопление скрытого напряжения перед эмоциональным взрывом.',
             firstStep: 'Используйте практику соматического заземления и технику 3-х шагов выхода из дофаминовых качелей.',
             transition: 'Перейдите к урокам курса «Новый сценарий» для возврата внутреннего ядра.'
           },
           family: {
             route: 'family',
             title: 'Сценарий 3: «Перезагрузка отношений»',
-            summary: 'Отношения застряли в цикле бытовой усталости, взаимных претензий и эмоционального отдаления.',
-            danger: 'Попытка спасти контакт через бесконечные уступки или уход в глухую оборону.',
-            firstStep: 'Зафиксируйте правила безопасного диалога без обвинений и перехода на личности.',
+            summary: (textBlob.includes('ок') || textBlob.includes('нормальн') || textBlob.includes('хорошо'))
+              ? `В ваших отношениях сохраняется базовая стабильность и спокойствие. Главная цель — углублять контакт, поддерживать искреннее тепло и предотвращать скрытое накопление недосказанности.${customNote}`
+              : `Отношения застряли в цикле бытовой усталости, взаимных претензий и эмоционального отдаления в паре.${customNote}`,
+            danger: 'Привыкание к фоновому отдалению или попытка решать трудности через накопление молчаливых уступок.',
+            firstStep: 'Зафиксируйте правила безопасного диалога без взаимных претензий и перехода на личности.',
             transition: 'Перейдите к системному разбору сценариев с Анатолием Фёдоровым.'
           },
           crisis: {
             route: 'crisis',
             title: 'Сценарий 4: «Кризис и сложные решения»',
-            summary: 'Острая ситуация неопределенности или шока. Психика требует немедленных судьбоносных решений на пике боли.',
+            summary: `Острая ситуация неопределенности или шока. Психика требует немедленных судьбоносных решений на пике боли.${customNote}`,
             danger: 'Принятие решений в состоянии аффекта из страха одиночества или безысходности.',
             firstStep: 'Снимите острую соматическую реакцию и дайте себе мораторий на окончательные решения на 48 часов.',
             transition: 'Перейдите к экспертной поддержке и методологии выхода из кризиса.'
