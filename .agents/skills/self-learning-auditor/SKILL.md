@@ -55,9 +55,12 @@ description: Самообучающийся аудитор качества и �
 - **Правило**: Любые клики и взаимодействия с кнопками/ответами должны вызывать функцию `safeHaptic(type)` с 3 уровнями защиты (Notibot $\rightarrow$ Telegram WebApp $\rightarrow$ `navigator.vibrate` $\rightarrow$ silent catch).
 - **Запрет**: Запрещен прямой вызов `window.Telegram.WebApp.HapticFeedback` без проверки на `undefined`.
 
-### 🎬 [УРОК 6] Потоковый медиа-сервер (HTTP 206 Range)
-- **Правило**: Видео и аудио стримятся через Node.js с заголовками `Accept-Ranges: bytes`, `Content-Range` и кодом `206 Partial Content`.
-- **Запрет**: Запрещена отдача тяжелых видеофайлов (10MB+) целиком кодом 200 без поддержки Range (приводит к сбросу видеопотока на iOS).
+### 🎬 [УРОК 6] Видеохостинг Kinescope и Потоковый Стриминг
+- **Правило**: Все обучающие видео курса хостятся на **Kinescope** (`https://kinescope.io/embed/[ID]` или Kinescope CDN) в адаптивных 16:9 контейнерах.
+- **CSP**: В `<meta http-equiv="Content-Security-Policy">` обязательны:
+  - `frame-src 'self' https://kinescope.io https://*.kinescope.io;`
+  - `media-src 'self' https: data: blob: https://*.kinescopecdn.net;`
+  - `script-src 'self' 'unsafe-inline' https://kinescope.io https://*.kinescope.io;`
 
 ### 🚫 [УРОК 9] Полный запрет заглушек (No Stubs / No Placeholders)
 - **Правило**: В коде, разметке и скриптах категорически **запрещены временные заглушки, моки, фейковые данные (Lorem Ipsum, placeholder.png, dummy IDs)**.
