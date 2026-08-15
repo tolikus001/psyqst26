@@ -752,7 +752,7 @@ const server = http.createServer(async (req, res) => {
       if (pathname === '/api/send-telegram-summary') {
         const { lessonNumber = 1, title = '', message = '', user = {} } = parsed;
         const botToken = process.env.TELEGRAM_BOT_TOKEN || '';
-        const chatId = user?.id || user?.userId || process.env.TELEGRAM_DEFAULT_CHAT_ID || '';
+        const chatId = user?.id || user?.userId || user?.telegram_id || user?.telegramId || user?.chat_id || user?.chatId || process.env.TELEGRAM_DEFAULT_CHAT_ID || '';
 
         console.log(`[Telegram PM Summary] Lesson ${lessonNumber} for user ${user?.first_name || user?.id || 'guest'}`);
 
