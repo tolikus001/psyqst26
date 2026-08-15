@@ -1,0 +1,198 @@
+const { execSync } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+
+// 1. Generate clean base64 data for all 4 bonuses
+const base64Map = {};
+
+for (let i = 1; i <= 4; i++) {
+  const inPng = path.resolve(`out/client/bonus${i}.png`);
+  const outJpg = path.resolve(`out/client/bonus${i}.jpg`);
+  
+  execSync(`sips -s format jpeg -s formatOptions 75 --resampleWidth 440 "${inPng}" --out "${outJpg}"`);
+  const buf = fs.readFileSync(outJpg);
+  const b64 = `data:image/jpeg;base64,${buf.toString("base64")}`;
+  base64Map[`bonus${i}`] = b64;
+}
+
+// 2. Read 09_bonuses.html
+const bonusesFilePath = path.resolve("out/client/09_bonuses.html");
+let html = fs.readFileSync(bonusesFilePath, "utf8");
+
+// 3. Update CSS styling
+const styleRegex = /<style>\s*\.bonuses-grid[\s\S]*?<\/style>/;
+
+const cleanStyle = `<style>
+    .bonuses-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (min-width: 640px) {
+      .bonuses-grid {
+        gap: 16px;
+      }
+    }
+    .bonus-card-premium {
+      background: #FFFFFF;
+      border: 1px solid rgba(36, 49, 57, 0.1);
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(36, 49, 57, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      text-align: left;
+      height: 100%;
+    }
+    .bonus-card-premium:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 32px rgba(36, 49, 57, 0.14);
+      border-color: rgba(217, 131, 78, 0.45);
+    }
+    .bonus-card-premium:active {
+      transform: scale(0.98);
+    }
+    .bonus-card-body {
+      padding: 14px 14px 12px 14px;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
+    }
+    .bonus-card-badge {
+      display: inline-flex;
+      align-self: flex-start;
+      background: rgba(217, 131, 78, 0.12);
+      color: var(--nb-terracotta);
+      border: 1px solid rgba(217, 131, 78, 0.25);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      margin-bottom: 2px;
+    }
+    .bonus-card-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--nb-deep);
+      line-height: 1.3;
+      margin: 0;
+    }
+    .bonus-card-desc {
+      font-size: 11.5px;
+      line-height: 1.4;
+      color: var(--nb-slate);
+      margin: 0;
+      flex: 1;
+    }
+    .bonus-card-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 130px;
+      overflow: hidden;
+      background: #1B2832;
+      border-bottom-left-radius: 17px;
+      border-bottom-right-radius: 17px;
+    }
+    @media (min-width: 640px) {
+      .bonus-card-img-wrap {
+        height: 160px;
+      }
+    }
+    .bonus-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+    .bonus-card-premium:hover .bonus-card-img {
+      transform: scale(1.05);
+    }
+  </style>`;
+
+html = html.replace(styleRegex, cleanStyle);
+
+// 4. Construct clean 2x2 grid without "Открыть бонус"
+const cleanGridHtml = `      <!-- 4 Bonus Cards (2 rows x 2 columns: text ABOVE image, no link label) -->
+      <div class="bonuses-grid">
+
+        <!-- Bonus 1 -->
+        <a href="javascript:void(0);" onclick="safeHaptic('selection'); openScreen('10_bonus1.html'); return false;" class="bonus-card-premium">
+          <div class="bonus-card-body">
+            <div class="bonus-card-badge">Бонус 1</div>
+            <h3 class="bonus-card-title">Если написал человек из прошлого</h3>
+            <p class="bonus-card-desc">
+              Пять готовых ответов, которые помогут сохранить границу и не вернуться в прежний сценарий.
+            </p>
+          </div>
+          <div class="bonus-card-img-wrap">
+            <img src="${base64Map.bonus1}" alt="Если написал человек из прошлого" class="bonus-card-img" />
+          </div>
+        </a>
+
+        <!-- Bonus 2 -->
+        <a href="javascript:void(0);" onclick="safeHaptic('selection'); openScreen('11_bonus2.html'); return false;" class="bonus-card-premium">
+          <div class="bonus-card-body">
+            <div class="bonus-card-badge">Бонус 2</div>
+            <h3 class="bonus-card-title">Экстренное заземление за 2 минуты</h3>
+            <p class="bonus-card-desc">
+              Техника переключения внимания из тревоги в тело, когда накрывают эмоции.
+            </p>
+          </div>
+          <div class="bonus-card-img-wrap">
+            <img src="${base64Map.bonus2}" alt="Экстренное заземление за 2 минуты" class="bonus-card-img" />
+          </div>
+        </a>
+
+        <!-- Bonus 3 -->
+        <a href="javascript:void(0);" onclick="safeHaptic('selection'); openScreen('12_bonus3.html'); return false;" class="bonus-card-premium">
+          <div class="bonus-card-body">
+            <div class="bonus-card-badge">Бонус 3</div>
+            <h3 class="bonus-card-title">Как завершить общение без чувства вины</h3>
+            <p class="bonus-card-desc">
+              Алгоритм экологичного выхода из контакта, который перестал быть безопасным.
+            </p>
+          </div>
+          <div class="bonus-card-img-wrap">
+            <img src="${base64Map.bonus3}" alt="Как завершить общение без чувства вины" class="bonus-card-img" />
+          </div>
+        </a>
+
+        <!-- Bonus 4 -->
+        <a href="javascript:void(0);" onclick="safeHaptic('selection'); openScreen('13_bonus4.html'); return false;" class="bonus-card-premium">
+          <div class="bonus-card-body">
+            <div class="bonus-card-badge">Бонус 4</div>
+            <h3 class="bonus-card-title">Чек-лист нового знакомства</h3>
+            <p class="bonus-card-desc">
+              Семь маркеров в поведении партнера, на которые стоит обратить внимание на первых встречах.
+            </p>
+          </div>
+          <div class="bonus-card-img-wrap">
+            <img src="${base64Map.bonus4}" alt="Чек-лист нового знакомства" class="bonus-card-img" />
+          </div>
+        </a>
+
+      </div>`;
+
+// Replace from the beginning of bonuses-grid up to the individual offer section
+const fullGridAreaRegex = /<!--\s*4.*?Bonus Cards[\s\S]*?(?=<!-- Dedicated Individual Offer Card)/;
+html = html.replace(fullGridAreaRegex, cleanGridHtml + "\n\n      ");
+
+fs.writeFileSync(bonusesFilePath, html, "utf8");
+
+// Also update baza if it exists
+const bazaPath = path.resolve("baza/09_bonuses.html");
+if (fs.existsSync(bazaPath)) {
+  fs.writeFileSync(bazaPath, html, "utf8");
+}
+
+console.log("Successfully updated 09_bonuses.html: removed 'Открыть бонус' and cleaned grid!");
