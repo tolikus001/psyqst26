@@ -1206,11 +1206,16 @@ textarea:focus, input:focus {
             <span>Медитация</span>
           </a>
         </div>
-        <div class="subtle text-center py-2" style="font-size:11px; display:flex; flex-direction:column; gap:4px; align-items:center;">
+        <div class="subtle text-center py-2" style="font-size:11px; display:flex; flex-direction:column; gap:6px; align-items:center;">
           <span>© Анатолий Фёдоров • ПСИквест</span>
-          <button onclick="localStorage.clear(); location.reload();" style="background:none; border:none; color:var(--nb-slate); font-size:11px; text-decoration:underline; cursor:pointer; opacity:0.7; padding:6px 12px; margin-top:2px;">
-            🔄 Сбросить состояние / Показать кнопку покупки заново
-          </button>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:4px;">
+            <button onclick="localStorage.setItem('psy_timer_expire_v2', Date.now() + 3600000); location.reload();" style="background:#FFFFFF; border:1px solid rgba(14,31,46,0.15); border-radius:8px; color:var(--nb-sea); font-size:11px; font-weight:700; cursor:pointer; padding:6px 10px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              🕒 Тест: скидка 2 400 ₽ (таймер 60 мин)
+            </button>
+            <button onclick="localStorage.setItem('psy_timer_expire_v2', Date.now() - 1000); location.reload();" style="background:#FFFFFF; border:1px solid rgba(14,31,46,0.15); border-radius:8px; color:#B5663E; font-size:11px; font-weight:700; cursor:pointer; padding:6px 10px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              ⌛ Тест: полная цена 5 000 ₽ (таймер истёк)
+            </button>
+          </div>
         </div>
       </footer>
 
