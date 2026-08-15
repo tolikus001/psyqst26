@@ -815,9 +815,17 @@ textarea:focus, input:focus {
     '07_lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg'
   };
 
+  // Official Notibot Product IDs
+  const NOTIBOT_PRODUCTS = {
+    individual_offer: '4ec2ypRLStHYlW0lRrAzHI',
+    portrait_consultation: '4ec2ypRLStHYlW0lRrAzHI',
+    course_partner_2400: 'course_partner_2400'
+  };
+
   window.API_BASE = API_BASE;
   window.AMVERA_HOST = AMVERA_HOST;
   window.NOTIBOT_ARTICLES = NOTIBOT_ARTICLES;
+  window.NOTIBOT_PRODUCTS = NOTIBOT_PRODUCTS;
 
   /**
    * Navigate to screen via Notibot openArticle if embedded, or window.location if standalone
@@ -829,6 +837,18 @@ textarea:focus, input:focus {
       window.notibot.openArticle(articleId);
     } else {
       window.location.href = target;
+    }
+  }
+
+  /**
+   * Open Notibot Product Modal
+   */
+  function openProduct(targetId) {
+    const realId = NOTIBOT_PRODUCTS[targetId] || targetId;
+    if (window.notibot && typeof window.notibot.openProduct === 'function') {
+      window.notibot.openProduct(realId);
+    } else if (window.notibot && typeof window.notibot.openStorefront === 'function') {
+      window.notibot.openStorefront();
     }
   }
 
@@ -894,6 +914,7 @@ textarea:focus, input:focus {
   window.apiPost = apiPost;
   window.resolveMediaUrl = resolveMediaUrl;
   window.openScreen = openScreen;
+  window.openProduct = openProduct;
 })();
 </script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
