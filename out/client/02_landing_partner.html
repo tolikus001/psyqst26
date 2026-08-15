@@ -1314,12 +1314,9 @@ textarea:focus, input:focus {
       }
     }
 
-    // Check if course is already purchased or started
+    // Check if course is already purchased
     function checkPurchasedState() {
-      const isPurchased = localStorage.getItem('psy_course_purchased') === 'true' || 
-                          localStorage.getItem('psyquest_lesson5_synthesis_done') === 'true' ||
-                          localStorage.getItem('lesson1_inpFact') !== null ||
-                          localStorage.getItem('psyquest_lesson4_ai_done') === 'true';
+      const isPurchased = localStorage.getItem('psy_course_purchased') === 'true';
 
       if (isPurchased) {
         // Reveal sections immediately
