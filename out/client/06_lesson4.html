@@ -795,5 +795,981 @@ textarea:focus, input:focus {
 })();
 </script>
 
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener("message", function (event) {
+      if (event.data && event.data.type === "NOTIBOT_INIT" && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot) {
+          if (type === "selection" && typeof window.notibot.hapticSelection === "function") {
+            window.notibot.hapticSelection();
+          } else if ((type === "success" || type === "error" || type === "warning") && typeof window.notibot.hapticNotification === "function") {
+            window.notibot.hapticNotification(type);
+          } else if (typeof window.notibot.hapticImpact === "function") {
+            window.notibot.hapticImpact(type || "light");
+          }
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === "success" || type === "error" || type === "warning") {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred("medium");
+          }
+        } else if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+          navigator.vibrate(type === "success" ? [30, 50, 30] : 20);
+        }
+      } catch (e) {}
+    }
+  </script>
+</head>
+
+<body>
+  <div id="maisonArtBackground" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Navigation & Progress Bar (80% | 4 из 5) -->
+      <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
+        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+          <a href="javascript:void(0);" onclick="safeHaptic('selection'); openScreen('05_lesson3.html'); return false;" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none; cursor:pointer;">
+            ← К уроку 3
+          </a>
+          <div class="strategy-badge" style="margin:0;">
+            4 из 5 • 80%
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div style="width:100%; height:6px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
+          <div style="width:80%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px; transition:width 0.4s ease;"></div>
+        </div>
+      </header>
+
+      <!-- ==========================================
+           SCREEN 1: VIDEO & KEY INSIGHT CARD
+           ========================================== -->
+      <div id="step1VideoScreen" style="display:flex; flex-direction:column; gap:14px;">
+
+        <!-- Video Card -->
+        <section class="glass card text-center">
+          <div class="eyebrow" style="margin-bottom:8px;">Урок 4 из 5</div>
+          <h2>Урок 4. Сказать «нет» и не разрушиться</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как защитить свои границы без агрессии, чувства вины и страха потерять человека.</p>
+
+          <!-- Video Player Wrapper (Kinescope) -->
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="lesson4VideoIframe" src="https://kinescope.io/embed/5F77yK6x7j21aVjN2WUSX4?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          </div>
+        </section>
+
+        <!-- Insight & Action Card (Immediately Visible) -->
+        <section class="glass card text-center">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+            💡 Главный вывод
+          </div>
+          <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
+          <p class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
+            Границы нужны не для того, чтобы нападать или наказывать, а чтобы сохранить себя в контакте с другим человеком.
+          </p>
+
+          <button onclick="goToPractice()" class="secondary-btn" style="width:100%; min-height:46px;">
+            <span>Переходим к практике →</span>
+          </button>
+        </section>
+
+        <!-- Next Lesson Transition (Always visible on Screen 1) -->
+        <div style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); openScreen('07_lesson5.html');" class="primary-btn pulse"
+            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:48px;">
+            <span>Перейти к уроку 5 →</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ==========================================
+           SCREEN 2: INTERACTIVE PRACTICE «Вернуть себе свою силу»
+           ========================================== -->
+      <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
+
+        <!-- Back to Video Button -->
+        <div>
+          <button onclick="goToVideo()" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
+            ← Назад к видеоуроку
+          </button>
+        </div>
+
+        <!-- AI Companion Top Header Card -->
+        <div class="glass card text-center" style="padding: 16px 20px;">
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
+            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+              ☀️ Интеллектуальный попутчик
+            </div>
+            <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
+              Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">3</span>
+            </div>
+          </div>
+          <p style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
+            Он поможет отделить полезный ресурс от разрушительного поведения и сформулировать вашу персональную фразу-разрешение.
+          </p>
+        </div>
+
+        <!-- MAIN INTERACTIVE CONTAINER: «Вернуть себе свою силу» -->
+        <section class="glass card" id="practiceMainCard">
+          <div class="eyebrow" style="margin-bottom:6px;">✨ Практика</div>
+          <h3 style="font-size:18px; margin-bottom:4px;">Вернуть себе свою силу</h3>
+          <p class="lead" style="font-size:13px; margin-bottom:14px;">Найдите качество, которое вы искали в других, и верните себе его здоровую форму.</p>
+
+          <!-- Micro Step Progress Indicator (1..6) -->
+          <div id="stepIndicatorBlock" style="margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span id="stepLabel" style="font-size:12px; font-weight:800; color:var(--nb-sea);">Этап 1 из 6</span>
+              <span id="stepTitleHint" style="font-size:11.5px; color:var(--nb-slate); font-weight:600;">Качество-магнит</span>
+            </div>
+            <div style="width:100%; height:5px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
+              <div id="interactiveProgressBar" style="width:16.6%; height:100%; background:var(--nb-sea); border-radius:999px; transition:width 0.3s ease;"></div>
+            </div>
+          </div>
+
+          <!-- ==================== ЭТАП 1. КАЧЕСТВО-МАГНИТ ==================== -->
+          <div id="stage1" class="step-card" style="display:block;">
+            <label style="font-size:13px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:10px; line-height:1.4;">
+              Какое качество одновременно притягивает и раздражает вас в другом человеке?
+            </label>
+
+            <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
+              <div class="option-chip" onclick="selectQuality('дерзость', this)">
+                <span>дерзость</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="selectQuality('независимость', this)">
+                <span>независимость</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="selectQuality('яркость', this)">
+                <span>яркость</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="selectQuality('спонтанность', this)">
+                <span>спонтанность</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="selectQuality('уверенность', this)">
+                <span>уверенность</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="selectQuality('эмоциональность', this)">
+                <span>эмоциональность</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="selectQuality('решительность', this)">
+                <span>решительность</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="selectQuality('custom', this)">
+                <span>Свой вариант</span> <div class="check-circle"></div>
+              </div>
+            </div>
+
+            <!-- Custom Quality Textarea -->
+            <div id="customQualityBlock" style="display:none; margin-bottom:12px;">
+              <textarea id="inpCustomQuality" rows="2" placeholder="Напишите своё качество..." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
+            </div>
+
+            <button onclick="goToStage(2)" class="primary-btn pulse" style="width:100%;">
+              <span>Продолжить →</span>
+            </button>
+          </div>
+
+          <!-- ==================== ЭТАП 2. ЧТО ВЫ ИЩЕТЕ В ДРУГОМ ==================== -->
+          <div id="stage2" class="step-card" style="display:none;">
+            <label style="font-size:13px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:8px; line-height:1.4;">
+              Что этот человек позволяет себе, а вы обычно себе запрещаете?
+            </label>
+
+            <textarea id="inpAllowedBehavior" rows="3" required placeholder="Например: прямо говорить о своих желаниях, отказывать, занимать пространство, действовать без чужого одобрения." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.45; margin-bottom:14px;"></textarea>
+
+            <div class="nav-row">
+              <button onclick="goToStage(1)" class="ghost-btn">
+                ← Назад
+              </button>
+              <button onclick="goToStage(3)" class="primary-btn pulse">
+                <span>Увидеть внутренний запрет →</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ==================== ЭТАП 3. ВНУТРЕННЕЕ ПРАВИЛО ==================== -->
+          <div id="stage3" class="step-card" style="display:none;">
+            <label style="font-size:13px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px; line-height:1.4;">
+              Что вы говорите себе, когда хотите проявить это качество?
+            </label>
+            <span style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:10px;">Выберите один или несколько вариантов:</span>
+
+            <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
+              <div class="option-chip" onclick="toggleRule('Нужно быть удобной.', this)">
+                <span>Нужно быть удобной.</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="toggleRule('Нельзя расстраивать других.', this)">
+                <span>Нельзя расстраивать других.</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="toggleRule('Сначала нужно думать о других.', this)">
+                <span>Сначала нужно думать о других.</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="toggleRule('Так ведут себя только эгоисты.', this)">
+                <span>Так ведут себя только эгоисты.</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="toggleRule('Меня осудят или отвергнут.', this)">
+                <span>Меня осудят или отвергнут.</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="toggleRule('Я должна быть правильной.', this)">
+                <span>Я должна быть правильной.</span> <div class="check-circle"></div>
+              </div>
+              <div class="option-chip" onclick="toggleRule('custom', this)">
+                <span>Свой вариант</span> <div class="check-circle"></div>
+              </div>
+            </div>
+
+            <!-- Custom Rule Textarea -->
+            <div id="customRuleBlock" style="display:none; margin-bottom:12px;">
+              <textarea id="inpCustomRule" rows="2" placeholder="Напишите свой внутренний запрет..." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
+            </div>
+
+            <div class="nav-row">
+              <button onclick="goToStage(2)" class="ghost-btn">
+                ← Назад
+              </button>
+              <button onclick="fetchStage4Resource()" id="btnFindHealthyForm" class="primary-btn pulse">
+                <span>Найти здоровую форму →</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ==================== ЭТАП 4. ЗДОРОВАЯ ФОРМА КАЧЕСТВА ==================== -->
+          <div id="stage4" class="step-card" style="display:none;">
+            <!-- Loading State -->
+            <div id="stage4Loading" style="display:none; padding:24px 10px; text-align:center;">
+              <div style="display:inline-block; width:34px; height:34px; border:3px solid var(--nb-line); border-top-color:var(--nb-sea); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;"></div>
+              <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик находит здоровую форму качества...</div>
+            </div>
+
+            <!-- Content Container -->
+            <div id="stage4Content">
+              <!-- Offline / Fallback Notice Banner -->
+              <div id="aiOfflineNoticeStage4" style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+                🚂 <strong>Помощник в пути... (проблемы с интернетом)</strong> А пока прислал такую мысль и ориентир:
+              </div>
+
+              <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+                💎 Здоровая форма вашей силы
+              </div>
+
+              <div style="padding:14px 16px; border-radius:16px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08); text-align:left; margin-bottom:14px;">
+                <div style="font-size:14px; font-weight:900; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                  <span>✨</span> <span id="aiResourceTitle">Здоровая форма силы</span>
+                </div>
+                <p id="aiExplanationText" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">
+                </p>
+              </div>
+
+              <div class="nav-row">
+                <button onclick="goToStage(3)" class="ghost-btn">
+                  ← Назад
+                </button>
+                <button onclick="goToStage(5)" class="primary-btn pulse">
+                  <span>Примерить это состояние →</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== ЭТАП 5. ТЕЛЕСНАЯ ПРИМЕРКА ==================== -->
+          <div id="stage5" class="step-card" style="display:none;">
+            <div style="margin-bottom:12px; padding:10px 12px; border-radius:12px; background:rgba(47,125,89,0.08); border:1px solid rgba(47,125,89,0.2); font-size:12.5px; line-height:1.45; color:var(--nb-deep); text-align:left;">
+              🧘‍♀️ <strong>Инструкция:</strong> На одну-две минуты представьте, что это качество уже принадлежит вам. Позвольте измениться позе, дыханию, выражению лица и внутреннему состоянию.
+            </div>
+
+            <label style="font-size:13px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:8px; line-height:1.4;">
+              Что изменилось в вашем теле и ощущении себя?
+            </label>
+
+            <textarea id="inpBodyChange" rows="3" required placeholder="Например: расправились плечи, стало легче дышать, появилось больше уверенности." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.45; margin-bottom:14px;"></textarea>
+
+            <div class="nav-row">
+              <button onclick="goToStage(4)" class="ghost-btn">
+                ← Назад
+              </button>
+              <button onclick="goToStage(6)" class="primary-btn pulse">
+                <span>Выбрать новый поступок →</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ==================== ЭТАП 6. ОДИН НОВЫЙ ПОСТУПОК ==================== -->
+          <div id="stage6" class="step-card" style="display:none;">
+            <label style="font-size:13px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:8px; line-height:1.4;">
+              Как вы проявите это качество безопасно для себя и других в ближайшие сутки?
+            </label>
+
+            <textarea id="inpNewAction" rows="3" required placeholder="Например: прямо скажу о своём желании, откажусь от неудобной просьбы или приму небольшое решение без чужого одобрения." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.45; margin-bottom:14px;"></textarea>
+
+            <div class="nav-row">
+              <button onclick="goToStage(5)" class="ghost-btn">
+                ← Назад
+              </button>
+              <button onclick="getSingleAiBreakdown()" id="btnGetAiBreakdown" class="primary-btn pulse">
+                <span>Получить мой разбор ➔</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ==================== ЭТАП 7. ПЕРСОНАЛЬНЫЙ РЕЗУЛЬТАТ ==================== -->
+          <div id="stageResult" class="step-card" style="display:none;">
+            <!-- Loading State -->
+            <div id="aiLoadingBlock" style="display:none; padding:24px 10px; text-align:center;">
+              <div style="display:inline-block; width:34px; height:34px; border:3px solid var(--nb-line); border-top-color:var(--nb-terracotta); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;"></div>
+              <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик формирует ваш персональный разбор...</div>
+            </div>
+
+            <div id="finalResultContent">
+              <!-- Notice when offline or fallback -->
+              <div id="aiNoticeStatusBlock" style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+                🚂 <strong>Помощник в пути... (проблемы с интернетом)</strong> А пока прислал такую мысль и фразу:
+              </div>
+
+              <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+                🏆 Результат практики
+              </div>
+              <h3 style="font-size:18px; margin-bottom:12px;">Моя возвращённая сила</h3>
+
+              <!-- 5 Key Points Card -->
+              <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px; text-align:left;">
+                <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                  <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🧲 Качество, которое привлекало в других:</strong>
+                  <span id="resQuality" style="font-size:13.5px; font-weight:700; color:var(--nb-deep);"></span>
+                </div>
+
+                <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                  <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🔒 Мой внутренний запрет:</strong>
+                  <span id="resRules" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+                </div>
+
+                <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                  <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">💎 Здоровая форма качества:</strong>
+                  <span id="resResource" style="font-size:13.5px; font-weight:800; color:var(--nb-sea);"></span>
+                </div>
+
+                <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                  <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🚀 Мой новый поступок:</strong>
+                  <span id="resNewAction" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+                </div>
+
+                <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+                  <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🫀 Что изменилось в теле:</strong>
+                  <span id="resBodyChange" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
+                </div>
+              </div>
+
+              <!-- Permission Phrase Card (Special Highlight) -->
+              <div style="padding:16px; border-radius:16px; background:rgba(217, 131, 78, 0.12); border:1.5px solid rgba(217, 131, 78, 0.35); text-align:center; margin-bottom:14px;">
+                <div style="font-size:12px; font-weight:800; color:var(--nb-terracotta); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">
+                  ✨ Ваша персональная фраза-разрешение
+                </div>
+                <div id="aiPermissionPhrase" style="font-size:15px; font-weight:800; color:var(--nb-deep); line-height:1.45; font-style:italic;">
+                  «Я разрешаю себе быть заметной, сохраняя уважение к себе и другим»
+                </div>
+              </div>
+
+              <!-- Save Phrase & Telegram Buttons -->
+              <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:6px;">
+                <button onclick="savePhraseToClipboard()" id="btnSavePhrase" class="secondary-btn" style="width:100%; border:1.5px solid var(--nb-deep); color:var(--nb-deep); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:6px;">
+                  <span>📥 Сохранить мою фразу</span>
+                </button>
+
+                <button onclick="sendLesson4ToTelegram(event)" id="btnSendLesson4Telegram" class="secondary-btn" style="width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:6px;">
+                  <span>✈️ Прислать этот разбор мне в Telegram</span>
+                </button>
+                <div id="tgStatusLesson4" style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;"></div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Next Step Button (Appears ONLY after completing the interactive) -->
+        <div id="nextLessonBlock" style="display:none; padding-top:4px;">
+          <button onclick="safeNavigate('07_lesson5.html')" class="primary-btn pulse" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти к уроку 5 →</span>
+          </button>
+        </div>
+
+      </div>
+
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • ПСИквест
+      </footer>
+
+    </div>
+  </main>
+
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+  <script>
+    // State Management for Lesson 4 Interactive
+    let currentStage = 1;
+    let selectedQuality = '';
+    let selectedRules = [];
+    let stage4Result = { resource: '', explanation: '', safe_action: '', permission: '', isAi: false };
+    let isSubmitting = false;
+
+    // Load AI Credits (Max 3 across the entire course)
+    let aiCredits = 3;
+    try {
+      const savedCredits = localStorage.getItem('psyquest_ai_credits');
+      if (savedCredits !== null) {
+        aiCredits = Math.max(0, Math.min(3, parseInt(savedCredits, 10)));
+      } else {
+        localStorage.setItem('psyquest_ai_credits', '3');
+      }
+      updateCreditsUI();
+    } catch (e) {}
+
+    function updateCreditsUI() {
+      const el = document.getElementById('aiCreditsLeft');
+      if (el) el.textContent = aiCredits;
+    }
+
+    // Check if Lesson 4 was already completed before
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        const savedRes = localStorage.getItem('psyquest_lesson4_result');
+        if (savedRes) {
+          const parsed = JSON.parse(savedRes);
+          if (parsed && parsed.resource) {
+            stage4Result = parsed;
+          }
+        }
+      } catch (e) {}
+    });
+
+    // Screen 1 -> Screen 2 Transition
+    function goToInteractive() {
+      safeHaptic('selection');
+      pauseVideo();
+      document.getElementById('step1VideoScreen').style.display = 'none';
+      const s2 = document.getElementById('step2InteractiveScreen');
+      s2.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Screen 2 -> Screen 1 Return
+    function goToVideo() {
+      safeHaptic('selection');
+      document.getElementById('step2InteractiveScreen').style.display = 'none';
+      document.getElementById('step1VideoScreen').style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Pause Kinescope Video Player
+    function pauseVideo() {
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        if (iframe && iframe.contentWindow) {
+          try {
+            iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+            iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+            iframe.contentWindow.postMessage({ event: 'command', command: 'pause' }, '*');
+            iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+          } catch(e) {}
+        }
+      });
+      const audios = document.querySelectorAll('audio');
+      audios.forEach(a => { try { a.pause(); } catch(e){} });
+    }
+
+    function safeNavigate(url) {
+      safeHaptic('selection');
+      pauseVideo();
+      setTimeout(function() {
+        window.location.href = url;
+      }, 30);
+    }
+
+    window.addEventListener('pagehide', pauseVideo);
+    window.addEventListener('beforeunload', pauseVideo);
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) pauseVideo();
+    });
+
+    function selectQuality(val, element) {
+      safeHaptic('selection');
+      document.querySelectorAll('#stage1 .option-chip').forEach(el => el.classList.remove('selected'));
+      element.classList.add('selected');
+      
+      const customBlock = document.getElementById('customQualityBlock');
+      if (val === 'custom') {
+        selectedQuality = 'custom';
+        customBlock.style.display = 'block';
+        document.getElementById('inpCustomQuality').focus();
+      } else {
+        selectedQuality = val;
+        customBlock.style.display = 'none';
+      }
+    }
+
+    function toggleRule(val, element) {
+      safeHaptic('selection');
+      const customBlock = document.getElementById('customRuleBlock');
+      
+      if (val === 'custom') {
+        if (element.classList.contains('selected')) {
+          element.classList.remove('selected');
+          customBlock.style.display = 'none';
+          selectedRules = selectedRules.filter(r => r !== 'custom');
+        } else {
+          element.classList.add('selected');
+          customBlock.style.display = 'block';
+          if (!selectedRules.includes('custom')) selectedRules.push('custom');
+          document.getElementById('inpCustomRule').focus();
+        }
+        return;
+      }
+
+      if (element.classList.contains('selected')) {
+        element.classList.remove('selected');
+        selectedRules = selectedRules.filter(r => r !== val);
+      } else {
+        element.classList.add('selected');
+        selectedRules.push(val);
+      }
+    }
+
+    function getFinalQuality() {
+      if (selectedQuality === 'custom') {
+        return (document.getElementById('inpCustomQuality').value || '').trim();
+      }
+      return selectedQuality;
+    }
+
+    function getFinalRules() {
+      let list = selectedRules.filter(r => r !== 'custom');
+      if (selectedRules.includes('custom')) {
+        const customText = (document.getElementById('inpCustomRule').value || '').trim();
+        if (customText) list.push(customText);
+      }
+      return list;
+    }
+
+    function updateStageProgress(stage) {
+      currentStage = stage;
+      const stepLabel = document.getElementById('stepLabel');
+      const stepHint = document.getElementById('stepTitleHint');
+      const progressBar = document.getElementById('interactiveProgressBar');
+
+      const hints = {
+        1: 'Качество-магнит',
+        2: 'Что вы ищете в другом',
+        3: 'Внутреннее правило',
+        4: 'Здоровая форма качества',
+        5: 'Телесная примерка',
+        6: 'Один новый поступок'
+      };
+
+      if (stage <= 6) {
+        if (stepLabel) stepLabel.textContent = `Этап ${stage} из 6`;
+        if (stepHint) stepHint.textContent = hints[stage] || '';
+        if (progressBar) progressBar.style.width = `${(stage / 6) * 100}%`;
+        document.getElementById('stepIndicatorBlock').style.display = 'block';
+      } else {
+        document.getElementById('stepIndicatorBlock').style.display = 'none';
+      }
+    }
+
+    // Deterministic local dictionary for Stage 4 (zero network calls)
+    function getLocalHealthyForm(quality) {
+      const q = (quality || '').toLowerCase();
+      if (q.includes('дерзост')) {
+        return {
+          resource: 'Право прямо говорить «нет»',
+          explanation: 'Это способность спокойно обозначать свои границы и открыто выражать несогласие без агрессии и чувства вины.'
+        };
+      }
+      if (q.includes('независим')) {
+        return {
+          resource: 'Способность принимать решения с опорой на себя',
+          explanation: 'Это внутренняя автономия и готовность делать выбор, не нуждаясь в постоянном внешнем одобрении.'
+        };
+      }
+      if (q.includes('яркост')) {
+        return {
+          resource: 'Право быть заметной и занимать пространство',
+          explanation: 'Это естественное проявление своей индивидуальности и открытое присутствие в общении.'
+        };
+      }
+      if (q.includes('спонтан')) {
+        return {
+          resource: 'Разрешение иногда отступать от жесткого плана',
+          explanation: 'Это гибкость и способность доверять моменту, сохраняя внутреннее спокойствие.'
+        };
+      }
+      if (q.includes('уверен')) {
+        return {
+          resource: 'Право на собственное мнение и ценность',
+          explanation: 'Это устойчивое признание своей значимости без потребности что-либо доказывать другим.'
+        };
+      }
+      if (q.includes('эмоциональн')) {
+        return {
+          resource: 'Способность открыто проживать и называть свои чувства',
+          explanation: 'Это честный контакт со своими переживаниями и право делиться ими в безопасной форме.'
+        };
+      }
+      if (q.includes('решительн')) {
+        return {
+          resource: 'Право действовать без бесконечных сомнений',
+          explanation: 'Это готовность делать первый шаг и брать ответственность за свои решения.'
+        };
+      }
+      return {
+        resource: 'Внимание к собственным потребностям',
+        explanation: 'Это способность замечать и уважать свои желания, выстраивая ясный и честный контакт с окружающими.'
+      };
+    }
+
+    // Stage 3 -> Stage 4 (AI-powered healthy form generator with fallback)
+    async function fetchStage4Resource() {
+      const rules = getFinalRules();
+      if (rules.length === 0) {
+        alert('Пожалуйста, выберите хотя бы одно внутреннее правило или напишите свой вариант.');
+        return;
+      }
+
+      goToStage(4);
+      const loadingEl = document.getElementById('stage4Loading');
+      const contentEl = document.getElementById('stage4Content');
+      const noticeEl = document.getElementById('aiOfflineNoticeStage4');
+
+      if (loadingEl) loadingEl.style.display = 'block';
+      if (contentEl) contentEl.style.display = 'none';
+      if (noticeEl) noticeEl.style.display = 'none';
+
+      const quality = getFinalQuality();
+      const allowedBehavior = (document.getElementById('inpAllowedBehavior').value || '').trim();
+
+      const payload = {
+        mode: 'resource',
+        quality: quality,
+        allowedBehavior: allowedBehavior,
+        rules: rules,
+        userName: window.tgUser?.first_name || 'Участник'
+      };
+
+      try {
+        const data = await window.apiPost('/api/lesson4-strategy', payload, 10000);
+        if (data && data.result) {
+          stage4Result.resource = data.result.resource;
+          stage4Result.explanation = data.result.explanation;
+          stage4Result.isAi = !!data.isAi;
+        } else {
+          throw new Error('INVALID_RESPONSE');
+        }
+      } catch (err) {
+        console.warn('[Lesson 4 Stage 4] Fallback to local healthy form:', err.message);
+        const localForm = getLocalHealthyForm(quality);
+        stage4Result.resource = localForm.resource;
+        stage4Result.explanation = localForm.explanation;
+        stage4Result.isAi = false;
+        if (noticeEl) noticeEl.style.display = 'block';
+      }
+
+      document.getElementById('aiResourceTitle').textContent = stage4Result.resource;
+      document.getElementById('aiExplanationText').textContent = stage4Result.explanation;
+
+      if (loadingEl) loadingEl.style.display = 'none';
+      if (contentEl) contentEl.style.display = 'block';
+    }
+
+    function goToStage(targetStage) {
+      safeHaptic('selection');
+
+      // Validation before moving forward
+      if (targetStage > currentStage) {
+        if (currentStage === 1) {
+          const q = getFinalQuality();
+          if (!q) {
+            alert('Пожалуйста, выберите качество или напишите свой вариант.');
+            return;
+          }
+        } else if (currentStage === 2) {
+          const val = (document.getElementById('inpAllowedBehavior').value || '').trim();
+          if (!val) {
+            alert('Пожалуйста, ответьте на вопрос этапа 2.');
+            return;
+          }
+        } else if (currentStage === 3) {
+          const r = getFinalRules();
+          if (r.length === 0) {
+            alert('Пожалуйста, выберите хотя бы одно внутреннее правило или напишите свой вариант.');
+            return;
+          }
+        } else if (currentStage === 5) {
+          const val = (document.getElementById('inpBodyChange').value || '').trim();
+          if (!val) {
+            alert('Пожалуйста, опишите изменения в теле и ощущении себя.');
+            return;
+          }
+        } else if (currentStage === 6) {
+          const val = (document.getElementById('inpNewAction').value || '').trim();
+          if (!val) {
+            alert('Пожалуйста, опишите один новый поступок.');
+            return;
+          }
+        }
+      }
+
+      // Hide all stages
+      for (let i = 1; i <= 6; i++) {
+        const el = document.getElementById(`stage${i}`);
+        if (el) el.style.display = 'none';
+      }
+      const resEl = document.getElementById('stageResult');
+      if (resEl) resEl.style.display = 'none';
+
+      // Show target stage
+      if (targetStage <= 6) {
+        const targetEl = document.getElementById(`stage${targetStage}`);
+        if (targetEl) targetEl.style.display = 'block';
+        updateStageProgress(targetStage);
+      } else {
+        if (resEl) resEl.style.display = 'block';
+        updateStageProgress(7);
+      }
+
+      window.scrollTo({ top: document.getElementById('practiceMainCard').offsetTop - 60, behavior: 'smooth' });
+    }
+
+    // =========================================================================
+    // THE ONLY EXTERNAL AI REQUEST FOR LESSON 4: «Получить мой разбор»
+    // =========================================================================
+    async function getSingleAiBreakdown() {
+      if (isSubmitting) return;
+
+      const newAction = (document.getElementById('inpNewAction').value || '').trim();
+      if (!newAction) {
+        alert('Пожалуйста, опишите один новый поступок.');
+        return;
+      }
+
+      const quality = getFinalQuality();
+      const allowedBehavior = (document.getElementById('inpAllowedBehavior').value || '').trim();
+      const rules = getFinalRules();
+      const bodyChange = (document.getElementById('inpBodyChange').value || '').trim();
+
+      // Lock button and set submitting flag
+      isSubmitting = true;
+      const btn = document.getElementById('btnGetAiBreakdown');
+      if (btn) {
+        btn.disabled = true;
+        btn.classList.remove('pulse');
+        btn.innerHTML = '<span>⏳ Формирование разбора...</span>';
+      }
+
+      safeHaptic('selection');
+      goToStage(7);
+
+      const loadingBlock = document.getElementById('aiLoadingBlock');
+      const finalContent = document.getElementById('finalResultContent');
+      const noticeBlock = document.getElementById('aiNoticeStatusBlock');
+
+      loadingBlock.style.display = 'block';
+      finalContent.style.display = 'none';
+      noticeBlock.style.display = 'none';
+
+      // Populate base fields in summary card
+      document.getElementById('resQuality').textContent = quality;
+      document.getElementById('resRules').textContent = rules.join('; ');
+      document.getElementById('resNewAction').textContent = newAction;
+      document.getElementById('resBodyChange').textContent = bodyChange;
+
+      // 1. Check if AI request was ALREADY done previously for Lesson 4
+      const alreadyDone = localStorage.getItem('psyquest_lesson4_ai_done') === 'true';
+      const savedResult = localStorage.getItem('psyquest_lesson4_result');
+
+      if (alreadyDone && savedResult) {
+        try {
+          const cached = JSON.parse(savedResult);
+          renderFinalResult(cached, true, false);
+          return;
+        } catch (e) {}
+      }
+
+      // 2. Decrement credit immediately for the outgoing request (even if service fails)
+      let usedRealCredit = false;
+      if (aiCredits > 0 && !alreadyDone) {
+        aiCredits--;
+        usedRealCredit = true;
+        try {
+          localStorage.setItem('psyquest_ai_credits', aiCredits.toString());
+          localStorage.setItem('psyquest_lesson4_ai_done', 'true');
+        } catch (e) {}
+        updateCreditsUI();
+      }
+
+      const payload = {
+        quality: quality,
+        allowedBehavior: allowedBehavior,
+        rules: rules,
+        bodyChange: bodyChange,
+        newAction: newAction,
+        userName: window.tgUser?.first_name || 'Участник'
+      };
+
+      try {
+        if (!usedRealCredit && aiCredits <= 0) {
+          throw new Error('LIMIT_EXCEEDED');
+        }
+
+        // Single external fetch with timeout (no automatic retries)
+        const data = await window.apiPost('/api/lesson4-strategy', payload, 10000);
+        if (data && data.result) {
+          stage4Result = {
+            resource: data.result.resource || stage4Result.resource,
+            explanation: data.result.explanation || stage4Result.explanation,
+            safe_action: data.result.safe_action || newAction,
+            permission: data.result.permission || '',
+            isAi: !!data.isAi
+          };
+          renderFinalResult(stage4Result, false, false);
+        } else {
+          throw new Error('INVALID_AI_RESPONSE');
+        }
+      } catch (err) {
+        console.warn('[Lesson 4] AI request error or limit reached:', err.message);
+        // Fallback local deterministic result
+        const localForm = getLocalHealthyForm(quality);
+        stage4Result = {
+          resource: localForm.resource,
+          explanation: localForm.explanation,
+          safe_action: newAction,
+          permission: `«Я разрешаю себе ${localForm.resource.toLowerCase().replace(/^(право|способность|разрешение)\s+/i, '')}, сохраняя уважение к себе и другим».`,
+          isAi: false
+        };
+        renderFinalResult(stage4Result, false, true);
+      }
+    }
+
+    function renderFinalResult(resultObj, isCached, isErrorFallback) {
+      // Save locally to guarantee no repeat requests
+      try {
+        localStorage.setItem('psyquest_lesson4_result', JSON.stringify(resultObj));
+        localStorage.setItem('psyquest_lesson4_ai_done', 'true');
+      } catch (e) {}
+
+      document.getElementById('resResource').textContent = resultObj.resource || 'Здоровая форма качества';
+      
+      let perm = resultObj.permission || '«Я разрешаю себе быть собой, сохраняя уважение к себе и другим»';
+      if (!perm.startsWith('«')) perm = `«${perm.replace(/^["'«]+|["'»]+$/g, '')}»`;
+      document.getElementById('aiPermissionPhrase').textContent = perm;
+
+      const loadingBlock = document.getElementById('aiLoadingBlock');
+      const finalContent = document.getElementById('finalResultContent');
+      const noticeBlock = document.getElementById('aiNoticeStatusBlock');
+
+      loadingBlock.style.display = 'none';
+      finalContent.style.display = 'block';
+
+      if (isErrorFallback) {
+        noticeBlock.style.display = 'block';
+        noticeBlock.innerHTML = '🚂 <strong>Помощник в пути... (проблемы с интернетом)</strong> А пока прислал такую мысль и фразу:';
+      } else {
+        noticeBlock.style.display = 'none';
+      }
+
+      // Show next lesson button only after result
+      const nextBtnBlock = document.getElementById('nextLessonBlock');
+      if (nextBtnBlock) {
+        nextBtnBlock.style.display = 'block';
+      }
+
+      safeHaptic('success');
+      isSubmitting = false;
+    }
+
+    // Save Phrase to Clipboard
+    async function savePhraseToClipboard() {
+      safeHaptic('success');
+      const phrase = document.getElementById('aiPermissionPhrase').textContent;
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(phrase);
+        }
+      } catch (e) {}
+
+      const btn = document.getElementById('btnSavePhrase');
+      if (btn) {
+        const oldText = btn.innerHTML;
+        btn.innerHTML = '<span>✅ Фраза скопирована в буфер!</span>';
+        setTimeout(() => { btn.innerHTML = oldText; }, 2500);
+      }
+    }
+
+    // Send Lesson 4 Result to Telegram
+    async function sendLesson4ToTelegram(event) {
+      if (event) event.preventDefault();
+      safeHaptic('selection');
+
+      const btn = document.getElementById('btnSendLesson4Telegram');
+      const statusEl = document.getElementById('tgStatusLesson4');
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ Отправка в Telegram...</span>';
+      }
+
+      const quality = getFinalQuality();
+      const rules = getFinalRules().join(', ');
+      const resource = stage4Result.resource || document.getElementById('resResource').textContent;
+      const bodyChange = (document.getElementById('inpBodyChange').value || '').trim();
+      const newAction = (document.getElementById('inpNewAction').value || '').trim();
+      const phrase = document.getElementById('aiPermissionPhrase').textContent;
+
+      const fullMessage = [
+        '✨ Разбор Урока 4: «Вернуть себе свою силу»',
+        '',
+        `🧲 Качество в других: ${quality}`,
+        `🔒 Внутренний запрет: ${rules}`,
+        `💎 Здоровая форма: ${resource}`,
+        `🚀 Новый поступок: ${newAction}`,
+        `🫀 Ощущение в теле: ${bodyChange}`,
+        '',
+        `📜 Фраза-разрешение: ${phrase}`,
+        '',
+        '— Курс «Я выбираю» • Анатолий Фёдоров'
+      ].join('\n');
+
+      try {
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+          window.Telegram.WebApp.sendData(fullMessage);
+        }
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(fullMessage);
+        }
+      } catch (err) {}
+
+      safeHaptic('success');
+      if (btn) {
+        btn.innerHTML = '<span>✅ Отправлено в Telegram</span>';
+        btn.style.borderColor = 'var(--success)';
+        btn.style.color = 'var(--success)';
+      }
+      if (statusEl) {
+        statusEl.textContent = 'Разбор отправлен в ваш диалог с ботом и скопирован!';
+        statusEl.style.display = 'block';
+      }
+    }
+  </script>
+
 </body>
 </html>
