@@ -756,32 +756,45 @@ const server = http.createServer(async (req, res) => {
 
         console.log(`[Telegram PM Summary] Lesson ${lessonNumber} for user ${user?.first_name || user?.id || 'guest'}`);
 
+        let delivered = false;
+
         if (botToken && chatId) {
           try {
             const https = require('https');
             const postData = JSON.stringify({
               chat_id: chatId,
-              text: message,
-              parse_mode: 'HTML'
+              text: message
             });
 
-            const reqTg = https.request({
-              hostname: 'api.telegram.org',
-              path: `/bot${botToken}/sendMessage`,
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': Buffer.byteLength(postData)
-              }
-            }, (resTg) => {
-              let tgData = '';
-              resTg.on('data', chunk => tgData += chunk);
-              resTg.on('end', () => console.log('[Telegram Bot API response]:', tgData));
-            });
+            delivered = await new Promise((resolve) => {
+              const reqTg = https.request({
+                hostname: 'api.telegram.org',
+                path: `/bot${botToken}/sendMessage`,
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Content-Length': Buffer.byteLength(postData)
+                }
+              }, (resTg) => {
+                let tgData = '';
+                resTg.on('data', chunk => tgData += chunk);
+                resTg.on('end', () => {
+                  try {
+                    const parsedRes = JSON.parse(tgData);
+                    resolve(parsedRes.ok === true);
+                  } catch (e) {
+                    resolve(false);
+                  }
+                });
+              });
 
-            reqTg.on('error', (err) => console.error('[Telegram Bot API error]:', err.message));
-            reqTg.write(postData);
-            reqTg.end();
+              reqTg.on('error', (err) => {
+                console.error('[Telegram Bot API error]:', err.message);
+                resolve(false);
+              });
+              reqTg.write(postData);
+              reqTg.end();
+            });
           } catch (e) {
             console.error('[Telegram Bot Send Exception]:', e);
           }
@@ -790,7 +803,7 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200);
         return res.end(JSON.stringify({
           success: true,
-          delivered: true,
+          delivered: delivered,
           lesson: lessonNumber
         }));
       }

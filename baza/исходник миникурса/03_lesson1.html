@@ -1462,18 +1462,20 @@ textarea:focus, input:focus {
       // 3. Backend dispatch
       try {
         const user = (window.extractTelegramUser ? window.extractTelegramUser() : null) || window.currentUser || {};
-        await window.apiPost('/api/send-telegram-summary', {
+        const res = await window.apiPost('/api/send-telegram-summary', {
           lessonNumber: 1,
           title: 'Урок 1 • Персональный разбор сценария',
           message: fullMessage,
           user: user
         });
-        delivered = true;
+        if (res && res.delivered) {
+          delivered = true;
+        }
       } catch (err) {
         console.log('API send-telegram-summary:', err);
       }
 
-      // 4. Clipboard fallback
+      // 4. Clipboard fallback (always copies text for user convenience)
       try {
         if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
           await navigator.clipboard.writeText(fullMessage);
@@ -1483,13 +1485,23 @@ textarea:focus, input:focus {
       safeHaptic('success');
       if (btn) {
         btn.disabled = false;
-        btn.innerHTML = '<span>✅ Разбор отправлен в ваш Telegram!</span>';
-        btn.style.borderColor = 'var(--success)';
-        btn.style.color = 'var(--success)';
+        if (delivered) {
+          btn.innerHTML = '<span>✅ Разбор отправлен в ваш диалог с ботом!</span>';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+        } else {
+          btn.innerHTML = '<span>📋 Разбор скопирован в буфер обмена!</span>';
+          btn.style.borderColor = 'var(--nb-sea)';
+          btn.style.color = 'var(--nb-sea)';
+        }
       }
       if (statusEl) {
         statusEl.style.display = 'block';
-        statusEl.textContent = 'Сообщение с разбором направлено в ваш диалог с ботом.';
+        if (delivered) {
+          statusEl.textContent = 'Сообщение с разбором успешно направлено в ваш диалог с ботом.';
+        } else {
+          statusEl.textContent = 'Текст разбора скопирован в буфер! Вы можете вставить его в чат с ботом или заметки.';
+        }
       }
     }
   </script>
