@@ -1252,17 +1252,17 @@ textarea:focus, input:focus {
     }
 
     function startTimer() {
-      if (!expireTime) {
+      if (!expireTime || expireTime - Date.now() <= 0) {
         expireTime = Date.now() + 60 * 60 * 1000;
-        localStorage.setItem(TIMER_KEY, expireTime);
+        try { localStorage.setItem(TIMER_KEY, expireTime); } catch(e){}
       } else {
         expireTime = parseInt(expireTime, 10);
       }
-      if (!timerInterval) {
-        timerInterval = setInterval(updateTimer, 1000);
-      }
       updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
     }
+
+    document.addEventListener('DOMContentLoaded', startTimer);
 
     function showOfferCard() {
       const offerSec = document.getElementById('courseOfferSection');
@@ -1273,10 +1273,9 @@ textarea:focus, input:focus {
           offerSec.style.transform = 'translateY(0)';
         });
       }
-      startTimer();
     }
 
-    // Strictly reveal Course Offer Card and start/resume timer after exactly 8 seconds
+    // Strictly reveal Course Offer Card after exactly 8 seconds
     setTimeout(function() {
       showOfferCard();
       safeHaptic('selection');
@@ -1316,7 +1315,8 @@ textarea:focus, input:focus {
 
     // Check if course is already purchased
     function checkPurchasedState() {
-      const isPurchased = localStorage.getItem('psy_course_purchased') === 'true';
+      const isEmbedded = window.parent && window.parent !== window;
+      const isPurchased = isEmbedded && (localStorage.getItem('psy_course_purchased') === 'true');
 
       if (isPurchased) {
         // Reveal sections immediately
