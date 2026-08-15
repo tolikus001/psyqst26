@@ -121,10 +121,18 @@ html, body {
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
-  opacity: 0.52 !important;
-  filter: saturate(1.0) contrast(1.0) brightness(1.0) !important;
-  transform: translateZ(0);
+  opacity: 0.45 !important;
+  filter: blur(4px) saturate(0.9) contrast(0.85) brightness(0.95) !important;
+  transform: translateZ(0) scale(1.02);
   pointer-events: none !important;
+}
+
+#maisonArtBackground::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(232, 237, 231, 0.45);
+  pointer-events: none;
 }
 
 
@@ -147,17 +155,17 @@ button {
   min-height: 100dvh;
   display: flex;
   justify-content: center;
-  padding: max(18px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom));
+  padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
   background: transparent !important;
 }
 
 .app {
   width: 100%;
-  max-width: 448px;
+  max-width: 440px;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   background: transparent !important;
 }
 
@@ -173,18 +181,18 @@ h1, h2, h3, h4, h5, h6,
 }
 
 h1 {
-  margin: 16px 0 10px;
-  font-size: 28px;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
+  margin: 14px 0 8px;
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   color: var(--nb-deep);
 }
 
 h2 {
   margin-bottom: 8px;
-  font-size: 22px;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-size: 20.5px;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
   color: var(--nb-deep);
 }
 
@@ -196,9 +204,9 @@ h3 {
 }
 
 .lead {
-  color: var(--nb-text-2);
+  color: #384A53;
   font-size: 15px;
-  line-height: 1.5;
+  line-height: 1.45;
   margin-top: 0;
 }
 
@@ -209,7 +217,7 @@ h3 {
   padding: 6px 16px;
   border-radius: 999px;
   border: 1px solid #E8DDD5;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.75);
   color: #9E6747;
   font-size: 13px;
   font-weight: 700;
@@ -233,13 +241,13 @@ h3 {
 
 /* Cards & Panels — Velvet Frosted Glass */
 .glass, .card, .hero {
-  background: rgba(255, 255, 255, 0.52) !important;
-  backdrop-filter: blur(16px) saturate(135%) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.65) !important;
-  box-shadow: 0 16px 38px rgba(45, 62, 54, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
-  border-radius: 28px !important;
-  padding: 32px 24px !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(120%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 8px 24px rgba(45, 62, 54, 0.06), 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+  border-radius: 24px !important;
+  padding: 24px 20px !important;
   text-align: center;
 }
 
@@ -248,7 +256,7 @@ h3 {
 }
 
 .hero .lead, .hero .subtle {
-  color: #55666F !important;
+  color: #384A53 !important;
 }
 
 /* Header */
@@ -306,15 +314,15 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 24px;
-  border-radius: 18px !important;
-  font-size: 16px;
+  padding: 14px 22px;
+  border-radius: 16px !important;
+  font-size: 15.5px;
   font-weight: 800 !important;
   background: linear-gradient(105deg, #B5663E 0%, #BD7249 50%, #CB8760 100%) !important;
   color: #FFFFFF !important;
   border: 1px solid #A95531 !important;
   border-top-color: #E3A578 !important;
-  box-shadow: 0 12px 24px rgba(123, 67, 39, .22), inset 0 1px 0 rgba(255, 255, 255, .30), inset 0 -1px 0 rgba(104, 48, 23, .13) !important;
+  box-shadow: 0 8px 20px rgba(123, 67, 39, .20), inset 0 1px 0 rgba(255, 255, 255, .30), inset 0 -1px 0 rgba(104, 48, 23, .13) !important;
   text-shadow: 0 1px 0 rgba(91, 40, 18, .18) !important;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -324,7 +332,7 @@ h3 {
 #startBtn:hover,
 #nextBtn:hover {
   background: linear-gradient(105deg, #BC6C43 0%, #C57A50 50%, #D08D66 100%) !important;
-  box-shadow: 0 15px 28px rgba(123, 67, 39, .25), inset 0 1px 0 rgba(255, 255, 255, .32) !important;
+  box-shadow: 0 10px 24px rgba(123, 67, 39, .24), inset 0 1px 0 rgba(255, 255, 255, .32) !important;
 }
 
 .primary-btn:active,
@@ -402,16 +410,20 @@ h3 {
 .secondary-btn {
   color: var(--nb-deep);
   background: #FFFFFF;
-  border: 1px solid rgba(14, 31, 46, 0.12);
-  box-shadow: 0 4px 14px rgba(14, 31, 46, 0.04);
+  border: 1px solid rgba(14, 31, 46, 0.10);
+  box-shadow: 0 2px 8px rgba(14, 31, 46, 0.03);
+  font-weight: 700;
+  font-size: 13.5px;
+  min-height: 44px;
 }
 
 .secondary-btn:hover {
-  background: #F8FAFC;
+  background: #F8FAF8;
+  border-color: rgba(14, 31, 46, 0.18);
 }
 
 .ghost-btn {
-  color: var(--nb-text-2);
+  color: var(--nb-sea);
   background: transparent;
   min-height: 44px;
 }
