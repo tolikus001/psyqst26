@@ -795,6 +795,1246 @@ textarea:focus, input:focus {
 })();
 </script>
 
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener("message", function (event) {
+      if (event.data && event.data.type === "NOTIBOT_INIT" && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+
+    function safeHaptic(type) {
+      try {
+        if (window.notibot) {
+          if (type === "selection" && typeof window.notibot.hapticSelection === "function") {
+            window.notibot.hapticSelection();
+          } else if ((type === "success" || type === "error" || type === "warning") && typeof window.notibot.hapticNotification === "function") {
+            window.notibot.hapticNotification(type);
+          } else if (typeof window.notibot.hapticImpact === "function") {
+            window.notibot.hapticImpact(type || "light");
+          }
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === "success" || type === "error" || type === "warning") {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred("medium");
+          }
+        } else if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+          navigator.vibrate(type === "success" ? [30, 50, 30] : 20);
+        }
+      } catch (e) {}
+    }
+  </script>
+</head>
+
+<body>
+  <div id="maisonArtBackground" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Navigation & Progress Bar (40% | 2 из 5) -->
+      <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
+        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+          <a href="03_lesson1.html" onclick="safeHaptic('selection');" class="subtle"
+            style="font-weight:700; font-size:13px; text-decoration:none;">
+            ← К уроку 1
+          </a>
+          <div class="strategy-badge" style="margin:0;">
+            2 из 5 • 40%
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div style="width:100%; height:6px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
+          <div
+            style="width:40%; height:100%; background:linear-gradient(90deg, var(--nb-sea), var(--nb-accent)); border-radius:999px; transition:width 0.4s ease;">
+          </div>
+        </div>
+      </header>
+
+      <!-- ==========================================
+           SCREEN 1: VIDEO & 3s INSIGHT
+           ========================================== -->
+      <div id="step1VideoScreen" style="display:flex; flex-direction:column; gap:14px;">
+
+        <!-- Video Card -->
+        <section class="glass card text-center">
+          <div class="eyebrow" style="margin-bottom:8px;">Урок 2 из 5</div>
+          <h2>Бабочки или тревога?</h2>
+          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как отличить притяжение к человеку от реакции на
+            его недоступность и непредсказуемость.</p>
+
+          <!-- Video Player Wrapper (Kinescope) -->
+          <div
+            style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="lesson2VideoIframe" src="https://kinescope.io/embed/xkP3RBdibqvFYLizjBpFsW?max_quality=720"
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+              frameborder="0" allowfullscreen
+              style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+          </div>
+        </section>
+
+        <!-- Insight Card (Immediately visible) -->
+        <section id="insightSection" class="glass card text-center">
+          <div class="eyebrow"
+            style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+            💡 Главный вывод
+          </div>
+          <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
+          <p class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
+            «Бабочки в животе» — это телесное возбуждение. Оно может сопровождать и влюблённость, и тревогу, поэтому
+            само по себе ничего не говорит о совместимости. Надёжнее смотреть на регулярные поступки человека и на своё
+            состояние рядом с ним.
+          </p>
+
+          <button onclick="goToStep2()" class="secondary-btn" style="width:100%; min-height:46px;">
+            <span>Переходим к практике →</span>
+          </button>
+        </section>
+
+        <!-- Direct Navigation to Next Lesson (Screen 1) -->
+        <div style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="primary-btn pulse"
+            style="width:100%; min-height:48px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти к уроку 3 →</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ==========================================
+           SCREEN 2: INTERACTIVE «КАРТА ПРИТЯЖЕНИЯ»
+           ========================================== -->
+      <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
+
+        <!-- Back to Video Button -->
+        <div>
+          <button onclick="goToStep1()" class="ghost-btn"
+            style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
+            ← Назад к видеоуроку
+          </button>
+        </div>
+
+        <!-- AI Helper Top Info Card (Project Glass Theme Centered) -->
+        <div class="glass card text-center" style="padding: 18px 20px;">
+          <div
+            style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
+            <div class="eyebrow"
+              style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+              ☀️ Интеллектуальный попутчик
+            </div>
+            <div class="strategy-badge"
+              style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
+              Осталось разборов:&nbsp;<span id="aiCreditsLeft"
+                style="color:var(--nb-terracotta); font-weight:900;">3</span>
+            </div>
+          </div>
+          <p id="aiCreditsCardText"
+            style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
+            Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит
+            диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.
+          </p>
+        </div>
+
+        <!-- -----------------------------------------
+             STAGE 1: START
+             ----------------------------------------- -->
+        <section id="stage1Card" class="glass card text-center" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="step-dots">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+          <div class="eyebrow" style="margin:0 auto 4px;">Практика • Шаг 1 из 5</div>
+          <h2>Карта притяжения</h2>
+          <p style="font-size:14px; font-weight:700; color:var(--nb-sea); margin:0;">
+            Что сильнее влияет на ваши чувства: сам человек или неопределённость рядом с ним?
+          </p>
+          <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:4px 0 12px;">
+            Вспомните последнюю встречу или переписку с человеком, который вам нравится. Отвечайте, опираясь на то, что
+            происходило в реальности.
+          </p>
+
+          <button onclick="goToStage(2)" class="primary-btn pulse" style="width:100%;">
+            <span>Начать наблюдение →</span>
+          </button>
+        </section>
+
+        <!-- -----------------------------------------
+             STAGE 2: SITUATION
+             ----------------------------------------- -->
+        <section id="stage2Card" class="glass card" style="display:none; flex-direction:column; gap:12px;">
+          <div class="step-dots">
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:2px;">Шаг 2 из 5 • Ситуация</div>
+          <h3 class="question-title">Какую ситуацию вы хотите разобрать?</h3>
+
+          <textarea id="inpSituation" oninput="checkStage2Valid()" class="input-field"
+            placeholder="Например: после встречи он не писал два дня, а затем появился как ни в чём не бывало." rows="4"
+            style="width:100%; font-size:13px; line-height:1.45; padding:12px; border-radius:14px; resize:vertical;"></textarea>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+            <button id="btnStage2Next" onclick="goToStage(3)" class="primary-btn" style="width:100%;">
+              <span>Посмотреть на реакцию тела →</span>
+            </button>
+            <button onclick="goToStage(1)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
+              ← Назад
+            </button>
+          </div>
+        </section>
+
+        <!-- -----------------------------------------
+             STAGE 3: BODY REACTION (5 TOUCH SLIDERS 0..100)
+             ----------------------------------------- -->
+        <section id="stage3Card" class="glass card" style="display:none; flex-direction:column; gap:14px;">
+          <div class="step-dots">
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:2px;">Шаг 3 из 5 • Реакция тела</div>
+          <h3 class="question-title" style="font-size:16px; margin:0;">Реакция вашего тела</h3>
+          <p class="lead" style="font-size:12.5px; margin:0; color:var(--nb-slate);">
+            Передвигайте ползунок от 0% (спокойствие) до 100% (тревожный спазм):
+          </p>
+
+          <!-- Slider 1 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">1. Дыхание</span>
+              <span id="sliderVal1" class="slider-val-badge">0%</span>
+            </div>
+            <div class="scale-labels">
+              <span>Свободное и ровное</span>
+              <span>Поверхностное / сбивается</span>
+            </div>
+            <input type="range" id="range1" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(1, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0%</span>
+              <span>25%</span>
+              <span>50%</span>
+              <span>75%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <!-- Slider 2 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">2. Плечи и челюсть</span>
+              <span id="sliderVal2" class="slider-val-badge">0%</span>
+            </div>
+            <div class="scale-labels">
+              <span>Расслаблены</span>
+              <span>Заметно напрягаются</span>
+            </div>
+            <input type="range" id="range2" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(2, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0%</span>
+              <span>25%</span>
+              <span>50%</span>
+              <span>75%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <!-- Slider 3 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">3. Внимание</span>
+              <span id="sliderVal3" class="slider-val-badge">0%</span>
+            </div>
+            <div class="scale-labels">
+              <span>Присутствую в общении</span>
+              <span>Постоянно слежу за реакцией</span>
+            </div>
+            <input type="range" id="range3" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(3, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0%</span>
+              <span>25%</span>
+              <span>50%</span>
+              <span>75%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <!-- Slider 4 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">4. Состояние после встречи</span>
+              <span id="sliderVal4" class="slider-val-badge">0%</span>
+            </div>
+            <div class="scale-labels">
+              <span>Спокойствие и ясность</span>
+              <span>Тревога и прокручивание</span>
+            </div>
+            <input type="range" id="range4" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(4, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0%</span>
+              <span>25%</span>
+              <span>50%</span>
+              <span>75%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <!-- Slider 5 -->
+          <div class="touch-slider-container">
+            <div class="slider-header">
+              <span style="font-size:13px; font-weight:800; color:var(--nb-deep);">5. Реакция на паузу</span>
+              <span id="sliderVal5" class="slider-val-badge">0%</span>
+            </div>
+            <div class="scale-labels">
+              <span>Спокойно занимаюсь делами</span>
+              <span>Хочется проверить / написать</span>
+            </div>
+            <input type="range" id="range5" min="0" max="100" step="1" value="0"
+              oninput="handleSliderChange(5, this.value)" class="touch-range" />
+            <div class="slider-ticks">
+              <span>0%</span>
+              <span>25%</span>
+              <span>50%</span>
+              <span>75%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
+            <button id="btnStage3Next" onclick="goToStage(4)" class="primary-btn pulse" style="width:100%;">
+              <span>Перейти к поступкам →</span>
+            </button>
+            <button onclick="goToStage(2)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
+              ← Назад
+            </button>
+          </div>
+        </section>
+
+        <!-- -----------------------------------------
+             STAGE 4: ACTIONS OF PARTNER (5 STATEMENTS)
+             ----------------------------------------- -->
+        <section id="stage4Card" class="glass card" style="display:none; flex-direction:column; gap:14px;">
+          <div class="step-dots">
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:2px;">Шаг 4 из 5 • Поступки человека</div>
+          <h3 class="question-title" style="font-size:16px; margin:0;">Поступки человека</h3>
+          <p class="lead" style="font-size:12.5px; margin:0; color:var(--nb-slate);">
+            Оценивайте регулярное поведение, а не отдельные яркие моменты:
+          </p>
+
+          <!-- Q1 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">1. Его слова
+              совпадают с поступками</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(1, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(1, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(1, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(1, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">2. Он сам проявляет
+              инициативу</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(2, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(2, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(2, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(2, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">3. Его отношение и
+              намерения достаточно понятны</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(3, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(3, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(3, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(3, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">4. Он уважает мои
+              границы и отказ</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(4, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(4, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(4, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(4, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div style="background:#F8FAFC; padding:12px 14px; border-radius:14px; border:1px solid rgba(36,49,57,0.06);">
+            <div style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px;">5. Его поведение
+              остаётся последовательным во времени</div>
+            <div class="action-choice-group">
+              <div onclick="setActionAnswer(5, 2, this)" class="action-choice"><span>Да, регулярно</span> <strong>2
+                  б.</strong></div>
+              <div onclick="setActionAnswer(5, 1, this)" class="action-choice"><span>Иногда</span> <strong>1 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(5, 0, this)" class="action-choice"><span>Нет</span> <strong>0 б.</strong>
+              </div>
+              <div onclick="setActionAnswer(5, null, this)" class="action-choice"><span>Пока недостаточно
+                  информации</span> <span style="font-size:11px; opacity:0.6;">—</span></div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
+            <button id="btnStage4Next" onclick="goToStage(5)" class="primary-btn" style="width:100%; opacity:0.6;"
+              disabled>
+              <span>Определить мои ориентиры →</span>
+            </button>
+            <button onclick="goToStage(3)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
+              ← Назад
+            </button>
+          </div>
+        </section>
+
+        <!-- -----------------------------------------
+             STAGE 5: PERSONAL CRITERIA (EXACTLY 3)
+             ----------------------------------------- -->
+        <section id="stage5Card" class="glass card" style="display:none; flex-direction:column; gap:12px;">
+          <div class="step-dots">
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:2px;">Шаг 5 из 5 • Личные критерии</div>
+          <h3 class="question-title" style="font-size:16px; margin:0;">Ваши ориентиры</h3>
+          <p class="lead" style="font-size:13px; margin:0; color:var(--nb-slate);">
+            Какие три качества особенно важны вам для устойчивых отношений? Выберите ровно 3 варианта (<span
+              id="criteriaCount" style="font-weight:800; color:var(--nb-sea);">0</span>/3):
+          </p>
+
+          <div class="criteria-grid">
+            <div onclick="toggleCriteria('Надёжность', this)" class="criteria-item">
+              <span>Надёжность</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Эмоциональная доступность', this)" class="criteria-item">
+              <span>Эмоциональная доступность</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Честность', this)" class="criteria-item">
+              <span>Честность</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Уважение', this)" class="criteria-item">
+              <span>Уважение</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Взаимная инициатива', this)" class="criteria-item">
+              <span>Взаимная инициатива</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Общие цели', this)" class="criteria-item">
+              <span>Общие цели</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteria('Способность обсуждать сложное', this)" class="criteria-item">
+              <span>Способность обсуждать сложное</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+            <div onclick="toggleCriteriaCustom(this)" id="criteriaCustomItem" class="criteria-item">
+              <span>Свой вариант</span>
+              <div class="criteria-checkbox">✓</div>
+            </div>
+          </div>
+
+          <div id="customCriteriaInputBlock" style="display:none; margin-top:4px;">
+            <input type="text" id="inpCustomCriteria" oninput="handleCustomCriteriaInput()"
+              placeholder="Введите ваше качество..." class="input-field"
+              style="width:100%; padding:10px 14px; font-size:13px; border-radius:12px;" />
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+            <button id="btnStage5Submit" onclick="calculateAndShowResult()" class="primary-btn"
+              style="width:100%; opacity:0.6;" disabled>
+              <span>Получить карту притяжения →</span>
+            </button>
+            <button onclick="goToStage(4)" class="ghost-btn" style="color:var(--nb-slate); font-size:13px;">
+              ← Назад
+            </button>
+          </div>
+        </section>
+
+        <!-- -----------------------------------------
+             FINAL STAGE: ATTRACTION MAP RESULT CARD
+             ----------------------------------------- -->
+        <div id="resultContainer" style="display:none; flex-direction:column; gap:14px;">
+
+          <section class="glass card text-center" style="border:1.5px solid rgba(18,68,83,0.18);">
+            <div class="eyebrow"
+              style="margin-bottom:8px; background:rgba(18,68,83,0.08); color:var(--nb-sea); border-color:rgba(18,68,83,0.18);">
+              🗺 Моя карта притяжения
+            </div>
+
+            <h2 id="resTitle" style="font-size:20px; line-height:1.3; margin-bottom:10px; color:var(--nb-deep);">
+              Притяжение усиливается неопределённостью
+            </h2>
+
+            <p id="resText" class="lead"
+              style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
+              Ваше тело реагирует достаточно сильно, но поведение человека пока не даёт устойчивой ясности.
+              Интенсивность чувств может усиливаться ожиданием и непредсказуемостью. Она ещё не доказывает
+              совместимость.
+            </p>
+
+            <!-- 3 Summary Metrics -->
+            <div
+              style="display:flex; flex-direction:column; gap:8px; text-align:left; background:#F8FAFC; padding:14px; border-radius:16px; border:1px solid rgba(36,49,57,0.08); font-size:13px; line-height:1.45;">
+              <div>
+                <strong style="color:var(--nb-deep);">• Реакция тела:</strong> <span id="resBodyLevel"
+                  style="color:var(--nb-terracotta); font-weight:700;">выраженная</span>
+              </div>
+              <div>
+                <strong style="color:var(--nb-deep);">• Поведение человека:</strong> <span id="resActionsLevel"
+                  style="color:var(--nb-sea); font-weight:700;">противоречивые сигналы</span>
+              </div>
+              <div>
+                <strong style="color:var(--nb-deep);">• Мои три ориентира:</strong> <span id="resCriteriaList"
+                  style="font-weight:700; color:var(--nb-deep);">Надёжность, Уважение, Честность</span>
+              </div>
+            </div>
+
+            <p style="font-size:12px; line-height:1.45; color:var(--nb-slate); margin:14px 0 0; text-align:center;">
+              Это не оценка вашей совместимости, а снимок текущей ситуации: что показывает тело и что подтверждают
+              реальные поступки.
+            </p>
+
+            <!-- Send to Telegram Button -->
+            <button id="btnSendLesson2Telegram" onclick="sendLesson2ToTelegram(event)" class="secondary-btn"
+              style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span>✈️ Прислать этот разбор мне в Telegram</span>
+            </button>
+            <div id="tgStatusLesson2"
+              style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;">
+            </div>
+          </section>
+
+          <!-- AI Companion Analysis Action Block -->
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button id="btnSubmitAttractionMap" onclick="analyzeAttractionMap(event)" class="primary-btn pulse"
+              style="width:100%;">
+              <span>Разобрать карту с Попутчиком →</span>
+            </button>
+          </div>
+
+          <!-- AI Result Output Block (3 Distinct Visual Subcards) -->
+          <div id="aiResultBlock" class="glass card hidden"
+            style="display:none; flex-direction:column; gap:12px; border-left:4px solid var(--nb-terracotta);">
+            <div class="eyebrow"
+              style="margin:0 auto 12px; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25); align-self:center; display:inline-flex;">
+              💡 Разбор Интеллектуального попутчика
+            </div>
+
+            <!-- Offline / Fallback Notice Banner -->
+            <div id="aiOfflineNotice"
+              style="display:none; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
+              🚂 <strong>Попутчик ищет путь... (проблемы с интернетом)</strong> А пока обратите внимание на этот
+              ориентир. Вы сможете снова обратиться к Попутчику попозже.
+            </div>
+
+            <!-- Block 1: Body -->
+            <div
+              style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
+              <div
+                style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>🫀</span> <span>Что показывает тело</span>
+              </div>
+              <p id="aiBodyText"
+                style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
+              </p>
+            </div>
+
+            <!-- Block 2: Behavior -->
+            <div
+              style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
+              <div
+                style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>👣</span> <span>Что показывают поступки</span>
+              </div>
+              <p id="aiBehaviorText"
+                style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
+              </p>
+            </div>
+
+            <!-- Block 3: Focus -->
+            <div
+              style="background:#F8FAFC; padding:14px; border-radius:14px; border:1px solid rgba(36,49,57,0.08); text-align:left;">
+              <div
+                style="font-size:13px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>🎯</span> <span>На что обратить внимание</span>
+              </div>
+              <p id="aiFocusText"
+                style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0; text-align:left;">
+              </p>
+            </div>
+
+            <!-- Send AI Breakdown to Telegram Button -->
+            <button id="btnSendLesson2TelegramAI" onclick="sendLesson2ToTelegram(event)" class="secondary-btn"
+              style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span>✈️ Прислать этот разбор мне в Telegram</span>
+            </button>
+            <div id="tgStatusLesson2AI"
+              style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;">
+            </div>
+
+            <div id="aiCreditsDepletedNotice"
+              style="display:none; margin-top:4px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">
+              🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей
+              помощью.
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <button onclick="goToStage(1)" class="ghost-btn" style="color:var(--nb-slate); font-size:12.5px;">
+              🔄 Пройти наблюдение заново
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Next Step Navigation (Immediately visible) -->
+        <div id="nextLessonBlock" style="padding-top:4px;">
+          <button id="btnNextLesson3" onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';"
+            class="secondary-btn"
+            style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+            <span>Перейти к третьему уроку →</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <footer class="subtle text-center py-2" style="font-size:11px;">
+        © Анатолий Фёдоров • ПСИквест
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    // Screen Transition: Video (Screen 1) <-> Interactive (Screen 2)
+    function goToStep2() {
+      safeHaptic('selection');
+      pauseVideo();
+      document.getElementById('step1VideoScreen').style.display = 'none';
+      const s2 = document.getElementById('step2InteractiveScreen');
+      s2.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToStep1() {
+      safeHaptic('selection');
+      document.getElementById('step2InteractiveScreen').style.display = 'none';
+      document.getElementById('step1VideoScreen').style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function pauseVideo() {
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        if (iframe && iframe.contentWindow) {
+          try {
+            iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
+            iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
+            iframe.contentWindow.postMessage({ event: 'command', command: 'pause' }, '*');
+            iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+          } catch(e) {}
+        }
+      });
+      const audios = document.querySelectorAll('audio');
+      audios.forEach(a => { try { a.pause(); } catch(e){} });
+    }
+
+    function safeNavigate(url) {
+      safeHaptic('selection');
+      pauseVideo();
+      setTimeout(function() {
+        window.location.href = url;
+      }, 30);
+    }
+
+    window.addEventListener('pagehide', pauseVideo);
+    window.addEventListener('beforeunload', pauseVideo);
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) pauseVideo();
+    });
+
+    // AI Credits System (3 requests limit across the whole course)
+    const AI_CREDITS_KEY = 'psyquest_ai_credits';
+    let aiCredits = 3;
+    try {
+      const savedCredits = localStorage.getItem(AI_CREDITS_KEY);
+      if (savedCredits !== null) {
+        aiCredits = Math.max(0, Math.min(3, parseInt(savedCredits, 10)));
+      } else {
+        localStorage.setItem(AI_CREDITS_KEY, '3');
+      }
+    } catch (e) {}
+
+    function updateCreditsUI() {
+      const el = document.getElementById('aiCreditsLeft');
+      const textEl = document.getElementById('aiCreditsCardText');
+      const btn = document.getElementById('btnSubmitAttractionMap');
+
+      if (el) el.textContent = aiCredits;
+
+      if (aiCredits <= 0) {
+        if (textEl) {
+          textEl.innerHTML = '🚂 <strong style="color:var(--nb-terracotta);">Интеллектуальный попутчик поехал в следующий урок</strong> и будет ждать вас там с новыми вопросами и своей помощью.';
+        }
+        if (btn) {
+          btn.style.display = 'none';
+        }
+      } else {
+        if (textEl) {
+          textEl.textContent = 'Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.';
+        }
+        if (btn) {
+          btn.style.display = 'block';
+        }
+      }
+    }
+    updateCreditsUI();
+
+    // ==========================================
+    // INTERACTIVE STATE & STAGES
+    // ==========================================
+    let userSituation = '';
+    let scaleAnswers = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    let actionAnswers = { 1: undefined, 2: undefined, 3: undefined, 4: undefined, 5: undefined };
+    let selectedCriteria = [];
+    let customCriteriaText = '';
+    let calculatedData = null;
+
+    function goToStage(stageNum) {
+      safeHaptic('selection');
+      document.getElementById('stage1Card').style.display = 'none';
+      document.getElementById('stage2Card').style.display = 'none';
+      document.getElementById('stage3Card').style.display = 'none';
+      document.getElementById('stage4Card').style.display = 'none';
+      document.getElementById('stage5Card').style.display = 'none';
+      document.getElementById('resultContainer').style.display = 'none';
+
+      if (stageNum === 1) document.getElementById('stage1Card').style.display = 'flex';
+      if (stageNum === 2) document.getElementById('stage2Card').style.display = 'flex';
+      if (stageNum === 3) document.getElementById('stage3Card').style.display = 'flex';
+      if (stageNum === 4) document.getElementById('stage4Card').style.display = 'flex';
+      if (stageNum === 5) document.getElementById('stage5Card').style.display = 'flex';
+
+      window.scrollTo({ top: 100, behavior: 'smooth' });
+    }
+
+    // Stage 2 Validation
+    function checkStage2Valid() {
+      const val = document.getElementById('inpSituation').value.trim();
+      userSituation = val;
+      const btn = document.getElementById('btnStage2Next');
+      if (val.length > 0) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+      }
+    }
+
+    // Stage 3 Smooth Touch Slider Handler (0..100 with RGB color interpolation)
+    function interpolateColor(pct) {
+      const t = Math.min(100, Math.max(0, pct)) / 100;
+      let r, g, b;
+      if (t < 0.5) {
+        const factor = t / 0.5;
+        r = Math.round(47 + (234 - 47) * factor);
+        g = Math.round(125 + (179 - 125) * factor);
+        b = Math.round(89 + (8 - 89) * factor);
+      } else {
+        const factor = (t - 0.5) / 0.5;
+        r = Math.round(234 + (239 - 234) * factor);
+        g = Math.round(179 + (68 - 179) * factor);
+        b = Math.round(8 + (68 - 8) * factor);
+      }
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function handleSliderChange(qIndex, val) {
+      const num = parseInt(val, 10);
+      scaleAnswers[qIndex] = num;
+      const badge = document.getElementById('sliderVal' + qIndex);
+      if (badge) {
+        badge.textContent = num + '%';
+        const color = interpolateColor(num);
+        badge.style.background = color;
+        badge.style.boxShadow = `0 3px 10px ${color.replace('rgb', 'rgba').replace(')', ', 0.35)')}`;
+      }
+    }
+
+    // Stage 4 Actions (2, 1, 0, null)
+    function setActionAnswer(qIndex, val, el) {
+      safeHaptic('selection');
+      actionAnswers[qIndex] = val;
+      const parentGroup = el.parentElement;
+      parentGroup.querySelectorAll('.action-choice').forEach(choice => choice.classList.remove('active'));
+      el.classList.add('active');
+
+      const allAnswered = [1, 2, 3, 4, 5].every(i => actionAnswers[i] !== undefined);
+      const btn = document.getElementById('btnStage4Next');
+      if (allAnswered) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    }
+
+    // Stage 5 Criteria Selection (Exactly 3)
+    function toggleCriteria(name, el) {
+      safeHaptic('selection');
+      const idx = selectedCriteria.indexOf(name);
+      if (idx > -1) {
+        selectedCriteria.splice(idx, 1);
+        el.classList.remove('active');
+      } else {
+        if (selectedCriteria.length < 3) {
+          selectedCriteria.push(name);
+          el.classList.add('active');
+        } else {
+          safeHaptic('error');
+        }
+      }
+      updateCriteriaUI();
+    }
+
+    function toggleCriteriaCustom(el) {
+      safeHaptic('selection');
+      const inputBlock = document.getElementById('customCriteriaInputBlock');
+      const isSelected = el.classList.contains('active');
+
+      if (isSelected) {
+        el.classList.remove('active');
+        inputBlock.style.display = 'none';
+        selectedCriteria = selectedCriteria.filter(c => c !== customCriteriaText && c !== 'Свой вариант');
+        customCriteriaText = '';
+        document.getElementById('inpCustomCriteria').value = '';
+      } else {
+        if (selectedCriteria.length < 3) {
+          el.classList.add('active');
+          inputBlock.style.display = 'block';
+          document.getElementById('inpCustomCriteria').focus();
+          handleCustomCriteriaInput();
+        } else {
+          safeHaptic('error');
+        }
+      }
+      updateCriteriaUI();
+    }
+
+    function handleCustomCriteriaInput() {
+      const val = document.getElementById('inpCustomCriteria').value.trim() || 'Свой вариант';
+      selectedCriteria = selectedCriteria.filter(c => c !== customCriteriaText && c !== 'Свой вариант');
+      customCriteriaText = val;
+      selectedCriteria.push(customCriteriaText);
+      updateCriteriaUI();
+    }
+
+    function updateCriteriaUI() {
+      const countEl = document.getElementById('criteriaCount');
+      countEl.textContent = selectedCriteria.length;
+      const btn = document.getElementById('btnStage5Submit');
+      if (selectedCriteria.length === 3) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.classList.add('pulse');
+      } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        btn.classList.remove('pulse');
+      }
+    }
+
+    // ==========================================
+    // CALCULATION LOGIC & RESULT PRESENTATION
+    // ==========================================
+    function calculateAndShowResult() {
+      safeHaptic('success');
+
+      // Metric 1: Body Arousal (Sum 5 scales 0..100 -> 0..500)
+      const bodySum = [1, 2, 3, 4, 5].reduce((sum, i) => sum + (scaleAnswers[i] || 0), 0);
+      const avgPct = Math.round(bodySum / 5);
+      const normalizedScore = Math.round(bodySum / 25); // 0..20 scale for AI
+
+      let bodyLevel = 'умеренное';
+      let bodyLevelDisplay = 'умеренная';
+      if (bodySum <= 150) {
+        bodyLevel = 'низкое';
+        bodyLevelDisplay = 'низкая';
+      } else if (bodySum >= 340) {
+        bodyLevel = 'выраженное';
+        bodyLevelDisplay = 'выраженная';
+      }
+
+      // Metric 2: Behavior Clarity
+      const validAnswers = [1, 2, 3, 4, 5].map(i => actionAnswers[i]).filter(val => val !== null && val !== undefined);
+      let actionsClarity = 'противоречивые сигналы';
+      let actionsClarityDisplay = 'противоречивые сигналы';
+
+      if (validAnswers.length < 3) {
+        actionsClarity = 'недостаточно информации';
+        actionsClarityDisplay = 'пока недостаточно информации';
+      } else {
+        const avg = validAnswers.reduce((a, b) => a + b, 0) / validAnswers.length;
+        if (avg < 0.75) {
+          actionsClarity = 'мало последовательности';
+          actionsClarityDisplay = 'мало последовательности';
+        } else if (avg <= 1.39) {
+          actionsClarity = 'противоречивые сигналы';
+          actionsClarityDisplay = 'противоречивые сигналы';
+        } else {
+          actionsClarity = 'достаточно последовательное поведение';
+          actionsClarityDisplay = 'последовательное';
+        }
+      }
+
+      // 4 Result Scenarios
+      let resultTitle = '';
+      let resultText = '';
+
+      if (bodyLevel === 'выраженное' && (actionsClarity === 'мало последовательности' || actionsClarity === 'противоречивые сигналы')) {
+        // Option 1
+        resultTitle = 'Притяжение усиливается неопределённостью';
+        resultText = 'Ваше тело реагирует достаточно сильно, но поведение человека пока не даёт устойчивой ясности. Интенсивность чувств может усиливаться ожиданием и непредсказуемостью. Она ещё не доказывает совместимость.';
+      } else if ((bodyLevel === 'умеренное' || bodyLevel === 'выраженное') && actionsClarity === 'достаточно последовательное поведение') {
+        // Option 2
+        resultTitle = 'Притяжение подтверждается поступками';
+        resultText = 'Вы замечаете эмоциональное и телесное притяжение, при этом человек проявляет инициативу, последовательность и уважение. Продолжайте узнавать друг друга, наблюдая, сохраняется ли это со временем.';
+      } else if (bodyLevel === 'низкое' && actionsClarity === 'достаточно последовательное поведение') {
+        // Option 3
+        resultTitle = 'Спокойный контакт';
+        resultText = 'Рядом с человеком нет сильных эмоциональных перепадов, а его поступки достаточно надёжны. Такое спокойствие иногда кажется непривычным и ошибочно принимается за отсутствие чувств.';
+      } else {
+        // Option 4 (Other combinations or < 3 content answers)
+        resultTitle = 'Наблюдение продолжается';
+        resultText = 'Сейчас недостаточно информации, чтобы отделить притяжение к человеку от реакции на ситуацию. Не торопитесь с выводами: обратите внимание на его регулярные поступки во время следующих контактов.';
+      }
+
+      // Update Result UI
+      document.getElementById('resTitle').textContent = resultTitle;
+      document.getElementById('resText').textContent = resultText;
+      document.getElementById('resBodyLevel').textContent = `${bodyLevelDisplay} (${avgPct}%)`;
+      document.getElementById('resActionsLevel').textContent = actionsClarityDisplay;
+      document.getElementById('resCriteriaList').textContent = selectedCriteria.join(', ');
+
+      // Store in calculatedData
+      calculatedData = {
+        situation: userSituation,
+        bodyScore: normalizedScore,
+        bodyLevel: bodyLevel,
+        bodyLevelDisplay: bodyLevelDisplay,
+        actionsClarity: actionsClarity,
+        actionsClarityDisplay: actionsClarityDisplay,
+        criteria: selectedCriteria,
+        resultTitle: resultTitle,
+        resultText: resultText,
+        userName: window.currentUserName || 'Участник'
+      };
+
+      try {
+        localStorage.setItem('lesson2_selected_criteria', JSON.stringify(selectedCriteria));
+        localStorage.setItem('lesson2_body_signal', `Телесный отклик: ${bodyLevelDisplay} (${avgPct}%)`);
+        localStorage.setItem('lesson2_body_score', normalizedScore.toString());
+      } catch(e) {}
+
+      // Switch to Result View
+      document.getElementById('stage5Card').style.display = 'none';
+      const resCont = document.getElementById('resultContainer');
+      resCont.style.display = 'flex';
+
+      const btn3 = document.getElementById('btnNextLesson3');
+      if (btn3) {
+        btn3.className = 'primary-btn pulse';
+      }
+
+      window.scrollTo({ top: 80, behavior: 'smooth' });
+    }
+
+    // ==========================================
+    // AI COMPANION STRATEGY ANALYSIS
+    // ==========================================
+    async function analyzeAttractionMap(e) {
+      e.preventDefault();
+      if (aiCredits <= 0) {
+        safeHaptic('selection');
+        window.location.href = '05_lesson3.html';
+        return;
+      }
+      safeHaptic('impactLight');
+
+      const btn = document.getElementById('btnSubmitAttractionMap');
+      btn.disabled = true;
+      btn.textContent = 'Попутчик анализирует карту...';
+
+      const payload = calculatedData || {
+        situation: userSituation,
+        bodyScore: 10,
+        bodyLevel: 'умеренное',
+        bodyLevelDisplay: 'умеренная',
+        actionsClarity: 'противоречивые сигналы',
+        actionsClarityDisplay: 'противоречивые сигналы',
+        criteria: selectedCriteria,
+        resultTitle: 'Карта притяжения',
+        resultText: '',
+        userName: window.currentUserName || 'Участник'
+      };
+
+      let isRealAi = false;
+      try {
+        const data = await window.apiPost('/api/lesson2-strategy', payload);
+        if (data && data.result) {
+          isRealAi = !!data.isAi;
+          showAiResult(data.result, isRealAi);
+        } else {
+          showAiFallback(payload);
+        }
+      } catch (err) {
+        showAiFallback(payload);
+      } finally {
+        if (isRealAi) {
+          aiCredits = Math.max(0, aiCredits - 1);
+          localStorage.setItem(AI_CREDITS_KEY, aiCredits);
+          updateCreditsUI();
+        }
+        if (aiCredits > 0) {
+          btn.disabled = false;
+          btn.textContent = 'Разобрать карту с Попутчиком →';
+        }
+      }
+    }
+
+    // ==========================================
+    // TELEGRAM SUMMARY DISPATCH
+    // ==========================================
+    async function sendLesson2ToTelegram(e) {
+      if (e) e.preventDefault();
+      safeHaptic('selection');
+      const btn1 = document.getElementById('btnSendLesson2Telegram');
+      const btn2 = document.getElementById('btnSendLesson2TelegramAI');
+      const status1 = document.getElementById('tgStatusLesson2');
+      const status2 = document.getElementById('tgStatusLesson2AI');
+
+      [btn1, btn2].forEach(b => {
+        if (b) {
+          b.disabled = true;
+          b.innerHTML = '<span>⏳ Отправляем в Telegram...</span>';
+        }
+      });
+
+      const title = calculatedData?.resultTitle || document.getElementById('resTitle')?.textContent || 'Карта притяжения';
+      const bodyText = document.getElementById('aiBodyText')?.textContent || '';
+      const behaviorText = document.getElementById('aiBehaviorText')?.textContent || '';
+      const focusText = document.getElementById('aiFocusText')?.textContent || '';
+      const criteriaStr = (calculatedData?.criteria || []).join(', ') || 'надёжность, ясность, уважение';
+
+      const fullMessage = [
+        '🗺 Карта притяжения (Урок 2 • «Я выбираю»):',
+        `Итог: ${title}`,
+        '',
+        '🫀 ЧТО ПОКАЗЫВАЕТ ТЕЛО:',
+        bodyText,
+        '',
+        '👣 ЧТО ПОКАЗЫВАЮТ ПОСТУПКИ:',
+        behaviorText,
+        '',
+        '🎯 НА ЧТО ОБРАТИТЬ ВНИМАНИЕ:',
+        focusText,
+        '',
+        `📌 Мои ориентиры: ${criteriaStr}`,
+        '',
+        '💡 Интеллектуальный попутчик курса «Я выбираю»'
+      ].join('\n');
+
+      let delivered = false;
+
+      // 1. Telegram WebApp sendData
+      try {
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+          window.Telegram.WebApp.sendData(JSON.stringify({
+            event: 'lesson_summary',
+            lesson: 2,
+            title: 'Урок 2 • Карта притяжения',
+            message: fullMessage
+          }));
+          delivered = true;
+        }
+      } catch (err) {
+        console.log('Telegram sendData:', err);
+      }
+
+      // 2. Notibot SDK
+      try {
+        if (window.notibot && typeof window.notibot.submitForm === 'function') {
+          await window.notibot.submitForm('lesson_summary_2', [
+            { title: 'Разбор урока 2', answers: [fullMessage] }
+          ]);
+          delivered = true;
+        }
+      } catch (err) {
+        console.log('Notibot submitForm:', err);
+      }
+
+      // 3. Backend dispatch
+      try {
+        const user = (window.extractTelegramUser ? window.extractTelegramUser() : null) || window.currentUser || {};
+        await window.apiPost('/api/send-telegram-summary', {
+          lessonNumber: 2,
+          title: 'Урок 2 • Карта притяжения',
+          message: fullMessage,
+          user: user
+        });
+        delivered = true;
+      } catch (err) {
+        console.log('API send-telegram-summary:', err);
+      }
+
+      // 4. Clipboard fallback
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(fullMessage);
+        }
+      } catch (err) { }
+
+      safeHaptic('success');
+      [btn1, btn2].forEach(b => {
+        if (b) {
+          b.disabled = false;
+          b.innerHTML = '<span>✅ Разбор отправлен в ваш Telegram!</span>';
+          b.style.borderColor = 'var(--success)';
+          b.style.color = 'var(--success)';
+        }
+      });
+      [status1, status2].forEach(s => {
+        if (s) {
+          s.style.display = 'block';
+          s.textContent = 'Сообщение с разбором направлено в ваш диалог с ботом.';
+        }
+      });
+    }
+
+    function cleanMarkdownText(str) {
+      if (!str || typeof str !== 'string') return '';
+      return str
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/\*(.*?)\*/g, '$1')
+        .replace(/__(.*?)__/g, '$1')
+        .replace(/_(.*?)_/g, '$1')
+        .replace(/#+\s*/g, '')
+        .replace(/^•\s*/gm, '')
+        .replace(/`+/g, '')
+        .trim();
+    }
+
+    function showAiFallback(p) {
+      const criteriaStr = (p.criteria || []).join(', ') || 'эмоциональная доступность, взаимная инициатива и способность обсуждать сложное';
+      const fallbackObj = {
+        body: p.bodyLevel === 'выраженное'
+          ? `Телесное напряжение выраженное. Оно может сопровождать и сильное притяжение, и тревожную неопределённость, поэтому одной реакции тела пока недостаточно для вывода о совместимости.`
+          : (p.bodyLevel === 'низкое'
+            ? `Телесное напряжение низкое, дыхание и тело остаются спокойными. Такое спокойствие может свидетельствовать о безопасности контакта, но само по себе требует наблюдения за динамикой общения.`
+            : `Телесное напряжение умеренное. Оно может сопровождать и интерес к человеку, и реакцию на паузы в общении, поэтому только по реакции тела пока рано делать выводы.`),
+        behavior: p.actionsClarity === 'достаточно последовательное поведение'
+          ? `В поведении человека прослеживается достаточная последовательность и инициатива. Его слова подкрепляются конкретными поступками и договоренностями.`
+          : (p.actionsClarity === 'мало последовательности'
+            ? `В поведении человека пока мало последовательности и ясности. Сейчас недостаточно фактов, чтобы считать контакт устойчивым и надежным.`
+            : `Сигналы и поступки человека пока противоречивы: проявления внимания сменяются дистанцией. Для понимания ситуации требуется больше времени и фактов.`),
+        focus: `Ваши главные ориентиры: ${criteriaStr}. Во время следующих контактов наблюдайте, проявляет ли человек инициативу, совпадают ли его слова с поступками и становится ли вам спокойнее после общения.`
+      };
+      showAiResult(fallbackObj, false);
+    }
+
+    function showAiResult(resultData, isRealAi = false) {
+      safeHaptic('success');
+      const block = document.getElementById('aiResultBlock');
+      const bodyEl = document.getElementById('aiBodyText');
+      const behaviorEl = document.getElementById('aiBehaviorText');
+      const focusEl = document.getElementById('aiFocusText');
+      const noticeEl = document.getElementById('aiCreditsDepletedNotice');
+      const offlineNotice = document.getElementById('aiOfflineNotice');
+
+      if (offlineNotice) {
+        offlineNotice.style.display = isRealAi ? 'none' : 'block';
+      }
+
+      let parsed = resultData;
+      if (typeof resultData === 'string') {
+        try {
+          parsed = JSON.parse(resultData);
+        } catch (e) {
+          parsed = { body: resultData, behavior: '', focus: '' };
+        }
+      }
+
+      if (bodyEl) bodyEl.textContent = cleanMarkdownText(parsed?.body || '');
+      if (behaviorEl) behaviorEl.textContent = cleanMarkdownText(parsed?.behavior || parsed?.actions || '');
+      if (focusEl) focusEl.textContent = cleanMarkdownText(parsed?.focus || '');
+
+      if (noticeEl) {
+        noticeEl.style.display = aiCredits <= 0 ? 'block' : 'none';
+      }
+
+      block.classList.remove('hidden');
+      block.style.display = 'flex';
+
+      revealNextLessonBtn();
+      const btn3 = document.getElementById('btnNextLesson3');
+      if (btn3) {
+        btn3.className = 'primary-btn pulse';
+      }
+      block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+
 </body>
 
 </html>
