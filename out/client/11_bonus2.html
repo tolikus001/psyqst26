@@ -669,11 +669,15 @@ textarea:focus, input:focus {
   align-items: center;
   justify-content: center;
   padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(127, 155, 142, 0.15);
-  color: var(--nb-accent);
-  font-weight: 800;
-  font-size: 12px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  color: var(--nb-deep);
+  font-weight: 700;
+  font-size: 13px;
   margin: 0 auto;
   text-align: center;
 }
