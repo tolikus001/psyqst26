@@ -759,7 +759,7 @@ textarea:focus, input:focus {
 
       <!-- Top Navigation -->
       <div>
-        <a href="07_lesson5.html" onclick="safeHaptic('selection');" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; text-decoration:none;">
+        <a href="javascript:void(0);" onclick="safeHaptic('selection'); openScreen('07_lesson5.html'); return false;" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; text-decoration:none; cursor:pointer;">
           ← Вернуться к уроку 5
         </a>
       </div>
@@ -862,14 +862,14 @@ textarea:focus, input:focus {
           Курс помог вам заметить отдельные элементы повторяющегося сценария. На индивидуальном разборе мы соберём их в единую картину: определим, как формируется ваш выбор, что удерживает старый сценарий и какие изменения нужны именно вам.
         </p>
 
-        <button onclick="safeHaptic('selection'); window.location.href='14_individual_offer.html';" class="primary-btn pulse" style="width:100%; min-height:48px;">
+        <button onclick="safeHaptic('selection'); openScreen('14_individual_offer.html');" class="primary-btn pulse" style="width:100%; min-height:48px;">
           <span>Узнать об индивидуальном разборе →</span>
         </button>
       </section>
 
       <!-- Bottom Navigation -->
       <div style="display:flex; flex-direction:column; gap:10px; padding-top:4px;">
-        <button onclick="safeHaptic('selection'); window.location.href='03_lesson1.html';" class="secondary-btn" style="min-height:46px;">
+        <button onclick="safeHaptic('selection'); openScreen('03_lesson1.html');" class="secondary-btn" style="min-height:46px;">
           <span>Перейти к первому уроку →</span>
         </button>
       </div>

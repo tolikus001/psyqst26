@@ -646,7 +646,7 @@ textarea:focus, input:focus {
 
       <!-- Top Navigation -->
       <div>
-        <a href="09_bonuses.html" onclick="safeHaptic('selection');" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; text-decoration:none;">
+        <a href="javascript:void(0);" onclick="safeHaptic('selection'); openScreen('09_bonuses.html'); return false;" class="ghost-btn" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; text-decoration:none; cursor:pointer;">
           ← Вернуться к бонусам
         </a>
       </div>
@@ -756,9 +756,9 @@ textarea:focus, input:focus {
 
       <!-- Bottom Navigation -->
       <div style="display:flex; flex-direction:column; gap:10px; padding-top:4px;">
-        <a href="09_bonuses.html" onclick="safeHaptic('selection');" class="secondary-btn" style="min-height:46px; text-decoration:none; display:flex; align-items:center; justify-content:center;">
+        <button onclick="safeHaptic('selection'); openScreen('09_bonuses.html');" class="secondary-btn" style="min-height:46px; display:flex; align-items:center; justify-content:center;">
           <span>← Вернуться к бонусам</span>
-        </a>
+        </button>
       </div>
 
       <!-- Footer -->
