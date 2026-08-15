@@ -32,7 +32,7 @@ function loadEnv() {
 }
 loadEnv();
 
-const PORT = parseInt(process.env.PORT || '3000', 10);
+const PORT = parseInt(process.env.PORT || '80', 10);
 const POLZA_URL = process.env.POLZA_URL || process.env.POLZA_BASE_URL || 'https://api.polza.ai/v1';
 const POLZA_API_KEY = process.env.POLZA_API_KEY || '';
 const POLZA_MODEL = process.env.POLZA_MODEL || 'gpt-4o-mini';
@@ -821,6 +821,15 @@ const server = http.createServer(async (req, res) => {
   res.end('Not Found');
 });
 
+server.on('error', (err) => {
+  if ((err.code === 'EACCES' || err.code === 'EADDRINUSE') && PORT !== 3000) {
+    console.warn(`[Port Fallback] Port ${PORT} unavailable (${err.code}), listening on 3000...`);
+    server.listen(3000, '0.0.0.0');
+  } else {
+    console.error('[Server Error]:', err);
+  }
+});
+
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Psy-Course Zero-Dependency Media & AI Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Psy-Course Zero-Dependency Media & AI Server running on port ${PORT}`);
 });
