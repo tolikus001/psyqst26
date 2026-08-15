@@ -159,19 +159,22 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr) !important;
       gap: 12px;
-      margin-bottom: 20px;
+      margin: 0 auto 16px auto;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 2px;
     }
     @media (min-width: 480px) {
       .bonuses-grid {
-        gap: 16px;
+        gap: 14px;
       }
     }
     .bonus-card-premium {
       position: relative;
       background: #1B2832;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 18px;
-      box-shadow: 0 8px 24px rgba(36, 49, 57, 0.12);
+      border: 1.5px solid rgba(255, 255, 255, 0.55);
+      box-shadow: 0 6px 20px rgba(36, 49, 57, 0.14), 0 0 0 1px rgba(36, 49, 57, 0.1);
+      border-radius: 16px;
       overflow: hidden;
       cursor: pointer;
       text-decoration: none;
@@ -180,11 +183,12 @@
       aspect-ratio: 1 / 1;
       display: flex;
       flex-direction: column;
+      box-sizing: border-box;
     }
     .bonus-card-premium:hover {
       transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 14px 32px rgba(36, 49, 57, 0.22);
-      border-color: rgba(217, 131, 78, 0.7);
+      box-shadow: 0 12px 28px rgba(36, 49, 57, 0.22), 0 0 0 1px rgba(217, 131, 78, 0.5);
+      border-color: rgba(255, 255, 255, 0.85);
     }
     .bonus-card-premium:active {
       transform: scale(0.97);
@@ -211,7 +215,7 @@
       align-items: center;
       height: 100%;
       flex: 1;
-      padding: 14px 10px;
+      padding: 12px 8px;
       background: linear-gradient(180deg, rgba(14, 31, 46, 0) 0%, rgba(14, 31, 46, 0.35) 45%, rgba(14, 31, 46, 0.92) 100%);
       box-sizing: border-box;
     }
@@ -223,18 +227,18 @@
       justify-content: center;
     }
     .bonus-card-title {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 800;
       color: #FFFFFF;
-      line-height: 1.25;
+      line-height: 1.2;
       margin: 0;
       text-align: center;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.85);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
       letter-spacing: -0.2px;
     }
     @media (min-width: 480px) {
       .bonus-card-title {
-        font-size: 15px;
+        font-size: 14.5px;
       }
     }
   </style>
@@ -883,7 +887,7 @@ textarea:focus, input:focus {
 </head>
 <body class="safe-area">
   <div id="maisonArtBackground" aria-hidden="true"></div>
-  <main class="app-shell"><div class="app" style="max-width:620px; width:100%;">
+  <main class="app-shell"><div class="app">
     <div style="display:flex; flex-direction:column; gap:16px; width:100%;">
 
       <!-- Top Navigation -->
