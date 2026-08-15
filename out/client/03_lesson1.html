@@ -898,6 +898,7 @@ textarea:focus, input:focus {
    * Navigate to screen via Notibot openArticle if embedded, or window.location if standalone
    */
   function openScreen(target) {
+    try { if (typeof pauseVideo === 'function') pauseVideo(); } catch(e){}
     const clean = String(target || '').replace(/^(\.\/|\/)/, '');
     const articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[target];
     if (window.notibot && articleId && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
