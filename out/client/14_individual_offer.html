@@ -794,10 +794,10 @@ textarea:focus, input:focus {
 
     function handleBooking() {
       safeHaptic('success');
-      if (window.notibot && typeof window.notibot.openProduct === 'function') {
+      if (window.parent && window.parent !== window && window.notibot && typeof window.notibot.openProduct === 'function') {
         window.notibot.openProduct('144vDCBfCUUtbKNcL9IB9');
       } else {
-        window.location.href = '08_portrait_quest.html';
+        openScreen('08_portrait_quest.html');
       }
     }
   </script>

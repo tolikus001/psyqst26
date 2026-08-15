@@ -1304,7 +1304,7 @@ textarea:focus, input:focus {
         localStorage.setItem('psy_course_purchased', 'true');
       } catch(e){}
       const productId = '4ec2ypRLStHYlW0lRrAzHI';
-      if (window.notibot && typeof window.notibot.openProduct === 'function') {
+      if (window.parent && window.parent !== window && window.notibot && typeof window.notibot.openProduct === 'function') {
         window.notibot.openProduct(productId);
       } else {
         openScreen('03_lesson1.html');
