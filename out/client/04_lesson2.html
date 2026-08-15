@@ -836,7 +836,7 @@ textarea:focus, input:focus {
       <!-- Navigation & Progress Bar (40% | 2 из 5) -->
       <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
         <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <a href="03_lesson1.html" onclick="safeHaptic('selection');" class="subtle"
+          <a href="03_lesson1.html" onclick="safeHaptic('selection'); openScreen('03_lesson1.html'); return false;" class="subtle"
             style="font-weight:700; font-size:13px; text-decoration:none;">
             ← К уроку 1
           </a>
@@ -895,7 +895,7 @@ textarea:focus, input:focus {
 
         <!-- Direct Navigation to Next Lesson (Screen 1) -->
         <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';" class="primary-btn pulse"
+          <button onclick="safeHaptic('selection'); openScreen('05_lesson3.html');" class="primary-btn pulse"
             style="width:100%; min-height:48px; display:flex; align-items:center; justify-content:center;">
             <span>Перейти к уроку 3 →</span>
           </button>
@@ -1440,7 +1440,7 @@ textarea:focus, input:focus {
 
         <!-- Next Step Navigation (Immediately visible) -->
         <div id="nextLessonBlock" style="padding-top:4px;">
-          <button id="btnNextLesson3" onclick="safeHaptic('selection'); window.location.href='05_lesson3.html';"
+          <button id="btnNextLesson3" onclick="safeHaptic('selection'); openScreen('05_lesson3.html');"
             class="secondary-btn"
             style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
             <span>Перейти к третьему уроку →</span>
@@ -1494,9 +1494,11 @@ textarea:focus, input:focus {
     function safeNavigate(url) {
       safeHaptic('selection');
       pauseVideo();
-      setTimeout(function() {
+      if (typeof openScreen === 'function') {
+        openScreen(url);
+      } else {
         window.location.href = url;
-      }, 30);
+      }
     }
 
     window.addEventListener('pagehide', pauseVideo);
@@ -1807,7 +1809,7 @@ textarea:focus, input:focus {
       e.preventDefault();
       if (aiCredits <= 0) {
         safeHaptic('selection');
-        window.location.href = '05_lesson3.html';
+        openScreen('05_lesson3.html');
         return;
       }
       safeHaptic('impactLight');

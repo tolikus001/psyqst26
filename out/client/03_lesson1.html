@@ -1089,7 +1089,7 @@ textarea:focus, input:focus {
 
         <!-- Next Lesson Transition (Always immediately visible on Screen 1) -->
         <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';" class="primary-btn pulse"
+          <button onclick="safeHaptic('selection'); openScreen('04_lesson2.html');" class="primary-btn pulse"
             style="width:100%; display:flex; justify-content:center; align-items:center; min-height:48px;">
             <span>Перейти к уроку 2 →</span>
           </button>
@@ -1213,7 +1213,7 @@ textarea:focus, input:focus {
 
         <!-- Next Step Navigation (Immediately visible) -->
         <div id="nextLessonBlock" style="padding-top:4px;">
-          <button id="btnNextLesson2" onclick="safeHaptic('selection'); window.location.href='04_lesson2.html';"
+          <button id="btnNextLesson2" onclick="safeHaptic('selection'); openScreen('04_lesson2.html');"
             class="secondary-btn"
             style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
             <span>Перейти ко второму уроку →</span>
@@ -1355,7 +1355,7 @@ textarea:focus, input:focus {
       e.preventDefault();
       if (aiCredits <= 0) {
         safeHaptic('selection');
-        window.location.href = '04_lesson2.html';
+        openScreen('04_lesson2.html');
         return;
       }
       safeHaptic('impactLight');

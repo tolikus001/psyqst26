@@ -1307,7 +1307,7 @@ textarea:focus, input:focus {
       if (window.notibot && typeof window.notibot.openProduct === 'function') {
         window.notibot.openProduct(productId);
       } else {
-        window.location.href = '03_lesson1.html';
+        openScreen('03_lesson1.html');
       }
     }
 
@@ -1344,7 +1344,7 @@ textarea:focus, input:focus {
           btnBuy.innerHTML = '<span>Посмотреть уроки снова →</span>';
           btnBuy.onclick = function() {
             safeHaptic('selection');
-            window.location.href = '03_lesson1.html';
+            openScreen('03_lesson1.html');
           };
         }
       }

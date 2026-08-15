@@ -1022,7 +1022,7 @@ textarea:focus, input:focus {
       <!-- Navigation & Progress Bar (60% | 3 из 5) -->
       <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
         <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <a href="04_lesson2.html" onclick="safeHaptic('selection');" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
+          <a href="04_lesson2.html" onclick="safeHaptic('selection'); openScreen('04_lesson2.html'); return false;" class="subtle" style="font-weight:700; font-size:13px; text-decoration:none;">
             ← К уроку 2
           </a>
           <div class="strategy-badge" style="margin:0;">
@@ -1114,7 +1114,7 @@ textarea:focus, input:focus {
 
       <!-- Next Step Navigation -->
       <div style="padding-top:4px;">
-        <button onclick="safeHaptic('selection'); window.location.href='06_lesson4.html';" class="primary-btn pulse" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
+        <button onclick="safeHaptic('selection'); openScreen('06_lesson4.html');" class="primary-btn pulse" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
           <span>Перейти к уроку 4 →</span>
         </button>
       </div>
