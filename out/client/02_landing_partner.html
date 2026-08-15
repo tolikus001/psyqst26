@@ -1206,8 +1206,11 @@ textarea:focus, input:focus {
             <span>Медитация</span>
           </a>
         </div>
-        <div class="subtle text-center py-2" style="font-size:11px;">
-          © Анатолий Фёдоров • ПСИквест
+        <div class="subtle text-center py-2" style="font-size:11px; display:flex; flex-direction:column; gap:4px; align-items:center;">
+          <span>© Анатолий Фёдоров • ПСИквест</span>
+          <button onclick="localStorage.clear(); location.reload();" style="background:none; border:none; color:var(--nb-slate); font-size:11px; text-decoration:underline; cursor:pointer; opacity:0.7; padding:6px 12px; margin-top:2px;">
+            🔄 Сбросить состояние / Показать кнопку покупки заново
+          </button>
         </div>
       </footer>
 
