@@ -639,43 +639,35 @@ textarea:focus, input:focus {
 </script>
   <script>
 /**
- * Telegram & Notibot Real-Time Personalization Engine (КОДЕР 2.0 Standard)
- * Automatically extracts user name & avatar from Notibot Bridge SDK, Telegram WebApp, URL params, hash, or LocalStorage.
+ * Telegram & Notibot Real-Time Personalization Engine
+ * Automatically extracts user name & avatar from Telegram WebApp, Notibot Bridge SDK, URL params, or LocalStorage.
  */
 (function() {
-  function getUrlParam(param) {
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    } catch (e) {
-      return null;
-    }
-  }
-
   function getInitials(name) {
-    if (!name) return '?';
-    const parts = String(name).trim().split(/\s+/);
-    const a = parts[0] ? parts[0].charAt(0) : '';
-    const b = parts.length > 1 ? parts[1].charAt(0) : '';
-    return (a + b).toUpperCase() || '?';
+    if (!name) return '👋';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
   }
 
   function extractTelegramUser() {
-    // 1. Notibot Init Data (via postMessage)
+    // 1. Notibot Bridge SDK (Global Object)
+    try {
+      if (window.notibot && window.notibot.user && (window.notibot.user.displayName || window.notibot.user.first_name || window.notibot.user.firstName || window.notibot.user.name)) {
+        return window.notibot.user;
+      }
+    } catch (e) {}
+
+    // 2. Notibot Init Data (via early postMessage)
     try {
       if (window.notibotInitData && window.notibotInitData.user) {
         return window.notibotInitData.user;
       }
     } catch (e) {}
 
-    // 2. Notibot global bridge object
-    try {
-      if (window.notibot && window.notibot.user && (window.notibot.user.displayName || window.notibot.user.first_name || window.notibot.user.id)) {
-        return window.notibot.user;
-      }
-    } catch (e) {}
-
-    // 3. Telegram WebApp
+    // 3. Telegram WebApp SDK
     try {
       if (window.Telegram && window.Telegram.WebApp) {
         if (typeof window.Telegram.WebApp.ready === 'function') {
@@ -830,7 +822,6 @@ textarea:focus, input:focus {
   window.handleNotibotInit = handleNotibotInit;
   window.applyThemeColors = applyThemeColors;
 })();
-
 </script>
   <script>
 /**
