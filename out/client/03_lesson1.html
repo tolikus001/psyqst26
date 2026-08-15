@@ -1021,8 +1021,7 @@ textarea:focus, input:focus {
       <!-- Navigation & Progress Bar (20% | 1 из 5) -->
       <header class="header" style="flex-direction:column; gap:8px; align-items:stretch;">
         <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <a href="javascript:void(0);" onclick="safeHaptic('selection'); openScreen('02_landing_partner.html'); return false;" class="subtle"
-            style="font-weight:700; font-size:13px; text-decoration:none; cursor:pointer;">
+          <a href="javascript:void(0);" onclick="safeHaptic('selection'); openScreen('02_landing_partner.html'); return false;" class="top-nav-btn" style="display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:13px; color:var(--nb-deep); background:rgba(255,255,255,0.75); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:6px 14px; border-radius:9999px; border:1px solid rgba(255,255,255,0.85); box-shadow:0 2px 8px rgba(0,0,0,0.04); text-decoration:none; cursor:pointer;">
             ← К курсу
           </a>
           <div class="strategy-badge" style="margin:0;">
@@ -1102,8 +1101,7 @@ textarea:focus, input:focus {
 
         <!-- Back to Video Button -->
         <div>
-          <button onclick="goToStep1()" class="ghost-btn"
-            style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--nb-sea); padding:4px 0; min-height:auto;">
+          <button onclick="goToVideo()" class="top-nav-btn" style="display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:13px; color:var(--nb-deep); background:rgba(255,255,255,0.75); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:6px 14px; border-radius:9999px; border:1px solid rgba(255,255,255,0.85); box-shadow:0 2px 8px rgba(0,0,0,0.04); text-decoration:none; cursor:pointer;">
             ← Назад к видеоуроку
           </button>
         </div>
