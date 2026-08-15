@@ -1310,7 +1310,13 @@ textarea:focus, input:focus {
       try {
         localStorage.setItem('psy_course_purchased', 'true');
       } catch(e){}
-      const productId = '4ec2ypRLStHYlW0lRrAzHI';
+
+      const now = Date.now();
+      const isDiscountActive = expireTime && (expireTime - now > 0);
+      const product2400 = (window.NOTIBOT_PRODUCTS && window.NOTIBOT_PRODUCTS.course_partner_2400) || '4ec2ypRLStHYlW0lRrAzHI';
+      const product5000 = (window.NOTIBOT_PRODUCTS && window.NOTIBOT_PRODUCTS.course_partner_5000) || '4ec2ypRLStHYlW0lRrAzHI';
+      const productId = isDiscountActive ? product2400 : product5000;
+
       if (window.parent && window.parent !== window && window.notibot && typeof window.notibot.openProduct === 'function') {
         window.notibot.openProduct(productId);
       } else {
