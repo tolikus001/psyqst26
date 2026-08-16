@@ -1248,7 +1248,7 @@ textarea:focus, input:focus {
               <span>📥 Скачать Чек-лист</span>
             </a>
 
-            <button onclick="goToStep2()" class="primary-btn pulse" style="width:100%;">
+            <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%;">
               <span>Заполнить чек-лист ➔</span>
             </button>
           </div>
@@ -1437,12 +1437,39 @@ textarea:focus, input:focus {
     }
 
     // Return to Video Screen (Screen 1)
-    function goToStep1() {
+    
+    // Seamless Screen Transitions (Aliases for full backwards compatibility)
+    function goToVideo() {
       safeHaptic('selection');
-      document.getElementById('step2InteractiveScreen').style.display = 'none';
-      document.getElementById('step1VideoScreen').style.display = 'flex';
+      const s2 = document.getElementById('step2InteractiveScreen');
+      if (s2) s2.style.display = 'none';
+      const s1 = document.getElementById('step1VideoScreen');
+      if (s1) s1.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    function goToStep1() {
+      goToVideo();
+    }
+
+    function goToPractice() {
+      safeHaptic('selection');
+      pauseVideo();
+      const s1 = document.getElementById('step1VideoScreen');
+      if (s1) s1.style.display = 'none';
+      const s2 = document.getElementById('step2InteractiveScreen');
+      if (s2) s2.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToStep2() {
+      goToPractice();
+    }
+
+    function goToInteractive() {
+      goToPractice();
+    }
+
 
                 // Pause Kinescope Video Player & Other Audios
     function pauseVideo() {
