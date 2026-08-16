@@ -1253,8 +1253,12 @@ textarea:focus, input:focus {
         </div>
 
         <div style="padding:10px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-          <audio controls preload="none" style="width:100%; accent-color:var(--nb-accent);">
+          <audio id="giftMeditationAudio" controls preload="metadata" src="https://inter01-anatolyfedorov.amvera.io/data/meditation_audio.MP3" style="width:100%; accent-color:var(--nb-accent);">
             <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation_audio.MP3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/meditation_audio.MP3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/media/meditation_audio.MP3" type="audio/mpeg">
+            <source src="/data/meditation_audio.MP3" type="audio/mpeg">
+            <source src="meditation_audio.MP3" type="audio/mpeg">
             Ваш браузер не поддерживает аудио.
           </audio>
         </div>
@@ -1542,6 +1546,32 @@ textarea:focus, input:focus {
         });
       }
     }, 5000);
+
+    // Audio Player Auto-pause & Fallbacks
+    document.addEventListener('DOMContentLoaded', function() {
+      const giftAudio = document.getElementById('giftMeditationAudio');
+      if (giftAudio) {
+        giftAudio.addEventListener('play', function() {
+          pauseVideo();
+        });
+        const fallbacks = [
+          'https://inter01-anatolyfedorov.amvera.io/data/meditation_audio.MP3',
+          'https://inter01-anatolyfedorov.amvera.io/meditation_audio.MP3',
+          'https://inter01-anatolyfedorov.amvera.io/media/meditation_audio.MP3',
+          '/data/meditation_audio.MP3',
+          'meditation_audio.MP3'
+        ];
+        let fallbackIdx = 0;
+        giftAudio.addEventListener('error', function() {
+          if (fallbackIdx < fallbacks.length) {
+            const nextUrl = fallbacks[fallbackIdx++];
+            console.log('[Audio] Trying fallback URL:', nextUrl);
+            giftAudio.src = nextUrl;
+            giftAudio.load();
+          }
+        }, true);
+      }
+    });
   </script>
 
 </body>
