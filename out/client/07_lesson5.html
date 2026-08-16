@@ -907,7 +907,7 @@
           <!-- Video Player Wrapper (Kinescope) -->
           <div
             style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="lesson5VideoIframe" src="https://kinescope.io/embed/vD5EN9PU6rUpzhFax8s7Yb?max_quality=720"
+            <iframe id="lesson5VideoIframe" src="https://kinescope.io/embed/xhqTTBCRmLZA8P3KWEXtG4?max_quality=720"
               allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
               frameborder="0" allowfullscreen
               style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
@@ -932,6 +932,37 @@
               <span>Интеллектуальный попутчик ждёт ➔</span>
             </button>
           </div>
+        </section>
+
+        <!-- Block: Медитация-транс «Внутренний маяк» -->
+        <section class="glass card text-center">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+            🧘‍♀️ Медитация-транс
+          </div>
+          <h3 style="font-size:17px; margin-bottom:6px;">Медитация «Внутренний маяк»</h3>
+          <p class="lead" style="font-size:13px; margin-bottom:14px; color:var(--nb-slate);">
+            Практика закрепления нового сценария и возвращения к себе.
+          </p>
+
+          <!-- Warning Note Before Player -->
+          <div style="margin-bottom:12px; padding:10px 12px; border-radius:12px; background:rgba(217,131,78,0.1); border:1px solid rgba(217,131,78,0.2); font-size:12px; line-height:1.45; color:var(--nb-terracotta); text-align:left;">
+            ⚠️ Выберите место, где вас не будут отвлекать. Не слушайте медитацию за рулём или во время занятий, требующих внимания.
+          </div>
+
+          <!-- Audio Player Wrapper -->
+          <div style="padding:12px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+            <audio id="meditationAudio5" src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3" controls preload="metadata" style="width:100%; accent-color:var(--nb-accent);">
+              <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3" type="audio/mpeg">
+              <source src="meditation1-5.MP3" type="audio/mpeg">
+              <source src="/data/meditation1-5.MP3" type="audio/mpeg">
+              Ваш браузер не поддерживает аудио.
+            </audio>
+          </div>
+
+          <!-- Concluding Phrase After Player -->
+          <p style="margin:14px 0 0; font-size:12.5px; line-height:1.5; color:var(--nb-deep); font-weight:600; text-align:center;">
+            ✨ Ваш внутренний маяк — это ощущение права выбирать себя в любой ситуации.
+          </p>
         </section>
 
         <!-- Next Step Transition (Screen 1) -->
@@ -1150,6 +1181,27 @@
           }
         }
       } catch (e) { }
+
+      const audioEl5 = document.getElementById('meditationAudio5');
+      if (audioEl5) {
+        audioEl5.addEventListener('play', function () {
+          pauseVideo();
+        });
+        const fallbacks = [
+          'meditation1-5.MP3',
+          '/data/meditation1-5.MP3',
+          'https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3'
+        ];
+        let fallbackIndex = 0;
+        audioEl5.addEventListener('error', function () {
+          if (fallbackIndex < fallbacks.length) {
+            const nextUrl = fallbacks[fallbackIndex++];
+            console.log('[Audio] Trying fallback URL:', nextUrl);
+            audioEl5.src = nextUrl;
+            audioEl5.load();
+          }
+        }, true);
+      }
     });
 
     function pauseVideo() {
