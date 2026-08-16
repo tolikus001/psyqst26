@@ -1212,17 +1212,31 @@
   <main class="app-shell">
     <div class="app">
 
-            <!-- Navigation Header -->
-      <div class="header-actions-row" style="margin-bottom: 6px;">
-        <button type="button" onclick="openNavDrawer();" class="nav-glass-tinted-btn">
-          <span>🧭</span>
-          <span>Навигация по курсу</span>
-        </button>
-        <button type="button" onclick="safeHaptic('selection'); openScreen('09_bonuses.html');" class="next-lesson-btn">
-          <span>🎁 К бонусам →</span>
-        </button>
-      </div>
+      <!-- Navigation Header (Урок 5 из 5) -->
+      <header class="header-bar-nav">
+        <div class="header-actions-row">
+          <button type="button" onclick="openNavDrawer();" class="nav-glass-tinted-btn">
+            <span>🧭</span>
+            <span>Навигация по курсу</span>
+          </button>
+          <button type="button" onclick="safeHaptic('selection'); openScreen('09_bonuses.html');" class="next-lesson-btn">
+            <span>🎁 К бонусам →</span>
+          </button>
+        </div>
 
+        <div class="header-progress-row">
+          <span class="lesson-badge-sub">Урок 5 из 5</span>
+          <span class="progress-percent-sub">100% пройдено</span>
+        </div>
+
+        <div class="progress-track" style="width:100%; height:5px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
+          <div style="width:100%; height:100%; background:linear-gradient(90deg, #C4734F, #2F7D59); border-radius:999px;"></div>
+        </div>
+      </header>
+
+      <!-- ==========================================
+           SCREEN 1: VIDEO LESSON & MAIN INSIGHT
+           ========================================== -->
       <div id="step1VideoScreen" style="display:flex; flex-direction:column; gap:14px;">
 
         <!-- Video Card -->
