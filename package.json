@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node scripts/dev-server.js",
     "serve": "node scripts/dev-server.js",
-    "audit": "node scripts/global-audit.js",
+    "audit": "node scripts/global-audit.js && node scripts/security-audit.js",
+    "security": "node scripts/security-audit.js",
     "repair": "node scripts/repair-all.js"
   },
   "keywords": ["psyquest", "notibot", "telegram-mini-app"],
