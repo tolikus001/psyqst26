@@ -807,316 +807,324 @@ textarea:focus, input:focus {
 }
 
 
+    
     /* =========================================================
-       NAVIGATION HEADER & DRAWER STYLES
+       NAVIGATION HEADER & DRAWER STYLES (BULLETPROOF)
        ========================================================= */
     .header-bar-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-      padding: 4px 0 2px;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+      width: 100% !important;
+      padding: 4px 0 2px !important;
+      box-sizing: border-box !important;
     }
 
     .header-actions-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
     .nav-glass-tinted-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: -0.2px;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 7px !important;
+      font-weight: 700 !important;
+      font-size: 13px !important;
+      letter-spacing: -0.2px !important;
       color: #A85532 !important;
-      background: rgba(196, 115, 79, 0.12);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      padding: 8px 14px;
-      border-radius: 9999px;
-      border: 1px solid rgba(196, 115, 79, 0.32);
-      box-shadow: 0 4px 14px rgba(196, 115, 79, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.7);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      white-space: nowrap;
-      flex-shrink: 0;
-      text-decoration: none;
+      background: rgba(196, 115, 79, 0.12) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+      padding: 8px 14px !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(196, 115, 79, 0.32) !important;
+      box-shadow: 0 4px 14px rgba(196, 115, 79, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.7) !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      text-decoration: none !important;
+      outline: none !important;
     }
 
     .nav-glass-tinted-btn:hover {
-      background: rgba(196, 115, 79, 0.18);
-      border-color: rgba(196, 115, 79, 0.45);
-      transform: translateY(-1px);
+      background: rgba(196, 115, 79, 0.18) !important;
+      border-color: rgba(196, 115, 79, 0.45) !important;
+      transform: translateY(-1px) !important;
     }
 
     .nav-glass-tinted-btn:active {
-      transform: scale(0.96) translateY(0);
-      background: rgba(196, 115, 79, 0.22);
+      transform: scale(0.96) translateY(0) !important;
+      background: rgba(196, 115, 79, 0.22) !important;
     }
 
     .next-lesson-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: -0.2px;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      font-weight: 700 !important;
+      font-size: 13px !important;
+      letter-spacing: -0.2px !important;
       color: #FFFFFF !important;
-      background: linear-gradient(135deg, rgba(204, 122, 85, 0.96) 0%, rgba(168, 85, 50, 0.98) 100%);
-      padding: 8px 16px;
-      border-radius: 9999px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 6px 20px rgba(196, 115, 79, 0.32), inset 0 1px 1.5px rgba(255, 255, 255, 0.55);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      white-space: nowrap;
-      text-decoration: none;
+      background: linear-gradient(135deg, rgba(204, 122, 85, 0.96) 0%, rgba(168, 85, 50, 0.98) 100%) !important;
+      padding: 8px 16px !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      box-shadow: 0 6px 20px rgba(196, 115, 79, 0.32), inset 0 1px 1.5px rgba(255, 255, 255, 0.55) !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      white-space: nowrap !important;
+      text-decoration: none !important;
+      outline: none !important;
     }
 
     .next-lesson-btn:hover {
-      background: linear-gradient(135deg, rgba(214, 132, 95, 1) 0%, rgba(178, 95, 60, 1) 100%);
-      box-shadow: 0 8px 24px rgba(196, 115, 79, 0.45), inset 0 1px 1.5px rgba(255, 255, 255, 0.7);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, rgba(214, 132, 95, 1) 0%, rgba(178, 95, 60, 1) 100%) !important;
+      box-shadow: 0 8px 24px rgba(196, 115, 79, 0.45), inset 0 1px 1.5px rgba(255, 255, 255, 0.7) !important;
+      transform: translateY(-1px) !important;
     }
 
     .next-lesson-btn:active {
-      transform: scale(0.96) translateY(0);
+      transform: scale(0.96) translateY(0) !important;
     }
 
     .header-progress-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      padding: 0 2px;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+      padding: 0 2px !important;
     }
 
     .lesson-badge-sub {
-      font-size: 12px;
-      font-weight: 700;
-      color: #45656D;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      color: #45656D !important;
     }
 
     .progress-percent-sub {
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(31, 46, 53, 0.5);
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      color: rgba(31, 46, 53, 0.5) !important;
     }
 
     /* BOTTOM DRAWER STYLES */
     #navDrawerOverlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      visibility: hidden;
-      transition: visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 99999 !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
     }
 
     #navDrawerOverlay.active {
-      visibility: visible;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
     }
 
     #navDrawerBackdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(15, 23, 28, 0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      position: absolute !important;
+      inset: 0 !important;
+      background: rgba(15, 23, 28, 0.45) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      opacity: 0 !important;
+      transition: opacity 0.3s ease !important;
     }
 
     #navDrawerOverlay.active #navDrawerBackdrop {
-      opacity: 1;
+      opacity: 1 !important;
     }
 
     #navDrawerPanel {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      max-width: 500px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border-top: 1px solid rgba(255, 255, 255, 0.85);
-      border-radius: 30px 30px 0 0;
-      box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.22);
-      transform: translateY(100%);
-      transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
-      max-height: 85vh;
-      overflow: hidden;
+      position: absolute !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      max-width: 500px !important;
+      margin: 0 auto !important;
+      background: rgba(255, 255, 255, 0.96) !important;
+      backdrop-filter: blur(28px) !important;
+      -webkit-backdrop-filter: blur(28px) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.85) !important;
+      border-radius: 30px 30px 0 0 !important;
+      box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.22) !important;
+      transform: translateY(100%) !important;
+      transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      max-height: 85vh !important;
+      overflow: hidden !important;
     }
 
     #navDrawerOverlay.active #navDrawerPanel {
-      transform: translateY(0);
+      transform: translateY(0) !important;
     }
 
     .drawer-handle {
-      width: 44px;
-      height: 4px;
-      background: rgba(31, 46, 53, 0.16);
-      border-radius: 999px;
-      margin: 12px auto 6px;
-      cursor: pointer;
+      width: 44px !important;
+      height: 4px !important;
+      background: rgba(31, 46, 53, 0.16) !important;
+      border-radius: 999px !important;
+      margin: 12px auto 6px !important;
+      cursor: pointer !important;
     }
 
     .drawer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px 14px;
-      border-bottom: 1px solid rgba(31, 46, 53, 0.07);
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      padding: 10px 20px 14px !important;
+      border-bottom: 1px solid rgba(31, 46, 53, 0.07) !important;
     }
 
     .drawer-title {
-      font-size: 17px;
-      font-weight: 800;
-      color: #1F2E35;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 17px !important;
+      font-weight: 800 !important;
+      color: #1F2E35 !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
     }
 
     .drawer-close-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: rgba(31, 46, 53, 0.06);
-      border: none;
-      font-size: 15px;
-      font-weight: 700;
-      color: #1F2E35;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s;
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 50% !important;
+      background: rgba(31, 46, 53, 0.06) !important;
+      border: none !important;
+      font-size: 15px !important;
+      font-weight: 700 !important;
+      color: #1F2E35 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      transition: background 0.2s !important;
     }
 
     .drawer-close-btn:active {
-      background: rgba(31, 46, 53, 0.12);
+      background: rgba(31, 46, 53, 0.12) !important;
     }
 
     .drawer-content {
-      overflow-y: auto;
-      padding: 14px 18px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
+      overflow-y: auto !important;
+      padding: 14px 18px 28px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 18px !important;
     }
 
     .drawer-section-label {
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: rgba(31, 46, 53, 0.45);
-      margin-bottom: 6px;
-      padding-left: 6px;
+      font-size: 11px !important;
+      font-weight: 800 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.6px !important;
+      color: rgba(31, 46, 53, 0.45) !important;
+      margin-bottom: 6px !important;
+      padding-left: 6px !important;
     }
 
     .drawer-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 6px !important;
     }
 
     .drawer-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      background: rgba(248, 250, 249, 0.85);
-      border: 1px solid rgba(31, 46, 53, 0.05);
-      border-radius: 16px;
-      text-decoration: none;
-      color: #1F2E35;
-      transition: all 0.18s ease;
-      cursor: pointer;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 12px 14px !important;
+      background: rgba(248, 250, 249, 0.85) !important;
+      border: 1px solid rgba(31, 46, 53, 0.05) !important;
+      border-radius: 16px !important;
+      text-decoration: none !important;
+      color: #1F2E35 !important;
+      transition: all 0.18s ease !important;
+      cursor: pointer !important;
     }
 
     .drawer-item:active {
-      transform: scale(0.98);
-      background: rgba(239, 243, 241, 0.95);
+      transform: scale(0.98) !important;
+      background: rgba(239, 243, 241, 0.95) !important;
     }
 
     .drawer-item.active-current {
-      background: rgba(196, 115, 79, 0.1);
-      border-color: rgba(196, 115, 79, 0.35);
+      background: rgba(196, 115, 79, 0.1) !important;
+      border-color: rgba(196, 115, 79, 0.35) !important;
     }
 
     .drawer-item-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
     }
 
     .drawer-item-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: rgba(31, 46, 53, 0.07);
-      color: #1F2E35;
-      font-weight: 800;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 28px !important;
+      height: 28px !important;
+      border-radius: 8px !important;
+      background: rgba(31, 46, 53, 0.07) !important;
+      color: #1F2E35 !important;
+      font-weight: 800 !important;
+      font-size: 13px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
     }
 
     .drawer-item.active-current .drawer-item-num {
-      background: #C4734F;
-      color: #FFFFFF;
+      background: #C4734F !important;
+      color: #FFFFFF !important;
     }
 
     .drawer-item-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      text-align: left;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2px !important;
+      text-align: left !important;
     }
 
     .drawer-item-name {
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.25;
-      color: #1F2E35;
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      line-height: 1.25 !important;
+      color: #1F2E35 !important;
     }
 
     .drawer-item-sub {
-      font-size: 11px;
-      color: rgba(31, 46, 53, 0.55);
-      font-weight: 500;
+      font-size: 11px !important;
+      color: rgba(31, 46, 53, 0.55) !important;
+      font-weight: 500 !important;
     }
 
     .drawer-item-tag {
-      font-size: 11px;
-      font-weight: 700;
-      color: #A85532;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 3px 8px;
-      border-radius: 6px;
-      border: 1px solid rgba(196, 115, 79, 0.25);
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      color: #A85532 !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      padding: 3px 8px !important;
+      border-radius: 6px !important;
+      border: 1px solid rgba(196, 115, 79, 0.25) !important;
     }
 
     .drawer-item-tag.bonus {
-      color: #A85532;
-      border-color: rgba(196, 115, 79, 0.3);
-      background: #FFF8F5;
+      color: #A85532 !important;
+      border-color: rgba(196, 115, 79, 0.3) !important;
+      background: #FFF8F5 !important;
     }
-
-  </style>
+</style>
 <script>
 /**
  * Unified API & Media Connector for Local, Notibot and Amvera Environments
@@ -1281,18 +1289,15 @@ textarea:focus, input:focus {
   <main class="app-shell"><div class="app" style="max-width:620px; width:100%;">
     <div style="display:flex; flex-direction:column; gap:16px; width:100%;">
 
-      <!-- Top Navigation -->
-      <div>
-        <!-- Top Navigation -->
+            <!-- Top Navigation -->
       <div class="header-actions-row" style="margin-bottom: 6px;">
         <button type="button" onclick="openNavDrawer();" class="nav-glass-tinted-btn">
           <span>🧭</span>
           <span>Навигация по курсу</span>
         </button>
         <button type="button" onclick="safeHaptic('selection'); openScreen('09_bonuses.html');" class="next-lesson-btn">
-          <span>← К бонусам</span>
+          <span>К остальным бонусам →</span>
         </button>
-      </div>
       </div>
 
       <!-- Main Header Card -->
@@ -1582,36 +1587,41 @@ textarea:focus, input:focus {
     </div>
   </div>
 
+  
   <script>
-    function openNavDrawer() {
-      if (typeof safeHaptic === 'function') safeHaptic('medium');
+    window.openNavDrawer = function() {
+      try { if (typeof safeHaptic === 'function') safeHaptic('medium'); } catch(e) {}
       var overlay = document.getElementById('navDrawerOverlay');
-      if (overlay) overlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeNavDrawer() {
-      if (typeof safeHaptic === 'function') safeHaptic('selection');
-      var overlay = document.getElementById('navDrawerOverlay');
-      if (overlay) overlay.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    function handleDrawerBackdropClick(e) {
-      if (e.target.id === 'navDrawerOverlay' || e.target.id === 'navDrawerBackdrop') {
-        closeNavDrawer();
+      if (overlay) {
+        overlay.classList.add('active');
       }
-    }
+      document.body.style.overflow = 'hidden';
+    };
 
-    function navigateFromDrawer(targetUrl) {
-      if (typeof safeHaptic === 'function') safeHaptic('selection');
-      closeNavDrawer();
+    window.closeNavDrawer = function() {
+      try { if (typeof safeHaptic === 'function') safeHaptic('selection'); } catch(e) {}
+      var overlay = document.getElementById('navDrawerOverlay');
+      if (overlay) {
+        overlay.classList.remove('active');
+      }
+      document.body.style.overflow = '';
+    };
+
+    window.handleDrawerBackdropClick = function(e) {
+      if (e.target.id === 'navDrawerOverlay' || e.target.id === 'navDrawerBackdrop') {
+        window.closeNavDrawer();
+      }
+    };
+
+    window.navigateFromDrawer = function(targetUrl) {
+      try { if (typeof safeHaptic === 'function') safeHaptic('selection'); } catch(e) {}
+      window.closeNavDrawer();
       if (typeof openScreen === 'function') {
         openScreen(targetUrl);
       } else {
         window.location.href = targetUrl;
       }
-    }
+    };
   </script>
 
 </body>
