@@ -1468,6 +1468,34 @@ textarea:focus, input:focus {
 
       </div>
 
+      <!-- Gift Meditation Section (From Lesson 0) -->
+      <section id="giftMeditationSection" class="glass card text-center" style="border:1.5px solid rgba(47,125,89,0.25); background:rgba(255,255,255,0.95); padding:20px 18px; box-sizing:border-box;">
+        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+          🎁 Аудио-практика
+        </div>
+        <h2 style="font-size:19px; font-weight:800; color:var(--nb-deep); margin-bottom:6px; line-height:1.25;">
+          Медитация «На своей земле»
+        </h2>
+        <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0 auto 10px auto; max-width:380px;">
+          Когда чужое молчание, неопределённость или дистанция выбивают почву из-под ног, эта практика поможет снизить внутренний шум и снова почувствовать опору в себе.
+        </p>
+
+        <div style="display:inline-block; font-size:11px; font-weight:800; color:var(--nb-sea); background:rgba(18,68,83,0.07); padding:4px 12px; border-radius:999px; margin-bottom:12px;">
+          Длительность записи: около 12 минут
+        </div>
+
+        <div style="padding:10px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
+          <audio id="giftMeditationAudio" controls preload="metadata" src="https://inter01-anatolyfedorov.amvera.io/data/meditation_audio.MP3" style="width:100%; accent-color:var(--nb-accent);">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation_audio.MP3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/meditation_audio.MP3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/media/meditation_audio.MP3" type="audio/mpeg">
+            <source src="/data/meditation_audio.MP3" type="audio/mpeg">
+            <source src="meditation_audio.MP3" type="audio/mpeg">
+            Ваш браузер не поддерживает аудио.
+          </audio>
+        </div>
+      </section>
+
       <!-- Dedicated Individual Offer Card (Under the 4 bonuses) -->
       <section class="glass card text-center" style="border:1.5px solid rgba(217, 131, 78, 0.35); background:rgba(255,255,255,0.95); padding:22px 20px;">
         <div class="eyebrow" style="margin-bottom:10px; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
@@ -1524,6 +1552,19 @@ textarea:focus, input:focus {
         }
       } catch (e) {}
     }
+
+    function pauseAudio() {
+      const audio = document.getElementById('giftMeditationAudio');
+      if (audio && !audio.paused) {
+        audio.pause();
+      }
+    }
+
+    window.addEventListener('pagehide', pauseAudio);
+    window.addEventListener('beforeunload', pauseAudio);
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) pauseAudio();
+    });
   </script>
 
   <!-- =========================================================
