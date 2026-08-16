@@ -30,7 +30,7 @@ html, body {
   position: fixed !important;
   inset: 0 !important;
   z-index: 0 !important;
-  background-image: url('leaves_birch.jpg');
+  background-image: url('leaves_oak.jpg');
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
