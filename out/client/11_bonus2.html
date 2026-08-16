@@ -492,13 +492,15 @@
       height: 100vh !important;
       height: 100dvh !important;
       z-index: 999999 !important;
+      display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
       pointer-events: none !important;
-      transition: visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
+      transition: opacity 0.3s ease !important;
     }
 
     #navDrawerOverlay.active {
+      display: block !important;
       visibility: visible !important;
       opacity: 1 !important;
       pointer-events: auto !important;
@@ -536,7 +538,7 @@
       border-top: 1px solid rgba(255, 255, 255, 0.9) !important;
       border-radius: 28px 28px 0 0 !important;
       box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.28) !important;
-      transform: translateY(100%) !important;
+      transform: translateY(120%) !important;
       transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
       display: flex !important;
       flex-direction: column !important;
@@ -1551,7 +1553,7 @@ textarea:focus, input:focus {
       </div>
 
             <!-- Footer -->
-      <footer class="text-center" style="display:flex; justify-content:center; margin:8px auto 0 auto; width:100%;">
+      <footer class="text-center" style="display:flex; justify-content:center; margin:12px auto 0 auto; padding-bottom:24px; width:100%;">
         <div style="display:inline-flex; align-items:center; justify-content:center; background:rgba(255, 255, 255, 0.75); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid rgba(255, 255, 255, 0.85); border-radius:9999px; padding:5px 14px; font-size:11px; font-weight:600; color:var(--nb-slate); box-shadow:0 2px 8px rgba(0, 0, 0, 0.04);">
           © Анатолий Фёдоров • ПСИквест
         </div>
@@ -1738,201 +1740,14 @@ textarea:focus, input:focus {
                   <div class="drawer-item-sub">Факт → тревога → попытка догнать</div>
                 </div>
               </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
 
-            <!-- Урок 2 -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('04_lesson2.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num">2</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Как тело включает тревогу</div>
-                  <div class="drawer-item-sub">Сжатие, спазм, импульс действовать</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-
-            <!-- Урок 3 -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('05_lesson3.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num">3</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Ловушка объяснений</div>
-                  <div class="drawer-item-sub">Почему мы оправдываем холодность</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-
-            <!-- Урок 4 -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('06_lesson4.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num">4</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Перехват управления</div>
-                  <div class="drawer-item-sub">Пауза между импульсом и реакцией</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-
-            <!-- Урок 5 -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('07_lesson5.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num">5</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Новый выбор в отношениях</div>
-                  <div class="drawer-item-sub">Закрепление взрослой позиции</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Блок бонусов -->
-        <div>
-          <div class="drawer-section-label">Бонусы курса</div>
-          <div class="drawer-list">
-            <!-- Все бонусы -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('09_bonuses.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num" style="background:rgba(196,115,79,0.14); color:#A85532;">🎁</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">4 практических бонуса</div>
-                  <div class="drawer-item-sub">Чек-листы, памятки и сценарии</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-
-            <!-- Индивидуальный разбор -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('14_individual_offer.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num" style="background:rgba(49,130,206,0.12); color:#2B6CB0;">⭐</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Индивидуальный разбор</div>
-                  <div class="drawer-item-sub">Персональная работа со сценарием</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Блок уроков -->
-        <div>
-          <div class="drawer-section-label">Уроки миникурса</div>
-          <div class="drawer-list">
-            <!-- Урок 1 -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('03_lesson1.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num">1</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Молчание, запускающее сценарий</div>
-                  <div class="drawer-item-sub">Факт → тревога → попытка догнать</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-
-            <!-- Урок 2 -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('04_lesson2.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num">2</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Как тело включает тревогу</div>
-                  <div class="drawer-item-sub">Сжатие, спазм, импульс действовать</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-
-            <!-- Урок 3 -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('05_lesson3.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num">3</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Ловушка объяснений</div>
-                  <div class="drawer-item-sub">Почему мы оправдываем холодность</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-
-            <!-- Урок 4 -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('06_lesson4.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num">4</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Перехват управления</div>
-                  <div class="drawer-item-sub">Пауза между импульсом и реакцией</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-
-            <!-- Урок 5 -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('07_lesson5.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num">5</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Новый выбор в отношениях</div>
-                  <div class="drawer-item-sub">Закрепление взрослой позиции</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Блок бонусов -->
-        <div>
-          <div class="drawer-section-label">Бонусы и разбор</div>
-          <div class="drawer-list">
-            <!-- Бонусы -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('09_bonuses.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num" style="background:rgba(196,115,79,0.14); color:#A85532;">🎁</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">4 практических бонуса</div>
-                  <div class="drawer-item-sub">Чек-листы, медитации и сценарии</div>
-                </div>
-              </div>
-              <span class="drawer-item-tag bonus">4 бонуса</span>
-            </a>
-
-            <!-- Индивидуальный разбор -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('14_individual_offer.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num" style="background:rgba(49,130,206,0.12); color:#2B6CB0;">⭐</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Индивидуальный разбор</div>
-                  <div class="drawer-item-sub">Персональная работа со сценарием</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  
   <script>
     window.openNavDrawer = function() {
       try { if (typeof safeHaptic === 'function') safeHaptic('medium'); } catch(e) {}
       var overlay = document.getElementById('navDrawerOverlay');
       if (overlay) {
+        overlay.style.display = 'block';
+        void overlay.offsetHeight; // force reflow
         overlay.classList.add('active');
       }
       document.body.style.overflow = 'hidden';
@@ -1943,6 +1758,11 @@ textarea:focus, input:focus {
       var overlay = document.getElementById('navDrawerOverlay');
       if (overlay) {
         overlay.classList.remove('active');
+        setTimeout(function() {
+          if (!overlay.classList.contains('active')) {
+            overlay.style.display = 'none';
+          }
+        }, 320);
       }
       document.body.style.overflow = '';
     };
