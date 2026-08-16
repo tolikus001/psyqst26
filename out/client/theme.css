@@ -794,3 +794,93 @@ textarea:focus, input:focus {
   background: var(--nb-sea) !important;
   color: #FFFFFF !important;
 }
+
+
+    .header-bar-nav {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 10px !important;
+      width: 100% !important;
+      padding: 4px 0 2px !important;
+      box-sizing: border-box !important;
+    }
+
+    .header-actions-row {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .nav-glass-tinted-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 5px !important;
+      font-weight: 700 !important;
+      font-size: 12.5px !important;
+      letter-spacing: -0.2px !important;
+      color: #A85532 !important;
+      background: rgba(196, 115, 79, 0.12) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+      padding: 7px 11px !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(196, 115, 79, 0.32) !important;
+      box-shadow: 0 4px 14px rgba(196, 115, 79, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.7) !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      white-space: nowrap !important;
+      flex: 0 1 auto !important;
+      max-width: fit-content !important;
+      text-decoration: none !important;
+      outline: none !important;
+    }
+
+    .nav-glass-tinted-btn:hover {
+      background: rgba(196, 115, 79, 0.18) !important;
+      border-color: rgba(196, 115, 79, 0.45) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .nav-glass-tinted-btn:active {
+      transform: scale(0.96) translateY(0) !important;
+      background: rgba(196, 115, 79, 0.22) !important;
+    }
+
+    .next-lesson-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 5px !important;
+      font-weight: 700 !important;
+      font-size: 12.5px !important;
+      letter-spacing: -0.2px !important;
+      color: #FFFFFF !important;
+      background: linear-gradient(135deg, rgba(204, 122, 85, 0.96) 0%, rgba(168, 85, 50, 0.98) 100%) !important;
+      padding: 7px 12px !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      box-shadow: 0 6px 20px rgba(196, 115, 79, 0.32), inset 0 1px 1.5px rgba(255, 255, 255, 0.55) !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      white-space: nowrap !important;
+      flex: 0 1 auto !important;
+      max-width: fit-content !important;
+      text-decoration: none !important;
+      outline: none !important;
+    }
+
+    .next-lesson-btn:hover {
+      background: linear-gradient(135deg, rgba(214, 132, 95, 1) 0%, rgba(178, 95, 60, 1) 100%) !important;
+      box-shadow: 0 8px 24px rgba(196, 115, 79, 0.45), inset 0 1px 1.5px rgba(255, 255, 255, 0.7) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .next-lesson-btn:active {
+      transform: scale(0.96) translateY(0) !important;
+    }

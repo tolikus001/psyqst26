@@ -746,6 +746,7 @@ textarea:focus, input:focus {
     .header-bar-nav {
       display: flex !important;
       flex-direction: column !important;
+      align-items: center !important;
       gap: 10px !important;
       width: 100% !important;
       padding: 4px 0 2px !important;
@@ -754,32 +755,35 @@ textarea:focus, input:focus {
 
     .header-actions-row {
       display: flex !important;
-      justify-content: space-between !important;
+      justify-content: center !important;
       align-items: center !important;
       gap: 8px !important;
       width: 100% !important;
+      max-width: 100% !important;
       box-sizing: border-box !important;
     }
 
     .nav-glass-tinted-btn {
       display: inline-flex !important;
       align-items: center !important;
-      gap: 7px !important;
+      justify-content: center !important;
+      gap: 5px !important;
       font-weight: 700 !important;
-      font-size: 13px !important;
+      font-size: 12.5px !important;
       letter-spacing: -0.2px !important;
       color: #A85532 !important;
       background: rgba(196, 115, 79, 0.12) !important;
       backdrop-filter: blur(18px) !important;
       -webkit-backdrop-filter: blur(18px) !important;
-      padding: 8px 14px !important;
+      padding: 7px 11px !important;
       border-radius: 9999px !important;
       border: 1px solid rgba(196, 115, 79, 0.32) !important;
       box-shadow: 0 4px 14px rgba(196, 115, 79, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.7) !important;
       cursor: pointer !important;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
       white-space: nowrap !important;
-      flex-shrink: 0 !important;
+      flex: 0 1 auto !important;
+      max-width: fit-content !important;
       text-decoration: none !important;
       outline: none !important;
     }
@@ -799,19 +803,21 @@ textarea:focus, input:focus {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 6px !important;
+      gap: 5px !important;
       font-weight: 700 !important;
-      font-size: 13px !important;
+      font-size: 12.5px !important;
       letter-spacing: -0.2px !important;
       color: #FFFFFF !important;
       background: linear-gradient(135deg, rgba(204, 122, 85, 0.96) 0%, rgba(168, 85, 50, 0.98) 100%) !important;
-      padding: 8px 16px !important;
+      padding: 7px 12px !important;
       border-radius: 9999px !important;
       border: 1px solid rgba(255, 255, 255, 0.4) !important;
       box-shadow: 0 6px 20px rgba(196, 115, 79, 0.32), inset 0 1px 1.5px rgba(255, 255, 255, 0.55) !important;
       cursor: pointer !important;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
       white-space: nowrap !important;
+      flex: 0 1 auto !important;
+      max-width: fit-content !important;
       text-decoration: none !important;
       outline: none !important;
     }
@@ -1169,7 +1175,7 @@ textarea:focus, input:focus {
   const NOTIBOT_ARTICLES = {
     quest: '35Kvp1YSxOSOzKeVKcpom2',
     landing: '54xiZ3LlRdXnk88t9xPt7s',
-    lesson1: '6QzHvAlz22e4lEb6wVhjy0',
+    lesson1: '6QzHvAlz22e4IEb6wVhjy0',
     lesson2: '6wQPr20VEfbLD5Jg6GeEVR',
     lesson3: '0wFlaZghZ7ZieZiqFtJpSs',
     lesson4: '1ddMHSu3zb0ixr2CWRLKvg',
@@ -1180,22 +1186,81 @@ textarea:focus, input:focus {
     bonus2: '5DiBJPDNERZWQCXQ7C2OoX',
     bonus3: '38HgDSX5SePPcFWySLUMNs',
     bonus4: '7NGEU2ikhiLHvuuyxhmL6K',
-    individual_offer: '1CkSHuhyH7kVgjKZxWpCDs',
+    individual_offer: '1CkSHuhyH7kVgjKZxWPCDs',
 
     '01_psyquest.html': '35Kvp1YSxOSOzKeVKcpom2',
+    '01_psyquest': '35Kvp1YSxOSOzKeVKcpom2',
+    '01_quest.html': '35Kvp1YSxOSOzKeVKcpom2',
+    'psyquest': '35Kvp1YSxOSOzKeVKcpom2',
+
     '02_landing_partner.html': '54xiZ3LlRdXnk88t9xPt7s',
-    '03_lesson1.html': '6QzHvAlz22e4lEb6wVhjy0',
+    '02_landing_partner': '54xiZ3LlRdXnk88t9xPt7s',
+    '02_landing.html': '54xiZ3LlRdXnk88t9xPt7s',
+    'landing_partner': '54xiZ3LlRdXnk88t9xPt7s',
+
+    '03_lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
+    '03_lesson1': '6QzHvAlz22e4IEb6wVhjy0',
+    'lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
+    'lesson_1': '6QzHvAlz22e4IEb6wVhjy0',
+    'lesson-1': '6QzHvAlz22e4IEb6wVhjy0',
+    '01_lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
+    '01_lesson1': '6QzHvAlz22e4IEb6wVhjy0',
+
     '04_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
+    '04_lesson2': '6wQPr20VEfbLD5Jg6GeEVR',
+    'lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
+    'lesson_2': '6wQPr20VEfbLD5Jg6GeEVR',
+    'lesson-2': '6wQPr20VEfbLD5Jg6GeEVR',
+    '02_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
+
     '05_lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
+    '05_lesson3': '0wFlaZghZ7ZieZiqFtJpSs',
+    'lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
+    'lesson_3': '0wFlaZghZ7ZieZiqFtJpSs',
+    'lesson-3': '0wFlaZghZ7ZieZiqFtJpSs',
+    '03_lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
+
     '06_lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
+    '06_lesson4': '1ddMHSu3zb0ixr2CWRLKvg',
+    'lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
+    'lesson_4': '1ddMHSu3zb0ixr2CWRLKvg',
+    'lesson-4': '1ddMHSu3zb0ixr2CWRLKvg',
+    '04_lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
+
     '07_lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
+    '07_lesson5': '4uMyKJZW4TdZJM8z9G7Zbg',
+    'lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
+    'lesson_5': '4uMyKJZW4TdZJM8z9G7Zbg',
+    'lesson-5': '4uMyKJZW4TdZJM8z9G7Zbg',
+    '05_lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
+
     '08_portrait_quest.html': '2plu9h6VcWiAQ3TrZ8nLql',
+    '08_portrait_quest': '2plu9h6VcWiAQ3TrZ8nLql',
+    'portrait_quest.html': '2plu9h6VcWiAQ3TrZ8nLql',
+
     '09_bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
+    '09_bonuses': '6ZwOzlMAERTYgkV2FsWnVx',
+    'bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
+
     '10_bonus1.html': '5MKoAoaLdnrJqZaczYSZth',
+    '10_bonus1': '5MKoAoaLdnrJqZaczYSZth',
+    'bonus1.html': '5MKoAoaLdnrJqZaczYSZth',
+
     '11_bonus2.html': '5DiBJPDNERZWQCXQ7C2OoX',
+    '11_bonus2': '5DiBJPDNERZWQCXQ7C2OoX',
+    'bonus2.html': '5DiBJPDNERZWQCXQ7C2OoX',
+
     '12_bonus3.html': '38HgDSX5SePPcFWySLUMNs',
+    '12_bonus3': '38HgDSX5SePPcFWySLUMNs',
+    'bonus3.html': '38HgDSX5SePPcFWySLUMNs',
+
     '13_bonus4.html': '7NGEU2ikhiLHvuuyxhmL6K',
-    '14_individual_offer.html': '1CkSHuhyH7kVgjKZxWpCDs'
+    '13_bonus4': '7NGEU2ikhiLHvuuyxhmL6K',
+    'bonus4.html': '7NGEU2ikhiLHvuuyxhmL6K',
+
+    '14_individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs',
+    '14_individual_offer': '1CkSHuhyH7kVgjKZxWPCDs',
+    'individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs'
   };
 
   // Official Notibot Product IDs
@@ -1217,10 +1282,11 @@ textarea:focus, input:focus {
   /**
    * Navigate to screen via Notibot openArticle if embedded, or window.location if standalone
    */
-  function openScreen(target) {
+    function openScreen(target) {
     try { if (typeof pauseVideo === 'function') pauseVideo(); } catch(e){}
-    const clean = String(target || '').replace(/^(\.\/|\/)/, '');
-    const articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[target];
+    const raw = String(target || '').trim();
+    const clean = raw.split('?')[0].split('#')[0].replace(/^\.?\//, '');
+    const articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[raw] || NOTIBOT_ARTICLES[target];
     if (window.notibot && articleId && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
       window.notibot.openArticle(articleId);
     } else {
@@ -1582,22 +1648,7 @@ textarea:focus, input:focus {
       }
     }
 
-    // Transition from Video (Screen 1) to Interactive Practice (Screen 2)
-    function goToStep2() {
-      safeHaptic('selection');
-      pauseVideo();
-      document.getElementById('step1VideoScreen').style.display = 'none';
-      const s2 = document.getElementById('step2InteractiveScreen');
-      s2.style.display = 'flex';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      // Automatically reveal "Перейти ко второму уроку →" button after 3 seconds on Screen 2
-      setTimeout(revealNextLessonBtn, 3000);
-    }
-
-    // Return to Video Screen (Screen 1)
-    
-    // Seamless Screen Transitions (Aliases for full backwards compatibility)
+    // Seamless Screen Transitions (Screen 1 <-> Screen 2)
     function goToVideo() {
       safeHaptic('selection');
       const s2 = document.getElementById('step2InteractiveScreen');
@@ -1619,6 +1670,9 @@ textarea:focus, input:focus {
       const s2 = document.getElementById('step2InteractiveScreen');
       if (s2) s2.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Automatically reveal "Перейти ко второму уроку →" button after 3 seconds on Screen 2
+      setTimeout(revealNextLessonBtn, 3000);
     }
 
     function goToStep2() {
