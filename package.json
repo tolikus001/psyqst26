@@ -1,0 +1,15 @@
+{
+  "name": "psyquest-minicourse",
+  "version": "1.0.0",
+  "description": "ПСИквест Миникурс — Анатолий Фёдоров",
+  "main": "scripts/dev-server.js",
+  "scripts": {
+    "start": "node scripts/dev-server.js",
+    "serve": "node scripts/dev-server.js",
+    "audit": "node scripts/global-audit.js",
+    "repair": "node scripts/repair-all.js"
+  },
+  "keywords": ["psyquest", "notibot", "telegram-mini-app"],
+  "author": "Анатолий Фёдоров",
+  "license": "ISC"
+}
