@@ -1479,8 +1479,14 @@ textarea:focus, input:focus {
       const product5000 = (window.NOTIBOT_PRODUCTS && window.NOTIBOT_PRODUCTS.course_partner_5000) || '4ec2ypRLStHYlW0lRrAzHI';
       const productId = isDiscountActive ? product2400 : product5000;
 
-      if (window.parent && window.parent !== window && window.notibot && typeof window.notibot.openProduct === 'function') {
+      if (window.notibot && typeof window.notibot.openProduct === 'function') {
         window.notibot.openProduct(productId);
+      } else if (window.parent && window.parent !== window) {
+        try {
+          window.parent.postMessage({ action: 'openProduct', id: productId }, '*');
+        } catch(e) {
+          openScreen('03_lesson1.html');
+        }
       } else {
         openScreen('03_lesson1.html');
       }
