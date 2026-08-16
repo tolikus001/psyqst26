@@ -755,6 +755,108 @@ textarea:focus, input:focus {
   width: 100%;
 }
 
+
+/* Action Choices for Lesson 2 (Stage 4) */
+.action-choice-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  margin-top: 6px !important;
+}
+
+.action-choice {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 10px 14px !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(14, 31, 46, 0.10) !important;
+  color: var(--nb-text) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+  user-select: none !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+.action-choice:hover {
+  border-color: rgba(18, 68, 83, 0.28) !important;
+  box-shadow: 0 4px 12px rgba(14, 31, 46, 0.05) !important;
+}
+
+.action-choice.active {
+  border-color: var(--nb-sea) !important;
+  background: rgba(18, 68, 83, 0.08) !important;
+  color: var(--nb-deep) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(18, 68, 83, 0.10) !important;
+}
+
+.action-choice.active strong {
+  color: var(--nb-sea) !important;
+}
+
+/* Criteria Grid & Items for Lesson 2 (Stage 5) */
+.criteria-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-top: 6px !important;
+}
+
+.criteria-item {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 12px 14px !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(14, 31, 46, 0.10) !important;
+  color: var(--nb-text) !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+  user-select: none !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+.criteria-item:hover {
+  border-color: rgba(18, 68, 83, 0.28) !important;
+  box-shadow: 0 4px 12px rgba(14, 31, 46, 0.05) !important;
+}
+
+.criteria-item.active {
+  border-color: var(--nb-sea) !important;
+  background: rgba(18, 68, 83, 0.08) !important;
+  color: var(--nb-deep) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(18, 68, 83, 0.10) !important;
+}
+
+.criteria-checkbox {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 6px !important;
+  border: 2px solid rgba(14, 31, 46, 0.24) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  color: transparent !important;
+  transition: all 0.18s ease !important;
+  background: #FFFFFF !important;
+}
+
+.criteria-item.active .criteria-checkbox {
+  border-color: var(--nb-sea) !important;
+  background: var(--nb-sea) !important;
+  color: #FFFFFF !important;
+}
+
 </style>
   <script>
 (function() {
