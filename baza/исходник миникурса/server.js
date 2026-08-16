@@ -53,7 +53,12 @@ function resolveFilePath(targetName) {
   const aliases = {
     'video0.mp4': 'lesson0.mp4',
     'урок 0.mp4': 'lesson0.mp4',
-    'lesson0_v2.mp4': 'lesson0.mp4'
+    'lesson0_v2.mp4': 'lesson0.mp4',
+    'meditation1-3.mp3': 'meditation2.mp3',
+    'meditation1-3.mp3': 'meditation2.mp3',
+    'meditation1-5.mp3': 'meditation3.mp3',
+    'meditation1-5.mp3': 'meditation3.mp3',
+    'meditation1.mp3': 'meditation_audio.MP3'
   };
   if (aliases[cleanName.toLowerCase()]) {
     cleanName = aliases[cleanName.toLowerCase()];
