@@ -1264,10 +1264,14 @@ textarea:focus, input:focus {
           ⚠️ Выберите место, где вас не будут отвлекать. Не слушайте медитацию за рулём или во время занятий, требующих внимания.
         </div>
 
-        <!-- Audio Player Wrapper -->
         <div style="padding:12px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
           <audio id="meditationAudio3" src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-3.MP3" controls preload="metadata" style="width:100%; accent-color:var(--nb-accent);">
             <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-3.MP3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation2.mp3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/meditation1-3.MP3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/meditation2.mp3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/media/meditation1-3.MP3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/media/meditation2.mp3" type="audio/mpeg">
             <source src="/data/meditation1-3.MP3" type="audio/mpeg">
             <source src="meditation1-3.MP3" type="audio/mpeg">
             Ваш браузер не поддерживает аудио.
@@ -1352,6 +1356,11 @@ textarea:focus, input:focus {
 
         const fallbacks = [
           'https://inter01-anatolyfedorov.amvera.io/data/meditation1-3.MP3',
+          'https://inter01-anatolyfedorov.amvera.io/data/meditation2.mp3',
+          'https://inter01-anatolyfedorov.amvera.io/meditation1-3.MP3',
+          'https://inter01-anatolyfedorov.amvera.io/meditation2.mp3',
+          'https://inter01-anatolyfedorov.amvera.io/media/meditation1-3.MP3',
+          'https://inter01-anatolyfedorov.amvera.io/media/meditation2.mp3',
           '/data/meditation1-3.MP3',
           'meditation1-3.MP3'
         ];
