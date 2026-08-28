@@ -1,12 +1,13 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://list.notibot.ru/notibot-bridge.js"></script>
   <!-- Notibot Bridge Early Interceptor (КОДЕР 2.0) -->
   <script>
     window.notibotInitData = null;
-    window.addEventListener('message', function(event) {
+    window.addEventListener('message', function (event) {
       if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
         window.notibotInitData = event.data.data;
       }
@@ -15,7 +16,7 @@
   <!-- Fallback Inlined Notibot Bridge if standalone -->
   <script>
     if (!window.notibot) {
-      (function() {
+      (function () {
         class NotibotBridge {
           constructor() {
             this.user = {};
@@ -29,21 +30,21 @@
             window.addEventListener('message', (event) => {
               if (!event.data) return;
               const isInit = event.data.type === 'NOTIBOT_INIT' ||
-                             event.data.type === 'notibot:init' ||
-                             event.data.type === 'NOTIBOT_READY' ||
-                             event.data.type === 'notibot_init';
+                event.data.type === 'notibot:init' ||
+                event.data.type === 'NOTIBOT_READY' ||
+                event.data.type === 'notibot_init';
               if (isInit) {
                 const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
                 const a = (event.data.data && event.data.data.app) || event.data.app || {};
                 if (u) this.user = u;
                 if (a) this.app = a;
                 this._updateHandlers.forEach(cb => {
-                  try { cb(this.user, this.app); } catch(e) {}
+                  try { cb(this.user, this.app); } catch (e) { }
                 });
               }
             });
             if (window.parent && window.parent !== window) {
-              try { window.parent.postMessage({ source: 'vibe-sandbox', type: 'READY_FOR_INIT' }, '*'); } catch(e) {}
+              try { window.parent.postMessage({ source: 'vibe-sandbox', type: 'READY_FOR_INIT' }, '*'); } catch (e) { }
             }
           }
           onUpdate(callback) {
@@ -68,8 +69,7 @@
   </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta http-equiv="Content-Security-Policy"
-    content="
+  <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
       script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
       frame-src 'self' https://kinescope.io https://*.kinescope.io;
@@ -83,7 +83,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="theme.css">
   <script src="leaves-bg.js"></script>
   <script src="telegram-user.js"></script>
@@ -109,7 +110,7 @@
         } else if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
           navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
         }
-      } catch (e) {}
+      } catch (e) { }
     }
   </script>
 
@@ -124,6 +125,7 @@
       display: inline-block;
       box-shadow: 0 2px 8px rgba(127, 155, 142, 0.25);
     }
+
     .timer-badge {
       background: rgba(18, 68, 83, 0.08);
       border: 1px solid rgba(18, 68, 83, 0.14);
@@ -138,6 +140,7 @@
     }
   </style>
 </head>
+
 <body>
   <div id="maisonArtBackground" aria-hidden="true"></div>
 
@@ -160,23 +163,30 @@
       <section class="glass card text-center">
         <div class="eyebrow" style="margin-bottom:8px;">Персональный видео-разбор</div>
         <h2>Почему мы выбираем «не тех» и как отключить эмоциональные качели</h2>
-        <p class="lead" style="font-size:13px; margin-bottom:12px;">Посмотрите видео-обращение Анатолия перед началом практики</p>
+        <p class="lead" style="font-size:13px; margin-bottom:12px;">Посмотрите видео-обращение Анатолия перед началом
+          практики</p>
 
         <!-- Video Player Wrapper (Kinescope) -->
-        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.15);">
-          <iframe src="https://kinescope.io/embed/xAvigBYEfvkFTgjAA8nSZK" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+        <div
+          style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.15);">
+          <iframe src="https://kinescope.io/embed/xAvigBYEfvkFTgjAA8nSZK"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+            frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
         </div>
       </section>
 
       <!-- Gift Meditation Section (From Lesson 0 transcript) -->
       <section class="glass card text-center">
-        <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2);">
+        <div class="eyebrow"
+          style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2);">
           🎁 Ваш подарок
         </div>
         <h3 style="margin-top:8px;">Практика снятия тревоги и отдыха</h3>
-        <p class="lead" style="font-size:13px; margin-bottom:8px;">Включите расслабляющую практику для снятия соматического спазма</p>
+        <p class="lead" style="font-size:13px; margin-bottom:8px;">Включите расслабляющую практику для снятия
+          соматического спазма</p>
 
-        <div style="display:inline-block; font-size:11px; font-weight:800; color:var(--nb-sea); background:rgba(18,68,83,0.07); padding:4px 12px; border-radius:999px; margin-bottom:12px;">
+        <div
+          style="display:inline-block; font-size:11px; font-weight:800; color:var(--nb-sea); background:rgba(18,68,83,0.07); padding:4px 12px; border-radius:999px; margin-bottom:12px;">
           Длительность записи: около 12 минут
         </div>
 
@@ -192,7 +202,7 @@
       <section class="glass card text-center">
         <div class="eyebrow">🎬 Практический курс</div>
         <h1>«Новый сценарий»</h1>
-        
+
         <div style="margin:6px 0 10px;">
           <span class="discount-pill">🔥 СКИДКА -52%</span>
         </div>
@@ -203,38 +213,49 @@
         </div>
 
         <!-- 3 Items strictly as spoken by Anatoly -->
-        <div style="margin:16px 0 12px; padding:14px; border-radius:18px; background:rgba(255,255,255,0.7); border:1px solid rgba(14,31,46,0.08);">
-          <div style="display:flex; justify-content:center; gap:16px; font-size:13px; font-weight:700; color:var(--nb-deep);">
+        <div
+          style="margin:16px 0 12px; padding:14px; border-radius:18px; background:rgba(255,255,255,0.7); border:1px solid rgba(14,31,46,0.08);">
+          <div
+            style="display:flex; justify-content:center; gap:16px; font-size:13px; font-weight:700; color:var(--nb-deep);">
             <span>• 5 видео-уроков</span>
             <span>• 2 медитации</span>
             <span>• 4 видео-бонуса</span>
           </div>
           <div style="margin-top:10px; border-top:1px solid rgba(14,31,46,0.08); padding-top:8px; text-align:center;">
-            <button onclick="toggleDetails()" class="ghost-btn" style="color:var(--nb-sea); font-size:12px; font-weight:700; text-decoration:underline; min-height:auto; padding:4px;">
+            <button onclick="toggleDetails()" class="ghost-btn"
+              style="color:var(--nb-sea); font-size:12px; font-weight:700; text-decoration:underline; min-height:auto; padding:4px;">
               <span id="toggleText">👉 Программа уроков и бонусы (подробнее)</span>
             </button>
           </div>
         </div>
 
         <!-- Program Accordion -->
-        <div id="lessonAccordion" class="hidden" style="flex-direction:column; gap:8px; text-align:left; background:rgba(255,255,255,0.85); padding:14px; border-radius:18px; border:1px solid rgba(14,31,46,0.08); margin-bottom:14px;">
-          <div style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
-            <strong>Урок 1:</strong> Как перестать накручивать себя в ожидании сообщений (отлепляем факты от интерпретаций)
+        <div id="lessonAccordion" class="hidden"
+          style="flex-direction:column; gap:8px; text-align:left; background:rgba(255,255,255,0.85); padding:14px; border-radius:18px; border:1px solid rgba(14,31,46,0.08); margin-bottom:14px;">
+          <div
+            style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
+            <strong>Урок 1:</strong> Как перестать накручивать себя в ожидании сообщений (отлепляем факты от
+            интерпретаций)
           </div>
-          <div style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
+          <div
+            style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
             <strong>Урок 2:</strong> «Бабочки в животе» или спазм тревоги? Синдром «скучного парня»
           </div>
-          <div style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
+          <div
+            style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
             <strong>Урок 3:</strong> Дофамино-кортизоловые качели и 3 шага срыва + Медитация заземления
           </div>
-          <div style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
+          <div
+            style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
             <strong>Урок 4:</strong> Внутренние запреты: почему магнитом тянет к «сложным» людям
           </div>
-          <div style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
+          <div
+            style="padding:10px 12px; border-radius:12px; background:rgba(245,248,243,0.9); font-size:12px; color:var(--nb-deep); border:1px solid rgba(14,31,46,0.05);">
             <strong>Урок 5:</strong> Закрепление нового сценария без срывов + Интекграционная медитация
           </div>
 
-          <div style="padding:12px; border-radius:14px; background:#EBF2ED; border:1px solid #D5E2D8; font-size:12px; margin-top:6px; color:#2D453B;">
+          <div
+            style="padding:12px; border-radius:14px; background:#EBF2ED; border:1px solid #D5E2D8; font-size:12px; margin-top:6px; color:#2D453B;">
             <strong style="display:block; margin-bottom:6px;">🎁 4 Видео-бонуса курса:</strong>
             <ul style="padding-left:18px; margin:0; line-height:1.5;">
               <li>Как создавать зону безопасности и уверенности в себе</li>
@@ -246,9 +267,11 @@
         </div>
 
         <!-- Price & CTA Button -->
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; border-top:1px solid rgba(14,31,46,0.08); padding-top:16px;">
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; gap:14px; border-top:1px solid rgba(14,31,46,0.08); padding-top:16px;">
           <div style="text-align:left;">
-            <span style="font-size:26px; font-weight:900; line-height:1; color:var(--nb-deep); display:block;">2 400 ₽</span>
+            <span style="font-size:26px; font-weight:900; line-height:1; color:var(--nb-deep); display:block;">2 400
+              ₽</span>
             <span style="font-size:12px; color:var(--nb-text-2); text-decoration:line-through;">5 000 ₽</span>
           </div>
           <button id="btnBuy" onclick="handlePurchase()" class="primary-btn" style="flex:1;">
@@ -260,10 +283,12 @@
       <!-- Social & Support Links -->
       <footer style="display:flex; flex-direction:column; gap:8px;">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <a href="https://t.me/smplthing" target="_blank" onclick="safeHaptic('selection');" class="secondary-btn" style="min-height:44px; font-size:12px; text-decoration:none;">
+          <a href="https://t.me/smplthing" target="_blank" onclick="safeHaptic('selection');" class="secondary-btn"
+            style="min-height:44px; font-size:12px; text-decoration:none;">
             <span>📢 Канал автора</span>
           </a>
-          <a href="https://t.me/smplthing" target="_blank" onclick="safeHaptic('selection');" class="secondary-btn" style="min-height:44px; font-size:12px; text-decoration:none;">
+          <a href="https://t.me/smplthing" target="_blank" onclick="safeHaptic('selection');" class="secondary-btn"
+            style="min-height:44px; font-size:12px; text-decoration:none;">
             <span>💬 Поддержка</span>
           </a>
         </div>
@@ -293,7 +318,7 @@
       const totalSec = Math.floor(remaining / 1000);
       const min = Math.floor(totalSec / 60);
       const sec = totalSec % 60;
-      
+
       const str = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
       const el = document.getElementById('countdownTimer');
       if (el) el.textContent = str;
@@ -331,4 +356,5 @@
   </script>
 
 </body>
+
 </html>

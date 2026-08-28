@@ -21,7 +21,19 @@
     '11_bonus2.html': 'oak',
     '12_bonus3.html': 'birch',
     '13_bonus4.html': 'oak',
-    '14_individual_offer.html': 'birch'
+        '14_individual_offer.html': 'birch',
+    '15_landing_partner_2.html': 'birch',
+    '16_lesson1.html': 'oak',
+    '17_lesson2.html': 'birch',
+    '18_lesson3.html': 'oak',
+    '19_lesson4.html': 'birch',
+    '20_lesson5.html': 'oak',
+    '21_bonuses.html': 'birch',
+    '22_bonus1.html': 'oak',
+    '23_bonus2.html': 'birch',
+    '24_bonus3.html': 'oak',
+    '25_bonus4.html': 'birch'
+
   };
 
   function setBackground(themeKey) {

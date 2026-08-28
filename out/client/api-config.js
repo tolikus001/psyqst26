@@ -103,7 +103,44 @@
 
     '14_individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs',
     '14_individual_offer': '1CkSHuhyH7kVgjKZxWPCDs',
-    'individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs'
+        '14_individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs',
+    '14_individual_offer': '1CkSHuhyH7kVgjKZxWPCDs',
+    'individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs',
+
+    '15_landing_partner_2': '1N6rOVg7p2VxqHnNA11HTe',
+    '15_landing_partner_2.html': '1N6rOVg7p2VxqHnNA11HTe',
+    'landing_partner_2': '1N6rOVg7p2VxqHnNA11HTe',
+    '16_lesson1': '5hR7Av3us4aIKmTZr7b6J2',
+    '16_lesson1.html': '5hR7Av3us4aIKmTZr7b6J2',
+    '16_lesson2_1': '5hR7Av3us4aIKmTZr7b6J2',
+    '17_lesson2': '2NvyoluAQiidfuwZTClFNy',
+    '17_lesson2.html': '2NvyoluAQiidfuwZTClFNy',
+    '17_lesson2_2': '2NvyoluAQiidfuwZTClFNy',
+    '18_lesson3': '0VLe3JSTGaykCYI4GGmRrc',
+    '18_lesson3.html': '0VLe3JSTGaykCYI4GGmRrc',
+    '18_lesson2_3': '0VLe3JSTGaykCYI4GGmRrc',
+    '19_lesson4': '3xxTBsJJZGpXnJBURlJWLo',
+    '19_lesson4.html': '3xxTBsJJZGpXnJBURlJWLo',
+    '19_lesson2_4': '3xxTBsJJZGpXnJBURlJWLo',
+    '20_lesson5': '3EUOYisS5lzwNG4LSB9Ttw',
+    '20_lesson5.html': '3EUOYisS5lzwNG4LSB9Ttw',
+    '20_lesson2_5': '3EUOYisS5lzwNG4LSB9Ttw',
+    '21_bonuses': '0dBgBZKrNbtzqhhtL7LweT',
+    '21_bonuses.html': '0dBgBZKrNbtzqhhtL7LweT',
+    '21_lp_bonuses_2': '0dBgBZKrNbtzqhhtL7LweT',
+    '22_bonus1': '2aGABwdvffujaWDzT9kPx6',
+    '22_bonus1.html': '2aGABwdvffujaWDzT9kPx6',
+    '22_bonus2_1': '2aGABwdvffujaWDzT9kPx6',
+    '23_bonus2': '1XqffrsaxNLrLI8inXo9fx',
+    '23_bonus2.html': '1XqffrsaxNLrLI8inXo9fx',
+    '23_bonus2_2': '1XqffrsaxNLrLI8inXo9fx',
+    '24_bonus3': '0ORCSoM30o4K6tlmZ4KYmP',
+    '24_bonus3.html': '0ORCSoM30o4K6tlmZ4KYmP',
+    '24_bonus2_3': '0ORCSoM30o4K6tlmZ4KYmP',
+    '25_bonus4': '6j07iXAve1PXf3vko48gGa',
+    '25_bonus4.html': '6j07iXAve1PXf3vko48gGa',
+    '25_bonus2_4': '6j07iXAve1PXf3vko48gGa'
+
   };
 
   // Official Notibot Product IDs
