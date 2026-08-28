@@ -21,31 +21,21 @@
 | 13 | — | ✅ Собрано | `13_bonus4.html` | NONE | `7NGEU2ikhiLHvuuyxhmL6K` |
 | 14 | — | ✅ Собрано | `14_individual_offer.html` | NONE | `1CkSHuhyH7kVgjKZxWPCDs` |
 
-## 🔵 Сценарий 2: Существующие экраны (out/client/)
+## 🔵 Сценарий 2: «Я остаюсь собой» (Утверждённые ТЗ в baza/approved_lessons/)
 
 | # | Файл ТЗ | Статус | Целевой файл HTML | Endpoint API | Notibot Article ID |
 |---|---|---|---|---|---|
-| 15 | — | ✅ Собрано | `15_landing_partner_2.html` | NONE | `1N6rOVg7p2VxqHnNA11HTe` |
-| 16 | — | ✅ Собрано | `16_lesson1.html` | `/api/s2-lesson1-strategy` | `5hR7Av3us4aIKmTZr7b6J2` |
-| 17 | — | ✅ Собрано | `17_lesson2.html` | `/api/s2-lesson2-strategy` | `2NvyoluAQiidfuwZTClFNy` |
-| 18 | — | ✅ Собрано | `18_lesson3.html` | NONE | `0VLe3JSTGaykCYI4GGmRrc` |
-| 19 | — | ✅ Собрано | `19_lesson4.html` | NONE | `3xxTBsJJZGpXnJBURlJWLo` |
-| 20 | — | ✅ Собрано | `20_lesson5.html` | NONE | `3EUOYisS5lzwNG4LSB9Ttw` |
-| 21 | — | ✅ Собрано | `21_bonuses.html` | NONE | `0dBgBZKrNbtzqhhtL7LweT` |
-| 22 | — | ✅ Собрано | `22_bonus1.html` | NONE | `2aGABwdvffujaWDzT9kPx6` |
-| 23 | — | ✅ Собрано | `23_bonus2.html` | NONE | `1XqffrsaxNLrLI8inXo9fx` |
-| 24 | — | ✅ Собрано | `24_bonus3.html` | NONE | `0ORCSoM30o4K6tlmZ4KYmP` |
-| 25 | — | ✅ Собрано | `25_bonus4.html` | NONE | `6j07iXAve1PXf3vko48gGa` |
-
-## 🟡 Очередь новых ТЗ / Правок от Атланта
-
-| Файл ТЗ | Статус | Дата поступления | Целевой файл | Заметки / Обратная связь |
-|---|---|---|---|---|
-| *(ожидает ТЗ)* | ⏳ В ожидании | — | — | Ожидаем новые `.md` ТЗ в `baza/approved_lessons/` |
+| 15 | `tz_15_landing_partner_2.md` | ⏳ Пересборка по ТЗ | `15_landing_partner_2.html` | NONE | `1N6rOVg7p2VxqHnNA11HTe` |
+| 16 | `tz_16_lesson1.md` | ⏳ Пересборка по ТЗ | `16_lesson1.html` | `/api/s2-lesson1-strategy` | `5hR7Av3us4aIKmTZr7b6J2` |
+| 17 | `tz_17_lesson2.md` | ⏳ Пересборка по ТЗ | `17_lesson2.html` | `/api/s2-lesson2-strategy` | `2NvyoluAQiidfuwZTClFNy` |
+| 18 | `tz_18_lesson3.md` | ⏳ Пересборка по ТЗ | `18_lesson3.html` | `/api/s2-lesson3-strategy` | `0VLe3JSTGaykCYI4GGmRrc` |
+| 19 | `tz_19_lesson4.md` | ⏳ Пересборка по ТЗ | `19_lesson4.html` | `/api/s2-lesson4-strategy` | `3xxTBsJJZGpXnJBURlJWLo` |
+| 20 | `tz_20_lesson5.md` | ⏳ Пересборка по ТЗ | `20_lesson5.html` | `/api/s2-lesson5-synthesis` | `3EUOYisS5lzwNG4LSB9Ttw` |
+| 21 | — | ✅ Готово | `21_bonuses.html` | NONE | `0dBgBZKrNbtzqhhtL7LweT` |
+| 22 | — | ✅ Готово | `22_bonus1.html` | NONE | `2aGABwdvffujaWDzT9kPx6` |
+| 23 | — | ✅ Готово | `23_bonus2.html` | NONE | `1XqffrsaxNLrLI8inXo9fx` |
+| 24 | — | ✅ Готово | `24_bonus3.html` | NONE | `0ORCSoM30o4K6tlmZ4KYmP` |
+| 25 | — | ✅ Готово | `25_bonus4.html` | NONE | `6j07iXAve1PXf3vko48gGa` |
 
 ---
-*Расшифровка статусов:*
-- ⏳ **В ожидании** — ТЗ поступило, ожидается взятие в работу Кодером
-- 🔄 **В работе** — Кодер верстает экран / настраивает API
-- 🚨 **Нужна доработка ТЗ** — Обратная связь в `FEEDBACK_{НН}.md`
-- ✅ **Собрано** — Экран собран, прошел аудит и добавлен в `out/client/`
+*Статус `⏳ Пересборка по ТЗ`: ТЗ полностью утверждено Анатолием Фёдоровым и готово к имплементации Кодером.*
