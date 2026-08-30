@@ -76,46 +76,44 @@
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: https:;
-      media-src 'self' https: data: blob:;
       connect-src 'self' https: http://localhost:3000;
     " />
-  <title>Урок 5. Выбирать по-новому — Анатолий Фёдоров</title>
+  <title>Урок 5: Сборка нового сценария: Карта опоры — Анатолий Фёдоров</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
   <style id="inlined-theme">
-    :root {
-      --nb-bg: #F3F6F5;
-      --nb-text: #243139;
-      --nb-text-2: #68767C;
-      --nb-accent: #7F9B8E;
-      --nb-deep: #243139;
-      --nb-sea: #45656D;
-      --nb-line: rgba(14, 31, 46, 0.10);
-      --nb-gold: #C8B28F;
-      --danger: #B42318;
-      --warning: #B7791F;
-      --success: #2F7D59;
-    }
+:root {
+  --nb-bg: #F3F6F5;
+  --nb-text: #243139;
+  --nb-text-2: #68767C;
+  --nb-accent: #7F9B8E;
+  --nb-deep: #243139;
+  --nb-sea: #45656D;
+  --nb-line: rgba(14, 31, 46, 0.10);
+  --nb-gold: #C8B28F;
+  --danger: #B42318;
+  --warning: #B7791F;
+  --success: #2F7D59;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      min-height: 100% !important;
-      background: #E8EDE7 !important;
-      color: var(--nb-text);
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100% !important;
+  background: #E8EDE7 !important;
+  color: var(--nb-text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
 
-    #maisonArtBackground {
+#maisonArtBackground {
   position: fixed !important;
   inset: 0 !important;
   z-index: 0 !important;
@@ -131,482 +129,615 @@
 
 
 
-    body>*:not(#maisonArtBackground) {
-      position: relative !important;
-      z-index: 1 !important;
-    }
+body > *:not(#maisonArtBackground) {
+  position: relative !important;
+  z-index: 1 !important;
+}
 
-    button,
-    input,
-    textarea {
-      font: inherit;
-    }
+button, input, textarea {
+  font: inherit;
+}
 
-    button {
-      -webkit-tap-highlight-color: transparent;
-    }
+button {
+  -webkit-tap-highlight-color: transparent;
+}
 
-    /* Master Shell */
-    .app-shell {
-      min-height: 100dvh;
-      display: flex;
-      justify-content: center;
-      padding: max(18px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom));
-      background: transparent !important;
-    }
+/* Master Shell */
+.app-shell {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  padding: max(18px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom));
+  background: transparent !important;
+}
 
-    .app {
-      width: 100%;
-      max-width: 448px;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      background: transparent !important;
-    }
+.app {
+  width: 100%;
+  max-width: 448px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: transparent !important;
+}
 
-    /* Headings & Subheadings - strictly centered */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    .question-title,
-    .hero h1,
-    .lead,
-    .subtle,
-    .section-subtitle,
-    .eyebrow {
-      text-align: center !important;
-    }
+/* Headings & Subheadings - strictly centered */
+h1, h2, h3, h4, h5, h6,
+.question-title,
+.hero h1,
+.lead,
+.subtle,
+.section-subtitle,
+.eyebrow {
+  text-align: center !important;
+}
 
-    h1 {
-      margin: 16px 0 10px;
-      font-size: 28px;
-      line-height: 1.12;
-      letter-spacing: -0.03em;
-      color: var(--nb-deep);
-    }
+h1 {
+  margin: 16px 0 10px;
+  font-size: 28px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--nb-deep);
+}
 
-    h2 {
-      margin-bottom: 8px;
-      font-size: 22px;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      color: var(--nb-deep);
-    }
+h2 {
+  margin-bottom: 8px;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--nb-deep);
+}
 
-    h3 {
-      margin-bottom: 6px;
-      font-size: 17px;
-      line-height: 1.25;
-      color: var(--nb-deep);
-    }
+h3 {
+  margin-bottom: 6px;
+  font-size: 17px;
+  line-height: 1.25;
+  color: var(--nb-deep);
+}
 
-    .lead {
-      color: var(--nb-text-2);
-      font-size: 15px;
-      line-height: 1.5;
-      margin-top: 0;
-    }
+.lead {
+  color: var(--nb-text-2);
+  font-size: 15px;
+  line-height: 1.5;
+  margin-top: 0;
+}
 
-    .eyebrow {
-      display: inline-flex !important;
-      align-items: center;
-      justify-content: center;
-      padding: 6px 16px;
-      border-radius: 999px;
-      border: 1px solid #E8DDD5;
-      background: rgba(255, 255, 255, 0.65);
-      color: #9E6747;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.3;
-      text-align: center !important;
-      margin: 0 auto 12px !important;
-      align-self: center !important;
-    }
+.eyebrow {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid #E8DDD5;
+  background: rgba(255, 255, 255, 0.65);
+  color: #9E6747;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center !important;
+  margin: 0 auto 12px !important;
+  align-self: center !important;
+}
 
-    .choice-notice {
-      background: #E2EAE2;
-      border: 1px solid #C8D8C8;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #385045;
-      text-align: center;
-      margin: 14px auto;
-    }
+.choice-notice {
+  background: #E2EAE2;
+  border: 1px solid #C8D8C8;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #385045;
+  text-align: center;
+  margin: 14px auto;
+}
 
-    /* Cards & Panels — Velvet Frosted Glass */
-    .glass,
-    .card,
-    .hero {
-      background: rgba(255, 255, 255, 0.52) !important;
-      backdrop-filter: blur(16px) saturate(135%) !important;
-      -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
-      border: 1px solid rgba(255, 255, 255, 0.65) !important;
-      box-shadow: 0 16px 38px rgba(45, 62, 54, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
-      border-radius: 28px !important;
-      padding: 32px 24px !important;
-      text-align: center;
-    }
+/* Cards & Panels — Velvet Frosted Glass */
+.glass, .card, .hero {
+  background: rgba(255, 255, 255, 0.52) !important;
+  backdrop-filter: blur(16px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+  box-shadow: 0 16px 38px rgba(45, 62, 54, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  border-radius: 28px !important;
+  padding: 32px 24px !important;
+  text-align: center;
+}
 
-    .hero h1,
-    .hero h2 {
-      color: #1E2B37 !important;
-    }
+.hero h1, .hero h2 {
+  color: #1E2B37 !important;
+}
 
-    .hero .lead,
-    .hero .subtle {
-      color: #55666F !important;
-    }
+.hero .lead, .hero .subtle {
+  color: #55666F !important;
+}
 
-    /* Header */
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 0;
-      width: 100%;
-    }
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  width: 100%;
+}
 
-    .identity {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    .avatar {
-      width: 36px;
-      height: 36px;
-      flex: 0 0 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 800;
-      font-size: 15px;
-      background: #42555F;
-      box-shadow: 0 4px 12px rgba(66, 85, 95, 0.2);
-    }
+.avatar {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 15px;
+  background: #42555F;
+  box-shadow: 0 4px 12px rgba(66, 85, 95, 0.2);
+}
 
-    .greeting {
-      font-size: 18px;
-      font-weight: 800;
-      color: #243139;
-    }
+.greeting {
+  font-size: 18px;
+  font-weight: 800;
+  color: #243139;
+}
 
-    .subtle {
-      color: var(--nb-text-2);
-      font-size: 12px;
-    }
+.subtle {
+  color: var(--nb-text-2);
+  font-size: 12px;
+}
 
-    /* Buttons — Warm Terracotta as in Psyquest 5.6 */
-    .primary-btn,
-    #startBtn,
-    #nextBtn,
-    #guideNextBtn,
-    #telegramBtn {
-      position: relative !important;
-      overflow: hidden !important;
-      isolation: isolate !important;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px 24px;
-      border-radius: 18px !important;
-      font-size: 16px;
-      font-weight: 800 !important;
-      background: linear-gradient(105deg, #B5663E 0%, #BD7249 50%, #CB8760 100%) !important;
-      color: #FFFFFF !important;
-      border: 1px solid #A95531 !important;
-      border-top-color: #E3A578 !important;
-      box-shadow: 0 12px 24px rgba(123, 67, 39, .22), inset 0 1px 0 rgba(255, 255, 255, .30), inset 0 -1px 0 rgba(104, 48, 23, .13) !important;
-      text-shadow: 0 1px 0 rgba(91, 40, 18, .18) !important;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+/* Buttons — Warm Terracotta as in Psyquest 5.6 */
+.primary-btn,
+#startBtn,
+#nextBtn,
+#guideNextBtn,
+#telegramBtn {
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  border-radius: 18px !important;
+  font-size: 16px;
+  font-weight: 800 !important;
+  background: linear-gradient(105deg, #B5663E 0%, #BD7249 50%, #CB8760 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #A95531 !important;
+  border-top-color: #E3A578 !important;
+  box-shadow: 0 12px 24px rgba(123, 67, 39, .22), inset 0 1px 0 rgba(255, 255, 255, .30), inset 0 -1px 0 rgba(104, 48, 23, .13) !important;
+  text-shadow: 0 1px 0 rgba(91, 40, 18, .18) !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-    .primary-btn:hover,
-    #startBtn:hover,
-    #nextBtn:hover {
-      background: linear-gradient(105deg, #BC6C43 0%, #C57A50 50%, #D08D66 100%) !important;
-      box-shadow: 0 15px 28px rgba(123, 67, 39, .25), inset 0 1px 0 rgba(255, 255, 255, .32) !important;
-    }
+.primary-btn:hover,
+#startBtn:hover,
+#nextBtn:hover {
+  background: linear-gradient(105deg, #BC6C43 0%, #C57A50 50%, #D08D66 100%) !important;
+  box-shadow: 0 15px 28px rgba(123, 67, 39, .25), inset 0 1px 0 rgba(255, 255, 255, .32) !important;
+}
 
-    .primary-btn:active,
-    #startBtn:active,
-    #nextBtn:active {
-      transform: scale(0.985);
-    }
+.primary-btn:active,
+#startBtn:active,
+#nextBtn:active {
+  transform: scale(0.985);
+}
 
-    /* Progress bar */
-    .progress-wrap {
-      padding: 12px 16px;
-    }
+/* Progress bar */
+.progress-wrap {
+  padding: 12px 16px;
+}
 
-    .progress-track {
-      width: 100%;
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(14, 31, 46, 0.08);
-      overflow: hidden;
-    }
+.progress-track {
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(14, 31, 46, 0.08);
+  overflow: hidden;
+}
 
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--nb-sea), var(--nb-accent));
-      transition: width 0.35s ease;
-    }
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--nb-sea), var(--nb-accent));
+  transition: width 0.35s ease;
+}
 
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 6px;
-      color: var(--nb-text-2);
-      font-size: 11px;
-      font-weight: 700;
-    }
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  color: var(--nb-text-2);
+  font-size: 11px;
+  font-weight: 700;
+}
 
-    /* Buttons */
-    .primary-btn,
-    .secondary-btn,
-    .ghost-btn {
-      width: 100%;
-      min-height: 52px;
-      border: 0;
-      border-radius: 16px;
-      padding: 13px 18px;
-      font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-    }
+/* Buttons */
+.primary-btn, .secondary-btn, .ghost-btn {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 16px;
+  padding: 13px 18px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
 
-    .primary-btn {
-      color: #FFFFFF;
-      background: var(--nb-accent);
-      box-shadow: 0 12px 28px rgba(127, 155, 142, 0.28);
-    }
+.primary-btn {
+  color: #FFFFFF;
+  background: var(--nb-accent);
+  box-shadow: 0 12px 28px rgba(127, 155, 142, 0.28);
+}
 
-    .primary-btn:hover {
-      box-shadow: 0 16px 34px rgba(127, 155, 142, 0.34);
-    }
+.primary-btn:hover {
+  box-shadow: 0 16px 34px rgba(127, 155, 142, 0.34);
+}
 
-    .primary-btn:active,
-    .secondary-btn:active,
-    .ghost-btn:active {
-      transform: scale(0.985);
-    }
+.primary-btn:active, .secondary-btn:active, .ghost-btn:active {
+  transform: scale(0.985);
+}
 
-    .primary-btn:disabled {
-      opacity: 0.48;
-      cursor: not-allowed;
-    }
+.primary-btn:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
 
-    .secondary-btn {
-      color: var(--nb-deep);
-      background: #FFFFFF;
-      border: 1px solid rgba(14, 31, 46, 0.12);
-      box-shadow: 0 4px 14px rgba(14, 31, 46, 0.04);
-    }
+.secondary-btn {
+  color: var(--nb-deep);
+  background: #FFFFFF;
+  border: 1px solid rgba(14, 31, 46, 0.12);
+  box-shadow: 0 4px 14px rgba(14, 31, 46, 0.04);
+}
 
-    .secondary-btn:hover {
-      background: #F8FAFC;
-    }
+.secondary-btn:hover {
+  background: #F8FAFC;
+}
 
-    .ghost-btn {
-      color: var(--nb-text-2);
-      background: transparent;
-      min-height: 44px;
-    }
+.ghost-btn {
+  color: var(--nb-text-2);
+  background: transparent;
+  min-height: 44px;
+}
 
-    /* Answers list */
-    .answers {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+/* Answers list */
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-    .answer {
-      width: 100%;
-      min-width: 0;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 13px 15px;
-      border-radius: 16px;
-      border: 1px solid rgba(14, 31, 46, 0.10);
-      background: #FFFFFF;
-      color: var(--nb-text);
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      overflow-wrap: anywhere;
-    }
+.answer {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 15px;
+  border-radius: 16px;
+  border: 1px solid rgba(14, 31, 46, 0.10);
+  background: #FFFFFF;
+  color: var(--nb-text);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  overflow-wrap: anywhere;
+}
 
-    .answer:hover {
-      border-color: rgba(18, 68, 83, 0.28);
-      box-shadow: 0 6px 18px rgba(14, 31, 46, 0.05);
-    }
+.answer:hover {
+  border-color: rgba(18, 68, 83, 0.28);
+  box-shadow: 0 6px 18px rgba(14, 31, 46, 0.05);
+}
 
-    .answer.selected {
-      border-color: var(--nb-sea);
-      background: rgba(18, 68, 83, 0.07);
-      box-shadow: 0 8px 22px rgba(18, 68, 83, 0.10);
-    }
+.answer.selected {
+  border-color: var(--nb-sea);
+  background: rgba(18, 68, 83, 0.07);
+  box-shadow: 0 8px 22px rgba(18, 68, 83, 0.10);
+}
 
-    .answer-dot {
-      width: 20px;
-      height: 20px;
-      flex: 0 0 20px;
-      border-radius: 6px;
-      border: 2px solid rgba(14, 31, 46, 0.24);
-      margin-top: 1px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.answer-dot {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  border-radius: 6px;
+  border: 2px solid rgba(14, 31, 46, 0.24);
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .answer.selected .answer-dot {
-      border-color: var(--nb-sea);
-      background: var(--nb-sea);
-    }
+.answer.selected .answer-dot {
+  border-color: var(--nb-sea);
+  background: var(--nb-sea);
+}
 
-    .answer.selected .answer-dot:after {
-      content: "";
-      width: 8px;
-      height: 4px;
-      border-left: 2px solid #FFFFFF;
-      border-bottom: 2px solid #FFFFFF;
-      transform: rotate(-45deg) translateY(-1px);
-    }
+.answer.selected .answer-dot:after {
+  content: "";
+  width: 8px;
+  height: 4px;
+  border-left: 2px solid #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+  transform: rotate(-45deg) translateY(-1px);
+}
 
-    /* Form Inputs */
-    textarea,
-    input {
-      width: 100%;
-      border: 1px solid rgba(14, 31, 46, 0.12);
-      border-radius: 14px;
-      padding: 12px 14px;
-      background: #FFFFFF;
-      color: var(--nb-text);
-      outline: none;
-      font-size: 14px;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
+/* Form Inputs */
+textarea, input {
+  width: 100%;
+  border: 1px solid rgba(14, 31, 46, 0.12);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: #FFFFFF;
+  color: var(--nb-text);
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
 
-    textarea:focus,
-    input:focus {
-      border-color: var(--nb-sea);
-      box-shadow: 0 0 0 3px rgba(18, 68, 83, 0.10);
-    }
+textarea:focus, input:focus {
+  border-color: var(--nb-sea);
+  box-shadow: 0 0 0 3px rgba(18, 68, 83, 0.10);
+}
 
-    /* Choice notice */
-    .choice-notice {
-      margin: 0 0 14px;
-      padding: 10px 14px;
-      border-radius: 14px;
-      background: rgba(18, 68, 83, 0.07);
-      color: var(--nb-sea);
-      font-size: 13px;
-      font-weight: 800;
-      text-align: center;
-    }
+/* Choice notice */
+.choice-notice {
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(18, 68, 83, 0.07);
+  color: var(--nb-sea);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+}
 
-    /* Nav row */
-    .nav-row {
-      display: flex !important;
-      gap: 10px !important;
-      margin-top: 14px !important;
-      width: 100% !important;
-      align-items: stretch !important;
-    }
+/* Nav row */
+.nav-row {
+  display: flex !important;
+  gap: 10px !important;
+  margin-top: 14px !important;
+  width: 100% !important;
+  align-items: stretch !important;
+}
 
-    .nav-row .ghost-btn {
-      flex: 0 0 100px !important;
-      width: 100px !important;
-      min-height: 48px !important;
-      padding: 0 12px !important;
-      background: #FFFFFF !important;
-      border: 1px solid rgba(36, 49, 57, 0.15) !important;
-      border-radius: 16px !important;
-      color: var(--nb-deep) !important;
-      font-size: 13.5px !important;
-      font-weight: 700 !important;
-    }
+.nav-row .ghost-btn {
+  flex: 0 0 100px !important;
+  width: 100px !important;
+  min-height: 48px !important;
+  padding: 0 12px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(36, 49, 57, 0.15) !important;
+  border-radius: 16px !important;
+  color: var(--nb-deep) !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+}
 
-    .nav-row .primary-btn,
-    .nav-row .secondary-btn {
-      flex: 1 1 auto !important;
-      width: auto !important;
-      min-width: 0 !important;
-      min-height: 48px !important;
-      padding: 12px 14px !important;
-      font-size: 14px !important;
-    }
+.nav-row .primary-btn,
+.nav-row .secondary-btn {
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  padding: 12px 14px !important;
+  font-size: 14px !important;
+}
 
-    /* Badges */
-    .strategy-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      color: var(--nb-deep);
-      font-weight: 700;
-      font-size: 13px;
-      margin: 0 auto;
-      text-align: center;
-    }
+/* Badges */
+.strategy-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  color: var(--nb-deep);
+  font-weight: 700;
+  font-size: 13px;
+  margin: 0 auto;
+  text-align: center;
+}
 
-    .pulse {
-      animation: pulse 2.4s ease-in-out infinite;
-    }
+.pulse {
+  animation: pulse 2.4s ease-in-out infinite;
+}
 
-    @keyframes pulse {
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 12px 28px rgba(127, 155, 142, 0.22); transform: scale(1); }
+  50% { box-shadow: 0 16px 34px rgba(127, 155, 142, 0.32); transform: scale(1.01); }
+}
 
-      0%,
-      100% {
-        box-shadow: 0 12px 28px rgba(127, 155, 142, 0.22);
-        transform: scale(1);
-      }
+@keyframes enter {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
-      50% {
-        box-shadow: 0 16px 34px rgba(127, 155, 142, 0.32);
-        transform: scale(1.01);
-      }
-    }
 
-    @keyframes enter {
-      from {
-        opacity: 0;
-        transform: translateY(8px) scale(0.99);
-      }
+/* Option Chips for Interactive Practices (Lesson 4, Quizzes, etc.) */
+.option-chip {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(14, 31, 46, 0.10);
+  background: #FFFFFF;
+  color: var(--nb-text);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
 
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-  
+.option-chip:hover {
+  border-color: rgba(18, 68, 83, 0.28);
+  box-shadow: 0 6px 18px rgba(14, 31, 46, 0.05);
+}
+
+.option-chip.selected {
+  border-color: var(--nb-sea) !important;
+  background: rgba(18, 68, 83, 0.07) !important;
+  box-shadow: 0 8px 22px rgba(18, 68, 83, 0.10) !important;
+  color: var(--nb-deep) !important;
+  font-weight: 700 !important;
+}
+
+.check-circle {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  border-radius: 6px;
+  border: 2px solid rgba(14, 31, 46, 0.24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+  background: #FFFFFF;
+}
+
+.option-chip.selected .check-circle {
+  border-color: var(--nb-sea) !important;
+  background: var(--nb-sea) !important;
+}
+
+.option-chip.selected .check-circle:after {
+  content: "";
+  width: 8px;
+  height: 4px;
+  border-left: 2px solid #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+
+/* Action Choices for Lesson 2 (Stage 4) */
+.action-choice-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  margin-top: 6px !important;
+}
+
+.action-choice {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 10px 14px !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(14, 31, 46, 0.10) !important;
+  color: var(--nb-text) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+  user-select: none !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+.action-choice:hover {
+  border-color: rgba(18, 68, 83, 0.28) !important;
+  box-shadow: 0 4px 12px rgba(14, 31, 46, 0.05) !important;
+}
+
+.action-choice.active {
+  border-color: var(--nb-sea) !important;
+  background: rgba(18, 68, 83, 0.08) !important;
+  color: var(--nb-deep) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(18, 68, 83, 0.10) !important;
+}
+
+.action-choice.active strong {
+  color: var(--nb-sea) !important;
+}
+
+/* Criteria Grid & Items for Lesson 2 (Stage 5) */
+.criteria-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-top: 6px !important;
+}
+
+.criteria-item {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 12px 14px !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(14, 31, 46, 0.10) !important;
+  color: var(--nb-text) !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+  user-select: none !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+.criteria-item:hover {
+  border-color: rgba(18, 68, 83, 0.28) !important;
+  box-shadow: 0 4px 12px rgba(14, 31, 46, 0.05) !important;
+}
+
+.criteria-item.active {
+  border-color: var(--nb-sea) !important;
+  background: rgba(18, 68, 83, 0.08) !important;
+  color: var(--nb-deep) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(18, 68, 83, 0.10) !important;
+}
+
+.criteria-checkbox {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 6px !important;
+  border: 2px solid rgba(14, 31, 46, 0.24) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  color: transparent !important;
+  transition: all 0.18s ease !important;
+  background: #FFFFFF !important;
+}
+
+.criteria-item.active .criteria-checkbox {
+  border-color: var(--nb-sea) !important;
+  background: var(--nb-sea) !important;
+  color: #FFFFFF !important;
+}
+
+
     
     
     /* =========================================================
@@ -955,74 +1086,74 @@
     }
 </style>
   <script>
-    (function () {
-      const backgrounds = {
-        birch: "https://inter01-anatolyfedorov.amvera.io/data/leaves_oak.jpg",
-        oak: "https://inter01-anatolyfedorov.amvera.io/data/leaves_oak.jpg"
-      };
+(function() {
+  const backgrounds = {
+    birch: "https://inter01-anatolyfedorov.amvera.io/data/leaves_oak.jpg",
+    oak: "https://inter01-anatolyfedorov.amvera.io/data/leaves_oak.jpg"
+  };
 
-      // Alternating mapping across screens
-      const pageMapping = {
-        '': 'birch',
-        'index.html': 'birch',
-        '01_psyquest.html': 'oak',
-        '02_landing_partner.html': 'birch',
-        '03_lesson1.html': 'oak',
-        '04_lesson2.html': 'birch',
-        '05_lesson3.html': 'oak',
-        '06_lesson4.html': 'birch',
-        '07_lesson5.html': 'oak',
-        '08_portrait_quest.html': 'birch',
-        '21_bonuses.html': 'oak',
-        '10_bonus1.html': 'birch',
-        '11_bonus2.html': 'oak',
-        '12_bonus3.html': 'birch',
-        '13_bonus4.html': 'oak',
-        '14_individual_offer.html': 'birch'
-      };
+  // Alternating mapping across screens
+  const pageMapping = {
+    '': 'birch',
+    'index.html': 'birch',
+    '01_psyquest.html': 'oak',
+    '02_landing_partner.html': 'birch',
+    '03_lesson1.html': 'oak',
+    '17_lesson2.html': 'birch',
+    '05_lesson3.html': 'oak',
+    '06_lesson4.html': 'birch',
+    '07_lesson5.html': 'oak',
+    '08_portrait_quest.html': 'birch',
+    '09_bonuses.html': 'oak',
+    '10_bonus1.html': 'birch',
+    '11_bonus2.html': 'oak',
+    '12_bonus3.html': 'birch',
+    '13_bonus4.html': 'oak',
+    '14_individual_offer.html': 'birch'
+  };
 
-      function setBackground(themeKey) {
-        let layer = document.getElementById('maisonArtBackground');
-        if (!layer) {
-          layer = document.createElement('div');
-          layer.id = 'maisonArtBackground';
-          layer.setAttribute('aria-hidden', 'true');
-          if (document.body) {
-            document.body.insertBefore(layer, document.body.firstChild);
-          }
-        }
-
-        let bgFile = backgrounds.birch;
-        if (typeof themeKey === 'number') {
-          bgFile = themeKey % 2 === 0 ? backgrounds.birch : backgrounds.oak;
-        } else if (typeof themeKey === 'string' && backgrounds[themeKey]) {
-          bgFile = backgrounds[themeKey];
-        } else {
-          const page = window.location.pathname.split('/').pop() || 'index.html';
-          const mapped = pageMapping[page] || (page.match(/\d+/) && parseInt(page.match(/\d+/)[0], 10) % 2 === 1 ? 'oak' : 'birch');
-          bgFile = backgrounds[mapped] || backgrounds.birch;
-        }
-
-        if (layer) {
-          layer.style.backgroundImage = "url('" + bgFile + "')";
-        }
+  function setBackground(themeKey) {
+    let layer = document.getElementById('maisonArtBackground');
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.id = 'maisonArtBackground';
+      layer.setAttribute('aria-hidden', 'true');
+      if (document.body) {
+        document.body.insertBefore(layer, document.body.firstChild);
       }
+    }
 
-      function init() {
-        new Image().src = backgrounds.birch;
-        new Image().src = backgrounds.oak;
-        setBackground();
-      }
+    let bgFile = backgrounds.birch;
+    if (typeof themeKey === 'number') {
+      bgFile = themeKey % 2 === 0 ? backgrounds.birch : backgrounds.oak;
+    } else if (typeof themeKey === 'string' && backgrounds[themeKey]) {
+      bgFile = backgrounds[themeKey];
+    } else {
+      const page = window.location.pathname.split('/').pop() || 'index.html';
+      const mapped = pageMapping[page] || (page.match(/\d+/) && parseInt(page.match(/\d+/)[0], 10) % 2 === 1 ? 'oak' : 'birch');
+      bgFile = backgrounds[mapped] || backgrounds.birch;
+    }
 
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-      } else {
-        init();
-      }
+    if (layer) {
+      layer.style.backgroundImage = "url('" + bgFile + "')";
+    }
+  }
 
-      window.setLeavesBackground = setBackground;
-    })();
-  </script>
+  function init() {
+    new Image().src = backgrounds.birch;
+    new Image().src = backgrounds.oak;
+    setBackground();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+  window.setLeavesBackground = setBackground;
+})();
+</script>
   <script>
 /**
  * Unified API & Media Connector for Local, Notibot and Amvera Environments
@@ -1075,7 +1206,7 @@
     '01_lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
     '01_lesson1': '6QzHvAlz22e4IEb6wVhjy0',
 
-    '04_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
+    '17_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
     '04_lesson2': '6wQPr20VEfbLD5Jg6GeEVR',
     'lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
     'lesson_2': '6wQPr20VEfbLD5Jg6GeEVR',
@@ -1107,7 +1238,7 @@
     '08_portrait_quest': '2plu9h6VcWiAQ3TrZ8nLql',
     'portrait_quest.html': '2plu9h6VcWiAQ3TrZ8nLql',
 
-    '21_bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
+    '09_bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
     '09_bonuses': '6ZwOzlMAERTYgkV2FsWnVx',
     'bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
 
@@ -1274,41 +1405,22 @@
 })();
 
 </script>
-
   <script>
     window.notibotInitData = null;
-    window.addEventListener("message", function (event) {
-      if (event.data && event.data.type === "NOTIBOT_INIT" && event.data.data) {
+    window.addEventListener('message', function (event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
         window.notibotInitData = event.data.data;
       }
     });
-
-    function safeHaptic(type) {
-      try {
-        if (window.notibot) {
-          if (type === "selection" && typeof window.notibot.hapticSelection === "function") {
-            window.notibot.hapticSelection();
-          } else if ((type === "success" || type === "error" || type === "warning") && typeof window.notibot.hapticNotification === "function") {
-            window.notibot.hapticNotification(type);
-          } else if (typeof window.notibot.hapticImpact === "function") {
-            window.notibot.hapticImpact(type || "light");
-          }
-        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-          if (type === "success" || type === "error" || type === "warning") {
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
-          } else {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred("medium");
-          }
-        } else if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
-          navigator.vibrate(type === "success" ? [30, 50, 30] : 20);
-        }
-      } catch (e) { }
-    }
   </script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-
 <body>
-  <div id="maisonArtBackground" aria-hidden="true"></div>
+  <div id="maisonArtBackground"></div>
+  <div id="loading-screen" class="loader-screen">
+    <div class="loader-spinner mb-4"></div>
+    <span class="text-sm tracking-widest text-nb-accent uppercase font-bold animate-pulse">Загрузка...</span>
+  </div>
 
   <main class="app-shell">
     <div class="app">
@@ -1321,7 +1433,7 @@
             <span>Навигация по курсу</span>
           </button>
           <button type="button" onclick="safeHaptic('selection'); openScreen('21_bonuses.html');" class="next-lesson-btn">
-            <span>🎁 К бонусам →</span>
+            <span>Бонусы курса 🎁 →</span>
           </button>
         </div>
 
@@ -1335,591 +1447,257 @@
         </div>
       </header>
 
-      <!-- ==========================================
-           SCREEN 1: VIDEO LESSON & MAIN INSIGHT
-           ========================================== -->
+      <!-- SCREEN 1: VIDEO & INSIGHT -->
       <div id="step1VideoScreen" style="display:flex; flex-direction:column; gap:14px;">
 
-        <!-- Video Card -->
         <section class="glass card text-center">
-          <div class="eyebrow" style="margin-bottom:8px;">Урок 5 из 5</div>
-          <h2>Урок 5. Выбрать себя и новый сценарий</h2>
-          <p class="lead" style="font-size:13px; margin-bottom:12px;">Сборка всех инсайтов курса: от автоматической
-            реакции к осознанному выбору партнёра и отношений.</p>
+          <div class="eyebrow" style="margin-bottom:8px;">Финал курса • Урок 5 из 5</div>
+          <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); line-height:1.3; margin-bottom:6px; text-align:center;">Сборка нового сценария: Карта опоры</h2>
+          <p class="lead" style="font-size:13px; line-height:1.4; color:var(--nb-text-2); margin-bottom:12px; text-align:center;">Ваш пошаговый компас устойчивости в отношениях и финальная медитация.</p>
 
-          <!-- Video Player Wrapper (Kinescope) -->
-          <div
-            style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="lesson5VideoIframe" src="https://kinescope.io/embed/xhqTTBCRmLZA8P3KWEXtG4?max_quality=720"
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/xhqTTBCRmLZA8P3KWEXtG4?max_quality=720"
               allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
               frameborder="0" allowfullscreen
               style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
           </div>
         </section>
 
-        <!-- Block: Что важно забрать из урока -->
-        <section class="glass card text-center">
-          <div class="eyebrow"
-            style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+        <section id="insightSection" class="glass card text-center">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
             💡 Главный вывод
           </div>
-          <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
-          <p class="lead"
-            style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0 0 14px 0; text-align:left;">
-            Новый сценарий не строится за один день, но он начинается ровно в тот момент, когда в точке привычной
-            тревоги или импульса вы делаете паузу и выбираете опереться на себя.
+          <h3 style="font-size:16px; font-weight:800; margin-bottom:8px; text-align:center;">Что важно забрать из урока</h3>
+          <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin-bottom:16px; text-align:center;">
+            Ваша устойчивость держится на ваших понятных осознанных шагах. Заполните Карту опоры и закрепите состояние через медитацию.
           </p>
 
-          <div style="display:flex; flex-direction:column; gap:10px; margin-top:14px;">
-            <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%;">
-              <span>Интеллектуальный попутчик ждёт ➔</span>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%; min-height:46px;">
+              <span>Собрать Карту опоры ➔</span>
             </button>
           </div>
         </section>
 
-        <!-- Block: Медитация-транс «Внутренний маяк» -->
-        <section class="glass card text-center">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-            🧘‍♀️ Медитация-транс
-          </div>
-          <h3 style="font-size:17px; margin-bottom:6px;">Медитация «Внутренний маяк»</h3>
-          <p class="lead" style="font-size:13px; margin-bottom:14px; color:var(--nb-slate);">
-            Практика закрепления нового сценария и возвращения к себе.
-          </p>
-
-          <!-- Warning Note Before Player -->
-          <div style="margin-bottom:12px; padding:10px 12px; border-radius:12px; background:rgba(217,131,78,0.1); border:1px solid rgba(217,131,78,0.2); font-size:12px; line-height:1.45; color:var(--nb-terracotta); text-align:left;">
-            ⚠️ Выберите место, где вас не будут отвлекать. Не слушайте медитацию за рулём или во время занятий, требующих внимания.
-          </div>
-
-        <div style="padding:10px; border-radius:14px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-          <audio id="meditationAudio5" controls preload="metadata" src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3" style="width:100%; accent-color:var(--nb-accent);">
-            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3" type="audio/mpeg">
-            <source src="https://inter01-anatolyfedorov.amvera.io/meditation1-5.MP3" type="audio/mpeg">
-            <source src="https://inter01-anatolyfedorov.amvera.io/media/meditation1-5.MP3" type="audio/mpeg">
-            <source src="/data/meditation1-5.MP3" type="audio/mpeg">
-            <source src="meditation1-5.MP3" type="audio/mpeg">
-            Ваш браузер не поддерживает аудио.
-          </audio>
-        </div>
-
-          <!-- Concluding Phrase After Player -->
-          <p style="margin:14px 0 0; font-size:12.5px; line-height:1.5; color:var(--nb-deep); font-weight:600; text-align:center;">
-            ✨ Ваш внутренний маяк — это ощущение права выбирать себя в любой ситуации.
-          </p>
-        </section>
-
-        <!-- Next Step Transition (Screen 1) -->
         <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); openScreen('21_bonuses.html');" class="secondary-btn"
-            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
-            <span>Перейти к завершению курса ➔</span>
+          <button onclick="safeHaptic('selection'); openScreen('21_bonuses.html');" class="primary-btn pulse"
+            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:48px;">
+            <span>Перейти к 4 бонусам курса →</span>
           </button>
         </div>
 
       </div>
 
-      <!-- ==========================================
-           SCREEN 2: INTERACTIVE PRACTICE «МОЙ НОВЫЙ СЦЕНАРИЙ»
-           ========================================== -->
+      <!-- SCREEN 2: INTERACTIVE PRACTICE -->
       <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
 
-        <!-- Back to Video Button -->
         <div>
-          <button onclick="goToVideo()" class="top-nav-btn"
-            style="display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:13px; color:var(--nb-deep); background:rgba(255,255,255,0.75); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:6px 14px; border-radius:9999px; border:1px solid rgba(255,255,255,0.85); box-shadow:0 2px 8px rgba(0,0,0,0.04); text-decoration:none; cursor:pointer;">
+          <button onclick="goToVideo()" class="top-nav-btn" style="display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:13px; color:var(--nb-deep); background:rgba(255,255,255,0.75); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:6px 14px; border-radius:9999px; border:1px solid rgba(255,255,255,0.85); box-shadow:0 2px 8px rgba(0,0,0,0.04); text-decoration:none; cursor:pointer;">
             ← Назад к видеоуроку
           </button>
         </div>
 
-        <!-- AI Companion Top Header Card -->
-        <div class="glass card text-center" style="padding: 16px 20px;">
-          <div
-            style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
-            <div class="eyebrow"
-              style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
-              ☀️ Интеллектуальный попутчик
-            </div>
-            <div class="strategy-badge" id="lesson5CreditsBadge"
-              style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
-              Осталось разборов:&nbsp;<span id="aiCreditsLeft"
-                style="color:var(--nb-terracotta); font-weight:900;">1</span>
-            </div>
-          </div>
-          <p style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
-            Он соединит результаты всех пройденных уроков в единую карту вашего нового сценария.
-          </p>
-        </div>
+        <!-- 5 Blocks of Support Map -->
+        <section class="glass card" style="display:flex; flex-direction:column; gap:12px;">
+          <h3 style="font-size:18px; font-weight:800; text-align:center; margin:0;">Моя Карта опоры</h3>
+          <p style="font-size:12.5px; color:var(--nb-text-2); text-align:center; margin:0;">5 ключевых шагов нового сценария, собранных из ваших ответов:</p>
 
-        <!-- Main Synthesis Section -->
-        <section class="glass card text-center" id="synthesisSection">
-          <div class="eyebrow" style="margin-bottom:8px;">✨ Итоговый разбор</div>
-          <h3 style="font-size:18px; margin-bottom:4px;">Мой новый сценарий</h3>
-          <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin-bottom:14px;">
-            Интеллектуальный попутчик соединит результаты пройденных уроков в единую карту.
-          </p>
-
-          <!-- Synthesis Action Button (Before Run) -->
-          <div id="synthesisInitBlock">
-            <button onclick="synthesizeNewScenario()" id="btnSynthesize" class="primary-btn pulse"
-              style="width:100%; min-height:48px;">
-              <span>Собрать мой новый сценарий →</span>
-            </button>
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">1. Реальность (без додумок)</label>
+            <input type="text" id="mapStep1" value="Человек просто молчит — это не угроза мне." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
           </div>
 
-          <!-- Loading State -->
-          <div id="aiLoadingBlock" style="display:none; padding:24px 10px; text-align:center;">
-            <div
-              style="display:inline-block; width:34px; height:34px; border:3px solid var(--nb-line); border-top-color:var(--nb-terracotta); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:10px;">
-            </div>
-            <div style="font-size:13px; font-weight:700; color:var(--nb-deep);">Попутчик соединяет карту вашего нового
-              сценария...</div>
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">2. Разговор на равных (о своей потребности)</label>
+            <input type="text" id="mapStep2" value="«Я устала, мне нужна твоя помощь. Пожалуйста, реши это сегодня»." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
           </div>
 
-          <!-- Result Container -->
-          <div id="synthesisResultContainer" style="display:none; text-align:left; margin-top:8px;">
-
-            <!-- Offline Notice Banner -->
-            <div id="aiNoticeStatusBlock"
-              style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
-              🚂 <strong>Помощник в пути... (проблемы с интернетом)</strong> А пока прислал такую мысль и фразу:
-            </div>
-
-            <!-- Structured 7 Points Card -->
-            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
-              <div
-                style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🎯 Мой
-                  триггер:</strong>
-                <span id="resTrigger" style="font-size:13.5px; font-weight:700; color:var(--nb-deep);"></span>
-              </div>
-
-              <div
-                style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🫀 Первый
-                  сигнал тела:</strong>
-                <span id="resBodySignal" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
-              </div>
-
-              <div
-                style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🔄 Прежняя
-                  реакция:</strong>
-                <span id="resOldReaction" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
-              </div>
-
-              <div
-                style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">⏸ Моя точка
-                  остановки:</strong>
-                <span id="resPause" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
-              </div>
-
-              <div
-                style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🧭 Мои
-                  ориентиры:</strong>
-                <span id="resCriteria" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
-              </div>
-
-              <div
-                style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">💎 Моя
-                  возвращённая сила:</strong>
-                <span id="resStrength" style="font-size:13.5px; font-weight:800; color:var(--nb-sea);"></span>
-              </div>
-
-              <div
-                style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid rgba(36,49,57,0.08);">
-                <strong style="font-size:12px; color:var(--nb-slate); display:block; margin-bottom:2px;">🚀 Новый
-                  выбор:</strong>
-                <span id="resNewAction" style="font-size:13px; color:var(--nb-text); line-height:1.45;"></span>
-              </div>
-            </div>
-
-            <!-- Support Phrase Card (Special Highlight) -->
-            <div
-              style="padding:16px; border-radius:16px; background:rgba(217, 131, 78, 0.12); border:1.5px solid rgba(217, 131, 78, 0.35); text-align:center; margin-bottom:14px;">
-              <div
-                style="font-size:12px; font-weight:800; color:var(--nb-terracotta); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">
-                ✨ Ваша поддерживающая фраза
-              </div>
-              <div id="resSupportPhrase"
-                style="font-size:15px; font-weight:800; color:var(--nb-deep); line-height:1.45; font-style:italic;">
-              </div>
-            </div>
-
-            <!-- FAREWELL BLOCK: Прощание Интеллектуального попутчика -->
-            <div id="aiFarewellCard"
-              style="margin-top:14px; padding:18px 16px; border-radius:18px; background:rgba(217,131,78,0.08); border:1.5px solid rgba(217,131,78,0.25); text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px;">
-              <div class="eyebrow"
-                style="margin:0; background:rgba(217,131,78,0.14); color:var(--nb-terracotta); border-color:rgba(217,131,78,0.3);">
-                🚂 Интеллектуальный попутчик
-              </div>
-              <h4 style="font-size:17px; font-weight:800; color:var(--nb-deep); margin:0;">
-                Путешествие завершено
-              </h4>
-              <p style="font-size:13.5px; line-height:1.55; color:var(--nb-text); margin:0; text-align:center;">
-                На этом маршруте Интеллектуальный попутчик прощается с вами. Сохраните свой новый сценарий и
-                возвращайтесь к нему, когда понадобится опора. До новой встречи — мы будем ждать вас снова!
-              </p>
-              <button onclick="safeHaptic('selection'); openScreen('21_bonuses.html');" class="primary-btn pulse"
-                style="width:100%; min-height:48px; margin-top:4px;">
-                <span>Перейти к завершению курса →</span>
-              </button>
-            </div>
-
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">3. Телесный сигнал</label>
+            <input type="text" id="mapStep3" value="Замечаю сжатие в челюсти/плечах ➔ делаю глубокий выдох." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
           </div>
+
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">4. Опора и сильное убеждение</label>
+            <input type="text" id="mapStep4" value="«Моя ценность существует сама по себе. Со мной всё в порядке»." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
+          </div>
+
+          <div>
+            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">5. Право на неидеальность</label>
+            <input type="text" id="mapStep5" value="Если сорвалась — это просто диагностика. В следующий раз выберу новый шаг." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
+          </div>
+
+          <button onclick="saveMap()" class="primary-btn" style="width:100%; min-height:44px; margin-top:4px;">
+            <span>Сохранить мою Карту опоры ➔</span>
+          </button>
         </section>
 
-      </div>
+        <!-- Meditation -->
+        <section class="glass card text-center" style="padding:16px;">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:6px;">
+            🧘‍♀️ Финальная аудиопрактика
+          </div>
+          <h4 style="font-size:15px; font-weight:800; margin:0 0 4px 0; color:var(--nb-deep);">Медитация «Я остаюсь собой» (10–12 минут)</h4>
+          <p style="font-size:12px; color:var(--nb-text-2); margin:0 0 10px 0;">Практика интеграции нового опыта и глубокого спокойствия от Анатолия Фёдорова.</p>
+          
+          <audio id="meditationAudio5" controls preload="metadata" style="width:100%; accent-color:var(--nb-accent);">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-3.MP3" type="audio/mpeg">
+            Ваш браузер не поддерживает аудио.
+          </audio>
+        </section>
 
-      <!-- Footer -->
-      <footer class="text-center" style="display:flex; justify-content:center; margin:12px auto 0 auto; padding-bottom:24px; width:100%;">
-        <div
-          style="display:inline-flex; align-items:center; justify-content:center; background:rgba(255, 255, 255, 0.75); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid rgba(255, 255, 255, 0.85); border-radius:9999px; padding:5px 14px; font-size:11px; font-weight:600; color:var(--nb-slate); box-shadow:0 2px 8px rgba(0, 0, 0, 0.04);">
-          © Анатолий Фёдоров • ПСИквест
+        <!-- High-Ticket Offer Block -->
+        <section class="glass card text-center" style="border:2px solid rgba(196,115,79,0.3); background:rgba(255,255,255,0.85); padding:18px;">
+          <div class="eyebrow" style="background:rgba(196,115,79,0.12); color:#A85532; border-color:rgba(196,115,79,0.3); margin-bottom:8px;">
+            ⭐ Персональная работа
+          </div>
+          <h3 style="font-size:16px; font-weight:800; color:var(--nb-deep); margin-bottom:8px;">Глубокий психологический портрет + Консультация Анатолия Фёдорова</h3>
+          <p style="font-size:12.5px; line-height:1.5; color:var(--nb-text-2); margin-bottom:14px;">
+            21 вопрос теста, 10+ страниц детального поведенческого анализа СПА и часовая персональная консультация 1-на-1.
+          </p>
+
+          <button onclick="safeHaptic('selection'); openProduct('course_partner_10000');" class="primary-btn pulse" style="width:100%; min-height:48px; background:linear-gradient(135deg, #C4734F, #A85532);">
+            <span>Записаться на разбор за 10 000 ₽</span>
+          </button>
+        </section>
+
+        <div style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); openScreen('21_bonuses.html');" class="secondary-btn"
+            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
+            <span>Перейти к 4 бонусам курса →</span>
+          </button>
         </div>
-      </footer>
 
+      </div>
+      
+      <div class="pb-12"></div>
     </div>
   </main>
 
   <script>
-    let isSubmitting = false;
 
-    // Load AI Credits (Max 3 across the entire course)
-    let aiCredits = 3;
-    try {
-      const savedCredits = localStorage.getItem('psyquest_ai_credits');
-      if (savedCredits !== null) {
-        aiCredits = Math.max(0, Math.min(3, parseInt(savedCredits, 10)));
-      } else {
-        localStorage.setItem('psyquest_ai_credits', '3');
-      }
-      updateCreditsUI();
-    } catch (e) { }
-
-    function updateCreditsUI() {
-      const el = document.getElementById('aiCreditsLeft');
-      const badge = document.getElementById('lesson5CreditsBadge');
-      const alreadyDone = localStorage.getItem('psyquest_lesson5_synthesis_done') === 'true';
-
-      if (alreadyDone) {
-        if (el) el.textContent = '0';
-        if (badge) badge.innerHTML = 'Итоговый разбор завершён';
-      } else {
-        if (el) el.textContent = '1';
-        if (badge) badge.innerHTML = 'Осталось разборов:&nbsp;<span id="aiCreditsLeft" style="color:var(--nb-terracotta); font-weight:900;">1</span>';
-      }
-    }
-
-    // Check if Synthesis was already completed previously
-    document.addEventListener('DOMContentLoaded', function () {
+    function safeHaptic(kind) {
       try {
-        const savedRes = localStorage.getItem('psyquest_lesson5_synthesis');
-        if (savedRes) {
-          const parsed = JSON.parse(savedRes);
-          if (parsed && parsed.trigger) {
-            renderSynthesisResult(parsed, true, false);
+        if (window.notibot) {
+          if (kind === 'success' || kind === 'error' || kind === 'warning') {
+            if (typeof notibot.hapticNotification === 'function') { notibot.hapticNotification(kind); return; }
+          } else if (kind === 'selection') {
+            if (typeof notibot.hapticSelection === 'function') { notibot.hapticSelection(); return; }
+          } else {
+            if (typeof notibot.hapticImpact === 'function') { notibot.hapticImpact(kind || 'light'); return; }
           }
+        }
+        if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+          var hf = Telegram.WebApp.HapticFeedback;
+          if ((kind === 'success' || kind === 'error' || kind === 'warning') && typeof hf.notificationOccurred === 'function') { hf.notificationOccurred(kind); return; }
+          if (kind === 'selection' && typeof hf.selectionChanged === 'function') { hf.selectionChanged(); return; }
+          if (typeof hf.impactOccurred === 'function') { hf.impactOccurred(kind === 'heavy' ? 'heavy' : (kind === 'medium' ? 'medium' : 'light')); return; }
+        }
+        if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+          navigator.vibrate(kind === 'error' ? [30, 40, 30] : 12);
         }
       } catch (e) { }
+    }
 
-      const audioEl5 = document.getElementById('meditationAudio5');
-      if (audioEl5) {
-        audioEl5.addEventListener('play', function() {
-          pauseVideo(false);
-          if ('mediaSession' in navigator) {
-            try {
-              navigator.mediaSession.metadata = new MediaMetadata({
-                title: 'Медитация: Возвращение себе устойчивости',
-                artist: 'Анатолий Фёдоров',
-                album: 'Миникурс «Я выбираю» (Урок 5)',
-                artwork: [
-                  { src: 'https://inter01-anatolyfedorov.amvera.io/data/leaves_oak.jpg', sizes: '512x512', type: 'image/jpeg' }
-                ]
-              });
-              navigator.mediaSession.setActionHandler('play', function() { audioEl5.play().catch(() => {}); });
-              navigator.mediaSession.setActionHandler('pause', function() { audioEl5.pause(); });
-              navigator.mediaSession.setActionHandler('seekbackward', function(d) { audioEl5.currentTime = Math.max(audioEl5.currentTime - (d.seekOffset || 10), 0); });
-              navigator.mediaSession.setActionHandler('seekforward', function(d) { audioEl5.currentTime = Math.min(audioEl5.currentTime + (d.seekOffset || 10), audioEl5.duration || 9999); });
-            } catch(e) {}
-          }
-        });
-
-        const fallbacks = [
-          'https://inter01-anatolyfedorov.amvera.io/data/meditation1-5.MP3',
-          'https://inter01-anatolyfedorov.amvera.io/meditation1-5.MP3',
-          'https://inter01-anatolyfedorov.amvera.io/media/meditation1-5.MP3',
-          '/data/meditation1-5.MP3',
-          'meditation1-5.MP3'
-        ];
-        let fallbackIndex = 0;
-        audioEl5.addEventListener('error', function () {
-          if (fallbackIndex < fallbacks.length) {
-            const nextUrl = fallbacks[fallbackIndex++];
-            console.log('[Audio] Trying fallback URL:', nextUrl);
-            audioEl5.src = nextUrl;
-            audioEl5.load();
-          }
-        }, true);
-      }
-    });
-
-    function pauseVideo(pauseAudio = false) {
-      const iframes = document.querySelectorAll('iframe');
-      iframes.forEach(iframe => {
-        if (iframe) {
-          if (iframe.contentWindow) {
-            try {
-              iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
-              iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
-              iframe.contentWindow.postMessage({ type: 'player:pause' }, '*');
-              iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:pause' }), '*');
-              iframe.contentWindow.postMessage({ event: 'command', command: 'pause' }, '*');
-              iframe.contentWindow.postMessage('{"method":"pause"}', '*');
-              iframe.contentWindow.postMessage(JSON.stringify({ method: 'pause' }), '*');
-            } catch(e) {}
-          }
-          try {
-            const currentSrc = iframe.src;
-            if (currentSrc && currentSrc.includes('kinescope.io')) {
-              iframe.src = currentSrc;
-            }
-          } catch(e) {}
+    function pauseVideo() {
+      var iframes = document.querySelectorAll('iframe');
+      iframes.forEach(function(iframe) {
+        var currentSrc = iframe.src;
+        if (currentSrc && currentSrc.includes('kinescope.io')) {
+          iframe.src = '';
         }
       });
-      if (pauseAudio) {
-        const audios = document.querySelectorAll('audio');
-        audios.forEach(a => { try { a.pause(); } catch(e){} });
+      var audios = document.querySelectorAll('audio');
+      audios.forEach(function(a) { a.pause(); });
+    }
+
+    async function apiPostLocal(endpoint, bodyData, timeoutMs = 15000) {
+      var baseUrl = (window.API_BASE && window.API_BASE !== '') ? window.API_BASE : '';
+      var targetUrl = endpoint.startsWith('http') ? endpoint : (baseUrl + endpoint);
+      
+      var controller = new AbortController();
+      var timer = setTimeout(function(){ controller.abort(); }, timeoutMs);
+
+      try {
+        var response = await fetch(targetUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(bodyData),
+          signal: controller.signal
+        });
+        clearTimeout(timer);
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return await response.json();
+      } catch (err) {
+        clearTimeout(timer);
+        if (window.AMVERA_HOST && targetUrl !== (window.AMVERA_HOST + endpoint)) {
+           try {
+             var fb = await fetch(window.AMVERA_HOST + endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bodyData)
+             });
+             if(fb.ok) return await fb.json();
+           } catch(e) {}
+        }
+        throw err;
       }
     }
 
-    function safeNavigate(url) {
-      safeHaptic('selection');
-      pauseVideo();
-      setTimeout(function () {
-        window.location.href = url;
-      }, 30);
-    }
 
-    window.addEventListener('pagehide', function() { pauseVideo(true); });
-    window.addEventListener('beforeunload', function() { pauseVideo(true); });
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) {
-        // Pause only video on screen lock/minimize, let meditation audio play in background
-        pauseVideo(false);
-      }
-    });
-
-    // Screen 1 -> Screen 2 Transition
-    function goToInteractive() {
-      safeHaptic('selection');
-      pauseVideo();
-      document.getElementById('step1VideoScreen').style.display = 'none';
-      const s2 = document.getElementById('step2InteractiveScreen');
-      s2.style.display = 'flex';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Screen 2 -> Screen 1 Return
-    
-    // Seamless Screen Transitions (Aliases for full backwards compatibility)
     function goToVideo() {
       safeHaptic('selection');
-      const s2 = document.getElementById('step2InteractiveScreen');
+      var s2 = document.getElementById('step2InteractiveScreen');
       if (s2) s2.style.display = 'none';
-      const s1 = document.getElementById('step1VideoScreen');
+      var s1 = document.getElementById('step1VideoScreen');
       if (s1) s1.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function goToStep1() {
-      goToVideo();
     }
 
     function goToPractice() {
       safeHaptic('selection');
       pauseVideo();
-      const s1 = document.getElementById('step1VideoScreen');
+      var s1 = document.getElementById('step1VideoScreen');
       if (s1) s1.style.display = 'none';
-      const s2 = document.getElementById('step2InteractiveScreen');
+      var s2 = document.getElementById('step2InteractiveScreen');
       if (s2) s2.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function goToStep2() {
-      goToPractice();
-    }
-
-    function goToInteractive() {
-      goToPractice();
-    }
-
-
-    async function synthesizeNewScenario() {
-      if (isSubmitting) return;
-
-      // Check if already done
-      const alreadyDone = localStorage.getItem('psyquest_lesson5_synthesis_done') === 'true';
-      if (alreadyDone) {
-        try {
-          const saved = JSON.parse(localStorage.getItem('psyquest_lesson5_synthesis') || '{}');
-          if (saved.trigger) {
-            renderSynthesisResult(saved, true, false);
-            return;
-          }
-        } catch (e) { }
-      }
-
-      isSubmitting = true;
-      safeHaptic('impactMedium');
-      pauseVideo();
-
-      const btn = document.getElementById('btnSynthesize');
-      btn.disabled = true;
-      document.getElementById('synthesisInitBlock').style.display = 'none';
-      document.getElementById('aiLoadingBlock').style.display = 'block';
-
-      // 1. Gather all saved user answers from Lessons 1, 2, 4
-      let trigger = 'Пока не определено';
-      let feelings = 'Пока не определено';
-      let oldAction = 'Пока не определено';
-      let bodySignal = 'Пока не определено';
-      let criteria = [];
-      let strength = 'Пока не определено';
-      let newAction = 'Пока не определено';
-
-      // From Lesson 1
-      try {
-        const l1Fact = localStorage.getItem('lesson1_inpFact');
-        const l1Feel = localStorage.getItem('lesson1_inpFeeling');
-        const l1Act = localStorage.getItem('lesson1_inpAction');
-        if (l1Fact) trigger = l1Fact;
-        if (l1Feel) feelings = l1Feel;
-        if (l1Act) oldAction = l1Act;
-      } catch (e) { }
-
-      // From Lesson 2
-      try {
-        const l2Crit = localStorage.getItem('lesson2_selected_criteria');
-        if (l2Crit) {
-          const parsedCrit = JSON.parse(l2Crit);
-          if (Array.isArray(parsedCrit) && parsedCrit.length > 0) criteria = parsedCrit;
-        }
-        const l2Body = localStorage.getItem('lesson2_body_signal');
-        if (l2Body) bodySignal = l2Body;
-        else if (localStorage.getItem('lesson2_body_score')) {
-          bodySignal = 'Телесное напряжение ' + localStorage.getItem('lesson2_body_score') + ' из 10 баллов';
-        }
-      } catch (e) { }
-
-      // From Lesson 4
-      try {
-        const l4Res = localStorage.getItem('psyquest_lesson4_result');
-        if (l4Res) {
-          const parsed4 = JSON.parse(l4Res);
-          if (parsed4.resource) strength = parsed4.resource;
-          if (parsed4.safe_action) newAction = parsed4.safe_action;
-        }
-        const l4Action = localStorage.getItem('psyquest_lesson4_new_action');
-        if (l4Action) newAction = l4Action;
-      } catch (e) { }
-
-      const payload = {
-        trigger: trigger,
-        feelings: feelings,
-        oldAction: oldAction,
-        bodySignal: bodySignal,
-        criteria: criteria,
-        strength: strength,
-        newAction: newAction,
-        userName: window.currentUserName || 'Участник'
+    function saveMap() {
+      safeHaptic('success');
+      var mapData = {
+        step1: document.getElementById('mapStep1').value,
+        step2: document.getElementById('mapStep2').value,
+        step3: document.getElementById('mapStep3').value,
+        step4: document.getElementById('mapStep4').value,
+        step5: document.getElementById('mapStep5').value
       };
-
-      let usedRealCredit = false;
-      try {
-        const data = await window.apiPost('/api/lesson5-synthesis', payload);
-        if (data && data.result) {
-          usedRealCredit = !!data.isAi;
-          renderSynthesisResult(data.result, false, !data.isAi);
-        } else {
-          throw new Error('Fallback required');
-        }
-      } catch (err) {
-        console.warn('[Lesson 5 AI] Fallback triggered:', err);
-        const fallbackObj = {
-          trigger: trigger,
-          body_signal: bodySignal,
-          old_reaction: oldAction,
-          pause: 'Заметить напряжение в теле, сделать длинный выдох и отложить действие до возвращения спокойствия',
-          criteria: criteria.length > 0 ? criteria : ['Пока не определено'],
-          strength: strength,
-          new_action: newAction,
-          support_phrase: '«Я разрешаю себе делать выбор из спокойствия и уважения к себе, сохраняя свою силу».'
-        };
-        renderSynthesisResult(fallbackObj, false, true);
-      } finally {
-        isSubmitting = false;
-        if (aiCredits > 0 && !alreadyDone) {
-          aiCredits--;
-          try {
-            localStorage.setItem('psyquest_ai_credits', aiCredits.toString());
-          } catch (e) { }
-          updateCreditsUI();
-        }
-      }
+      localStorage.setItem('s2_lesson5_map', JSON.stringify(mapData));
+      localStorage.setItem('s2_lesson5_completed', 'true');
+      alert('✅ Карта опоры успешно сохранена в вашем профиле!');
     }
 
-    function renderSynthesisResult(resultObj, isCached, isErrorFallback) {
-      // Save locally to guarantee no repeat requests
-      try {
-        localStorage.setItem('psyquest_lesson5_synthesis', JSON.stringify(resultObj));
-        localStorage.setItem('psyquest_lesson5_synthesis_done', 'true');
-      } catch (e) { }
-
-      document.getElementById('resTrigger').textContent = resultObj.trigger || 'Пока не определено';
-      document.getElementById('resBodySignal').textContent = resultObj.body_signal || 'Пока не определено';
-      document.getElementById('resOldReaction').textContent = resultObj.old_reaction || 'Пока не определено';
-      document.getElementById('resPause').textContent = resultObj.pause || 'Пауза и длинный выдох до возвращения спокойствия';
-
-      let critText = 'Пока не определено';
-      if (Array.isArray(resultObj.criteria)) {
-        critText = resultObj.criteria.filter(Boolean).join(' • ') || 'Пока не определено';
-      } else if (resultObj.criteria) {
-        critText = resultObj.criteria;
+    window.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('s2_lesson5_map');
+      if(saved) {
+        try {
+          var d = JSON.parse(saved);
+          if(d.step1) document.getElementById('mapStep1').value = d.step1;
+          if(d.step2) document.getElementById('mapStep2').value = d.step2;
+          if(d.step3) document.getElementById('mapStep3').value = d.step3;
+          if(d.step4) document.getElementById('mapStep4').value = d.step4;
+          if(d.step5) document.getElementById('mapStep5').value = d.step5;
+        }catch(e){}
       }
-      document.getElementById('resCriteria').textContent = critText;
-
-      document.getElementById('resStrength').textContent = resultObj.resource || resultObj.strength || 'Пока не определено';
-      document.getElementById('resNewAction').textContent = resultObj.new_action || 'Пока не определено';
-
-      let phrase = resultObj.support_phrase || '«Я разрешаю себе делать выбор из спокойствия и уважения к себе»';
-      if (!phrase.startsWith('«')) phrase = `«${phrase.replace(/^["'«]+|["'»]+$/g, '')}»`;
-      document.getElementById('resSupportPhrase').textContent = phrase;
-
-      document.getElementById('aiLoadingBlock').style.display = 'none';
-      document.getElementById('synthesisInitBlock').style.display = 'none';
-      const container = document.getElementById('synthesisResultContainer');
-      container.style.display = 'block';
-
-      const noticeBlock = document.getElementById('aiNoticeStatusBlock');
-      if (isErrorFallback) {
-        noticeBlock.style.display = 'block';
-        noticeBlock.innerHTML = '🚂 <strong>Помощник в пути... (проблемы с интернетом)</strong> А пока прислал такую мысль и фразу:';
-      } else {
-        noticeBlock.style.display = 'none';
-      }
-
-      if (!isCached) {
-        safeHaptic('success');
-      }
-    }
+    });
   </script>
 
-    <!-- =========================================================
-       BOTTOM DRAWER / НАВИГАЦИЯ ПО КУРСУ
+  <!-- =========================================================
+       BOTTOM DRAWER / НАВИГАЦИЯ ПО КУРСУ (Сценарий 2)
        ========================================================= -->
   <div id="navDrawerOverlay" onclick="handleDrawerBackdropClick(event)">
     <div id="navDrawerBackdrop"></div>
@@ -1940,60 +1718,60 @@
         <div>
           <div class="drawer-section-label">Уроки курса</div>
           <div class="drawer-list">
-            <!-- Молчание, запускающее сценарий -->
+            <!-- Урок 1 -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('16_lesson1.html'); return false;" class="drawer-item ">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">1</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Молчание, запускающее сценарий</div>
-                  <div class="drawer-item-sub">Факт → тревога → попытка догнать</div>
+                  <div class="drawer-item-name">Почему один поступок занимает всю голову</div>
+                  <div class="drawer-item-sub">Факт → триллер → стабилизатор</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
             </a>
 
-            <!-- Как тело включает тревогу -->
+            <!-- Урок 2 -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('17_lesson2.html'); return false;" class="drawer-item ">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">2</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Как тело включает тревогу</div>
-                  <div class="drawer-item-sub">Сжатие, спазм, импульс действовать</div>
+                  <div class="drawer-item-name">Почему вы тащите всё на себе</div>
+                  <div class="drawer-item-sub">Контроль и гиперответственность</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
             </a>
 
-            <!-- Ловушка объяснений -->
+            <!-- Урок 3 -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('18_lesson3.html'); return false;" class="drawer-item ">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">3</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Ловушка объяснений</div>
-                  <div class="drawer-item-sub">Почему мы оправдываем холодность</div>
+                  <div class="drawer-item-name">Как перестать спасать и начать жить</div>
+                  <div class="drawer-item-sub">Границы и опоры</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
             </a>
 
-            <!-- Перехват управления -->
+            <!-- Урок 4 -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('19_lesson4.html'); return false;" class="drawer-item ">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">4</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Перехват управления</div>
-                  <div class="drawer-item-sub">Пауза между импульсом и реакцией</div>
+                  <div class="drawer-item-name">Что делать, когда накрывает</div>
+                  <div class="drawer-item-sub">Экстренная самопомощь</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
             </a>
 
-            <!-- Новый выбор в отношениях -->
+            <!-- Урок 5 -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('20_lesson5.html'); return false;" class="drawer-item active-current">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">5</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Новый выбор в отношениях</div>
+                  <div class="drawer-item-name">Новая я в отношениях</div>
                   <div class="drawer-item-sub">Закрепление взрослой позиции</div>
                 </div>
               </div>
@@ -2017,18 +1795,6 @@
               </div>
               <span class="drawer-item-tag bonus">4 бонуса</span>
             </a>
-
-            <!-- Индивидуальный разбор -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('14_individual_offer.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num" style="background:rgba(49,130,206,0.12); color:#2B6CB0;">⭐</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Индивидуальный разбор</div>
-                  <div class="drawer-item-sub">Персональная работа со сценарием</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
           </div>
         </div>
       </div>
@@ -2041,7 +1807,7 @@
       var overlay = document.getElementById('navDrawerOverlay');
       if (overlay) {
         overlay.style.display = 'block';
-        void overlay.offsetHeight; // force reflow
+        void overlay.offsetHeight;
         overlay.classList.add('active');
       }
       document.body.style.overflow = 'hidden';
@@ -2079,5 +1845,4 @@
   </script>
 
 </body>
-
 </html>

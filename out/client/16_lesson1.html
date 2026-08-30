@@ -1412,33 +1412,15 @@ textarea:focus, input:focus {
         window.notibotInitData = event.data.data;
       }
     });
-
-    function safeHaptic(type) {
-      try {
-        if (window.notibot) {
-          if (type === 'selection' && typeof window.notibot.hapticSelection === 'function') {
-            window.notibot.hapticSelection();
-          } else if ((type === 'success' || type === 'error' || type === 'warning') && typeof window.notibot.hapticNotification === 'function') {
-            window.notibot.hapticNotification(type);
-          } else if (typeof window.notibot.hapticImpact === 'function') {
-            window.notibot.hapticImpact(type || 'light');
-          }
-        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-          if (type === 'success' || type === 'error' || type === 'warning') {
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
-          } else {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-          }
-        } else if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
-          navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
-        }
-      } catch (e) {}
-    }
   </script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-
 <body>
-  <div id="maisonArtBackground" aria-hidden="true"></div>
+  <div id="maisonArtBackground"></div>
+  <div id="loading-screen" class="loader-screen">
+    <div class="loader-spinner mb-4"></div>
+    <span class="text-sm tracking-widest text-nb-accent uppercase font-bold animate-pulse">Загрузка...</span>
+  </div>
 
   <main class="app-shell">
     <div class="app">
@@ -1473,14 +1455,12 @@ textarea:focus, input:focus {
         <!-- Video Card -->
         <section class="glass card text-center">
           <div class="eyebrow" style="margin-bottom:8px;">Урок 1 из 5</div>
-          <h2>Молчание, которое запускает ваш сценарий</h2>
-          <p class="lead" style="font-size:13px; margin-bottom:12px;">Как один факт превращается в тревогу, догадки и
-            попытку догнать человека.</p>
+          <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); line-height:1.3; margin-bottom:6px; text-align:center;">Почему один его поступок занимает всю вашу голову</h2>
+          <p class="lead" style="font-size:13px; line-height:1.4; color:var(--nb-text-2); margin-bottom:12px; text-align:center;">Как один факт превращается в бурю, догадки и попытку догнать человека.</p>
 
           <!-- Video Player Wrapper (Kinescope) -->
-          <div
-            style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="lesson1VideoIframe" src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720"
+          <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720"
               allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
               frameborder="0" allowfullscreen
               style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
@@ -1489,30 +1469,22 @@ textarea:focus, input:focus {
 
         <!-- Insight & Actions Card (Immediately visible) -->
         <section id="insightSection" class="glass card text-center">
-          <div class="eyebrow"
-            style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
             💡 Главный вывод
           </div>
-          <h3 style="font-size:17px; margin-bottom:8px;">Что важно забрать из урока</h3>
-          <p class="lead" style="font-size:13.5px; line-height:1.5; color:var(--nb-text); margin-bottom:16px;">
-            Человек не отвечает 30 минут — это факт. Всё остальное пока только ваши предположения. Когда вы разделяете
-            факт и интерпретацию, тревога перестаёт управлять вашими действиями.
+          <h3 style="font-size:16px; font-weight:800; margin-bottom:8px; text-align:center;">Что важно забрать из урока</h3>
+          <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin-bottom:16px; text-align:center;">
+            Когда близкий человек ведёт себя непонятно, мозг считывает это как опасность и судорожно дорисовывает худшее. Отделите сухой факт от триллера в голове и верните пульт управления себе.
           </p>
 
           <div style="display:flex; flex-direction:column; gap:10px;">
-            <a href="https://disk.yandex.ru/i/qn8yFi5w31aAfQ" target="_blank" onclick="safeHaptic('selection');"
-              class="secondary-btn"
-              style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px;">
-              <span>📥 Скачать Чек-лист</span>
-            </a>
-
-            <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%;">
-              <span>Заполнить чек-лист ➔</span>
+            <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%; min-height:46px;">
+              <span>Перейти к практикуму ➔</span>
             </button>
           </div>
         </section>
 
-        <!-- Next Lesson Transition (Always immediately visible on Screen 1) -->
+        <!-- Next Lesson Transition -->
         <div style="padding-top:4px;">
           <button onclick="safeHaptic('selection'); openScreen('17_lesson2.html');" class="primary-btn pulse"
             style="width:100%; display:flex; justify-content:center; align-items:center; min-height:48px;">
@@ -1523,7 +1495,7 @@ textarea:focus, input:focus {
       </div>
 
       <!-- ==========================================
-           SCREEN 2: INTERACTIVE PRACTICE (5 STEPS)
+           SCREEN 2: INTERACTIVE PRACTICE
            ========================================== -->
       <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
 
@@ -1534,479 +1506,673 @@ textarea:focus, input:focus {
           </button>
         </div>
 
-        <!-- AI Helper Top Info Card (Project Glass Theme Centered) -->
-        <div class="glass card text-center" style="padding: 18px 20px;">
-          <div
-            style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
-            <div class="eyebrow"
-              style="margin:0; background:rgba(217, 131, 78, 0.12); color:var(--nb-terracotta); border-color:rgba(217, 131, 78, 0.25);">
+        <!-- AI Helper Top Info Card -->
+        <div class="glass card text-center" style="padding: 16px 18px;">
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
+            <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:#A85532; border-color:rgba(217, 131, 78, 0.25);">
               ☀️ Интеллектуальный попутчик
             </div>
-            <div class="strategy-badge"
-              style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep);">
-              Осталось разборов:&nbsp;<span id="aiCreditsLeft"
-                style="color:var(--nb-terracotta); font-weight:900;">3</span>
+            <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep); padding:2px 10px; border-radius:999px;">
+              Осталось попыток:&nbsp;<span id="attemptsCount" style="color:#A85532; font-weight:900;">3</span>
             </div>
           </div>
-          <p id="aiCreditsCardText"
-            style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
-            Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит
-            диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.
+          <p style="font-size:12.5px; line-height:1.4; color:var(--nb-text-2); margin:0; text-align:center;">
+            Он поможет отделить реальные факты от накрученного триллера и закрепить фразу-стабилизатор.
           </p>
         </div>
 
-        <!-- Interactive 5-Step AI Strategy Tool -->
-        <section class="glass card">
-          <div class="eyebrow" style="margin-bottom:8px;">Практика</div>
-          <h3 class="question-title">Карта моего сценария</h3>
-          <p class="lead" style="font-size:13px; margin-bottom:14px;">Ответьте на пять вопросов, чтобы увидеть, где факт
-            превращается в тревогу и привычную реакцию.</p>
+        <!-- STEP 1 -->
+        <div id="step1" class="glass card" style="display:flex; flex-direction:column; gap:12px;">
+          <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 1. Ситуация-триггер</h3>
+          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Вспомните, когда его поведение вывело вас из себя или включило тревогу (опоздал, сухо ответил, хмуро зашёл, замолчал). Что произошло?</p>
+          <textarea id="situationInput" rows="4" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Например: пришёл с работы, молча прошёл на кухню и уткнулся в телефон, на мой вопрос ответил сквозь зубы..."></textarea>
+          <button onclick="handleStep1()" class="primary-btn" style="width:100%; min-height:44px;">Далее</button>
+        </div>
 
-          <form id="strategyForm" onsubmit="analyzeStrategy(event)"
-            style="display:flex; flex-direction:column; gap:12px;">
-            <div>
-              <label
-                style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что
-                произошло в реальности?</label>
-              <textarea id="inpFact" rows="2" required placeholder="Пример: он не отвечает на сообщение 40 минут."
-                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
+        <!-- STEP 2 -->
+        <div id="step2" class="glass card" style="display:none; flex-direction:column; gap:16px;">
+          <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 2. Что вспыхнуло внутри?</h3>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-size:13px; font-weight:700; color:var(--nb-deep);">Злость и Ярость</span>
+              <span class="slider-val-badge" id="val1" style="padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800; background:#2F7D59; color:#FFF;">0</span>
             </div>
-
-            <div>
-              <label
-                style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я
-                подумала и почувствовала?</label>
-              <textarea id="inpFeeling" rows="2" required
-                placeholder="Пример: «Он потерял интерес». Я почувствовала тревогу."
-                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
-            </div>
-
-            <div>
-              <label
-                style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что я
-                начала делать?</label>
-              <textarea id="inpAction" rows="2" required placeholder="Пример: проверять статус и писать снова."
-                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
-            </div>
-
-            <div>
-              <label
-                style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что это
-                дало мне сразу?</label>
-              <textarea id="inpRelief" rows="2" required placeholder="Пример: на несколько минут стало спокойнее."
-                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
-            </div>
-
-            <div>
-              <label style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">К
-                чему это привело в итоге?</label>
-              <textarea id="inpResult" rows="2" required placeholder="Пример: я оказалась в позиции догоняющей."
-                style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;"></textarea>
-            </div>
-
-            <button type="submit" id="btnSubmitStrategy" class="primary-btn pulse" style="margin-top:6px;">
-              <span>Разобрать с Попутчиком →</span>
-            </button>
-          </form>
-
-          <!-- AI Feedback -->
-          <div id="aiResultBlock" class="hidden"
-            style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:10px;">
-            <strong style="color:var(--nb-deep); font-size:13px;">✨ Ответ Интеллектуального попутчика:</strong>
-
-            <!-- Offline / Fallback Notice Banner -->
-            <div id="aiOfflineNoticeLesson1"
-              style="display:none; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); font-size:12.5px; font-weight:700; color:var(--nb-terracotta); line-height:1.45; text-align:left;">
-              🚂 <strong>Попутчик ищет путь... (проблемы с интернетом)</strong> А пока обратите внимание на этот
-              ориентир. Вы сможете снова обратиться к Попутчику попозже.
-            </div>
-
-            <div id="aiAnalysisText"
-              style="font-size:13px; color:var(--nb-text); line-height:1.5; white-space:pre-line;"></div>
-
-            <!-- Send to Telegram Button -->
-            <button id="btnSendLesson1Telegram" onclick="sendLesson1ToTelegram(event)" class="secondary-btn"
-              style="margin-top:4px; width:100%; border:1.5px solid var(--nb-sea); color:var(--nb-sea); background:#FFFFFF; font-size:13px; font-weight:700; min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
-              <span>✈️ Прислать этот разбор мне в Telegram</span>
-            </button>
-            <div id="tgStatusLesson1"
-              style="display:none; font-size:12px; font-weight:700; color:var(--success); text-align:center; padding:2px 0;">
-            </div>
+            <input type="range" id="slider1" min="0" max="10" value="0" class="touch-range" style="width:100%;" oninput="updateSlider('val1', this.value, this)">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--nb-text-2); margin-top:2px;"><span>0</span><span>10</span></div>
           </div>
-        </section>
 
-        <!-- Next Step Navigation (Immediately visible) -->
-        <div id="nextLessonBlock" style="padding-top:4px;">
-          <button id="btnNextLesson2" onclick="safeHaptic('selection'); openScreen('17_lesson2.html');"
-            class="secondary-btn"
-            style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center;">
-            <span>Перейти ко второму уроку →</span>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-size:13px; font-weight:700; color:var(--nb-deep);">Тревога и Страх</span>
+              <span class="slider-val-badge" id="val2" style="padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800; background:#2F7D59; color:#FFF;">0</span>
+            </div>
+            <input type="range" id="slider2" min="0" max="10" value="0" class="touch-range" style="width:100%;" oninput="updateSlider('val2', this.value, this)">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--nb-text-2); margin-top:2px;"><span>0</span><span>10</span></div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-size:13px; font-weight:700; color:var(--nb-deep);">Обида и Одиночество</span>
+              <span class="slider-val-badge" id="val3" style="padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800; background:#2F7D59; color:#FFF;">0</span>
+            </div>
+            <input type="range" id="slider3" min="0" max="10" value="0" class="touch-range" style="width:100%;" oninput="updateSlider('val3', this.value, this)">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--nb-text-2); margin-top:2px;"><span>0</span><span>10</span></div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-size:13px; font-weight:700; color:var(--nb-deep);">Холод и Оцепенение</span>
+              <span class="slider-val-badge" id="val4" style="padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800; background:#2F7D59; color:#FFF;">0</span>
+            </div>
+            <input type="range" id="slider4" min="0" max="10" value="0" class="touch-range" style="width:100%;" oninput="updateSlider('val4', this.value, this)">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--nb-text-2); margin-top:2px;"><span>0</span><span>10</span></div>
+          </div>
+
+          <button onclick="handleStep2()" class="primary-btn" style="width:100%; min-height:44px;">Далее</button>
+        </div>
+
+        <!-- STEP 3 -->
+        <div id="step3" class="glass card" style="display:none; flex-direction:column; gap:12px; position:relative;">
+          <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 3. Какой триллер нарисовала голова?</h3>
+          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Какие выводы и картины моментально подкинула голова? Чего вы больше всего испугались?</p>
+          <textarea id="thrillerInput" rows="4" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Например: он охладел ко мне, я для него пустое место, скоро он соберёт вещи и уйдёт..."></textarea>
+          
+          <button id="submitBtn" onclick="submitToAI()" class="primary-btn pulse" style="width:100%; min-height:46px;">
+            <span>Отделить факт от триллера с ИИ-попутчиком ➔</span>
+          </button>
+          
+          <!-- Loading Overlay -->
+          <div id="aiLoading" style="display:none; position:absolute; inset:0; background:rgba(255,255,255,0.88); backdrop-filter:blur(6px); border-radius:24px; flex-direction:column; align-items:center; justify-content:center; z-index:20;">
+            <div class="loader-spinner" style="margin-bottom:8px;"></div>
+            <p style="font-size:13px; font-weight:700; color:var(--nb-accent); margin:0;">Анализирую ситуацию...</p>
+          </div>
+        </div>
+
+        <!-- RESULTS CARD -->
+        <div id="resultCard" class="glass card" style="display:none; flex-direction:column; gap:14px;">
+          <h3 style="font-size:18px; font-weight:800; text-align:center; margin:0;">Разбор ситуации</h3>
+          
+          <div style="background:rgba(255,255,255,0.6); border-radius:14px; padding:12px 14px; border-left:4px solid var(--nb-sea);">
+            <div style="font-size:11px; color:var(--nb-sea); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; text-align:center;">📷 Сухой факт</div>
+            <p id="resFact" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">...</p>
+          </div>
+          
+          <div style="background:rgba(255,255,255,0.6); border-radius:14px; padding:12px 14px; border-left:4px solid var(--danger);">
+            <div style="font-size:11px; color:var(--danger); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; text-align:center;">🎬 Триллер головы</div>
+            <p id="resThriller" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">...</p>
+          </div>
+          
+          <div style="background:rgba(127,155,142,0.1); border-radius:14px; padding:14px; border:1px solid rgba(127,155,142,0.3);">
+            <div style="font-size:11px; color:var(--nb-accent); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; text-align:center;">🧘‍♀️ Фраза-стабилизатор</div>
+            <p id="resStabilizer" style="font-size:14px; font-weight:700; color:var(--nb-deep); text-align:center; line-height:1.5; margin:0;">...</p>
+          </div>
+
+          <div style="background:rgba(200,178,143,0.12); padding:10px 12px; border-radius:10px; text-align:center;">
+            <p style="font-size:12px; font-weight:600; color:var(--nb-deep); margin:0;">Результат сохранен в Блок №1 «Карты опоры»</p>
+          </div>
+          
+          <div style="text-align:center;">
+            <p style="font-size:13px; color:var(--nb-text-2); line-height:1.5; margin:0;">Вы научились останавливать первую вспышку и отделять факт от накрутки. Но почему вы вообще взвалили на себя ответственность за его настроение, дела и совместные планы? Как перестать быть «коучем-аниматором» и выдохнуть — разберём в следующем уроке.</p>
+          </div>
+
+          <button onclick="handleCta(event)" class="primary-btn pulse" style="width:100%; min-height:48px; text-align:center;">
+            <span>Перейти к Уроку 2: Почему вы тащите всё на себе →</span>
           </button>
         </div>
 
       </div>
-
-      <!-- Footer -->
-      <footer class="text-center" style="display:flex; justify-content:center; margin:12px auto 0 auto; padding-bottom:24px; width:100%;">
-        <div style="display:inline-flex; align-items:center; justify-content:center; background:rgba(255, 255, 255, 0.75); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid rgba(255, 255, 255, 0.85); border-radius:9999px; padding:5px 14px; font-size:11px; font-weight:600; color:var(--nb-slate); box-shadow:0 2px 8px rgba(0, 0, 0, 0.04);">
-          © Анатолий Фёдоров • ПСИквест
-        </div>
-      </footer>
-
+      
+      <div class="pb-12"></div>
     </div>
   </main>
 
-  <script>
-    // 3-Second Delayed Reveal for Insight Section
-    setTimeout(function () {
-      const insight = document.getElementById('insightSection');
-      if (insight) {
-        insight.style.display = 'block';
-        requestAnimationFrame(function () {
-          insight.style.opacity = '1';
-          insight.style.transform = 'translateY(0)';
-        });
-        safeHaptic('selection');
-      }
-    }, 3000);
+  <style>
+    /* Add some specific styles for our sliders as per rule 10 */
+    .touch-range {
+      -webkit-appearance: none;
+      height: 8px;
+      border-radius: 4px;
+      outline: none;
+    }
+    .touch-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--nb-accent);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
 
-    function revealNextLessonBtn() {
-      const nextBtn = document.getElementById('nextLessonBlock');
-      if (nextBtn) {
-        nextBtn.style.display = 'block';
-        requestAnimationFrame(function () {
-          nextBtn.style.opacity = '1';
-          nextBtn.style.transform = 'translateY(0)';
-        });
+    /* =========================================================
+       NAVIGATION HEADER & DRAWER STYLES (VIEWPORT FIXED)
+       ========================================================= */
+    .header-bar-nav {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 10px !important;
+      width: 100% !important;
+      padding: 4px 0 2px !important;
+      box-sizing: border-box !important;
+    }
+
+    .header-actions-row {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .nav-glass-tinted-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 5px !important;
+      font-weight: 700 !important;
+      font-size: 12.5px !important;
+      letter-spacing: -0.2px !important;
+      color: #A85532 !important;
+      background: rgba(196, 115, 79, 0.12) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+      padding: 7px 11px !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(196, 115, 79, 0.32) !important;
+      box-shadow: 0 4px 14px rgba(196, 115, 79, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.7) !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      white-space: nowrap !important;
+      flex: 0 1 auto !important;
+      max-width: fit-content !important;
+      text-decoration: none !important;
+      outline: none !important;
+    }
+
+    .nav-glass-tinted-btn:active {
+      transform: scale(0.96) translateY(0) !important;
+      background: rgba(196, 115, 79, 0.22) !important;
+    }
+
+    .next-lesson-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 5px !important;
+      font-weight: 700 !important;
+      font-size: 12.5px !important;
+      letter-spacing: -0.2px !important;
+      color: #FFFFFF !important;
+      background: linear-gradient(135deg, rgba(204, 122, 85, 0.96) 0%, rgba(168, 85, 50, 0.98) 100%) !important;
+      padding: 7px 12px !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      box-shadow: 0 6px 20px rgba(196, 115, 79, 0.32), inset 0 1px 1.5px rgba(255, 255, 255, 0.55) !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      white-space: nowrap !important;
+      flex: 0 1 auto !important;
+      max-width: fit-content !important;
+      text-decoration: none !important;
+      outline: none !important;
+    }
+
+    .next-lesson-btn:active {
+      transform: scale(0.96) translateY(0) !important;
+    }
+
+    .header-progress-row {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+      padding: 0 2px !important;
+    }
+
+    .lesson-badge-sub {
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      color: #45656D !important;
+    }
+
+    .progress-percent-sub {
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      color: rgba(31, 46, 53, 0.5) !important;
+    }
+
+    /* VIEWPORT-FIXED BOTTOM DRAWER STYLES */
+    #navDrawerOverlay {
+      position: fixed !important;
+      top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important; height: 100dvh !important;
+      z-index: 999999 !important;
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: opacity 0.3s ease !important;
+    }
+    #navDrawerOverlay.active {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    #navDrawerBackdrop {
+      position: fixed !important;
+      top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+      width: 100% !important; height: 100% !important;
+      background: rgba(15, 23, 28, 0.55) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      opacity: 0 !important;
+      transition: opacity 0.3s ease !important;
+    }
+    #navDrawerOverlay.active #navDrawerBackdrop { opacity: 1 !important; }
+
+    #navDrawerPanel {
+      position: fixed !important;
+      bottom: 0 !important; left: 0 !important; right: 0 !important;
+      max-width: 500px !important;
+      margin: 0 auto !important;
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(28px) !important;
+      -webkit-backdrop-filter: blur(28px) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.9) !important;
+      border-radius: 28px 28px 0 0 !important;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.28) !important;
+      transform: translateY(120%) !important;
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      max-height: 82vh !important; max-height: 82dvh !important;
+      height: auto !important;
+      overflow: hidden !important;
+      z-index: 1000000 !important;
+    }
+    #navDrawerOverlay.active #navDrawerPanel { transform: translateY(0) !important; }
+
+    .drawer-handle {
+      width: 44px !important; height: 4px !important;
+      background: rgba(31, 46, 53, 0.2) !important;
+      border-radius: 999px !important;
+      margin: 10px auto 4px !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+    }
+    .drawer-header {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      padding: 8px 18px 12px !important;
+      border-bottom: 1px solid rgba(31, 46, 53, 0.08) !important;
+      flex-shrink: 0 !important;
+    }
+    .drawer-title {
+      font-size: 16px !important; font-weight: 800 !important;
+      color: #1F2E35 !important;
+      display: flex !important; align-items: center !important; gap: 8px !important;
+    }
+    .drawer-close-btn {
+      width: 32px !important; height: 32px !important;
+      border-radius: 50% !important;
+      background: rgba(31, 46, 53, 0.07) !important;
+      border: none !important;
+      font-size: 16px !important; cursor: pointer !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+      color: #1F2E35 !important;
+    }
+    .drawer-content {
+      overflow-y: auto !important;
+      padding: 12px 18px 24px !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+    .drawer-section-label {
+      font-size: 11px !important; font-weight: 800 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.8px !important;
+      color: rgba(31, 46, 53, 0.4) !important;
+      padding: 6px 0 8px !important;
+    }
+    .drawer-list { display: flex !important; flex-direction: column !important; gap: 4px !important; }
+    .drawer-item {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      padding: 10px 12px !important;
+      border-radius: 14px !important;
+      background: rgba(255, 255, 255, 0.5) !important;
+      border: 1px solid rgba(31, 46, 53, 0.06) !important;
+      text-decoration: none !important;
+      cursor: pointer !important;
+      transition: background 0.15s ease !important;
+    }
+    .drawer-item:active { background: rgba(196, 115, 79, 0.08) !important; }
+    .drawer-item.active-current {
+      background: rgba(196, 115, 79, 0.1) !important;
+      border-color: rgba(196, 115, 79, 0.25) !important;
+    }
+    .drawer-item-left {
+      display: flex !important; align-items: center !important; gap: 10px !important;
+    }
+    .drawer-item-num {
+      width: 30px !important; height: 30px !important;
+      border-radius: 10px !important;
+      background: rgba(69, 101, 109, 0.1) !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+      font-size: 13px !important; font-weight: 800 !important;
+      color: #45656D !important;
+      flex-shrink: 0 !important;
+    }
+    .drawer-item-name {
+      font-size: 13.5px !important; font-weight: 700 !important; color: #1F2E35 !important;
+    }
+    .drawer-item-sub {
+      font-size: 11px !important; color: rgba(31, 46, 53, 0.5) !important; margin-top: 1px !important;
+    }
+    .drawer-item-tag {
+      font-size: 10.5px !important; font-weight: 700 !important;
+      color: #A85532 !important;
+      background: rgba(196, 115, 79, 0.12) !important;
+      padding: 3px 8px !important;
+      border-radius: 999px !important;
+      white-space: nowrap !important;
+    }
+    .drawer-item-tag.bonus {
+      color: #C4734F !important;
+      background: rgba(196, 115, 79, 0.14) !important;
+    }
+  </style>
+
+  <script>
+    // Theme & Bridge logic
+    function applyThemeColors(colors) {
+      if (!colors) return;
+      var root = document.documentElement;
+      if(colors.background) root.style.setProperty('--nb-bg', colors.background);
+      if(colors.textPrimary) root.style.setProperty('--nb-text', colors.textPrimary);
+      if(colors.textSecondary) root.style.setProperty('--nb-text-2', colors.textSecondary);
+      if(colors.primaryMain) root.style.setProperty('--nb-accent', colors.primaryMain);
+    }
+
+    var elLoading = document.getElementById('loading-screen');
+    
+    function handleNotibotInit(user, app) {
+      if (app) applyThemeColors(app.colors);
+      if (elLoading) elLoading.style.display = 'none';
+    }
+
+    if (window.notibot) {
+      window.notibot.onUpdate(handleNotibotInit);
+      if (window.notibotInitData) handleNotibotInit(window.notibotInitData.user, window.notibotInitData.app);
+      else if (window.notibot.app && Object.keys(window.notibot.app).length > 0) handleNotibotInit(window.notibot.user, window.notibot.app);
+      setTimeout(function() { if (elLoading) elLoading.style.display = 'none'; }, 3000);
+    } else {
+      setTimeout(function() { if (elLoading) elLoading.style.display = 'none'; }, 1000);
+    }
+
+    function safeHaptic(kind) {
+      try {
+        if (window.notibot) {
+          if (kind === 'success' || kind === 'error' || kind === 'warning') {
+            if (typeof notibot.hapticNotification === 'function') { notibot.hapticNotification(kind); return; }
+          } else if (kind === 'selection') {
+            if (typeof notibot.hapticSelection === 'function') { notibot.hapticSelection(); return; }
+          } else {
+            if (typeof notibot.hapticImpact === 'function') { notibot.hapticImpact(kind || 'light'); return; }
+          }
+        }
+        if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+          var hf = Telegram.WebApp.HapticFeedback;
+          if ((kind === 'success' || kind === 'error' || kind === 'warning') && typeof hf.notificationOccurred === 'function') { hf.notificationOccurred(kind); return; }
+          if (kind === 'selection' && typeof hf.selectionChanged === 'function') { hf.selectionChanged(); return; }
+          if (typeof hf.impactOccurred === 'function') { hf.impactOccurred(kind === 'heavy' ? 'heavy' : (kind === 'medium' ? 'medium' : 'light')); return; }
+        }
+        if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+          navigator.vibrate(kind === 'error' ? [30, 40, 30] : 12);
+        }
+      } catch (e) { }
+    }
+
+    function pauseVideo() {
+      var iframe = document.getElementById('kinescopeVideo');
+      if(iframe) {
+        var currentSrc = iframe.src;
+        if (currentSrc && currentSrc.includes('kinescope.io')) {
+          iframe.src = '';
+        }
       }
     }
 
-    // Seamless Screen Transitions (Screen 1 <-> Screen 2)
+    function handleCta(e) {
+      if(e && e.preventDefault) e.preventDefault();
+      safeHaptic('success');
+      var CTA_ID = '2NvyoluAQiidfuwZTClFNy';
+      var CTA_FALLBACK = '17_lesson2.html';
+      
+      if(typeof openScreen === 'function') {
+         openScreen(CTA_FALLBACK);
+      } else {
+        if (window.notibot) {
+          try { window.notibot.openArticle(CTA_ID); } 
+          catch(err) { window.location.href = CTA_FALLBACK; }
+        } else {
+          window.location.href = CTA_FALLBACK;
+        }
+      }
+    }
+
     function goToVideo() {
       safeHaptic('selection');
-      const s2 = document.getElementById('step2InteractiveScreen');
+      var s2 = document.getElementById('step2InteractiveScreen');
       if (s2) s2.style.display = 'none';
-      const s1 = document.getElementById('step1VideoScreen');
+      var s1 = document.getElementById('step1VideoScreen');
       if (s1) s1.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function goToStep1() {
-      goToVideo();
     }
 
     function goToPractice() {
       safeHaptic('selection');
       pauseVideo();
-      const s1 = document.getElementById('step1VideoScreen');
+      var s1 = document.getElementById('step1VideoScreen');
       if (s1) s1.style.display = 'none';
-      const s2 = document.getElementById('step2InteractiveScreen');
+      var s2 = document.getElementById('step2InteractiveScreen');
       if (s2) s2.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      // Automatically reveal "Перейти ко второму уроку →" button after 3 seconds on Screen 2
-      setTimeout(revealNextLessonBtn, 3000);
     }
 
-    function goToStep2() {
-      goToPractice();
-    }
-
-    function goToInteractive() {
-      goToPractice();
-    }
-
-
-                // Pause Kinescope Video Player & Other Audios
-    function pauseVideo() {
-      const iframes = document.querySelectorAll('iframe');
-      iframes.forEach(iframe => {
-        if (iframe) {
-          if (iframe.contentWindow) {
-            try {
-              iframe.contentWindow.postMessage(JSON.stringify({ event: 'pause', command: 'pause' }), '*');
-              iframe.contentWindow.postMessage({ type: 'pause', command: 'pause' }, '*');
-              iframe.contentWindow.postMessage({ type: 'player:pause' }, '*');
-              iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:pause' }), '*');
-              iframe.contentWindow.postMessage({ event: 'command', command: 'pause' }, '*');
-              iframe.contentWindow.postMessage('{"method":"pause"}', '*');
-              iframe.contentWindow.postMessage(JSON.stringify({ method: 'pause' }), '*');
-            } catch(e) {}
-          }
-          try {
-            const currentSrc = iframe.src;
-            if (currentSrc && currentSrc.includes('kinescope.io')) {
-              iframe.src = currentSrc;
-            }
-          } catch(e) {}
-        }
-      });
-      const audios = document.querySelectorAll('audio');
-      audios.forEach(a => { try { a.pause(); } catch(e){} });
-    }
-
-
-
-    function safeNavigate(url) {
-      safeHaptic('selection');
-      pauseVideo();
-      setTimeout(function() {
-        window.location.href = url;
-      }, 30);
-    }
-
-    window.addEventListener('pagehide', pauseVideo);
-    window.addEventListener('beforeunload', pauseVideo);
-    document.addEventListener('visibilitychange', function() {
-      if (document.hidden) pauseVideo();
-    });
-
-    // AI Credits System (3 requests limit across the whole course)
-    const AI_CREDITS_KEY = 'psyquest_ai_credits';
-    let aiCredits = 3;
-    try {
-      const savedCredits = localStorage.getItem(AI_CREDITS_KEY);
-      if (savedCredits !== null) {
-        aiCredits = Math.max(0, Math.min(3, parseInt(savedCredits, 10)));
-      } else {
-        localStorage.setItem(AI_CREDITS_KEY, '3');
-      }
-    } catch (e) {}
-
-    function updateCreditsUI() {
-      const el = document.getElementById('aiCreditsLeft');
-      const textEl = document.getElementById('aiCreditsCardText');
-      const btn = document.getElementById('btnSubmitStrategy');
-      const nextBtn = document.getElementById('nextLessonBlock');
-
-      if (el) el.textContent = aiCredits;
-
-      // Reveal next lesson button if user already completed at least 1 analysis
-      if (aiCredits < 3 && nextBtn) {
-        nextBtn.style.display = 'block';
-      }
-
-      if (aiCredits <= 0) {
-        if (textEl) {
-          textEl.innerHTML = '🚂 <strong style="color:var(--nb-terracotta);">Интеллектуальный попутчик поехал в следующий урок</strong> и будет ждать вас там с новыми вопросами и своей помощью.';
-        }
-        if (btn) {
-          btn.style.display = 'none';
-        }
-      } else {
-        if (textEl) {
-          textEl.textContent = 'Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.';
-        }
-        if (btn) {
-          btn.style.display = 'block';
-        }
-      }
-    }
-    updateCreditsUI();
-
-    // AI Strategy Analysis
-    async function analyzeStrategy(e) {
-      e.preventDefault();
-      if (aiCredits <= 0) {
-        safeHaptic('selection');
-        openScreen('17_lesson2.html');
+    function handleStep1() {
+      var v = document.getElementById('situationInput').value.trim();
+      if(!v) {
+        safeHaptic('error');
+        alert('Пожалуйста, опишите ситуацию.');
         return;
       }
-      safeHaptic('impactLight');
-
-      const btn = document.getElementById('btnSubmitStrategy');
-      btn.disabled = true;
-      btn.textContent = 'Попутчик анализирует...';
-
-      const payload = {
-        fact: document.getElementById('inpFact').value,
-        feeling: document.getElementById('inpFeeling').value,
-        action: document.getElementById('inpAction').value,
-        relief: document.getElementById('inpRelief').value,
-        result: document.getElementById('inpResult').value,
-        userName: window.currentUserName || 'Участник'
-      };
-
-      try {
-        localStorage.setItem('lesson1_inpFact', payload.fact);
-        localStorage.setItem('lesson1_inpFeeling', payload.feeling);
-        localStorage.setItem('lesson1_inpAction', payload.action);
-      } catch(e) {}
-
-      let isRealAi = false;
-      try {
-        const data = await window.apiPost('/api/lesson1-strategy', payload);
-        if (data && (data.analysis || data.result)) {
-          isRealAi = !!data.isAi;
-          showAiResult(data.analysis || JSON.stringify(data.result), isRealAi);
-        } else {
-          showAiFallback(payload);
-        }
-      } catch (err) {
-        showAiFallback(payload);
-      } finally {
-        if (isRealAi) {
-          aiCredits = Math.max(0, aiCredits - 1);
-          localStorage.setItem(AI_CREDITS_KEY, aiCredits);
-          updateCreditsUI();
-        }
-        if (aiCredits > 0) {
-          btn.disabled = false;
-          btn.textContent = 'Разобрать с Попутчиком →';
-        }
-      }
-    }
-
-    function showAiFallback(p) {
-      const fallback = `🔍 Точный разбор вашего сценария:\n\n• ФАКТ: «${p.fact}» — это объективная реальность без домыслов.\n• ЛОВУШКА ИНТЕРПРЕТАЦИИ: Мозг подменил факт тревогой («${p.feeling}») и запустил автоматическое действие («${p.action}»).\n• ЦЕНА ИЛЛЮЗИИ КОНТРОЛЯ: Мгновенное облегчение («${p.relief}») закрепило нежелательный результат («${p.result}»).\n\n💡 На 2-м уроке мы научимся замечать этот соматический спазм в теле и выбирать новое действие.`;
-      showAiResult(fallback, false);
-    }
-
-    function showAiResult(text, isRealAi = false) {
-      safeHaptic('success');
-      const block = document.getElementById('aiResultBlock');
-      const textContainer = document.getElementById('aiAnalysisText');
-      const nextBtn = document.getElementById('nextLessonBlock');
-      const offlineNotice = document.getElementById('aiOfflineNoticeLesson1');
-
-      if (offlineNotice) {
-        offlineNotice.style.display = isRealAi ? 'none' : 'block';
-      }
-
-      let htmlContent = text;
-      if (aiCredits <= 0) {
-        htmlContent += '\n\n<div style="margin-top:14px; padding:12px 14px; border-radius:14px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.25); text-align:center; font-size:13px; font-weight:700; color:var(--nb-terracotta); line-height:1.45;">🚂 Интеллектуальный попутчик поехал в следующий урок и будет ждать вас там с новыми вопросами и своей помощью.</div>';
-        textContainer.innerHTML = htmlContent;
-      } else {
-        textContainer.textContent = htmlContent;
-      }
-      block.classList.remove('hidden');
-      block.style.display = 'flex';
-
-      // Reveal and highlight button to go to Lesson 2
-      revealNextLessonBtn();
-      const btn2 = document.getElementById('btnNextLesson2');
-      if (btn2) {
-        btn2.className = 'primary-btn pulse';
-      }
-
-      block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    // ==========================================
-    // TELEGRAM SUMMARY DISPATCH (LESSON 1)
-    // ==========================================
-    async function sendLesson1ToTelegram(e) {
-      if (e) e.preventDefault();
       safeHaptic('selection');
-      const btn = document.getElementById('btnSendLesson1Telegram');
-      const statusEl = document.getElementById('tgStatusLesson1');
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span>⏳ Отправляем в Telegram...</span>';
-      }
+      document.getElementById('step1').style.display = 'none';
+      document.getElementById('step2').style.display = 'flex';
+      pauseVideo();
+    }
 
-      const fact = document.getElementById('inpFact')?.value || '';
-      const feeling = document.getElementById('inpFeeling')?.value || '';
-      const action = document.getElementById('inpAction')?.value || '';
-      const relief = document.getElementById('inpRelief')?.value || '';
-      const result = document.getElementById('inpResult')?.value || '';
-      const aiText = document.getElementById('aiAnalysisText')?.innerText || '';
+    function updateSlider(id, val, el) {
+      var badge = document.getElementById(id);
+      badge.textContent = val;
+      
+      var num = parseInt(val, 10);
+      var color = '#2F7D59';
+      if(num >= 8) color = '#B42318';
+      else if (num >= 4) color = '#E59A5A';
+      
+      badge.style.backgroundColor = color;
+      badge.style.color = 'white';
+      
+      safeHaptic('selection');
+    }
 
-      const fullMessage = [
-        '💡 Персональный разбор сценария (Урок 1 • «Я выбираю»):',
-        '',
-        `• ФАКТ: ${fact}`,
-        `• ТРЕВОГА / ИНТЕРПРЕТАЦИЯ: ${feeling}`,
-        `• АВТОМАТИЧЕСКОЕ ДЕЙСТВИЕ: ${action}`,
-        `• ИЛЛЮЗИЯ КОНТРОЛЯ: ${relief}`,
-        `• ИТОГОВЫЙ РЕЗУЛЬТАТ: ${result}`,
-        '',
-        '✨ РАЗБОР ПОПУТЧИКА:',
-        aiText.replace(/\n{3,}/g, '\n\n'),
-        '',
-        '👉 Практика: Наблюдать за соматическим спазмом и не спешить с реакцией.'
-      ].join('\n');
+    function handleStep2() {
+      safeHaptic('selection');
+      document.getElementById('step2').style.display = 'none';
+      document.getElementById('step3').style.display = 'flex';
+    }
 
-      let delivered = false;
-
-      // 1. Telegram WebApp sendData
-      try {
-        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
-          window.Telegram.WebApp.sendData(JSON.stringify({
-            event: 'lesson_summary',
-            lesson: 1,
-            title: 'Урок 1 • Персональный разбор сценария',
-            message: fullMessage
-          }));
-          delivered = true;
-        }
-      } catch (err) {
-        console.log('Telegram sendData:', err);
-      }
-
-      // 2. Notibot SDK
-      try {
-        if (window.notibot && typeof window.notibot.submitForm === 'function') {
-          await window.notibot.submitForm('lesson_summary_1', [
-            { title: 'Разбор урока 1', answers: [fullMessage] }
-          ]);
-          delivered = true;
-        }
-      } catch (err) {
-        console.log('Notibot submitForm:', err);
-      }
-
-      // 3. Backend dispatch
-      try {
-        const user = (window.extractTelegramUser ? window.extractTelegramUser() : null) || window.currentUser || {};
-        const res = await window.apiPost('/api/send-telegram-summary', {
-          lessonNumber: 1,
-          title: 'Урок 1 • Персональный разбор сценария',
-          message: fullMessage,
-          user: user
-        });
-        if (res && res.delivered) {
-          delivered = true;
-        }
-      } catch (err) {
-        console.log('API send-telegram-summary:', err);
-      }
-
-      // 4. Clipboard fallback (always copies text for user convenience)
-      try {
-        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-          await navigator.clipboard.writeText(fullMessage);
-        }
-      } catch (err) { }
-
-      safeHaptic('success');
-      if (btn) {
-        btn.disabled = false;
-        if (delivered) {
-          btn.innerHTML = '<span>✅ Разбор отправлен в ваш диалог с ботом!</span>';
-          btn.style.borderColor = 'var(--success)';
-          btn.style.color = 'var(--success)';
-        } else {
-          btn.innerHTML = '<span>📋 Разбор скопирован в буфер обмена!</span>';
-          btn.style.borderColor = 'var(--nb-sea)';
-          btn.style.color = 'var(--nb-sea)';
-        }
-      }
-      if (statusEl) {
-        statusEl.style.display = 'block';
-        if (delivered) {
-          statusEl.textContent = 'Сообщение с разбором успешно направлено в ваш диалог с ботом.';
-        } else {
-          statusEl.textContent = 'Текст разбора скопирован в буфер! Вы можете вставить его в чат с ботом или заметки.';
+    var attempts = 3;
+    var ATTEMPTS_KEY = 's2_lesson1_attempts';
+    var savedAttempts = localStorage.getItem(ATTEMPTS_KEY);
+    if(savedAttempts !== null) {
+      attempts = parseInt(savedAttempts, 10);
+    }
+    
+    function updateAttemptsDisplay() {
+      var el = document.getElementById('attemptsCount');
+      if(el) el.textContent = attempts;
+      if(attempts <= 0) {
+        var btn = document.getElementById('submitBtn');
+        if(btn) {
+          btn.disabled = true;
+          btn.style.opacity = '0.5';
+          btn.querySelector('span').textContent = 'Попытки закончились';
         }
       }
     }
+    updateAttemptsDisplay();
+    
+    async function apiPostLocal(endpoint, bodyData, timeoutMs = 15000) {
+      var baseUrl = (window.API_BASE && window.API_BASE !== '') ? window.API_BASE : '';
+      var targetUrl = endpoint.startsWith('http') ? endpoint : (baseUrl + endpoint);
+      
+      var controller = new AbortController();
+      var timer = setTimeout(function(){ controller.abort(); }, timeoutMs);
+
+      try {
+        var response = await fetch(targetUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(bodyData),
+          signal: controller.signal
+        });
+        clearTimeout(timer);
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return await response.json();
+      } catch (err) {
+        clearTimeout(timer);
+        if (window.AMVERA_HOST && targetUrl !== (window.AMVERA_HOST + endpoint)) {
+           try {
+             var fb = await fetch(window.AMVERA_HOST + endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bodyData)
+             });
+             if(fb.ok) return await fb.json();
+           } catch(e) {}
+        }
+        throw err;
+      }
+    }
+
+    async function submitToAI() {
+      if(attempts <= 0) {
+        safeHaptic('error');
+        return;
+      }
+      
+      var thriller = document.getElementById('thrillerInput').value.trim();
+      var situation = document.getElementById('situationInput').value.trim();
+      
+      if(!thriller) {
+        safeHaptic('error');
+        alert('Пожалуйста, опишите триллер в голове.');
+        return;
+      }
+      
+      var s1 = document.getElementById('slider1').value;
+      var s2 = document.getElementById('slider2').value;
+      var s3 = document.getElementById('slider3').value;
+      var s4 = document.getElementById('slider4').value;
+
+      safeHaptic('medium');
+      var elLoading = document.getElementById('aiLoading');
+      if (elLoading) elLoading.style.display = 'flex';
+      
+      try {
+        var payload = {
+           situation: situation,
+           thriller: thriller,
+           emotions: {
+             anger: s1,
+             anxiety: s2,
+             resentment: s3,
+             coldness: s4
+           }
+        };
+        
+        var apiFunc = (typeof apiPost === 'function') ? apiPost : apiPostLocal;
+        var data = await apiFunc('/api/s2-lesson1-strategy', payload);
+        
+        if(!data || !data.fact) {
+           throw new Error("Invalid API response");
+        }
+        renderResults(data);
+        
+      } catch(err) {
+        console.error(err);
+        setTimeout(function() {
+          renderResults({
+            fact: "Камера зафиксировала: человек пришел, прошел на кухню, смотрит в телефон, на вопросы отвечает коротко.",
+            thriller: "Мозг рисует: он охладел, мы расстаемся, я ему не нужна.",
+            stabilizer: "Прямо сейчас мне ничего не угрожает. Чужое настроение — это просто чужое настроение."
+          });
+        }, 1500);
+      }
+    }
+    
+    function renderResults(data) {
+        var elLoading = document.getElementById('aiLoading');
+        if (elLoading) elLoading.style.display = 'none';
+        
+        safeHaptic('success');
+        
+        attempts--;
+        localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
+        updateAttemptsDisplay();
+        
+        localStorage.setItem('s2_lesson1_block', JSON.stringify(data));
+        localStorage.setItem('s2_lesson1_completed', 'true');
+        
+        document.getElementById('resFact').textContent = data.fact;
+        document.getElementById('resThriller').textContent = data.thriller;
+        document.getElementById('resStabilizer').textContent = data.stabilizer;
+        
+        document.getElementById('step3').style.display = 'none';
+        var resCard = document.getElementById('resultCard');
+        if (resCard) {
+          resCard.style.display = 'flex';
+          resCard.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    
+    window.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('s2_lesson1_block');
+      if(saved) {
+        try {
+          var data = JSON.parse(saved);
+        }catch(e){}
+      }
+    });
   </script>
 
-
     <!-- =========================================================
-       BOTTOM DRAWER / НАВИГАЦИЯ ПО КУРСУ
+       BOTTOM DRAWER / НАВИГАЦИЯ ПО КУРСУ (Сценарий 2)
        ========================================================= -->
   <div id="navDrawerOverlay" onclick="handleDrawerBackdropClick(event)">
     <div id="navDrawerBackdrop"></div>
@@ -2027,60 +2193,60 @@ textarea:focus, input:focus {
         <div>
           <div class="drawer-section-label">Уроки курса</div>
           <div class="drawer-list">
-            <!-- Молчание, запускающее сценарий -->
+            <!-- Урок 1 — текущий -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('16_lesson1.html'); return false;" class="drawer-item active-current">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">1</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Молчание, запускающее сценарий</div>
-                  <div class="drawer-item-sub">Факт → тревога → попытка догнать</div>
+                  <div class="drawer-item-name">Почему один поступок занимает всю голову</div>
+                  <div class="drawer-item-sub">Факт → триллер → стабилизатор</div>
                 </div>
               </div>
               <span class="drawer-item-tag">Вы здесь</span>
             </a>
 
-            <!-- Как тело включает тревогу -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('17_lesson2.html'); return false;" class="drawer-item ">
+            <!-- Урок 2 -->
+            <a href="javascript:void(0);" onclick="navigateFromDrawer('17_lesson2.html'); return false;" class="drawer-item">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">2</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Как тело включает тревогу</div>
-                  <div class="drawer-item-sub">Сжатие, спазм, импульс действовать</div>
+                  <div class="drawer-item-name">Почему вы тащите всё на себе</div>
+                  <div class="drawer-item-sub">Контроль и гиперответственность</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
             </a>
 
-            <!-- Ловушка объяснений -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('18_lesson3.html'); return false;" class="drawer-item ">
+            <!-- Урок 3 -->
+            <a href="javascript:void(0);" onclick="navigateFromDrawer('18_lesson3.html'); return false;" class="drawer-item">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">3</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Ловушка объяснений</div>
-                  <div class="drawer-item-sub">Почему мы оправдываем холодность</div>
+                  <div class="drawer-item-name">Как перестать спасать и начать жить</div>
+                  <div class="drawer-item-sub">Границы и опоры</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
             </a>
 
-            <!-- Перехват управления -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('19_lesson4.html'); return false;" class="drawer-item ">
+            <!-- Урок 4 -->
+            <a href="javascript:void(0);" onclick="navigateFromDrawer('19_lesson4.html'); return false;" class="drawer-item">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">4</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Перехват управления</div>
-                  <div class="drawer-item-sub">Пауза между импульсом и реакцией</div>
+                  <div class="drawer-item-name">Что делать, когда накрывает</div>
+                  <div class="drawer-item-sub">Экстренная самопомощь</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
             </a>
 
-            <!-- Новый выбор в отношениях -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('20_lesson5.html'); return false;" class="drawer-item ">
+            <!-- Урок 5 -->
+            <a href="javascript:void(0);" onclick="navigateFromDrawer('20_lesson5.html'); return false;" class="drawer-item">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">5</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Новый выбор в отношениях</div>
+                  <div class="drawer-item-name">Новая я в отношениях</div>
                   <div class="drawer-item-sub">Закрепление взрослой позиции</div>
                 </div>
               </div>
@@ -2094,7 +2260,7 @@ textarea:focus, input:focus {
           <div class="drawer-section-label">Бонусы и разбор</div>
           <div class="drawer-list">
             <!-- 4 практических бонуса -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('21_bonuses.html'); return false;" class="drawer-item ">
+            <a href="javascript:void(0);" onclick="navigateFromDrawer('21_bonuses.html'); return false;" class="drawer-item">
               <div class="drawer-item-left">
                 <div class="drawer-item-num" style="background:rgba(196,115,79,0.14); color:#A85532;">🎁</div>
                 <div class="drawer-item-info">
@@ -2103,18 +2269,6 @@ textarea:focus, input:focus {
                 </div>
               </div>
               <span class="drawer-item-tag bonus">4 бонуса</span>
-            </a>
-
-            <!-- Индивидуальный разбор -->
-            <a href="javascript:void(0);" onclick="navigateFromDrawer('14_individual_offer.html'); return false;" class="drawer-item ">
-              <div class="drawer-item-left">
-                <div class="drawer-item-num" style="background:rgba(49,130,206,0.12); color:#2B6CB0;">⭐</div>
-                <div class="drawer-item-info">
-                  <div class="drawer-item-name">Индивидуальный разбор</div>
-                  <div class="drawer-item-sub">Персональная работа со сценарием</div>
-                </div>
-              </div>
-              <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
             </a>
           </div>
         </div>
@@ -2166,5 +2320,4 @@ textarea:focus, input:focus {
   </script>
 
 </body>
-
 </html>
