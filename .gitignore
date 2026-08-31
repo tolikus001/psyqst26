@@ -25,3 +25,8 @@ node_modules/
 .vscode/
 *.swp
 *.swo
+
+# Large media files
+*.mp4
+*.mov
+baza/исходник миникурса/video2-0.mp4
