@@ -1099,7 +1099,7 @@ textarea:focus, input:focus {
     '01_psyquest.html': 'oak',
     '02_landing_partner.html': 'birch',
     '03_lesson1.html': 'oak',
-    '39_lesson2.html': 'birch',
+    '17_lesson2.html': 'birch',
     '05_lesson3.html': 'oak',
     '06_lesson4.html': 'birch',
     '07_lesson5.html': 'oak',
@@ -1159,168 +1159,71 @@ textarea:focus, input:focus {
  * Unified API & Media Connector for Local, Notibot and Amvera Environments
  */
 (function() {
-  // Determine backend base URL
-  const isLocal = window.location.hostname === 'localhost' || 
-                  window.location.hostname === '127.0.0.1' || 
-                  window.location.protocol === 'file:';
+  var isLocal = window.location.hostname === 'localhost' || 
+                window.location.hostname === '127.0.0.1' || 
+                window.location.protocol === 'file:';
 
-  const AMVERA_HOST = 'https://inter01-anatolyfedorov.amvera.io';
-  const LOCAL_HOST = 'http://localhost:3000';
+  var AMVERA_HOST = 'https://inter01-anatolyfedorov.amvera.io';
+  var LOCAL_HOST = 'http://localhost:3000';
 
-  const API_BASE = (window.location.protocol === 'file:')
+  var API_BASE = (window.location.protocol === 'file:')
     ? (window.USE_AMVERA_FOR_FILE ? AMVERA_HOST : LOCAL_HOST)
     : (isLocal ? '' : AMVERA_HOST);
 
-  // Official Notibot Article IDs for seamless inside-bot navigation
-  const NOTIBOT_ARTICLES = {
-    quest: '35Kvp1YSxOSOzKeVKcpom2',
-    landing: '54xiZ3LlRdXnk88t9xPt7s',
-    lesson1: '6QzHvAlz22e4IEb6wVhjy0',
-    lesson2: '6wQPr20VEfbLD5Jg6GeEVR',
-    lesson3: '0wFlaZghZ7ZieZiqFtJpSs',
-    lesson4: '1ddMHSu3zb0ixr2CWRLKvg',
-    lesson5: '4uMyKJZW4TdZJM8z9G7Zbg',
-    portrait_quest: '2plu9h6VcWiAQ3TrZ8nLql',
-    bonuses: '6ZwOzlMAERTYgkV2FsWnVx',
-    bonus1: '5MKoAoaLdnrJqZaczYSZth',
-    bonus2: '5DiBJPDNERZWQCXQ7C2OoX',
-    bonus3: '38HgDSX5SePPcFWySLUMNs',
-    bonus4: '7NGEU2ikhiLHvuuyxhmL6K',
-    individual_offer: '1CkSHuhyH7kVgjKZxWPCDs',
-
+  var NOTIBOT_ARTICLES = {
     '01_psyquest.html': '35Kvp1YSxOSOzKeVKcpom2',
-    '01_psyquest': '35Kvp1YSxOSOzKeVKcpom2',
-    '01_quest.html': '35Kvp1YSxOSOzKeVKcpom2',
-    'psyquest': '35Kvp1YSxOSOzKeVKcpom2',
-
     '02_landing_partner.html': '54xiZ3LlRdXnk88t9xPt7s',
-    '02_landing_partner': '54xiZ3LlRdXnk88t9xPt7s',
-    '02_landing.html': '54xiZ3LlRdXnk88t9xPt7s',
-    'landing_partner': '54xiZ3LlRdXnk88t9xPt7s',
-
     '03_lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
-    '03_lesson1': '6QzHvAlz22e4IEb6wVhjy0',
-    'lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
-    'lesson_1': '6QzHvAlz22e4IEb6wVhjy0',
-    'lesson-1': '6QzHvAlz22e4IEb6wVhjy0',
-    '01_lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
-    '01_lesson1': '6QzHvAlz22e4IEb6wVhjy0',
-
-    '39_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
-    '04_lesson2': '6wQPr20VEfbLD5Jg6GeEVR',
-    'lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
-    'lesson_2': '6wQPr20VEfbLD5Jg6GeEVR',
-    'lesson-2': '6wQPr20VEfbLD5Jg6GeEVR',
-    '02_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
-
+    '04_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
     '05_lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
-    '05_lesson3': '0wFlaZghZ7ZieZiqFtJpSs',
-    'lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
-    'lesson_3': '0wFlaZghZ7ZieZiqFtJpSs',
-    'lesson-3': '0wFlaZghZ7ZieZiqFtJpSs',
-    '03_lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
-
     '06_lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
-    '06_lesson4': '1ddMHSu3zb0ixr2CWRLKvg',
-    'lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
-    'lesson_4': '1ddMHSu3zb0ixr2CWRLKvg',
-    'lesson-4': '1ddMHSu3zb0ixr2CWRLKvg',
-    '04_lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
-
     '07_lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
-    '07_lesson5': '4uMyKJZW4TdZJM8z9G7Zbg',
-    'lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
-    'lesson_5': '4uMyKJZW4TdZJM8z9G7Zbg',
-    'lesson-5': '4uMyKJZW4TdZJM8z9G7Zbg',
-    '05_lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
-
     '08_portrait_quest.html': '2plu9h6VcWiAQ3TrZ8nLql',
-    '08_portrait_quest': '2plu9h6VcWiAQ3TrZ8nLql',
-    'portrait_quest.html': '2plu9h6VcWiAQ3TrZ8nLql',
-
     '09_bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
-    '09_bonuses': '6ZwOzlMAERTYgkV2FsWnVx',
-    'bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
-
     '10_bonus1.html': '5MKoAoaLdnrJqZaczYSZth',
-    '10_bonus1': '5MKoAoaLdnrJqZaczYSZth',
-    'bonus1.html': '5MKoAoaLdnrJqZaczYSZth',
-
     '11_bonus2.html': '5DiBJPDNERZWQCXQ7C2OoX',
-    '11_bonus2': '5DiBJPDNERZWQCXQ7C2OoX',
-    'bonus2.html': '5DiBJPDNERZWQCXQ7C2OoX',
-
     '12_bonus3.html': '38HgDSX5SePPcFWySLUMNs',
-    '12_bonus3': '38HgDSX5SePPcFWySLUMNs',
-    'bonus3.html': '38HgDSX5SePPcFWySLUMNs',
-
     '13_bonus4.html': '7NGEU2ikhiLHvuuyxhmL6K',
-    '13_bonus4': '7NGEU2ikhiLHvuuyxhmL6K',
-    'bonus4.html': '7NGEU2ikhiLHvuuyxhmL6K',
-
     '14_individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs',
-    '37_landing_crisis': '1N6rOVg7p2VxqHnNA11HTe',
-    '37_landing_crisis.html': '1N6rOVg7p2VxqHnNA11HTe',
-    'landing_partner_2': '1N6rOVg7p2VxqHnNA11HTe',
-    '38_lesson1': '5hR7Av3us4aIKmTZr7b6J2',
-    '38_lesson1.html': '5hR7Av3us4aIKmTZr7b6J2',
-    '16_lesson2_1': '5hR7Av3us4aIKmTZr7b6J2',
-    '39_lesson2': '2NvyoluAQiidfuwZTClFNy',
-    '39_lesson2.html': '2NvyoluAQiidfuwZTClFNy',
-    '39_lesson2_2': '2NvyoluAQiidfuwZTClFNy',
-    '40_lesson3': '0VLe3JSTGaykCYI4GGmRrc',
-    '40_lesson3.html': '0VLe3JSTGaykCYI4GGmRrc',
-    '18_lesson2_3': '0VLe3JSTGaykCYI4GGmRrc',
-    '41_lesson4': '3xxTBsJJZGpXnJBURlJWLo',
-    '41_lesson4.html': '3xxTBsJJZGpXnJBURlJWLo',
-    '19_lesson2_4': '3xxTBsJJZGpXnJBURlJWLo',
-    '42_lesson5': '3EUOYisS5lzwNG4LSB9Ttw',
-    '42_lesson5.html': '3EUOYisS5lzwNG4LSB9Ttw',
-    '20_lesson2_5': '3EUOYisS5lzwNG4LSB9Ttw',
-    '43_bonuses': '0dBgBZKrNbtzqhhtL7LweT',
-    '43_bonuses.html': '0dBgBZKrNbtzqhhtL7LweT',
-    '21_lp_bonuses_2': '0dBgBZKrNbtzqhhtL7LweT',
-    '44_bonus1': '2aGABwdvffujaWDzT9kPx6',
-    '44_bonus1.html': '2aGABwdvffujaWDzT9kPx6',
-    '22_bonus2_1': '2aGABwdvffujaWDzT9kPx6',
-    '45_bonus2': '1XqffrsaxNLrLI8inXo9fx',
-    '45_bonus2.html': '1XqffrsaxNLrLI8inXo9fx',
-    '45_bonus2_2': '1XqffrsaxNLrLI8inXo9fx',
-    '46_bonus3': '0ORCSoM30o4K6tlmZ4KYmP',
-    '46_bonus3.html': '0ORCSoM30o4K6tlmZ4KYmP',
-    '24_bonus2_3': '0ORCSoM30o4K6tlmZ4KYmP',
-    '47_bonus4': '6j07iXAve1PXf3vko48gGa',
-    '47_bonus4.html': '6j07iXAve1PXf3vko48gGa',
-    '25_bonus2_4': '6j07iXAve1PXf3vko48gGa',
-    '14_individual_offer': '1CkSHuhyH7kVgjKZxWPCDs',
-    'individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs'
 
-    '37_landing_crisis': 'PLACEHOLDER_S4_37_landing_crisis',
-    '37_landing_crisis.html': 'PLACEHOLDER_S4_37_landing_crisis',
-    '38_lesson1': 'PLACEHOLDER_S4_38_lesson1',
-    '38_lesson1.html': 'PLACEHOLDER_S4_38_lesson1',
-    '39_lesson2': 'PLACEHOLDER_S4_39_lesson2',
-    '39_lesson2.html': 'PLACEHOLDER_S4_39_lesson2',
-    '40_lesson3': 'PLACEHOLDER_S4_40_lesson3',
-    '40_lesson3.html': 'PLACEHOLDER_S4_40_lesson3',
-    '41_lesson4': 'PLACEHOLDER_S4_41_lesson4',
-    '41_lesson4.html': 'PLACEHOLDER_S4_41_lesson4',
-    '42_lesson5': 'PLACEHOLDER_S4_42_lesson5',
-    '42_lesson5.html': 'PLACEHOLDER_S4_42_lesson5',
-    '43_bonuses': 'PLACEHOLDER_S4_43_bonuses',
-    '43_bonuses.html': 'PLACEHOLDER_S4_43_bonuses',
-    '44_bonus1': 'PLACEHOLDER_S4_44_bonus1',
-    '44_bonus1.html': 'PLACEHOLDER_S4_44_bonus1',
-    '45_bonus2': 'PLACEHOLDER_S4_45_bonus2',
-    '45_bonus2.html': 'PLACEHOLDER_S4_45_bonus2',
-    '46_bonus3': 'PLACEHOLDER_S4_46_bonus3',
-    '46_bonus3.html': 'PLACEHOLDER_S4_46_bonus3',
-    '47_bonus4': 'PLACEHOLDER_S4_47_bonus4',
-    '47_bonus4.html': 'PLACEHOLDER_S4_47_bonus4',
+    '15_landing_partner_2.html': '1N6rOVg7p2VxqHnNA11HTe',
+    '16_lesson1.html': '5hR7Av3us4aIKmTZr7b6J2',
+    '17_lesson2.html': '2NvyoluAQiidfuwZTClFNy',
+    '18_lesson3.html': '0VLe3JSTGaykCYI4GGmRrc',
+    '19_lesson4.html': '3xxTBsJJZGpXnJBURlJWLo',
+    '20_lesson5.html': '3EUOYisS5lzwNG4LSB9Ttw',
+    '21_bonuses.html': '0dBgBZKrNbtzqhhtL7LweT',
+    '22_bonus1.html': '2aGABwdvffujaWDzT9kPx6',
+    '23_bonus2.html': '1XqffrsaxNLrLI8inXo9fx',
+    '24_bonus3.html': '0ORCSoM30o4K6tlmZ4KYmP',
+    '25_bonus4.html': '6j07iXAve1PXf3vko48gGa',
+
+    '26_landing_family.html': '26_landing_family.html',
+    '27_lesson1.html': '27_lesson1.html',
+    '28_lesson2.html': '28_lesson2.html',
+    '29_lesson3.html': '29_lesson3.html',
+    '30_lesson4.html': '30_lesson4.html',
+    '31_lesson5.html': '31_lesson5.html',
+    '32_bonuses.html': '32_bonuses.html',
+    '33_bonus1.html': '33_bonus1.html',
+    '34_bonus2.html': '34_bonus2.html',
+    '35_bonus3.html': '35_bonus3.html',
+    '36_bonus4.html': '36_bonus4.html',
+
+    '37_landing_crisis.html': '37_landing_crisis.html',
+    '38_lesson1.html': '38_lesson1.html',
+    '39_lesson2.html': '39_lesson2.html',
+    '40_lesson3.html': '40_lesson3.html',
+    '41_lesson4.html': '41_lesson4.html',
+    '42_lesson5.html': '42_lesson5.html',
+    '43_bonuses.html': '43_bonuses.html',
+    '44_bonus1.html': '44_bonus1.html',
+    '45_bonus2.html': '45_bonus2.html',
+    '46_bonus3.html': '46_bonus3.html',
+    '47_bonus4.html': '47_bonus4.html'
   };
 
-  // Official Notibot Product IDs
-  const NOTIBOT_PRODUCTS = {
+  var NOTIBOT_PRODUCTS = {
     course: '4ec2ypRLStHYlW0lRrAzHI',
     course_i_choose: '4ec2ypRLStHYlW0lRrAzHI',
     course_partner_2400: '5kbi43jpKV2ZEPdw4gs3rW',
@@ -1335,26 +1238,20 @@ textarea:focus, input:focus {
   window.NOTIBOT_ARTICLES = NOTIBOT_ARTICLES;
   window.NOTIBOT_PRODUCTS = NOTIBOT_PRODUCTS;
 
-  /**
-   * Navigate to screen via Notibot openArticle if embedded, or window.location if standalone
-   */
-    function openScreen(target) {
+  function openScreen(target) {
     try { if (typeof pauseVideo === 'function') pauseVideo(); } catch(e){}
-    const raw = String(target || '').trim();
-    const clean = raw.split('?')[0].split('#')[0].replace(/^\.?\//, '');
-    const articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[raw] || NOTIBOT_ARTICLES[target];
-    if (window.notibot && articleId && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
+    var raw = String(target || '').trim();
+    var clean = raw.split('?')[0].split('#')[0].replace(/^\.?\//, '');
+    var articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[raw] || NOTIBOT_ARTICLES[target];
+    if (window.notibot && articleId && !articleId.endsWith('.html') && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
       window.notibot.openArticle(articleId);
     } else {
       window.location.href = target;
     }
   }
 
-  /**
-   * Open Notibot Product Modal
-   */
   function openProduct(targetId) {
-    const realId = NOTIBOT_PRODUCTS[targetId] || targetId;
+    var realId = NOTIBOT_PRODUCTS[targetId] || targetId;
     if (window.notibot && typeof window.notibot.openProduct === 'function') {
       window.notibot.openProduct(realId);
     } else if (window.notibot && typeof window.notibot.openStorefront === 'function') {
@@ -1362,16 +1259,14 @@ textarea:focus, input:focus {
     }
   }
 
-  /**
-   * Safe Fetch with Timeout and Automatic Error Handling
-   */
-  async function apiPost(endpoint, bodyData, timeoutMs = 12000) {
-    const targetUrl = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
+  async function apiPost(endpoint, bodyData, timeoutMs) {
+    timeoutMs = timeoutMs || 12000;
+    var targetUrl = endpoint.startsWith('http') ? endpoint : (API_BASE + endpoint);
+    var controller = new AbortController();
+    var timer = setTimeout(function() { controller.abort(); }, timeoutMs);
 
     try {
-      const response = await fetch(targetUrl, {
+      var response = await fetch(targetUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1384,17 +1279,16 @@ textarea:focus, input:focus {
       clearTimeout(timer);
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        throw new Error('HTTP ' + response.status);
       }
       return await response.json();
     } catch (err) {
       clearTimeout(timer);
-      console.warn(`[API Warning] Request to ${targetUrl} failed (${err.message}). Trying fallback endpoint...`);
+      console.warn('[API Warning] Request to ' + targetUrl + ' failed (' + err.message + '). Trying fallback endpoint...');
 
-      // If local failed on file:// or network, try Amvera host as secondary
       if (API_BASE !== AMVERA_HOST && !endpoint.startsWith('http')) {
         try {
-          const fallbackRes = await fetch(`${AMVERA_HOST}${endpoint}`, {
+          var fallbackRes = await fetch(AMVERA_HOST + endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bodyData)
@@ -1410,15 +1304,12 @@ textarea:focus, input:focus {
     }
   }
 
-  /**
-   * Resolve Media URL (Local or Amvera)
-   */
   function resolveMediaUrl(filename) {
-    const clean = filename.replace(/^\/+(data|media)\/+/, '');
+    var clean = filename.replace(/^\/+(data|media)\/+/, '');
     if (isLocal && window.location.protocol !== 'file:') {
-      return `/data/${clean}`;
+      return '/data/' + clean;
     }
-    return `${AMVERA_HOST}/data/${clean}`;
+    return AMVERA_HOST + '/data/' + clean;
   }
 
   window.apiPost = apiPost;
@@ -1427,7 +1318,7 @@ textarea:focus, input:focus {
   window.openProduct = openProduct;
 })();
 
-</script>
+  </script>
   <script>
     window.notibotInitData = null;
     window.addEventListener('message', function (event) {
@@ -1437,166 +1328,275 @@ textarea:focus, input:focus {
     });
   </script>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script>
+/**
+ * Telegram & Notibot Real-Time Personalization Engine
+ * Automatically extracts user name & avatar from Telegram WebApp, Notibot Bridge SDK, URL params, or LocalStorage.
+ */
+(function() {
+  function getInitials(name) {
+    if (!name) return '👋';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  }
+
+  function extractTelegramUser() {
+    // 1. Notibot Bridge SDK (Global Object)
+    try {
+      if (window.notibot && window.notibot.user && (window.notibot.user.displayName || window.notibot.user.first_name || window.notibot.user.firstName || window.notibot.user.name)) {
+        return window.notibot.user;
+      }
+    } catch (e) {}
+
+    // 2. Notibot Init Data (via early postMessage)
+    try {
+      if (window.notibotInitData && window.notibotInitData.user) {
+        return window.notibotInitData.user;
+      }
+    } catch (e) {}
+
+    // 3. Telegram WebApp SDK
+    try {
+      if (window.Telegram && window.Telegram.WebApp) {
+        if (typeof window.Telegram.WebApp.ready === 'function') {
+          window.Telegram.WebApp.ready();
+          window.Telegram.WebApp.expand();
+        }
+        if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+          return window.Telegram.WebApp.initDataUnsafe.user;
+        }
+        if (window.Telegram.WebApp.initData) {
+          const params = new URLSearchParams(window.Telegram.WebApp.initData);
+          const userStr = params.get('user');
+          if (userStr) return JSON.parse(userStr);
+        }
+      }
+    } catch (e) {}
+
+    // 4. URL Params & Hash Fragment (?tgWebAppData=... / #tgWebAppData=... / ?name=... / ?first_name=...)
+    try {
+      const rawParams = window.location.search + '&' + window.location.hash.replace(/^#/, '');
+      const urlParams = new URLSearchParams(rawParams);
+      const tgData = urlParams.get('tgWebAppData') || urlParams.get('tgWebAppInitData');
+      if (tgData) {
+        const parsed = new URLSearchParams(tgData);
+        const userJson = parsed.get('user');
+        if (userJson) return JSON.parse(userJson);
+      }
+      const directUser = urlParams.get('user');
+      if (directUser) {
+        try { return JSON.parse(decodeURIComponent(directUser)); } catch(e) { return { displayName: directUser }; }
+      }
+      const qName = urlParams.get('displayName') || urlParams.get('first_name') || urlParams.get('name');
+      if (qName) {
+        return { displayName: decodeURIComponent(qName) };
+      }
+    } catch (e) {}
+
+    // 5. LocalStorage Cache
+    try {
+      const cached = localStorage.getItem('psy_user_data');
+      if (cached) return JSON.parse(cached);
+      const cachedName = localStorage.getItem('psy_user_name');
+      if (cachedName) return { displayName: cachedName };
+    } catch (e) {}
+
+    return null;
+  }
+
+  function applyThemeColors(colors) {
+    if (!colors) return;
+    const root = document.documentElement;
+    if (colors.background) root.style.setProperty('--nb-bg', colors.background);
+    if (colors.textPrimary) root.style.setProperty('--nb-text', colors.textPrimary);
+    if (colors.textSecondary) root.style.setProperty('--nb-text-2', colors.textSecondary);
+    if (colors.primaryMain) root.style.setProperty('--nb-accent', colors.primaryMain);
+  }
+
+  function applyPersonalization(user) {
+    user = user || extractTelegramUser();
+    let rawName = '';
+    let photoUrl = '';
+
+    if (user) {
+      rawName = user.displayName || user.first_name || user.firstName || user.name || user.username || '';
+      photoUrl = user.photoURL || user.photo_url || user.avatar_url || user.avatarUrl || '';
+      try {
+        localStorage.setItem('psy_user_data', JSON.stringify(user));
+        if (rawName) localStorage.setItem('psy_user_name', rawName);
+      } catch (e) {}
+    }
+
+    const firstName = String(rawName || '').trim().split(/\s+/)[0];
+    window.currentUserName = firstName || 'Участник';
+    window.currentUser = user || (firstName ? { displayName: firstName, first_name: firstName } : null);
+
+    // Update Greeting in Header (КОДЕР 2.0: "Привет, {Имя}!" или "Привет!")
+    const greetingEl = document.getElementById('userGreeting');
+    if (greetingEl) {
+      greetingEl.textContent = firstName ? `Привет, ${firstName}!` : 'Привет!';
+    }
+
+    // Update Avatar in Header (КОДЕР 2.0: аватар с fallback на инициалы)
+    const avatarEl = document.getElementById('userAvatar');
+    if (avatarEl) {
+      if (photoUrl) {
+        avatarEl.innerHTML = '<img src="' + photoUrl + '" alt="' + (firstName || 'Avatar') + '" style="width:100%;height:100%;object-fit:cover;border-radius:9999px;" onerror="this.parentNode.setAttribute(\'data-fallback\',\'1\');this.style.display=\'none\';this.parentNode.textContent=\'' + getInitials(firstName) + '\';" />';
+      } else {
+        avatarEl.textContent = getInitials(firstName);
+      }
+    }
+
+    // Optional personalization elements with data-user-name
+    document.querySelectorAll('[data-user-name]').forEach(el => {
+      el.textContent = firstName || el.getAttribute('data-default') || 'Участник';
+    });
+  }
+
+  function handleNotibotInit(user, app) {
+    if (app && app.colors) applyThemeColors(app.colors);
+    applyPersonalization(user);
+  }
+
+  // Subscribe to Notibot Bridge
+  if (window.notibot && typeof window.notibot.onUpdate === 'function') {
+    window.notibot.onUpdate(handleNotibotInit);
+    if (window.notibotInitData) {
+      handleNotibotInit(window.notibotInitData.user, window.notibotInitData.app);
+    } else if (window.notibot.app && Object.keys(window.notibot.app).length > 0) {
+      handleNotibotInit(window.notibot.user, window.notibot.app);
+    }
+  }
+
+  // Initialize immediately & on events
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => applyPersonalization());
+  } else {
+    applyPersonalization();
+  }
+
+  // Periodic check for async Telegram/Notibot init
+  let pollAttempts = 0;
+  const pollTimer = setInterval(() => {
+    pollAttempts++;
+    const u = extractTelegramUser();
+    if (u && (u.displayName || u.first_name || u.firstName || u.name || u.username)) {
+      applyPersonalization(u);
+      clearInterval(pollTimer);
+    }
+    if (pollAttempts >= 20) clearInterval(pollTimer);
+  }, 100);
+
+  // Listen for Notibot async initialization postMessages
+  window.addEventListener('message', function(event) {
+    if (!event.data) return;
+    const isInit = event.data.type === 'NOTIBOT_INIT' ||
+                   event.data.type === 'notibot:init' ||
+                   event.data.type === 'NOTIBOT_READY' ||
+                   event.data.type === 'notibot_init';
+    if (isInit) {
+      const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+      const a = (event.data.data && event.data.data.app) || event.data.app || {};
+      if (u) {
+        window.notibotInitData = event.data.data || { user: u, app: a };
+        handleNotibotInit(u, a);
+      }
+    }
+  });
+
+  window.applyPersonalization = applyPersonalization;
+  window.extractTelegramUser = extractTelegramUser;
+  window.getInitials = getInitials;
+  window.handleNotibotInit = handleNotibotInit;
+  window.applyThemeColors = applyThemeColors;
+})();
+  </script>
 </head>
 <body>
   <div id="maisonArtBackground"></div>
-  <div id="loading-screen" class="loader-screen">
-    <div class="loader-spinner mb-4"></div>
-    <span class="text-sm tracking-widest text-nb-accent uppercase font-bold animate-pulse">Загрузка...</span>
-  </div>
-
+  <div id="loading-screen" class="loader-screen"><div class="loader-spinner mb-4"></div><span class="text-sm tracking-widest text-nb-accent uppercase font-bold animate-pulse">Загрузка...</span></div>
   <main class="app-shell">
     <div class="app">
-
-      <!-- Navigation Header (Урок 5 из 5) -->
       <header class="header-bar-nav">
         <div class="header-actions-row">
-          <button type="button" onclick="openNavDrawer();" class="nav-glass-tinted-btn">
-            <span>🧭</span>
-            <span>Навигация по курсу</span>
-          </button>
-          <button type="button" onclick="safeHaptic('selection'); openScreen('43_bonuses.html');" class="next-lesson-btn">
-            <span>Бонусы курса 🎁 →</span>
-          </button>
+          <button type="button" onclick="openNavDrawer();" class="nav-glass-tinted-btn"><span>🧭</span><span>Навигация по курсу</span></button>
+          <button type="button" onclick="safeHaptic('selection'); openScreen('43_bonuses.html');" class="next-lesson-btn"><span>К бонусам курса →</span></button>
         </div>
-
         <div class="header-progress-row">
           <span class="lesson-badge-sub">Урок 5 из 5</span>
-          <span class="progress-percent-sub">100% пройдено</span>
+          <span class="progress-percent-sub">100% курс завершен! 🎉</span>
         </div>
-
         <div class="progress-track" style="width:100%; height:5px; background:rgba(36,49,57,0.08); border-radius:999px; overflow:hidden;">
-          <div style="width:100%; height:100%; background:linear-gradient(90deg, #C4734F, #2F7D59); border-radius:999px;"></div>
+          <div style="width:100%; height:100%; background:linear-gradient(90deg, #C4734F, #45656D); border-radius:999px;"></div>
         </div>
       </header>
-
-      <!-- SCREEN 1: VIDEO & INSIGHT -->
       <div id="step1VideoScreen" style="display:flex; flex-direction:column; gap:14px;">
-
         <section class="glass card text-center">
-          <div class="eyebrow" style="margin-bottom:8px;">Финал курса • Урок 5 из 5</div>
-          <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); line-height:1.3; margin-bottom:6px; text-align:center;">Спасать семью по новым правилам или уйти с достоинством</h2>
-          <p class="lead" style="font-size:13px; line-height:1.4; color:var(--nb-text-2); margin-bottom:12px; text-align:center;">Ваш пошаговый компас устойчивости в отношениях и финальная медитация.</p>
-
+          <div class="eyebrow" style="margin-bottom:8px;">Урок 5 из 5 • Финал</div>
+          <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); line-height:1.3; margin-bottom:6px; text-align:center;">Спасать семью или уйти с достоинством</h2>
+          <p class="lead" style="font-size:13px; line-height:1.4; color:var(--nb-text-2); margin-bottom:12px; text-align:center;">Точка взрослого выбора: два пути и сохранение собственного психологического суверенитета.</p>
           <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720"
-              allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-              frameborder="0" allowfullscreen
-              style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
           </div>
         </section>
-
         <section id="insightSection" class="glass card text-center">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-            💡 Главный вывод
-          </div>
-          <h3 style="font-size:16px; font-weight:800; margin-bottom:8px; text-align:center;">Что важно забрать из урока</h3>
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">💡 Главный вывод</div>
+          <h3 style="font-size:16px; font-weight:800; margin-bottom:8px; text-align:center;">Два пути зрелости</h3>
           <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin-bottom:16px; text-align:center;">
-            Ваша устойчивость держится на ваших понятных осознанных шагах. Заполните Карту опоры и закрепите состояние через медитацию.
+            Какой бы путь вы ни выбрали — спасение семьи по новому пакту или достойный цивилизованный развод — вы пройдете его без самоуничижения и страха.
           </p>
-
           <div style="display:flex; flex-direction:column; gap:10px;">
-            <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%; min-height:46px;">
-              <span>Собрать Карту опоры ➔</span>
+            <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%; min-height:46px;"><span>Финальная аудиосессия курса ➔</span></button>
+          </div>
+        </section>
+        <div style="padding-top:4px;">
+          <button onclick="safeHaptic('selection'); openScreen('43_bonuses.html');" class="primary-btn pulse" style="width:100%; display:flex; justify-content:center; align-items:center; min-height:48px;"><span>Перейти к бонусам курса →</span></button>
+        </div>
+      </div>
+      <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
+        <div>
+          <button onclick="goToVideo()" class="top-nav-btn" style="display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:13px; color:var(--nb-deep); background:rgba(255,255,255,0.75); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:6px 14px; border-radius:9999px; border:1px solid rgba(255,255,255,0.85); box-shadow:0 2px 8px rgba(0,0,0,0.04); text-decoration:none; cursor:pointer;">← Назад к видеоуроку</button>
+        </div>
+        <div class="glass card text-center" style="padding:16px;">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:6px;">🎧 Восстанавливающая аудиосессия (12 минут)</div>
+          <h4 style="font-size:16px; font-weight:800; margin:0 0 4px 0; color:var(--nb-deep);">«Моя нерушимая опора: возвращение силы и достоинства»</h4>
+          <p style="font-size:12px; color:var(--nb-text-2); margin:0 0 12px 0;">Главная глубинная практика восстановления эмоциональной целостности от Анатолия Фёдорова.</p>
+          <audio id="meditationAudio" controls preload="metadata" style="width:100%; accent-color:var(--nb-accent);">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation_audio.MP3" type="audio/mpeg">Ваш браузер не поддерживает аудио.
+          </audio>
+        </div>
+        <div class="glass card" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="eyebrow" style="margin-bottom:2px;">🎁 4 бонуса курса</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <button onclick="safeHaptic('selection'); openScreen('44_bonus1.html');" style="padding:10px; border-radius:12px; background:rgba(255,255,255,0.7); border:1px solid rgba(36,49,57,0.1); text-align:left; cursor:pointer;">
+              <span style="font-size:16px; display:block;">👶</span><strong style="font-size:12px; color:var(--nb-deep); display:block; margin-top:4px;">Сказать детям</strong>
+            </button>
+            <button onclick="safeHaptic('selection'); openScreen('45_bonus2.html');" style="padding:10px; border-radius:12px; background:rgba(255,255,255,0.7); border:1px solid rgba(36,49,57,0.1); text-align:left; cursor:pointer;">
+              <span style="font-size:16px; display:block;">🤝</span><strong style="font-size:12px; color:var(--nb-deep); display:block; margin-top:4px;">Семейный пакт</strong>
+            </button>
+            <button onclick="safeHaptic('selection'); openScreen('46_bonus3.html');" style="padding:10px; border-radius:12px; background:rgba(255,255,255,0.7); border:1px solid rgba(36,49,57,0.1); text-align:left; cursor:pointer;">
+              <span style="font-size:16px; display:block;">⚖️</span><strong style="font-size:12px; color:var(--nb-deep); display:block; margin-top:4px;">Юристы и деньги</strong>
+            </button>
+            <button onclick="safeHaptic('selection'); openScreen('47_bonus4.html');" style="padding:10px; border-radius:12px; background:rgba(255,255,255,0.7); border:1px solid rgba(36,49,57,0.1); text-align:left; cursor:pointer;">
+              <span style="font-size:16px; display:block;">🚪</span><strong style="font-size:12px; color:var(--nb-deep); display:block; margin-top:4px;">Треугольник</strong>
             </button>
           </div>
-        </section>
-
-        <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); openScreen('43_bonuses.html');" class="primary-btn pulse"
-            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:48px;">
-            <span>Перейти к 4 бонусам курса →</span>
-          </button>
         </div>
-
+        <div class="glass card text-center" style="padding:16px; border:2px solid rgba(196,115,79,0.3); background:rgba(255,255,255,0.85);">
+          <div class="eyebrow" style="background:rgba(196,115,79,0.12); color:#A85532; margin-bottom:6px;">Персональная работа</div>
+          <h4 style="font-size:15px; font-weight:800; color:var(--nb-deep); margin:0 0 6px 0;">Индивидуальный кризисный разбор</h4>
+          <p style="font-size:12px; color:var(--nb-text-2); margin:0 0 12px 0;">Личная консультация и разработка пошаговой стратегии защиты себя и семьи с Анатолием Фёдоровым.</p>
+          <div style="font-size:22px; font-weight:900; color:var(--nb-deep); margin-bottom:10px;">10 000 ₽</div>
+          <button onclick="safeHaptic('success'); if(typeof openProduct==='function') openProduct('individual_offer');" class="primary-btn pulse" style="width:100%; min-height:44px;"><span>Записаться на разбор (10 000 ₽) ➔</span></button>
+        </div>
+        <button onclick="safeHaptic('selection'); openScreen('43_bonuses.html');" class="secondary-btn" style="width:100%; min-height:46px; text-align:center;"><span>Перейти ко всем бонусам курса →</span></button>
       </div>
-
-      <!-- SCREEN 2: INTERACTIVE PRACTICE -->
-      <div id="step2InteractiveScreen" style="display:none; flex-direction:column; gap:14px;">
-
-        <div>
-          <button onclick="goToVideo()" class="top-nav-btn" style="display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:13px; color:var(--nb-deep); background:rgba(255,255,255,0.75); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:6px 14px; border-radius:9999px; border:1px solid rgba(255,255,255,0.85); box-shadow:0 2px 8px rgba(0,0,0,0.04); text-decoration:none; cursor:pointer;">
-            ← Назад к видеоуроку
-          </button>
-        </div>
-
-        <!-- 5 Blocks of Support Map -->
-        <section class="glass card" style="display:flex; flex-direction:column; gap:12px;">
-          <h3 style="font-size:18px; font-weight:800; text-align:center; margin:0;">Моя Карта опоры</h3>
-          <p style="font-size:12.5px; color:var(--nb-text-2); text-align:center; margin:0;">5 ключевых шагов нового сценария, собранных из ваших ответов:</p>
-
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">1. Реальность (без додумок)</label>
-            <input type="text" id="mapStep1" value="Человек просто молчит — это не угроза мне." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
-          </div>
-
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">2. Разговор на равных (о своей потребности)</label>
-            <input type="text" id="mapStep2" value="«Я устала, мне нужна твоя помощь. Пожалуйста, реши это сегодня»." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
-          </div>
-
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">3. Телесный сигнал</label>
-            <input type="text" id="mapStep3" value="Замечаю сжатие в челюсти/плечах ➔ делаю глубокий выдох." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
-          </div>
-
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">4. Опора и сильное убеждение</label>
-            <input type="text" id="mapStep4" value="«Моя ценность существует сама по себе. Со мной всё в порядке»." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
-          </div>
-
-          <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">5. Право на неидеальность</label>
-            <input type="text" id="mapStep5" value="Если сорвалась — это просто диагностика. В следующий раз выберу новый шаг." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
-          </div>
-
-          <button onclick="saveMap()" class="primary-btn" style="width:100%; min-height:44px; margin-top:4px;">
-            <span>Сохранить мою Карту опоры ➔</span>
-          </button>
-        </section>
-
-        <!-- Meditation -->
-        <section class="glass card text-center" style="padding:16px;">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:6px;">
-            🧘‍♀️ Финальная аудиопрактика
-          </div>
-          <h4 style="font-size:15px; font-weight:800; margin:0 0 4px 0; color:var(--nb-deep);">Медитация «Моя нерушимая опора» (10–12 минут)</h4>
-          <p style="font-size:12px; color:var(--nb-text-2); margin:0 0 10px 0;">Глубокая практика возвращения силы и достоинства от Анатолия Фёдорова.</p>
-          
-          <audio id="meditationAudio5" controls preload="metadata" style="width:100%; accent-color:var(--nb-accent);">
-            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation_audio.MP3" type="audio/mpeg">
-            Ваш браузер не поддерживает аудио.
-          </audio>
-        </section>
-
-        <!-- High-Ticket Offer Block -->
-        <section class="glass card text-center" style="border:2px solid rgba(196,115,79,0.3); background:rgba(255,255,255,0.85); padding:18px;">
-          <div class="eyebrow" style="background:rgba(196,115,79,0.12); color:#A85532; border-color:rgba(196,115,79,0.3); margin-bottom:8px;">
-            ⭐ Персональная работа
-          </div>
-          <h3 style="font-size:16px; font-weight:800; color:var(--nb-deep); margin-bottom:8px;">Глубокий психологический портрет + Консультация Анатолия Фёдорова</h3>
-          <p style="font-size:12.5px; line-height:1.5; color:var(--nb-text-2); margin-bottom:14px;">
-            21 вопрос теста, 10+ страниц детального поведенческого анализа СПА и часовая персональная консультация 1-на-1.
-          </p>
-
-          <button onclick="safeHaptic('selection'); openProduct('course_partner_10000');" class="primary-btn pulse" style="width:100%; min-height:48px; background:linear-gradient(135deg, #C4734F, #A85532);">
-            <span>Записаться на разбор за 10 000 ₽</span>
-          </button>
-        </section>
-
-        <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); openScreen('43_bonuses.html');" class="secondary-btn"
-            style="width:100%; display:flex; justify-content:center; align-items:center; min-height:46px;">
-            <span>Перейти к 4 бонусам курса →</span>
-          </button>
-        </div>
-
-      </div>
-      
       <div class="pb-12"></div>
     </div>
   </main>
-
   <script>
 
     function safeHaptic(kind) {
@@ -1634,43 +1634,6 @@ textarea:focus, input:focus {
       audios.forEach(function(a) { a.pause(); });
     }
 
-    async function apiPostLocal(endpoint, bodyData, timeoutMs = 15000) {
-      var baseUrl = (window.API_BASE && window.API_BASE !== '') ? window.API_BASE : '';
-      var targetUrl = endpoint.startsWith('http') ? endpoint : (baseUrl + endpoint);
-      
-      var controller = new AbortController();
-      var timer = setTimeout(function(){ controller.abort(); }, timeoutMs);
-
-      try {
-        var response = await fetch(targetUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify(bodyData),
-          signal: controller.signal
-        });
-        clearTimeout(timer);
-        if (!response.ok) throw new Error("HTTP " + response.status);
-        return await response.json();
-      } catch (err) {
-        clearTimeout(timer);
-        if (window.AMVERA_HOST && targetUrl !== (window.AMVERA_HOST + endpoint)) {
-           try {
-             var fb = await fetch(window.AMVERA_HOST + endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(bodyData)
-             });
-             if(fb.ok) return await fb.json();
-           } catch(e) {}
-        }
-        throw err;
-      }
-    }
-
-
     function goToVideo() {
       safeHaptic('selection');
       var s2 = document.getElementById('step2InteractiveScreen');
@@ -1679,7 +1642,6 @@ textarea:focus, input:focus {
       if (s1) s1.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
     function goToPractice() {
       safeHaptic('selection');
       pauseVideo();
@@ -1689,65 +1651,25 @@ textarea:focus, input:focus {
       if (s2) s2.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
-    function saveMap() {
-      safeHaptic('success');
-      var mapData = {
-        step1: document.getElementById('mapStep1').value,
-        step2: document.getElementById('mapStep2').value,
-        step3: document.getElementById('mapStep3').value,
-        step4: document.getElementById('mapStep4').value,
-        step5: document.getElementById('mapStep5').value
-      };
-      localStorage.setItem('s4_lesson5_map', JSON.stringify(mapData));
-      localStorage.setItem('s4_lesson5_completed', 'true');
-      alert('✅ Карта опоры успешно сохранена в вашем профиле!');
-    }
-
-    window.addEventListener('DOMContentLoaded', function() {
-      var saved = localStorage.getItem('s4_lesson5_map');
-      if(saved) {
-        try {
-          var d = JSON.parse(saved);
-          if(d.step1) document.getElementById('mapStep1').value = d.step1;
-          if(d.step2) document.getElementById('mapStep2').value = d.step2;
-          if(d.step3) document.getElementById('mapStep3').value = d.step3;
-          if(d.step4) document.getElementById('mapStep4').value = d.step4;
-          if(d.step5) document.getElementById('mapStep5').value = d.step5;
-        }catch(e){}
-      }
-    });
   </script>
-
-  <!-- =========================================================
-       BOTTOM DRAWER / НАВИГАЦИЯ ПО КУРСУ (Сценарий 4)
-       ========================================================= -->
   <div id="navDrawerOverlay" onclick="handleDrawerBackdropClick(event)">
     <div id="navDrawerBackdrop"></div>
-
     <div id="navDrawerPanel">
       <div class="drawer-handle" onclick="closeNavDrawer()"></div>
-
       <div class="drawer-header">
-        <div class="drawer-title">
-          <span style="color:#C4734F;">🧭</span>
-          <span>Навигация по курсу</span>
-        </div>
+        <div class="drawer-title"><span style="color:#C4734F;">🧭</span><span>Навигация по курсу</span></div>
         <button type="button" class="drawer-close-btn" onclick="closeNavDrawer()">✕</button>
       </div>
-
       <div class="drawer-content">
-        <!-- Блок уроков -->
         <div>
           <div class="drawer-section-label">Уроки курса</div>
-          <div class="drawer-list">
-            <!-- Урок 1 -->
+          <div class="drawer-list">            <!-- Урок 1 -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('38_lesson1.html'); return false;" class="drawer-item ">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">1</div>
                 <div class="drawer-item-info">
                   <div class="drawer-item-name">Почему вас трясёт и как вернуть сон</div>
-                  <div class="drawer-item-sub">Стресс, дрожь и дыхание</div>
+                  <div class="drawer-item-sub">Антистресс-дыхание и соматика</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
@@ -1758,8 +1680,8 @@ textarea:focus, input:focus {
               <div class="drawer-item-left">
                 <div class="drawer-item-num">2</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Правило 14 дней тишины</div>
-                  <div class="drawer-item-sub">3 ошибки и защита достоинства</div>
+                  <div class="drawer-item-name">Две недели тишины: правило 14 дней</div>
+                  <div class="drawer-item-sub">Детектор роковых ошибок и границы</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
@@ -1770,8 +1692,8 @@ textarea:focus, input:focus {
               <div class="drawer-item-left">
                 <div class="drawer-item-num">3</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Защита личных границ</div>
-                  <div class="drawer-item-sub">Манипуляции, дети, родственники</div>
+                  <div class="drawer-item-name">Защита границ: от манипуляций и сплетен</div>
+                  <div class="drawer-item-sub">Аудиосессия «Эмоциональный щит»</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
@@ -1782,8 +1704,8 @@ textarea:focus, input:focus {
               <div class="drawer-item-left">
                 <div class="drawer-item-num">4</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Аудит реальности</div>
-                  <div class="drawer-item-sub">Факты против иллюзий</div>
+                  <div class="drawer-item-name">Аудит реальности: факты против иллюзий</div>
+                  <div class="drawer-item-sub">Тест-тренажер шансов на союз</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
@@ -1794,26 +1716,22 @@ textarea:focus, input:focus {
               <div class="drawer-item-left">
                 <div class="drawer-item-num">5</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Точка осознанного выбора</div>
-                  <div class="drawer-item-sub">Спасать или уйти с достоинством</div>
+                  <div class="drawer-item-name">Спасать семью или уйти с достоинством</div>
+                  <div class="drawer-item-sub">Аудиопрактика «Моя нерушимая опора»</div>
                 </div>
               </div>
               <span class="drawer-item-tag">Вы здесь</span>
-            </a>
-          </div>
+            </a></div>
         </div>
-
-        <!-- Блок бонусов -->
         <div>
           <div class="drawer-section-label">Бонусы и разбор</div>
           <div class="drawer-list">
-            <!-- 4 практических бонуса -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('43_bonuses.html'); return false;" class="drawer-item ">
               <div class="drawer-item-left">
                 <div class="drawer-item-num" style="background:rgba(196,115,79,0.14); color:#A85532;">🎁</div>
                 <div class="drawer-item-info">
                   <div class="drawer-item-name">4 практических бонуса</div>
-                  <div class="drawer-item-sub">Дети, доверие, юристы и треугольник</div>
+                  <div class="drawer-item-sub">Дети, доверие, юристы, треугольники</div>
                 </div>
               </div>
               <span class="drawer-item-tag bonus">4 бонуса</span>
@@ -1823,49 +1741,31 @@ textarea:focus, input:focus {
       </div>
     </div>
   </div>
-
   <script>
     window.openNavDrawer = function() {
       try { if (typeof safeHaptic === 'function') safeHaptic('medium'); } catch(e) {}
       var overlay = document.getElementById('navDrawerOverlay');
-      if (overlay) {
-        overlay.style.display = 'block';
-        void overlay.offsetHeight;
-        overlay.classList.add('active');
-      }
+      if (overlay) { overlay.style.display = 'block'; void overlay.offsetHeight; overlay.classList.add('active'); }
       document.body.style.overflow = 'hidden';
     };
-
     window.closeNavDrawer = function() {
       try { if (typeof safeHaptic === 'function') safeHaptic('selection'); } catch(e) {}
       var overlay = document.getElementById('navDrawerOverlay');
       if (overlay) {
         overlay.classList.remove('active');
-        setTimeout(function() {
-          if (!overlay.classList.contains('active')) {
-            overlay.style.display = 'none';
-          }
-        }, 320);
+        setTimeout(function() { if (!overlay.classList.contains('active')) overlay.style.display = 'none'; }, 320);
       }
       document.body.style.overflow = '';
     };
-
     window.handleDrawerBackdropClick = function(e) {
-      if (e.target.id === 'navDrawerOverlay' || e.target.id === 'navDrawerBackdrop') {
-        window.closeNavDrawer();
-      }
+      if (e.target.id === 'navDrawerOverlay' || e.target.id === 'navDrawerBackdrop') window.closeNavDrawer();
     };
-
     window.navigateFromDrawer = function(targetUrl) {
       try { if (typeof safeHaptic === 'function') safeHaptic('selection'); } catch(e) {}
       window.closeNavDrawer();
-      if (typeof openScreen === 'function') {
-        openScreen(targetUrl);
-      } else {
-        window.location.href = targetUrl;
-      }
+      if (typeof openScreen === 'function') openScreen(targetUrl);
+      else window.location.href = targetUrl;
     };
   </script>
-
 </body>
 </html>

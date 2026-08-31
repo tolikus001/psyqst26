@@ -1,0 +1,159 @@
+# -*- coding: utf-8 -*-
+import os, re, json
+
+with open('out/client/16_lesson1.html', 'r', encoding='utf-8') as f:
+    master_html = f.read()
+
+head_match = re.search(r'<!doctype html>[\s\S]*?</head>', master_html, re.IGNORECASE)
+if not head_match:
+    raise Exception('Failed to extract head')
+
+standard_head = head_match.group(0)
+
+# Replace inlined api-config in head with clean, syntax-error-free version
+clean_api_script = """  <script>
+/**
+ * Unified API & Media Connector for Local, Notibot and Amvera Environments
+ */
+(function() {
+  const isLocal = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' || 
+                  window.location.protocol === 'file:';
+
+  const AMVERA_HOST = 'https://inter01-anatolyfedorov.amvera.io';
+  const LOCAL_HOST = 'http://localhost:3000';
+
+  const API_BASE = (window.location.protocol === 'file:')
+    ? (window.USE_AMVERA_FOR_FILE ? AMVERA_HOST : LOCAL_HOST)
+    : (isLocal ? '' : AMVERA_HOST);
+
+  const NOTIBOT_ARTICLES = {
+    '01_psyquest.html': '35Kvp1YSxOSOzKeVKcpom2',
+    '02_landing_partner.html': '54xiZ3LlRdXnk88t9xPt7s',
+    '03_lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
+    '04_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
+    '05_lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
+    '06_lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
+    '07_lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
+    '08_portrait_quest.html': '2plu9h6VcWiAQ3TrZ8nLql',
+    '09_bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
+    '10_bonus1.html': '5MKoAoaLdnrJqZaczYSZth',
+    '11_bonus2.html': '5DiBJPDNERZWQCXQ7C2OoX',
+    '12_bonus3.html': '38HgDSX5SePPcFWySLUMNs',
+    '13_bonus4.html': '7NGEU2ikhiLHvuuyxhmL6K',
+    '14_individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs',
+
+    '15_landing_partner_2.html': '1N6rOVg7p2VxqHnNA11HTe',
+    '16_lesson1.html': '5hR7Av3us4aIKmTZr7b6J2',
+    '17_lesson2.html': '2NvyoluAQiidfuwZTClFNy',
+    '18_lesson3.html': '0VLe3JSTGaykCYI4GGmRrc',
+    '19_lesson4.html': '3xxTBsJJZGpXnJBURlJWLo',
+    '20_lesson5.html': '3EUOYisS5lzwNG4LSB9Ttw',
+    '21_bonuses.html': '0dBgBZKrNbtzqhhtL7LweT',
+    '22_bonus1.html': '2aGABwdvffujaWDzT9kPx6',
+    '23_bonus2.html': '1XqffrsaxNLrLI8inXo9fx',
+    '24_bonus3.html': '0ORCSoM30o4K6tlmZ4KYmP',
+    '25_bonus4.html': '6j07iXAve1PXf3vko48gGa'
+  };
+
+  const NOTIBOT_PRODUCTS = {
+    course: '4ec2ypRLStHYlW0lRrAzHI',
+    course_i_choose: '4ec2ypRLStHYlW0lRrAzHI',
+    course_partner_2400: '5kbi43jpKV2ZEPdw4gs3rW',
+    course_partner_5000: '4ec2ypRLStHYlW0lRrAzHI',
+    individual_offer: '144vDCBfCUUtbKNcL9IB9',
+    portrait_consultation: '144vDCBfCUUtbKNcL9IB9',
+    portrait_consultation_10000: '144vDCBfCUUtbKNcL9IB9'
+  };
+
+  window.API_BASE = API_BASE;
+  window.AMVERA_HOST = AMVERA_HOST;
+  window.NOTIBOT_ARTICLES = NOTIBOT_ARTICLES;
+  window.NOTIBOT_PRODUCTS = NOTIBOT_PRODUCTS;
+
+  function openScreen(target) {
+    try { if (typeof pauseVideo === 'function') pauseVideo(); } catch(e){}
+    const raw = String(target || '').trim();
+    const clean = raw.split('?')[0].split('#')[0].replace(/^\.?\//, '');
+    const articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[raw] || NOTIBOT_ARTICLES[target];
+    if (window.notibot && articleId && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
+      window.notibot.openArticle(articleId);
+    } else {
+      window.location.href = target;
+    }
+  }
+
+  function openProduct(targetId) {
+    const realId = NOTIBOT_PRODUCTS[targetId] || targetId;
+    if (window.notibot && typeof window.notibot.openProduct === 'function') {
+      window.notibot.openProduct(realId);
+    } else if (window.notibot && typeof window.notibot.openStorefront === 'function') {
+      window.notibot.openStorefront();
+    }
+  }
+
+  async function apiPost(endpoint, bodyData, timeoutMs = 12000) {
+    const targetUrl = endpoint.startsWith('http') ? endpoint : (API_BASE + endpoint);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const response = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'NotibotMiniApp'
+        },
+        body: JSON.stringify(bodyData),
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+
+      if (!response.ok) {
+        throw new Error('HTTP ' + response.status);
+      }
+      return await response.json();
+    } catch (err) {
+      clearTimeout(timer);
+      console.warn('[API Warning] Request to ' + targetUrl + ' failed (' + err.message + '). Trying fallback endpoint...');
+
+      if (API_BASE !== AMVERA_HOST && !endpoint.startsWith('http')) {
+        try {
+          const fallbackRes = await fetch(AMVERA_HOST + endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyData)
+          });
+          if (fallbackRes.ok) {
+            return await fallbackRes.json();
+          }
+        } catch (e) {
+          console.warn('[API Warning] Amvera fallback also unreachable:', e.message);
+        }
+      }
+      throw err;
+    }
+  }
+
+  function resolveMediaUrl(filename) {
+    const clean = filename.replace(/^\/+(data|media)\/+/, '');
+    if (isLocal && window.location.protocol !== 'file:') {
+      return '/data/' + clean;
+    }
+    return AMVERA_HOST + '/data/' + clean;
+  }
+
+  window.apiPost = apiPost;
+  window.resolveMediaUrl = resolveMediaUrl;
+  window.openScreen = openScreen;
+  window.openProduct = openProduct;
+})();
+  </script>"""
+
+script_tags = list(re.finditer(r'<script[^>]*>[\s\S]*?</script>', standard_head, re.IGNORECASE))
+if len(script_tags) >= 6:
+    s6 = script_tags[5]
+    standard_head = standard_head[:s6.start()] + clean_api_script + standard_head[s6.end():]
+
+print('Standard head processed. Length:', len(standard_head))

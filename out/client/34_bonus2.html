@@ -1099,7 +1099,7 @@ textarea:focus, input:focus {
     '01_psyquest.html': 'oak',
     '02_landing_partner.html': 'birch',
     '03_lesson1.html': 'oak',
-    '28_lesson2.html': 'birch',
+    '17_lesson2.html': 'birch',
     '05_lesson3.html': 'oak',
     '06_lesson4.html': 'birch',
     '07_lesson5.html': 'oak',
@@ -1159,168 +1159,71 @@ textarea:focus, input:focus {
  * Unified API & Media Connector for Local, Notibot and Amvera Environments
  */
 (function() {
-  // Determine backend base URL
-  const isLocal = window.location.hostname === 'localhost' || 
-                  window.location.hostname === '127.0.0.1' || 
-                  window.location.protocol === 'file:';
+  var isLocal = window.location.hostname === 'localhost' || 
+                window.location.hostname === '127.0.0.1' || 
+                window.location.protocol === 'file:';
 
-  const AMVERA_HOST = 'https://inter01-anatolyfedorov.amvera.io';
-  const LOCAL_HOST = 'http://localhost:3000';
+  var AMVERA_HOST = 'https://inter01-anatolyfedorov.amvera.io';
+  var LOCAL_HOST = 'http://localhost:3000';
 
-  const API_BASE = (window.location.protocol === 'file:')
+  var API_BASE = (window.location.protocol === 'file:')
     ? (window.USE_AMVERA_FOR_FILE ? AMVERA_HOST : LOCAL_HOST)
     : (isLocal ? '' : AMVERA_HOST);
 
-  // Official Notibot Article IDs for seamless inside-bot navigation
-  const NOTIBOT_ARTICLES = {
-    quest: '35Kvp1YSxOSOzKeVKcpom2',
-    landing: '54xiZ3LlRdXnk88t9xPt7s',
-    lesson1: '6QzHvAlz22e4IEb6wVhjy0',
-    lesson2: '6wQPr20VEfbLD5Jg6GeEVR',
-    lesson3: '0wFlaZghZ7ZieZiqFtJpSs',
-    lesson4: '1ddMHSu3zb0ixr2CWRLKvg',
-    lesson5: '4uMyKJZW4TdZJM8z9G7Zbg',
-    portrait_quest: '2plu9h6VcWiAQ3TrZ8nLql',
-    bonuses: '6ZwOzlMAERTYgkV2FsWnVx',
-    bonus1: '5MKoAoaLdnrJqZaczYSZth',
-    bonus2: '5DiBJPDNERZWQCXQ7C2OoX',
-    bonus3: '38HgDSX5SePPcFWySLUMNs',
-    bonus4: '7NGEU2ikhiLHvuuyxhmL6K',
-    individual_offer: '1CkSHuhyH7kVgjKZxWPCDs',
-
+  var NOTIBOT_ARTICLES = {
     '01_psyquest.html': '35Kvp1YSxOSOzKeVKcpom2',
-    '01_psyquest': '35Kvp1YSxOSOzKeVKcpom2',
-    '01_quest.html': '35Kvp1YSxOSOzKeVKcpom2',
-    'psyquest': '35Kvp1YSxOSOzKeVKcpom2',
-
     '02_landing_partner.html': '54xiZ3LlRdXnk88t9xPt7s',
-    '02_landing_partner': '54xiZ3LlRdXnk88t9xPt7s',
-    '02_landing.html': '54xiZ3LlRdXnk88t9xPt7s',
-    'landing_partner': '54xiZ3LlRdXnk88t9xPt7s',
-
     '03_lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
-    '03_lesson1': '6QzHvAlz22e4IEb6wVhjy0',
-    'lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
-    'lesson_1': '6QzHvAlz22e4IEb6wVhjy0',
-    'lesson-1': '6QzHvAlz22e4IEb6wVhjy0',
-    '01_lesson1.html': '6QzHvAlz22e4IEb6wVhjy0',
-    '01_lesson1': '6QzHvAlz22e4IEb6wVhjy0',
-
-    '28_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
-    '04_lesson2': '6wQPr20VEfbLD5Jg6GeEVR',
-    'lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
-    'lesson_2': '6wQPr20VEfbLD5Jg6GeEVR',
-    'lesson-2': '6wQPr20VEfbLD5Jg6GeEVR',
-    '02_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
-
+    '04_lesson2.html': '6wQPr20VEfbLD5Jg6GeEVR',
     '05_lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
-    '05_lesson3': '0wFlaZghZ7ZieZiqFtJpSs',
-    'lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
-    'lesson_3': '0wFlaZghZ7ZieZiqFtJpSs',
-    'lesson-3': '0wFlaZghZ7ZieZiqFtJpSs',
-    '03_lesson3.html': '0wFlaZghZ7ZieZiqFtJpSs',
-
     '06_lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
-    '06_lesson4': '1ddMHSu3zb0ixr2CWRLKvg',
-    'lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
-    'lesson_4': '1ddMHSu3zb0ixr2CWRLKvg',
-    'lesson-4': '1ddMHSu3zb0ixr2CWRLKvg',
-    '04_lesson4.html': '1ddMHSu3zb0ixr2CWRLKvg',
-
     '07_lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
-    '07_lesson5': '4uMyKJZW4TdZJM8z9G7Zbg',
-    'lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
-    'lesson_5': '4uMyKJZW4TdZJM8z9G7Zbg',
-    'lesson-5': '4uMyKJZW4TdZJM8z9G7Zbg',
-    '05_lesson5.html': '4uMyKJZW4TdZJM8z9G7Zbg',
-
     '08_portrait_quest.html': '2plu9h6VcWiAQ3TrZ8nLql',
-    '08_portrait_quest': '2plu9h6VcWiAQ3TrZ8nLql',
-    'portrait_quest.html': '2plu9h6VcWiAQ3TrZ8nLql',
-
     '09_bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
-    '09_bonuses': '6ZwOzlMAERTYgkV2FsWnVx',
-    'bonuses.html': '6ZwOzlMAERTYgkV2FsWnVx',
-
     '10_bonus1.html': '5MKoAoaLdnrJqZaczYSZth',
-    '10_bonus1': '5MKoAoaLdnrJqZaczYSZth',
-    'bonus1.html': '5MKoAoaLdnrJqZaczYSZth',
-
     '11_bonus2.html': '5DiBJPDNERZWQCXQ7C2OoX',
-    '11_bonus2': '5DiBJPDNERZWQCXQ7C2OoX',
-    'bonus2.html': '5DiBJPDNERZWQCXQ7C2OoX',
-
     '12_bonus3.html': '38HgDSX5SePPcFWySLUMNs',
-    '12_bonus3': '38HgDSX5SePPcFWySLUMNs',
-    'bonus3.html': '38HgDSX5SePPcFWySLUMNs',
-
     '13_bonus4.html': '7NGEU2ikhiLHvuuyxhmL6K',
-    '13_bonus4': '7NGEU2ikhiLHvuuyxhmL6K',
-    'bonus4.html': '7NGEU2ikhiLHvuuyxhmL6K',
-
     '14_individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs',
-    '26_landing_family': '1N6rOVg7p2VxqHnNA11HTe',
-    '26_landing_family.html': '1N6rOVg7p2VxqHnNA11HTe',
-    'landing_partner_2': '1N6rOVg7p2VxqHnNA11HTe',
-    '27_lesson1': '5hR7Av3us4aIKmTZr7b6J2',
-    '27_lesson1.html': '5hR7Av3us4aIKmTZr7b6J2',
-    '16_lesson2_1': '5hR7Av3us4aIKmTZr7b6J2',
-    '28_lesson2': '2NvyoluAQiidfuwZTClFNy',
-    '28_lesson2.html': '2NvyoluAQiidfuwZTClFNy',
-    '28_lesson2_2': '2NvyoluAQiidfuwZTClFNy',
-    '29_lesson3': '0VLe3JSTGaykCYI4GGmRrc',
-    '29_lesson3.html': '0VLe3JSTGaykCYI4GGmRrc',
-    '18_lesson2_3': '0VLe3JSTGaykCYI4GGmRrc',
-    '30_lesson4': '3xxTBsJJZGpXnJBURlJWLo',
-    '30_lesson4.html': '3xxTBsJJZGpXnJBURlJWLo',
-    '19_lesson2_4': '3xxTBsJJZGpXnJBURlJWLo',
-    '31_lesson5': '3EUOYisS5lzwNG4LSB9Ttw',
-    '31_lesson5.html': '3EUOYisS5lzwNG4LSB9Ttw',
-    '20_lesson2_5': '3EUOYisS5lzwNG4LSB9Ttw',
-    '32_bonuses': '0dBgBZKrNbtzqhhtL7LweT',
-    '32_bonuses.html': '0dBgBZKrNbtzqhhtL7LweT',
-    '21_lp_bonuses_2': '0dBgBZKrNbtzqhhtL7LweT',
-    '33_bonus1': '2aGABwdvffujaWDzT9kPx6',
-    '33_bonus1.html': '2aGABwdvffujaWDzT9kPx6',
-    '22_bonus2_1': '2aGABwdvffujaWDzT9kPx6',
-    '34_bonus2': '1XqffrsaxNLrLI8inXo9fx',
-    '34_bonus2.html': '1XqffrsaxNLrLI8inXo9fx',
-    '34_bonus2_2': '1XqffrsaxNLrLI8inXo9fx',
-    '35_bonus3': '0ORCSoM30o4K6tlmZ4KYmP',
-    '35_bonus3.html': '0ORCSoM30o4K6tlmZ4KYmP',
-    '24_bonus2_3': '0ORCSoM30o4K6tlmZ4KYmP',
-    '36_bonus4': '6j07iXAve1PXf3vko48gGa',
-    '36_bonus4.html': '6j07iXAve1PXf3vko48gGa',
-    '25_bonus2_4': '6j07iXAve1PXf3vko48gGa',
-    '14_individual_offer': '1CkSHuhyH7kVgjKZxWPCDs',
-    'individual_offer.html': '1CkSHuhyH7kVgjKZxWPCDs'
 
-    '26_landing_family': 'PLACEHOLDER_S3_26_landing_family',
-    '26_landing_family.html': 'PLACEHOLDER_S3_26_landing_family',
-    '27_lesson1': 'PLACEHOLDER_S3_27_lesson1',
-    '27_lesson1.html': 'PLACEHOLDER_S3_27_lesson1',
-    '28_lesson2': 'PLACEHOLDER_S3_28_lesson2',
-    '28_lesson2.html': 'PLACEHOLDER_S3_28_lesson2',
-    '29_lesson3': 'PLACEHOLDER_S3_29_lesson3',
-    '29_lesson3.html': 'PLACEHOLDER_S3_29_lesson3',
-    '30_lesson4': 'PLACEHOLDER_S3_30_lesson4',
-    '30_lesson4.html': 'PLACEHOLDER_S3_30_lesson4',
-    '31_lesson5': 'PLACEHOLDER_S3_31_lesson5',
-    '31_lesson5.html': 'PLACEHOLDER_S3_31_lesson5',
-    '32_bonuses': 'PLACEHOLDER_S3_32_bonuses',
-    '32_bonuses.html': 'PLACEHOLDER_S3_32_bonuses',
-    '33_bonus1': 'PLACEHOLDER_S3_33_bonus1',
-    '33_bonus1.html': 'PLACEHOLDER_S3_33_bonus1',
-    '34_bonus2': 'PLACEHOLDER_S3_34_bonus2',
-    '34_bonus2.html': 'PLACEHOLDER_S3_34_bonus2',
-    '35_bonus3': 'PLACEHOLDER_S3_35_bonus3',
-    '35_bonus3.html': 'PLACEHOLDER_S3_35_bonus3',
-    '36_bonus4': 'PLACEHOLDER_S3_36_bonus4',
-    '36_bonus4.html': 'PLACEHOLDER_S3_36_bonus4',
+    '15_landing_partner_2.html': '1N6rOVg7p2VxqHnNA11HTe',
+    '16_lesson1.html': '5hR7Av3us4aIKmTZr7b6J2',
+    '17_lesson2.html': '2NvyoluAQiidfuwZTClFNy',
+    '18_lesson3.html': '0VLe3JSTGaykCYI4GGmRrc',
+    '19_lesson4.html': '3xxTBsJJZGpXnJBURlJWLo',
+    '20_lesson5.html': '3EUOYisS5lzwNG4LSB9Ttw',
+    '21_bonuses.html': '0dBgBZKrNbtzqhhtL7LweT',
+    '22_bonus1.html': '2aGABwdvffujaWDzT9kPx6',
+    '23_bonus2.html': '1XqffrsaxNLrLI8inXo9fx',
+    '24_bonus3.html': '0ORCSoM30o4K6tlmZ4KYmP',
+    '25_bonus4.html': '6j07iXAve1PXf3vko48gGa',
+
+    '26_landing_family.html': '26_landing_family.html',
+    '27_lesson1.html': '27_lesson1.html',
+    '28_lesson2.html': '28_lesson2.html',
+    '29_lesson3.html': '29_lesson3.html',
+    '30_lesson4.html': '30_lesson4.html',
+    '31_lesson5.html': '31_lesson5.html',
+    '32_bonuses.html': '32_bonuses.html',
+    '33_bonus1.html': '33_bonus1.html',
+    '34_bonus2.html': '34_bonus2.html',
+    '35_bonus3.html': '35_bonus3.html',
+    '36_bonus4.html': '36_bonus4.html',
+
+    '37_landing_crisis.html': '37_landing_crisis.html',
+    '38_lesson1.html': '38_lesson1.html',
+    '39_lesson2.html': '39_lesson2.html',
+    '40_lesson3.html': '40_lesson3.html',
+    '41_lesson4.html': '41_lesson4.html',
+    '42_lesson5.html': '42_lesson5.html',
+    '43_bonuses.html': '43_bonuses.html',
+    '44_bonus1.html': '44_bonus1.html',
+    '45_bonus2.html': '45_bonus2.html',
+    '46_bonus3.html': '46_bonus3.html',
+    '47_bonus4.html': '47_bonus4.html'
   };
 
-  // Official Notibot Product IDs
-  const NOTIBOT_PRODUCTS = {
+  var NOTIBOT_PRODUCTS = {
     course: '4ec2ypRLStHYlW0lRrAzHI',
     course_i_choose: '4ec2ypRLStHYlW0lRrAzHI',
     course_partner_2400: '5kbi43jpKV2ZEPdw4gs3rW',
@@ -1335,26 +1238,20 @@ textarea:focus, input:focus {
   window.NOTIBOT_ARTICLES = NOTIBOT_ARTICLES;
   window.NOTIBOT_PRODUCTS = NOTIBOT_PRODUCTS;
 
-  /**
-   * Navigate to screen via Notibot openArticle if embedded, or window.location if standalone
-   */
-    function openScreen(target) {
+  function openScreen(target) {
     try { if (typeof pauseVideo === 'function') pauseVideo(); } catch(e){}
-    const raw = String(target || '').trim();
-    const clean = raw.split('?')[0].split('#')[0].replace(/^\.?\//, '');
-    const articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[raw] || NOTIBOT_ARTICLES[target];
-    if (window.notibot && articleId && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
+    var raw = String(target || '').trim();
+    var clean = raw.split('?')[0].split('#')[0].replace(/^\.?\//, '');
+    var articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[raw] || NOTIBOT_ARTICLES[target];
+    if (window.notibot && articleId && !articleId.endsWith('.html') && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
       window.notibot.openArticle(articleId);
     } else {
       window.location.href = target;
     }
   }
 
-  /**
-   * Open Notibot Product Modal
-   */
   function openProduct(targetId) {
-    const realId = NOTIBOT_PRODUCTS[targetId] || targetId;
+    var realId = NOTIBOT_PRODUCTS[targetId] || targetId;
     if (window.notibot && typeof window.notibot.openProduct === 'function') {
       window.notibot.openProduct(realId);
     } else if (window.notibot && typeof window.notibot.openStorefront === 'function') {
@@ -1362,16 +1259,14 @@ textarea:focus, input:focus {
     }
   }
 
-  /**
-   * Safe Fetch with Timeout and Automatic Error Handling
-   */
-  async function apiPost(endpoint, bodyData, timeoutMs = 12000) {
-    const targetUrl = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
+  async function apiPost(endpoint, bodyData, timeoutMs) {
+    timeoutMs = timeoutMs || 12000;
+    var targetUrl = endpoint.startsWith('http') ? endpoint : (API_BASE + endpoint);
+    var controller = new AbortController();
+    var timer = setTimeout(function() { controller.abort(); }, timeoutMs);
 
     try {
-      const response = await fetch(targetUrl, {
+      var response = await fetch(targetUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1384,17 +1279,16 @@ textarea:focus, input:focus {
       clearTimeout(timer);
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        throw new Error('HTTP ' + response.status);
       }
       return await response.json();
     } catch (err) {
       clearTimeout(timer);
-      console.warn(`[API Warning] Request to ${targetUrl} failed (${err.message}). Trying fallback endpoint...`);
+      console.warn('[API Warning] Request to ' + targetUrl + ' failed (' + err.message + '). Trying fallback endpoint...');
 
-      // If local failed on file:// or network, try Amvera host as secondary
       if (API_BASE !== AMVERA_HOST && !endpoint.startsWith('http')) {
         try {
-          const fallbackRes = await fetch(`${AMVERA_HOST}${endpoint}`, {
+          var fallbackRes = await fetch(AMVERA_HOST + endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bodyData)
@@ -1410,15 +1304,12 @@ textarea:focus, input:focus {
     }
   }
 
-  /**
-   * Resolve Media URL (Local or Amvera)
-   */
   function resolveMediaUrl(filename) {
-    const clean = filename.replace(/^\/+(data|media)\/+/, '');
+    var clean = filename.replace(/^\/+(data|media)\/+/, '');
     if (isLocal && window.location.protocol !== 'file:') {
-      return `/data/${clean}`;
+      return '/data/' + clean;
     }
-    return `${AMVERA_HOST}/data/${clean}`;
+    return AMVERA_HOST + '/data/' + clean;
   }
 
   window.apiPost = apiPost;
@@ -1427,7 +1318,7 @@ textarea:focus, input:focus {
   window.openProduct = openProduct;
 })();
 
-</script>
+  </script>
   <script>
     window.notibotInitData = null;
     window.addEventListener('message', function (event) {
@@ -1437,83 +1328,231 @@ textarea:focus, input:focus {
     });
   </script>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script>
+/**
+ * Telegram & Notibot Real-Time Personalization Engine
+ * Automatically extracts user name & avatar from Telegram WebApp, Notibot Bridge SDK, URL params, or LocalStorage.
+ */
+(function() {
+  function getInitials(name) {
+    if (!name) return '👋';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  }
+
+  function extractTelegramUser() {
+    // 1. Notibot Bridge SDK (Global Object)
+    try {
+      if (window.notibot && window.notibot.user && (window.notibot.user.displayName || window.notibot.user.first_name || window.notibot.user.firstName || window.notibot.user.name)) {
+        return window.notibot.user;
+      }
+    } catch (e) {}
+
+    // 2. Notibot Init Data (via early postMessage)
+    try {
+      if (window.notibotInitData && window.notibotInitData.user) {
+        return window.notibotInitData.user;
+      }
+    } catch (e) {}
+
+    // 3. Telegram WebApp SDK
+    try {
+      if (window.Telegram && window.Telegram.WebApp) {
+        if (typeof window.Telegram.WebApp.ready === 'function') {
+          window.Telegram.WebApp.ready();
+          window.Telegram.WebApp.expand();
+        }
+        if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+          return window.Telegram.WebApp.initDataUnsafe.user;
+        }
+        if (window.Telegram.WebApp.initData) {
+          const params = new URLSearchParams(window.Telegram.WebApp.initData);
+          const userStr = params.get('user');
+          if (userStr) return JSON.parse(userStr);
+        }
+      }
+    } catch (e) {}
+
+    // 4. URL Params & Hash Fragment (?tgWebAppData=... / #tgWebAppData=... / ?name=... / ?first_name=...)
+    try {
+      const rawParams = window.location.search + '&' + window.location.hash.replace(/^#/, '');
+      const urlParams = new URLSearchParams(rawParams);
+      const tgData = urlParams.get('tgWebAppData') || urlParams.get('tgWebAppInitData');
+      if (tgData) {
+        const parsed = new URLSearchParams(tgData);
+        const userJson = parsed.get('user');
+        if (userJson) return JSON.parse(userJson);
+      }
+      const directUser = urlParams.get('user');
+      if (directUser) {
+        try { return JSON.parse(decodeURIComponent(directUser)); } catch(e) { return { displayName: directUser }; }
+      }
+      const qName = urlParams.get('displayName') || urlParams.get('first_name') || urlParams.get('name');
+      if (qName) {
+        return { displayName: decodeURIComponent(qName) };
+      }
+    } catch (e) {}
+
+    // 5. LocalStorage Cache
+    try {
+      const cached = localStorage.getItem('psy_user_data');
+      if (cached) return JSON.parse(cached);
+      const cachedName = localStorage.getItem('psy_user_name');
+      if (cachedName) return { displayName: cachedName };
+    } catch (e) {}
+
+    return null;
+  }
+
+  function applyThemeColors(colors) {
+    if (!colors) return;
+    const root = document.documentElement;
+    if (colors.background) root.style.setProperty('--nb-bg', colors.background);
+    if (colors.textPrimary) root.style.setProperty('--nb-text', colors.textPrimary);
+    if (colors.textSecondary) root.style.setProperty('--nb-text-2', colors.textSecondary);
+    if (colors.primaryMain) root.style.setProperty('--nb-accent', colors.primaryMain);
+  }
+
+  function applyPersonalization(user) {
+    user = user || extractTelegramUser();
+    let rawName = '';
+    let photoUrl = '';
+
+    if (user) {
+      rawName = user.displayName || user.first_name || user.firstName || user.name || user.username || '';
+      photoUrl = user.photoURL || user.photo_url || user.avatar_url || user.avatarUrl || '';
+      try {
+        localStorage.setItem('psy_user_data', JSON.stringify(user));
+        if (rawName) localStorage.setItem('psy_user_name', rawName);
+      } catch (e) {}
+    }
+
+    const firstName = String(rawName || '').trim().split(/\s+/)[0];
+    window.currentUserName = firstName || 'Участник';
+    window.currentUser = user || (firstName ? { displayName: firstName, first_name: firstName } : null);
+
+    // Update Greeting in Header (КОДЕР 2.0: "Привет, {Имя}!" или "Привет!")
+    const greetingEl = document.getElementById('userGreeting');
+    if (greetingEl) {
+      greetingEl.textContent = firstName ? `Привет, ${firstName}!` : 'Привет!';
+    }
+
+    // Update Avatar in Header (КОДЕР 2.0: аватар с fallback на инициалы)
+    const avatarEl = document.getElementById('userAvatar');
+    if (avatarEl) {
+      if (photoUrl) {
+        avatarEl.innerHTML = '<img src="' + photoUrl + '" alt="' + (firstName || 'Avatar') + '" style="width:100%;height:100%;object-fit:cover;border-radius:9999px;" onerror="this.parentNode.setAttribute(\'data-fallback\',\'1\');this.style.display=\'none\';this.parentNode.textContent=\'' + getInitials(firstName) + '\';" />';
+      } else {
+        avatarEl.textContent = getInitials(firstName);
+      }
+    }
+
+    // Optional personalization elements with data-user-name
+    document.querySelectorAll('[data-user-name]').forEach(el => {
+      el.textContent = firstName || el.getAttribute('data-default') || 'Участник';
+    });
+  }
+
+  function handleNotibotInit(user, app) {
+    if (app && app.colors) applyThemeColors(app.colors);
+    applyPersonalization(user);
+  }
+
+  // Subscribe to Notibot Bridge
+  if (window.notibot && typeof window.notibot.onUpdate === 'function') {
+    window.notibot.onUpdate(handleNotibotInit);
+    if (window.notibotInitData) {
+      handleNotibotInit(window.notibotInitData.user, window.notibotInitData.app);
+    } else if (window.notibot.app && Object.keys(window.notibot.app).length > 0) {
+      handleNotibotInit(window.notibot.user, window.notibot.app);
+    }
+  }
+
+  // Initialize immediately & on events
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => applyPersonalization());
+  } else {
+    applyPersonalization();
+  }
+
+  // Periodic check for async Telegram/Notibot init
+  let pollAttempts = 0;
+  const pollTimer = setInterval(() => {
+    pollAttempts++;
+    const u = extractTelegramUser();
+    if (u && (u.displayName || u.first_name || u.firstName || u.name || u.username)) {
+      applyPersonalization(u);
+      clearInterval(pollTimer);
+    }
+    if (pollAttempts >= 20) clearInterval(pollTimer);
+  }, 100);
+
+  // Listen for Notibot async initialization postMessages
+  window.addEventListener('message', function(event) {
+    if (!event.data) return;
+    const isInit = event.data.type === 'NOTIBOT_INIT' ||
+                   event.data.type === 'notibot:init' ||
+                   event.data.type === 'NOTIBOT_READY' ||
+                   event.data.type === 'notibot_init';
+    if (isInit) {
+      const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+      const a = (event.data.data && event.data.data.app) || event.data.app || {};
+      if (u) {
+        window.notibotInitData = event.data.data || { user: u, app: a };
+        handleNotibotInit(u, a);
+      }
+    }
+  });
+
+  window.applyPersonalization = applyPersonalization;
+  window.extractTelegramUser = extractTelegramUser;
+  window.getInitials = getInitials;
+  window.handleNotibotInit = handleNotibotInit;
+  window.applyThemeColors = applyThemeColors;
+})();
+  </script>
 </head>
 <body>
   <div id="maisonArtBackground"></div>
-  <div id="loading-screen" class="loader-screen">
-    <div class="loader-spinner mb-4"></div>
-    <span class="text-sm tracking-widest text-nb-accent uppercase font-bold animate-pulse">Загрузка...</span>
-  </div>
-
+  <div id="loading-screen" class="loader-screen"><div class="loader-spinner mb-4"></div><span class="text-sm tracking-widest text-nb-accent uppercase font-bold animate-pulse">Загрузка...</span></div>
   <main class="app-shell">
     <div class="app">
-
       <header class="header-bar-nav">
         <div class="header-actions-row">
-          <button type="button" onclick="openNavDrawer();" class="nav-glass-tinted-btn">
-            <span>🧭</span>
-            <span>Навигация по курсу</span>
-          </button>
-          <button type="button" onclick="safeHaptic('selection'); openScreen('32_bonuses.html');" class="next-lesson-btn">
-            <span>Все бонусы 🎁</span>
-          </button>
+          <button type="button" onclick="openNavDrawer();" class="nav-glass-tinted-btn"><span>🧭</span><span>Навигация по курсу</span></button>
+          <button type="button" onclick="safeHaptic('selection'); openScreen('32_bonuses.html');" class="next-lesson-btn"><span>Все бонусы →</span></button>
+        </div>
+        <div class="header-progress-row">
+          <span class="lesson-badge-sub">Бонусный урок 2 из 4</span>
+          <span class="progress-percent-sub">Практический материал</span>
         </div>
       </header>
-
-      <div style="display:flex; flex-direction:column; gap:14px; padding-top:4px;">
-
+      <div style="display:flex; flex-direction:column; gap:14px;">
         <section class="glass card text-center">
           <div class="eyebrow" style="margin-bottom:8px;">Бонус 2</div>
-          <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); line-height:1.3; margin-bottom:6px; text-align:center;">Неловкость в спальне</h2>
-          <p class="lead" style="font-size:13px; line-height:1.4; color:var(--nb-text-2); margin-bottom:12px; text-align:center;">Как выдержать чужую хмурость и переключить внимание на себя.</p>
-
+          <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); line-height:1.3; margin-bottom:6px; text-align:center;">Бонус 2: Неловкость в спальне</h2>
+          <p class="lead" style="font-size:13px; line-height:1.4; color:var(--nb-text-2); margin-bottom:12px; text-align:center;">Как вернуть влечение и тактильность после долгой паузы</p>
           <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720"
-              allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-              frameborder="0" allowfullscreen
-              style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/4YwwwQkJxm6GmXTNmYusAW?max_quality=720" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" frameborder="0" allowfullscreen style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
           </div>
         </section>
-
-        <!-- Generator of Personal Evening -->
-        <section class="glass card" style="display:flex; flex-direction:column; gap:12px;">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); margin-bottom:0;">
-            ☕️ Генератор личного вечера
-          </div>
-          <h3 style="font-size:16px; font-weight:800; color:var(--nb-deep); margin:0; text-align:center;">Что зажжёт вас прямо сейчас?</h3>
-          <p style="font-size:12.5px; color:var(--nb-text-2); margin:0; text-align:center;">Выберите то, чем вы искренне займётесь на ближайшие 2 часа:</p>
-
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="radio" name="eveningPlan" value="bath" style="accent-color:var(--nb-sea); width:18px; height:18px;">
-              <span style="font-size:13px; font-weight:600; color:var(--nb-deep);">🛁 Горячая ванна с солью и тишиной</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="radio" name="eveningPlan" value="movie" style="accent-color:var(--nb-sea); width:18px; height:18px;">
-              <span style="font-size:13px; font-weight:600; color:var(--nb-deep);">🎬 Любимый фильм или сериал в наушниках</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="radio" name="eveningPlan" value="walk" style="accent-color:var(--nb-sea); width:18px; height:18px;">
-              <span style="font-size:13px; font-weight:600; color:var(--nb-deep);">🎧 Прогулка на свежем воздухе с музыкой</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="radio" name="eveningPlan" value="hobby" style="accent-color:var(--nb-sea); width:18px; height:18px;">
-              <span style="font-size:13px; font-weight:600; color:var(--nb-deep);">📖 Чтение книги / творчество / уход за лицом</span>
-            </label>
-          </div>
-
-          <div style="background:rgba(200,178,143,0.15); border-radius:12px; padding:12px; text-align:center; border:1px solid rgba(200,178,143,0.3);">
-            <div style="font-size:11px; font-weight:800; color:var(--nb-deep); text-transform:uppercase; margin-bottom:4px;">🛡 Главный щит вечера:</div>
-            <p style="font-size:13px; font-weight:700; color:var(--nb-deep); margin:0;">«Я не несу ответственности за чужое хмурое лицо. Взрослый человек имеет право на своё настроение, а я имею право на свой прекрасный вечер.»</p>
+        <section class="glass card" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="eyebrow" style="margin-bottom:2px;">Ключевые принципы</div>
+          <p style="font-size:13px; color:var(--nb-text); line-height:1.4; margin:0;">Сенсорное сближение без давления: возвращаем несексуальную нежность и контакт тела.</p>
+          <div style="display:flex; flex-direction:column; gap:6px; font-size:12.5px; color:var(--nb-text); margin-top:4px;">
+            <div style="padding:8px 10px; border-radius:10px; background:rgba(255,255,255,0.6);">1. Правило 0% давления: никаких ожиданий обязательного секса в первые дни.</div>
+<div style="padding:8px 10px; border-radius:10px; background:rgba(255,255,255,0.6);">2. Сенсорный контакт: массаж стоп или плеч на 5 минут без продолжения.</div>
+<div style="padding:8px 10px; border-radius:10px; background:rgba(255,255,255,0.6);">3. Ритуал 6-секундного объятия перед сном.</div>
           </div>
         </section>
-
+        <button onclick="safeHaptic('selection'); openScreen('32_bonuses.html');" class="primary-btn pulse" style="width:100%; min-height:46px;"><span>Вернуться ко всем бонусам ➔</span></button>
       </div>
-      
       <div class="pb-12"></div>
     </div>
   </main>
-
   <script>
 
     function safeHaptic(kind) {
@@ -1551,73 +1590,25 @@ textarea:focus, input:focus {
       audios.forEach(function(a) { a.pause(); });
     }
 
-    async function apiPostLocal(endpoint, bodyData, timeoutMs = 15000) {
-      var baseUrl = (window.API_BASE && window.API_BASE !== '') ? window.API_BASE : '';
-      var targetUrl = endpoint.startsWith('http') ? endpoint : (baseUrl + endpoint);
-      
-      var controller = new AbortController();
-      var timer = setTimeout(function(){ controller.abort(); }, timeoutMs);
-
-      try {
-        var response = await fetch(targetUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify(bodyData),
-          signal: controller.signal
-        });
-        clearTimeout(timer);
-        if (!response.ok) throw new Error("HTTP " + response.status);
-        return await response.json();
-      } catch (err) {
-        clearTimeout(timer);
-        if (window.AMVERA_HOST && targetUrl !== (window.AMVERA_HOST + endpoint)) {
-           try {
-             var fb = await fetch(window.AMVERA_HOST + endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(bodyData)
-             });
-             if(fb.ok) return await fb.json();
-           } catch(e) {}
-        }
-        throw err;
-      }
-    }
-
   </script>
-
-  <!-- =========================================================
-       BOTTOM DRAWER / НАВИГАЦИЯ ПО КУРСУ (Сценарий 3)
-       ========================================================= -->
   <div id="navDrawerOverlay" onclick="handleDrawerBackdropClick(event)">
     <div id="navDrawerBackdrop"></div>
-
     <div id="navDrawerPanel">
       <div class="drawer-handle" onclick="closeNavDrawer()"></div>
-
       <div class="drawer-header">
-        <div class="drawer-title">
-          <span style="color:#C4734F;">🧭</span>
-          <span>Навигация по курсу</span>
-        </div>
+        <div class="drawer-title"><span style="color:#C4734F;">🧭</span><span>Навигация по курсу</span></div>
         <button type="button" class="drawer-close-btn" onclick="closeNavDrawer()">✕</button>
       </div>
-
       <div class="drawer-content">
-        <!-- Блок уроков -->
         <div>
           <div class="drawer-section-label">Уроки курса</div>
-          <div class="drawer-list">
-            <!-- Урок 1 -->
+          <div class="drawer-list">            <!-- Урок 1 -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('27_lesson1.html'); return false;" class="drawer-item ">
               <div class="drawer-item-left">
                 <div class="drawer-item-num">1</div>
                 <div class="drawer-item-info">
                   <div class="drawer-item-name">Танец ссоры: нападающий и убегающий</div>
-                  <div class="drawer-item-sub">Цикл ссор и роли партнёров</div>
+                  <div class="drawer-item-sub">Кто нападает, а кто уходит в домик</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
@@ -1628,8 +1619,8 @@ textarea:focus, input:focus {
               <div class="drawer-item-left">
                 <div class="drawer-item-num">2</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Правило 20 минут</div>
-                  <div class="drawer-item-sub">Как остановить ссору в 30 секунд</div>
+                  <div class="drawer-item-name">Правило 20 минут: как остановить ссору</div>
+                  <div class="drawer-item-sub">Сброс роли Мамочки и физиология ссоры</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
@@ -1640,8 +1631,8 @@ textarea:focus, input:focus {
               <div class="drawer-item-left">
                 <div class="drawer-item-num">3</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Амнистия обид</div>
-                  <div class="drawer-item-sub">Освобождение от прошлого</div>
+                  <div class="drawer-item-name">Амнистия обид: прошлое за порогом</div>
+                  <div class="drawer-item-sub">Гипноз на снятие старого груза</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
@@ -1652,8 +1643,8 @@ textarea:focus, input:focus {
               <div class="drawer-item-left">
                 <div class="drawer-item-num">4</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Мягкий старт</div>
-                  <div class="drawer-item-sub">Язык близости вместо претензий</div>
+                  <div class="drawer-item-name">Мягкий старт: разговор без претензий</div>
+                  <div class="drawer-item-sub">Формула «Я-сообщения» из 3 шагов</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
@@ -1664,26 +1655,22 @@ textarea:focus, input:focus {
               <div class="drawer-item-left">
                 <div class="drawer-item-num">5</div>
                 <div class="drawer-item-info">
-                  <div class="drawer-item-name">Союз двух свободных</div>
-                  <div class="drawer-item-sub">Тепло, прикосновения и флирт</div>
+                  <div class="drawer-item-name">Союз двух свободных: возврат тепла</div>
+                  <div class="drawer-item-sub">Ритуалы сближения и Карта опоры</div>
                 </div>
               </div>
               <span style="color:rgba(31,46,53,0.3); font-size:16px;">→</span>
-            </a>
-          </div>
+            </a></div>
         </div>
-
-        <!-- Блок бонусов -->
         <div>
           <div class="drawer-section-label">Бонусы и разбор</div>
           <div class="drawer-list">
-            <!-- 4 практических бонуса -->
             <a href="javascript:void(0);" onclick="navigateFromDrawer('32_bonuses.html'); return false;" class="drawer-item active-current">
               <div class="drawer-item-left">
                 <div class="drawer-item-num" style="background:rgba(196,115,79,0.14); color:#A85532;">🎁</div>
                 <div class="drawer-item-info">
                   <div class="drawer-item-name">4 практических бонуса</div>
-                  <div class="drawer-item-sub">Бойкот, спальня, родня и быт</div>
+                  <div class="drawer-item-sub">Бойкот, спальня, родственники, быт</div>
                 </div>
               </div>
               <span class="drawer-item-tag bonus">Вы здесь</span>
@@ -1693,49 +1680,31 @@ textarea:focus, input:focus {
       </div>
     </div>
   </div>
-
   <script>
     window.openNavDrawer = function() {
       try { if (typeof safeHaptic === 'function') safeHaptic('medium'); } catch(e) {}
       var overlay = document.getElementById('navDrawerOverlay');
-      if (overlay) {
-        overlay.style.display = 'block';
-        void overlay.offsetHeight;
-        overlay.classList.add('active');
-      }
+      if (overlay) { overlay.style.display = 'block'; void overlay.offsetHeight; overlay.classList.add('active'); }
       document.body.style.overflow = 'hidden';
     };
-
     window.closeNavDrawer = function() {
       try { if (typeof safeHaptic === 'function') safeHaptic('selection'); } catch(e) {}
       var overlay = document.getElementById('navDrawerOverlay');
       if (overlay) {
         overlay.classList.remove('active');
-        setTimeout(function() {
-          if (!overlay.classList.contains('active')) {
-            overlay.style.display = 'none';
-          }
-        }, 320);
+        setTimeout(function() { if (!overlay.classList.contains('active')) overlay.style.display = 'none'; }, 320);
       }
       document.body.style.overflow = '';
     };
-
     window.handleDrawerBackdropClick = function(e) {
-      if (e.target.id === 'navDrawerOverlay' || e.target.id === 'navDrawerBackdrop') {
-        window.closeNavDrawer();
-      }
+      if (e.target.id === 'navDrawerOverlay' || e.target.id === 'navDrawerBackdrop') window.closeNavDrawer();
     };
-
     window.navigateFromDrawer = function(targetUrl) {
       try { if (typeof safeHaptic === 'function') safeHaptic('selection'); } catch(e) {}
       window.closeNavDrawer();
-      if (typeof openScreen === 'function') {
-        openScreen(targetUrl);
-      } else {
-        window.location.href = targetUrl;
-      }
+      if (typeof openScreen === 'function') openScreen(targetUrl);
+      else window.location.href = targetUrl;
     };
   </script>
-
 </body>
 </html>
