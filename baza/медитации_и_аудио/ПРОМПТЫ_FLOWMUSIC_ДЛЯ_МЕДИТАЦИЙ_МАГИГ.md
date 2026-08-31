@@ -1,90 +1,70 @@
-# 🎵 МОДУЛЬНЫЕ ПРОМПТЫ FLOWMUSIC ПОД КАЖДУЮ МЕДИТАЦИЮ (ПО 3–4 ТРЕКА НА СЕССИЮ)
-**Стандарт:** Длительность каждого трека до 3 минут (лимит FlowMusic). Модули генерируются в единой тональности и бесшовно стыкуются в итоговую 10–15 минутную сессию под этапы «Косички Эриксона».
+# 🎵 МОДУЛЬНЫЕ ПРОМПТЫ FLOWMUSIC ДЛЯ МЕДИТАЦИЙ (БЕЗ РИТМА, ПУЛЬСАЦИИ И БИТА)
+**Стандарт звучания:** `sustained tones`, `seamless continuous textures`, `timeless suspended atmosphere`, `zero rhythm`, `no bassline`, `no beat`. Длительность каждого трека — 180 сек (3 мин).
 
 ---
 
-# 🎧 МЕДИТАЦИЯ 1: «ЭКСТРЕННОЕ ЗАЗЕМЛЕНИЕ» (ОБЩАЯ ДЛИТЕЛЬНОСТЬ: ~9–10 МИН)
-**Единая частота:** 432 Hz | **Тональность:** D minor (Ре минор) | **BPM:** 55–60
+# 🎧 МЕДИТАЦИЯ 1: «ЭКСТРЕННОЕ ЗАЗЕМЛЕНИЕ» (432 Hz)
 
-### 🔹 Модуль 1.1: Вход в убежище и сброс груза (0–3 мин)
-*Начало начитки: порог дома, шум бури за окном, тепло камина, сброс рюкзака.*
+### 🔹 Трек 1.1: Вход в дом, камин и сброс груза (00:00 – 01:30)
 ```text
-432 Hz deep grounding meditation, cozy warm analog synth drone, subtle distant fireplace crackle ambience, gentle low cello sustained chords, soft entering sanctuary vibe, relaxing atmospheric background music, continuous calm hypnotic soundscape, no drums, no rhythm, no beat, no vocals, peaceful steady soothing trance --bpm 60 --duration 180
+432 Hz deep grounding meditation, cozy warm analog sustained synth pad, subtle distant fireplace crackle ambience, gentle continuous low cello chords, motionless sanctuary texture, seamless ambient soundscape, sustained tones, timeless suspended atmosphere, no drums, no percussion, no rhythm, no bassline, no pulse, no beat, no vocals, ultra calming hypnotic tranquility --duration 180
 ```
 
-### 🔹 Модуль 1.2: Корни в граните и глубина океана (3–6 мин)
-*Центр транса: стопы, корни векового дуба сквозь скалу, 50 метров глубины океана и чугунный якорь.*
+### 🔹 Трек 1.2: Корни в граните и глубина океана (01:30 – 05:45)
+*(Утверждённый эталонный промпт)*
 ```text
-432 Hz deep earth resonance meditation, heavy monolithic bass drone, sub-bass grounding frequency, deep ocean depth stillness, profound stillness soundscape, ancient oak roots vibration, slow evolving atmospheric pad, no drums, no percussion, no rhythm, no vocals, ultra calming hypnotic master track --bpm 55 --duration 180
+432 Hz deep earth resonance meditation, heavy monolithic bass drone, continuous sub-bass grounding tone, deep oceanic stillness, profound static soundscape, ancient oak roots vibration, extremely slow evolving atmospheric pad, sustained tones, seamless continuous textures, no drums, no percussion, no beat, no rhythm, no vocals, ultra calming hypnotic ambient, timeless suspended atmosphere --duration 180
 ```
 
-### 🔹 Модуль 1.3: Свет маяка и возвращение хозяином (6–9+ мин)
-*Закрытие косички: огонь маяка в груди, тлеющие угли камина, чистый вдох и возвращение.*
+### 🔹 Трек 1.3: Свет маяка, угли камина и возвращение (05:45 – 08:45)
 ```text
-432 Hz warm healing resolution meditation, gentle warm amber synth pads, subtle resonant singing bowl overtones, soothing fading fire embers ambience, soft uplifting peace, grounding completion soundscape, no drums, no percussion, no vocals, serene mindful integration audio --bpm 60 --duration 180
+432 Hz warm amber healing meditation, gentle glowing sustained synth pads, subtle resonant singing bowl overtones, fading fire embers soundscape, smooth uplifting peaceful drone, motionless continuous textures, sustained ambient harmony, no drums, no percussion, no beat, no rhythm, no bassline, no vocals, serene grounded integration audio --duration 180
 ```
 
 ---
 
-# 🎧 МЕДИТАЦИЯ 2: «ЭМОЦИОНАЛЬНЫЙ ЩИТ» (ОБЩАЯ ДЛИТЕЛЬНОСТЬ: ~10–12 МИН)
-**Единая частота:** 528 Hz | **Тональность:** C major / A minor | **BPM:** 50–55
+# 🎧 МЕДИТАЦИЯ 2: «ЭМОЦИОНАЛЬНЫЙ ЩИТ» (528 Hz)
 
-### 🔹 Модуль 2.1: Горная поляна и священный круг (0–3 мин)
-*Начало начитки: утреннее солнце, свежий воздух, проведение черты личных границ.*
+### 🔹 Трек 2.1: Горная поляна и священный круг (00:00 – 02:30)
 ```text
-528 Hz transformation and clarity frequency, airy ambient lush strings, gentle mountain breeze wind soundscape, spacious pure meditation music, soft floating drone, serene peaceful morning atmosphere, wide spatial reverb, no drums, no beat, no percussion, no vocals, relaxing crystal drone --bpm 55 --duration 180
+528 Hz transformation and clarity frequency, airy ambient floating sustained strings, gentle soft mountain breeze wind soundscape, spacious pure meditation music, seamless continuous drone, serene motionless morning atmosphere, wide spatial reverb, sustained tones, no drums, no beat, no percussion, no rhythm, no bassline, no vocals, crystalline tranquil peace --duration 180
 ```
 
-### 🔹 Модуль 2.2: Алмазный купол и опадающие листья (3–6 мин)
-*Построение нерушимого стекла, чужие упрёки разбиваются и бессильно осыпаются пеплом.*
+### 🔹 Трек 2.2: Алмазный купол и опадающие листья (02:30 – 05:00)
 ```text
-528 Hz ethereal protective shield meditation, resonant crystal singing bowls, crystalline harmonic drone, shimmering ambient texture, impermeable sound barrier, calm unshakeable boundary atmosphere, no drums, no rhythm, no vocals, deep focused tranquil soundscape --bpm 50 --duration 180
+528 Hz ethereal protective shield meditation, resonant crystal singing bowls sustained tones, crystalline harmonic continuous drone, shimmering motionless ambient texture, impermeable sound barrier, calm unshakeable boundary atmosphere, sustained pad, no drums, no rhythm, no pulse, no bassline, no beat, no vocals, deep focused tranquil soundscape --duration 180
 ```
 
-### 🔹 Модуль 2.3: Зеркальный щит и возвращение чужого (6–9 мин)
-*Центральное ядро: зеркальная гладь отражает чужую злость, чужой груз спадает с плеч.*
+### 🔹 Трек 2.3: Зеркальный щит и возврат чужого груза (05:00 – 07:30)
 ```text
-528 Hz profound release and freedom meditation music, smooth floating cello and violin pads, deep emotional unburdening soundscape, serene reflective ambient drone, pure sovereign peace, no drums, no percussion, no vocals, therapeutic mindful audio --bpm 52 --duration 180
+528 Hz profound release and sovereignty meditation music, smooth floating cello and violin sustained pads, deep emotional unburdening static soundscape, serene reflective ambient drone, pure motionless peace, seamless continuous textures, no drums, no percussion, no beat, no rhythm, no bassline, no vocals, therapeutic mindful audio --duration 180
 ```
 
-### 🔹 Модуль 2.4: Чистое пространство и суверенитет (9–12 мин)
-*Закрытие: алмазная крепость, горный воздух, свободное глубокое дыхание.*
+### 🔹 Трек 2.4: Чистое пространство и суверенитет (07:30 – 10:30)
 ```text
-528 Hz sovereign empowerment resolution, uplifting warm ambient harmony, pure mountain clarity, gentle dissolving wind, serene integration and return, empowering peaceful soundscape, no drums, no beat, no vocals, unbroken soothing meditation master track --bpm 55 --duration 180
+528 Hz sovereign empowerment resolution, uplifting warm ambient harmony, pure mountain clarity soundscape, gentle dissolving wind, serene integration sustained chords, empowering peaceful static atmosphere, no drums, no beat, no rhythm, no pulse, no vocals, unbroken soothing meditation master track --duration 180
 ```
 
 ---
 
-# 🎧 МЕДИТАЦИЯ 3: «МОЯ НЕРУШИМАЯ ОПОРА» (ОБЩАЯ ДЛИТЕЛЬНОСТЬ: ~12–15 МИН)
-**Единая частота:** 963 Hz | **Тональность:** G major / E minor | **BPM:** 50
+# 🎧 МЕДИТАЦИЯ 3: «МОЯ НЕРУШИМАЯ ОПОРА» (963 Hz)
 
-### 🔹 Модуль 3.1: Переправа на свой берег (0–3 мин)
-*Начало: река жизни уносит прошлое, лодка касается твёрдого песчаного берега.*
+### 🔹 Трек 3.1: Переправа на свой берег (00:00 – 03:00)
 ```text
-963 Hz awakening and divine stillness frequency, majestic slow cinematic synth pad, gentle flowing river water soundscape, soft sunrise atmosphere, stepping on solid ground feeling, profound calm ambient drone, no drums, no percussion, no rhythm, no vocals, deeply relaxing master audio --bpm 50 --duration 180
+963 Hz awakening and divine stillness frequency, majestic slow cinematic sustained synth pad, gentle calm river water soundscape, soft golden sunrise atmosphere, stepping on solid ground feeling, profound motionless ambient drone, sustained tones, no drums, no percussion, no rhythm, no pulse, no beat, no vocals, deeply relaxing master audio --duration 180
 ```
 
-### 🔹 Модуль 3.2: Золотой стержень вдоль позвоночника (3–6 мин)
-*Внутренняя ось: монолитный светящийся стержень, сила всех пройденных испытаний.*
+### 🔹 Трек 3.2: Золотой стержень вдоль позвоночника (03:00 – 06:00)
 ```text
-963 Hz inner axis of strength meditation, rich deep cello sustained chords, glowing amber harmonic resonance, golden light frequency, unbreakable foundation soundscape, profound somatic stability, no drums, no beat, no vocals, solemn peaceful hypnotic trance --bpm 50 --duration 180
+963 Hz inner axis of strength meditation, rich deep continuous cello chords, glowing amber harmonic resonance, golden light frequency drone, unbreakable foundation static soundscape, profound sustained stability, seamless continuous textures, no drums, no beat, no rhythm, no bassline, no pulse, no vocals, solemn peaceful hypnotic trance --duration 180
 ```
 
-### 🔹 Модуль 3.3: Трон зрелости и выбор себя (6–9 мин)
-*Центр: «Я у себя есть. Я достоин любви по праву рождения». Абсолютная зрелая тишина.*
+### 🔹 Трек 3.3: Трон зрелости и выбор себя (06:00 – 09:15)
 ```text
-963 Hz supreme sovereignty meditation music, expansive celestial ambient chords, sacred heart resonance, pure dignity and deep inner peace, profound self-worth soundscape, timeless stillness, no drums, no percussion, no vocals, transcendent sovereign atmosphere --bpm 48 --duration 180
+963 Hz supreme sovereignty meditation music, expansive celestial sustained ambient chords, sacred heart resonance, pure dignity and deep inner peace, profound self-worth static soundscape, timeless suspended atmosphere, seamless unbroken pad, no drums, no percussion, no rhythm, no pulse, no vocals, transcendent sovereign atmosphere --duration 180
 ```
 
-### 🔹 Модуль 3.4: Расширение тепла и широкий горизонт (9–12+ мин)
-*Закрытие: янтарное тепло по всему телу, открытый горизонт, выход новой личностью.*
+### 🔹 Трек 3.4: Расширение тепла и открытый горизонт (09:15 – 12:45)
 ```text
-963 Hz triumphant peace and new beginning meditation, warm radiant ambient strings, expansive open horizon soundscape, gentle uplifting harmonic resolution, grounded empowered return, no drums, no beat, no vocals, ultimate sovereignty master audio track --bpm 50 --duration 180
+963 Hz triumphant peace and new beginning meditation, warm radiant ambient sustained strings, expansive open horizon soundscape, gentle uplifting harmonic resolution, grounded empowered return, motionless continuous drone, no drums, no beat, no rhythm, no bassline, no vocals, ultimate sovereignty master audio track --duration 180
 ```
-
----
-
-### 🎛 КАК ИХ СКЛЕИТЬ:
-1. Вы генерируете по очереди треки 1.1, 1.2, 1.3 (каждый ровно по 3 минуты).
-2. Кидаете их на дорожку в CapCut / Premiere / Reaper с простым Crossfade (плавное наложение 3–5 секунд друг на друга).
-3. Получается идеальный 10–14 минутный саундтрек, который динамически меняется вместе с вашим голосом по «Косичке Эриксона»!
