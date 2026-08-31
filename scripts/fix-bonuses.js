@@ -11,7 +11,7 @@ const targetFiles = [
   '14_individual_offer.html'
 ];
 
-const dirs = ['out/client', 'baza/исходник миникурса'];
+const dirs = ['out/client'];
 
 const CSP_TAG = `  <meta http-equiv="Content-Security-Policy"
     content="

@@ -5,7 +5,7 @@ const { URL } = require('url');
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const CLIENT_DIR = path.join(__dirname, '..', 'out', 'client');
-const MEDIA_DIR = path.join(__dirname, '..', 'baza', 'исходник миникурса', 'media-server', 'files');
+const MEDIA_DIR = path.join(__dirname, '..', 'baza', 'медиа_сервер_локальный', 'media-server', 'files');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',

@@ -68,7 +68,7 @@ const HEAD_BRIDGE_CODE = `  <script src="https://telegram.org/js/telegram-web-ap
     }
   </script>`;
 
-const dirs = ['out/client', 'baza/исходник миникурса'];
+const dirs = ['out/client'];
 
 for (const d of dirs) {
   if (!fs.existsSync(d)) continue;

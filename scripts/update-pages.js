@@ -315,21 +315,8 @@ for (const f of outFiles) {
   processHtmlFile(path.join('out/client', f));
 }
 
-// Process baza/исходник миникурса
-const bazaDir = 'baza/исходник миникурса';
-if (fs.existsSync(bazaDir)) {
-  const bazaFiles = fs.readdirSync(bazaDir).filter(f => f.endsWith('.html'));
-  for (const f of bazaFiles) {
-    processHtmlFile(path.join(bazaDir, f));
-  }
-}
-
 // Also update standalone telegram-user.js
 if (fs.existsSync('out/client/telegram-user.js')) {
   fs.writeFileSync('out/client/telegram-user.js', TELEGRAM_USER_INNER + '\n', 'utf8');
   console.log('Updated: out/client/telegram-user.js');
-}
-if (fs.existsSync('baza/исходник миникурса/telegram-user.js')) {
-  fs.writeFileSync('baza/исходник миникурса/telegram-user.js', TELEGRAM_USER_INNER + '\n', 'utf8');
-  console.log('Updated: baza/исходник миникурса/telegram-user.js');
 }

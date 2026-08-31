@@ -2,16 +2,12 @@ const fs = require('fs');
 const path = require('path');
 
 const CLIENT_DIR = path.join(__dirname, '..', 'out', 'client');
-const BAZA_DIR = path.join(__dirname, '..', 'baza', 'исходник миникурса');
-
+ 
 // 1. Копируем чистый фон leaves_oak.jpg (без полос) в leaves_birch.jpg и leaves_birch.png
 const oakJpg = path.join(CLIENT_DIR, 'leaves_oak.jpg');
-
+ 
 if (fs.existsSync(oakJpg)) {
   fs.copyFileSync(oakJpg, path.join(CLIENT_DIR, 'leaves_birch.jpg'));
-  if (fs.existsSync(BAZA_DIR)) {
-    fs.copyFileSync(oakJpg, path.join(BAZA_DIR, 'leaves_birch.jpg'));
-  }
   console.log('Synchronized clean stripe-free background to leaves_birch.jpg');
 }
 
