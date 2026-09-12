@@ -395,14 +395,16 @@
     .swipe-card-badge {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      padding: 3px 9px;
-      background: rgba(14, 31, 46, 0.04);
+      padding: 3px 11px;
+      background: rgba(14, 31, 46, 0.05);
       border-radius: 999px;
       font-size: 11px;
       font-weight: 700;
       color: var(--nb-sea);
       width: fit-content;
+      margin: 0 auto;
     }
 
     .swipe-card-title {
@@ -768,8 +770,8 @@
 
         <div class="card-swipe-container">
           <div id="activeSwipeCard" class="swipe-card">
-            <div>
-              <div id="cardBadge" class="swipe-card-badge">🎯 Триггер истощения</div>
+            <div style="display:flex; flex-direction:column; align-items:center; width:100%; text-align:center;">
+              <div id="cardBadge" class="swipe-card-badge">🎯 Ситуация 1</div>
               <h2 id="cardTitle" class="swipe-card-title">Радар чужого настроения</h2>
             </div>
             <p id="cardDesc" class="swipe-card-desc">
@@ -825,10 +827,10 @@
 
         <!-- Персональный закон психики (выводится только в финале) -->
         <div id="resInsightBox" class="bridge-insight-card" style="display:none;">
-          <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:#8C6A32; display:flex; align-items:center; gap:6px;">
+          <div id="resInsightHeading" style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:#8C6A32; display:flex; align-items:center; gap:6px;">
             <span>💡</span> <span>Ключевой закон психики:</span>
           </div>
-          <p id="resInsightText" style="font-size:13px; line-height:1.5; color:#3B2F1C; font-weight:500; margin:0;"></p>
+          <div id="resInsightText"></div>
         </div>
 
         <!-- Оффер вводного урока и подарка -->
@@ -944,7 +946,7 @@
     const scores = { emotions: 0, partner: 0, family: 0, crisis: 0 };
     let finalRoute = "emotions";
     let userSelections = [];
-    let savedInsight = "";
+    let collectedInsights = [];
     let isTransitioning = false;
 
     function startQuiz() {
@@ -958,7 +960,7 @@
       scores.family = 0;
       scores.crisis = 0;
       userSelections = [];
-      savedInsight = "";
+      collectedInsights = [];
       updateEnergyUI();
       renderCard();
       initSwipeTouch();
@@ -1026,7 +1028,7 @@
         energyLevel = Math.max(8, energyLevel - card.drain);
         updateEnergyUI();
         scores[card.route] = (scores[card.route] || 0) + 2;
-        savedInsight = card.insight;
+        collectedInsights.push({ situation: card.title, insight: card.insight });
 
         userSelections.push({
           step: currentCardIndex + 1,
@@ -1035,12 +1037,12 @@
           route: card.route
         });
 
-        // Карточка сразу плавно улетает вправо
+        // Карточка сразу быстро и чисто улетает вправо без мигающего текста
         cardEl.classList.add("hit-active", "swiping-right");
         setTimeout(() => {
           currentCardIndex++;
           renderCard();
-        }, 220);
+        }, 200);
 
       } else {
         safeHaptic();
@@ -1055,7 +1057,7 @@
         setTimeout(() => {
           currentCardIndex++;
           renderCard();
-        }, 220);
+        }, 200);
       }
     }
 
@@ -1180,16 +1182,30 @@
         document.getElementById("resGiftText").textContent = sc.gift;
       }
 
-      // Сохранённый совет / закон психики
+      // Все сохранённые законы психики (выводятся только в финале)
       const insightBox = document.getElementById("resInsightBox");
+      const insightHeading = document.getElementById("resInsightHeading");
       const insightText = document.getElementById("resInsightText");
       if (insightBox && insightText) {
-        const textToShow = savedInsight || sc.insight;
-        if (textToShow) {
-          insightText.textContent = textToShow;
+        if (collectedInsights.length > 1) {
+          if (insightHeading) insightHeading.innerHTML = '<span>💡</span> <span>Ключевые законы психики для ваших ситуаций:</span>';
+          insightText.innerHTML = '<div style="display:flex; flex-direction:column; gap:8px; margin-top:2px;">' +
+            collectedInsights.map(item =>
+              '<div style="display:flex; align-items:flex-start; gap:6px; font-size:12.5px; line-height:1.45; color:#3B2F1C;">' +
+                '<span style="color:#C29E65; font-size:14px; line-height:1.2; font-weight:bold;">•</span>' +
+                '<span><strong>' + item.situation + ':</strong> ' + item.insight + '</span>' +
+              '</div>'
+            ).join('') +
+          '</div>';
+          insightBox.style.display = "flex";
+        } else if (collectedInsights.length === 1) {
+          if (insightHeading) insightHeading.innerHTML = '<span>💡</span> <span>Ключевой закон психики:</span>';
+          insightText.innerHTML = '<span style="font-size:13px; line-height:1.5; color:#3B2F1C; font-weight:500;"><strong>' + collectedInsights[0].situation + ':</strong> ' + collectedInsights[0].insight + '</span>';
           insightBox.style.display = "flex";
         } else {
-          insightBox.style.display = "none";
+          if (insightHeading) insightHeading.innerHTML = '<span>💡</span> <span>Ключевой закон психики:</span>';
+          insightText.innerHTML = '<span style="font-size:13px; line-height:1.5; color:#3B2F1C; font-weight:500;">' + sc.insight + '</span>';
+          insightBox.style.display = "flex";
         }
       }
 
