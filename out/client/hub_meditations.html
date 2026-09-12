@@ -485,9 +485,9 @@
   <main class="page-container">
 
     <!-- Кнопка назад -->
-    <a href="index.html" class="nav-back-btn" onclick="safeHaptic();">
-      ← На главную
-    </a>
+    <button type="button" class="nav-back-btn" onclick="goBack();">
+      ← Назад
+    </button>
 
     <!-- Заглавный блок -->
     <section class="hero-card">
@@ -689,11 +689,11 @@
       </a>
     </div>
 
-    <!-- Возврат на главную -->
+    <!-- Возврат назад -->
     <div style="padding-top:2px;">
-      <a href="index.html" class="secondary-btn" onclick="safeHaptic();">
-        <span>← Вернуться в главное меню</span>
-      </a>
+      <button type="button" class="secondary-btn" onclick="goBack();">
+        <span>← Закрыть и вернуться в бота</span>
+      </button>
     </div>
 
   </main>
@@ -705,6 +705,15 @@
           notibot.hapticSelection();
         }
       } catch(e) {}
+    }
+
+    function goBack() {
+      safeHaptic();
+      if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.close === 'function') {
+        window.Telegram.WebApp.close();
+      } else if (window.history.length > 1) {
+        window.history.back();
+      }
     }
 
     function toggleSection(type) {

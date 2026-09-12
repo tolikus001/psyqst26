@@ -420,9 +420,9 @@
   <main class="page-container">
 
     <!-- Кнопка назад -->
-    <a href="index.html" class="nav-back-btn" onclick="safeHaptic();">
-      ← На главную
-    </a>
+    <button type="button" class="nav-back-btn" onclick="goBack();">
+      ← Назад
+    </button>
 
     <!-- Заглавная карточка -->
     <section class="hero-card">
@@ -437,14 +437,14 @@
 
     <!-- БЛОК ПОДБОРА КУРСА: ТЕСТ-КВЕСТ -->
     <section class="test-card">
-      <span class="test-badge">🧭 Персональный подбор программы • 2 минуты</span>
-      <h2 class="test-title">Не знаете, какой курс вам подходит?</h2>
+      <span class="test-badge">🧭 Персональный подбор • 2 минуты</span>
+      <h2 class="test-title">Диагностика: Куда уходит энергия?</h2>
       <p class="test-desc">
-        Пройдите экспресс-диагностику вашей ситуации в отношениях. Тест определит ваш сценарий и запустит персональный интерактивный квест.
+        Короткий интерактивный срез по вашей ситуации в отношениях. Тест определит ваш скрытый сценарий и запустит подходящий практический курс.
       </p>
       <a href="01_psyquest.html" class="test-action-btn" onclick="safeHaptic();">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-        <span>Пройти тест ➔</span>
+        <span>Пройти тест (2 минуты) ➔</span>
       </a>
     </section>
 
@@ -544,9 +544,9 @@
 
     <!-- Назад -->
     <div style="padding-top:4px;">
-      <a href="index.html" class="secondary-btn" onclick="safeHaptic();">
-        <span>← Вернуться в главное меню</span>
-      </a>
+      <button type="button" class="secondary-btn" onclick="goBack();">
+        <span>← Закрыть и вернуться в бота</span>
+      </button>
     </div>
 
   </main>
@@ -558,6 +558,15 @@
           notibot.hapticSelection();
         }
       } catch(e) {}
+    }
+
+    function goBack() {
+      safeHaptic();
+      if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.close === 'function') {
+        window.Telegram.WebApp.close();
+      } else if (window.history.length > 1) {
+        window.history.back();
+      }
     }
   </script>
 </body>
