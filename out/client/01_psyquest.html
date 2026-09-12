@@ -55,6 +55,16 @@
   </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
   <title>Диагностика отношений: Куда уходит энергия?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -767,6 +777,9 @@
       document.getElementById("screenAnalyzing").style.display = "none";
       document.getElementById("screenResult").style.display = "flex";
 
+      // ТОЛЬКО 2 ГОТОВЫХ КУРСА:
+      // 1) В отношениях / кризис / созависимость -> «Я остаюсь собой» (15_landing_partner_2.html)
+      // 2) Поиск / свидания / выбор холодных -> «Я выбираю» (02_landing_partner.html)
       const scenarios = {
         emotions: {
           title: "Сценарий: «Растворение и гиперконтроль»",
@@ -776,21 +789,21 @@
         },
         partner: {
           title: "Сценарий: «Погоня за недоступными»",
-          diagnosis: "Ваша энергия утекает в попытки растопить чужую эмоциональную холодность. Психика путает непредсказуемость с сильной любовью, игнорируя красные флаги. Вы тратите силы на завоевание тех, с кем изначально больно.",
+          diagnosis: "Ваша энергия утекает в попытки растопить чужую эмоциональную холодность на свиданиях. Психика путает непредсказуемость с любовью, игнорируя красные флаги. Вы тратите силы на тех, с кем изначально больно.",
           courseName: "Перейти к курсу «Я выбираю» ➔",
           courseLink: "02_landing_partner.html"
         },
         family: {
-          title: "Сценарий: «Замкнутый круг взаимной защиты»",
-          diagnosis: "Энергия уходит на удержание внутренней обиды и накопление бытового раздражения. В паре закрепился цикл «нападающий — убегающий»: один требует близости через претензии, второй закрывается в глухой обороне.",
-          courseName: "Перейти к программе «Мы вместе» ➔",
-          courseLink: "26_landing_family.html"
+          title: "Сценарий: «Усталость и отчуждение в паре»",
+          diagnosis: "Энергия уходит на сдерживание обид и бытовое раздражение под одной крышей. Первый фундаментальный шаг к возвращению тепла и диалога — вернуть устойчивость себе и выйти из созависимости.",
+          courseName: "Перейти к курсу «Я остаюсь собой» ➔",
+          courseLink: "15_landing_partner_2.html"
         },
         crisis: {
-          title: "Сценарий: «Острый шторм и потеря почвы»",
-          diagnosis: "Ваша нервная система переживает острый стресс (шок, измена, угроза разрыва). Вся энергия уходит на борьбу с паникой. Сейчас критически важно не совершать резких эмоциональных шагов, а восстановить соматическую опору.",
-          courseName: "Перейти к протоколу «Точка опоры» ➔",
-          courseLink: "37_landing_crisis.html"
+          title: "Сценарий: «Острый кризис и потеря почвы»",
+          diagnosis: "Нервная система переживает острый стресс (шок, измена, угроза разрыва). Вся энергия уходит на борьбу с паникой. Сейчас критически важно вернуть соматическую опору и сохранить суверенитет.",
+          courseName: "Перейти к курсу «Я остаюсь собой» ➔",
+          courseLink: "15_landing_partner_2.html"
         }
       };
 
