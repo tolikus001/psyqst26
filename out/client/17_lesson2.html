@@ -2143,7 +2143,7 @@ textarea:focus, input:focus {
       document.getElementById('step3').style.display = targetStep === 3 ? 'flex' : 'none';
     }
 
-    var attempts = 19;
+    var attempts = 3;
     var ATTEMPTS_KEY = 's2_lesson2_attempts';
     var savedAttempts = localStorage.getItem(ATTEMPTS_KEY);
     if(savedAttempts !== null) {
@@ -2271,15 +2271,94 @@ textarea:focus, input:focus {
       return isGibberish(text);
     }
 
+    var PRESET_RESPONSES = {
+      // Блок 1: Как фразу услышал партнёр (по фразе из Шага 2)
+      hearings: {
+        delay: "Для мужчины эта фраза звучит как упрёк строгой мамочки и вызов на бой: «Ты не справляешься, я лучше знаю». Мозг мужчины мгновенно считывает это как нападение и уходит либо в глухую оборону (телефон, диван, молчание), либо в ответную агрессию. С этого момента диалог прекращается.",
+        rely: "Фраза звучит как тотальное обесценивание: «Ты ни на что не годен, от тебя одни проблемы». Вместо желания помочь у мужчины включается саботаж: «Раз я всё равно плохой и не оправдал ожиданий — пусть сама всё делает»."
+      },
+
+      // Блок 2: Ваша истинная потребность (по Шагу 3)
+      needs: {
+        tired: "За вашей резкостью прячется колоссальное истощение. Вы не хотите командовать и решать за двоих. Ваша настоящая потребность — выдохнуть, почувствовать рядом надёжного взрослого и безопасно передать ему часть ответственности.",
+        fear: "За контролем прячется страх отвержения. Когда мужчина молчит или отдаляется, внутри включается сирена: «Я одна, всё рушится». Ваша истинная потребность — не идеальный план, а эмоциональный контакт и подтверждение: «Мы вместе, всё хорошо»."
+      },
+
+      // Блок 3: 3 точные фразы для диалога (по Шагу 3)
+      phrases: {
+        tired: [
+          "«Я очень устала всё держать в голове. Мне физически нужна твоя помощь. Возьми этот вопрос полностью на себя, пожалуйста».",
+          "«Я начинаю тревожиться, когда нет ясности. Скажи, пожалуйста, во сколько ты сможешь это сделать?»",
+          "«Мне важно твоё решение. Я доверяю тебе этот выбор, сделай так, как считаешь правильным»."
+        ],
+        fear: [
+          "«Когда ты долго молчишь или уходишь в себя, мне становится очень тревожно и одиноко. Мне важно просто обнять тебя».",
+          "«Мне сейчас тяжело. Я не хочу ругаться и давить на тебя. Мне просто нужно почувствовать, что мы с тобой команда».",
+          "«Я сейчас на взводе не из-за тебя, а из-за накопившегося стресса. Давай сделаем паузу на полчаса и спокойно поговорим»."
+        ]
+      }
+    };
+
+    function renderPresetResult() {
+      // Определяем, какую фразу выбрал пользователь
+      var phraseVal = selectedValues.step2 || document.getElementById('phraseInput').value || '';
+      var phraseKey = phraseVal.indexOf('Сколько можно') !== -1 ? 'delay' : 'rely';
+      
+      // Определяем, какую потребность выбрал пользователь
+      var needVal = selectedValues.step3 || document.getElementById('needInput').value || '';
+      var needKey = (needVal.indexOf('устала') !== -1 || needVal.indexOf('Усталость') !== -1) ? 'tired' : 'fear';
+
+      var hearingText = PRESET_RESPONSES.hearings[phraseKey];
+      var needText = PRESET_RESPONSES.needs[needKey];
+      var phrasesList = PRESET_RESPONSES.phrases[needKey];
+
+      // Подставляем в карточку результата
+      var elHearing = document.getElementById('resPartnerView') || document.getElementById('aiPartnerHearing');
+      if (elHearing) elHearing.textContent = hearingText;
+
+      var elNeed = document.getElementById('resNeedView') || document.getElementById('aiPartnerNeed');
+      if (elNeed) elNeed.textContent = needText;
+      
+      var phraseHtml = phrasesList.map(function(p, i) {
+        return (i + 1) + '. ' + p;
+      }).join('<br><br>');
+
+      var elPhrases = document.getElementById('resAlternatives') || document.getElementById('aiPartnerPhrases');
+      if (elPhrases) elPhrases.innerHTML = phraseHtml;
+
+      // Сохраняем в кэш
+      try {
+        localStorage.setItem('s2_lesson2_block', JSON.stringify({
+          partnerView: hearingText,
+          needView: needText,
+          alternatives: phraseHtml
+        }));
+      } catch(e) {}
+
+      // ВАЖНО: Попытки НЕ списываем!
+      updateAttemptsDisplay();
+
+      // Прячем экран интерактива, показываем экран результата
+      var s1 = document.getElementById('step1'); if (s1) s1.style.display = 'none';
+      var s2 = document.getElementById('step2'); if (s2) s2.style.display = 'none';
+      var s3 = document.getElementById('step3'); if (s3) s3.style.display = 'none';
+
+      var rc = document.getElementById('resultCard');
+      if (rc) {
+        rc.style.display = 'flex';
+        requestAnimationFrame(function() {
+          setTimeout(function() {
+            if (rc) rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 50);
+        });
+      }
+      safeHaptic('success');
+    }
+
     async function submitToAI(e) {
       if (e && e.preventDefault) e.preventDefault();
       if (e && e.stopPropagation) e.stopPropagation();
 
-      if(attempts <= 0) {
-        safeHaptic('error');
-        return;
-      }
-      
       hideNotice();
       
       var customNeed = document.getElementById('needInput').value.trim();
@@ -2291,17 +2370,38 @@ textarea:focus, input:focus {
       }
       document.getElementById('needInput').value = finalNeed;
 
-      var situation = document.getElementById('situationInput').value.trim() || selectedValues.step1;
-      var phrase = document.getElementById('phraseInput').value.trim() || selectedValues.step2;
-      var need = finalNeed;
-      
-      if(!need || !phrase) {
-        showNotice('Пожалуйста, выберите фразу и вашу истинную потребность подробнее.');
+      var customSituation = document.getElementById('situationInput').value.trim();
+      var finalSituation = customSituation || selectedValues.step1;
+
+      var customPhrase = document.getElementById('phraseInput').value.trim();
+      var finalPhrase = customPhrase || selectedValues.step2;
+
+      if (!finalPhrase) {
+        showNotice('Пожалуйста, выберите фразу или напишите свои слова.');
         return;
       }
 
-      if(isGibberish(need) || isGibberish(phrase) || (situation && isGibberish(situation))) {
+      if (isGibberish(finalNeed) || isGibberish(finalPhrase) || (finalSituation && isGibberish(finalSituation))) {
         showNotice('Пожалуйста, выберите готовые варианты или напишите понятными словами (без абракадабры).');
+        return;
+      }
+
+      // Проверяем: если пользователь выбрал готовые шаблоны без своего текста в полях
+      var isCustom = (document.getElementById('customBox1') && document.getElementById('customBox1').style.display === 'flex') ||
+                     (document.getElementById('customBox2') && document.getElementById('customBox2').style.display === 'flex') ||
+                     (document.getElementById('customBox3') && document.getElementById('customBox3').style.display === 'flex');
+
+      var isPresetMatch = (selectedValues.step2 && finalPhrase === selectedValues.step2) &&
+                          (selectedValues.step3 && finalNeed === selectedValues.step3);
+
+      if (!isCustom && isPresetMatch) {
+        renderPresetResult();
+        return;
+      }
+
+      if(attempts <= 0) {
+        safeHaptic('error');
+        showSavedAdvice();
         return;
       }
 
