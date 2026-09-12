@@ -1719,7 +1719,7 @@ textarea:focus, input:focus {
 
           <div style="display:flex; flex-direction:column; gap:10px;">
             <button onclick="goToPractice()" class="secondary-btn" style="width:100%; min-height:46px; border-radius:16px; font-size:13.5px; font-weight:700; color:var(--nb-deep); display:flex; align-items:center; justify-content:center; gap:8px;">
-              <span>⚡ Факультатив: экспресс чек-ин с попутчиком</span>
+              <span>Факультатив: экспресс чек-ин с попутчиком</span>
               <span class="strategy-badge" style="font-size:11px; padding:2px 8px;">3 ответа</span>
             </button>
           </div>
@@ -1759,7 +1759,7 @@ textarea:focus, input:focus {
         </div>
 
         <!-- SINGLE-SCREEN EXPRESS FORM -->
-        <div id="expressFormCard" class="glass card" style="display:flex; flex-direction:column; gap:14px; position:relative;">
+        <div id="scannerStepBox" class="glass card expressFormCard" style="display:flex; flex-direction:column; gap:14px; position:relative;">
           
           <!-- Вопрос 1: Сила шторма (быстрый закрытый выбор, без своего варианта) -->
           <div>
@@ -1767,20 +1767,20 @@ textarea:focus, input:focus {
               1. Насколько сильно штормит прямо сейчас?
             </label>
             <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;" id="stormIntensityGroup">
-              <button type="button" class="action-choice active" onclick="selectIntensity(this, 'Лёгкая рябь (1–3)')" style="flex-direction:column; padding:8px 4px; text-align:center; font-size:12px;">
-                <span>🌊 Рябь</span>
+              <button type="button" class="action-choice active" onclick="selectIntensity(this, 'Умеренно (фонит фоном)')" style="flex-direction:column; padding:8px 4px; text-align:center; font-size:12px;">
+                <span><b>Умеренно</b></span>
                 <span style="font-size:10px; opacity:0.75; font-weight:500;">фонит фоном</span>
               </button>
-              <button type="button" class="action-choice" onclick="selectIntensity(this, 'Шторм (4–7)')" style="flex-direction:column; padding:8px 4px; text-align:center; font-size:12px;">
-                <span>⚡ Шторм</span>
+              <button type="button" class="action-choice" onclick="selectIntensity(this, 'Сильно (спорю внутри)')" style="flex-direction:column; padding:8px 4px; text-align:center; font-size:12px;">
+                <span><b>Сильно</b></span>
                 <span style="font-size:10px; opacity:0.75; font-weight:500;">спорю внутри</span>
               </button>
-              <button type="button" class="action-choice" onclick="selectIntensity(this, 'Ураган (8–10)')" style="flex-direction:column; padding:8px 4px; text-align:center; font-size:12px;">
-                <span>🔥 Ураган</span>
+              <button type="button" class="action-choice" onclick="selectIntensity(this, 'Критично (накрывает ярость)')" style="flex-direction:column; padding:8px 4px; text-align:center; font-size:12px;">
+                <span><b>Критично</b></span>
                 <span style="font-size:10px; opacity:0.75; font-weight:500;">накрывает ярость</span>
               </button>
             </div>
-            <input type="hidden" id="intensityInput" value="Лёгкая рябь (1–3)">
+            <input type="hidden" id="intensityInput" value="Умеренно (фонит фоном)">
           </div>
 
           <!-- Вопрос 2: Ощущения в теле (чипы + свой вариант) -->
@@ -1790,23 +1790,23 @@ textarea:focus, input:focus {
             </label>
             <div style="display:flex; flex-direction:column; gap:6px;">
               <div class="option-chip selected" onclick="toggleBodyChip(this, 'throat')">
-                <span style="font-size:13px;">🗣 Ком в горле (невысказанные слова)</span>
+                <span style="font-size:13px;"><b>Ком в горле</b> (невысказанные слова)</span>
                 <span class="check-circle"></span>
               </div>
               <div class="option-chip selected" onclick="toggleBodyChip(this, 'chest')">
-                <span style="font-size:13px;">🫀 Плита на груди / солнечное сплетение</span>
+                <span style="font-size:13px;"><b>Плита на груди</b> / солнечное сплетение</span>
                 <span class="check-circle"></span>
               </div>
               <div class="option-chip" onclick="toggleBodyChip(this, 'jaw')">
-                <span style="font-size:13px;">😬 Сжатые челюсти и зубы</span>
+                <span style="font-size:13px;"><b>Сжатые челюсти и зубы</b></span>
                 <span class="check-circle"></span>
               </div>
               <div class="option-chip" onclick="toggleBodyChip(this, 'shoulders')">
-                <span style="font-size:13px;">💆‍♀️ Окаменевшие плечи и шея</span>
+                <span style="font-size:13px;"><b>Окаменевшие плечи и шея</b></span>
                 <span class="check-circle"></span>
               </div>
               <div class="option-chip" onclick="toggleBodyChip(this, 'stomach')">
-                <span style="font-size:13px;">🕳 Спазм или холод в животе</span>
+                <span style="font-size:13px;"><b>Спазм или холод в животе</b></span>
                 <span class="check-circle"></span>
               </div>
             </div>
@@ -1822,24 +1822,25 @@ textarea:focus, input:focus {
               3. Попутчик: «Какая мысль или обида сейчас звучит в голове громче всего?»
             </label>
             <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:8px;" id="thoughtPresetsGroup">
-              <div class="option-chip" onclick="selectThoughtPreset(this, '«Он снова промолчал и обесценил, а я опять должна всё понимать и терпеть»')">
-                <span style="font-size:12.5px; line-height:1.35;">«Он снова промолчал и обесценил, а я опять должна терпеть»</span>
+              <div class="option-chip selected" onclick="selectThoughtPreset(this, '«Он снова промолчал и обесценил, а я опять должна всё понимать и терпеть»')">
+                <span style="font-size:12.5px; line-height:1.35;"><b>«Он снова промолчал и обесценил</b>, а я опять должна терпеть»</span>
                 <span class="check-circle"></span>
               </div>
               <div class="option-chip" onclick="selectThoughtPreset(this, '«Я выкладываюсь на все 100%, а в ответ — холод и полное равнодушие»')">
-                <span style="font-size:12.5px; line-height:1.35;">«Я выкладываюсь на 100%, а в ответ — холод и равнодушие»</span>
+                <span style="font-size:12.5px; line-height:1.35;"><b>«Я выкладываюсь на 100%</b>, а в ответ — холод и равнодушие»</span>
                 <span class="check-circle"></span>
               </div>
               <div class="option-chip" onclick="selectThoughtPreset(this, '«Если я сейчас промолчу — это повторится снова, я не могу это так оставить»')">
-                <span style="font-size:12.5px; line-height:1.35;">«Если я промолчу — это повторится, я не могу это так оставить»</span>
+                <span style="font-size:12.5px; line-height:1.35;"><b>«Если я промолчу — это повторится</b>, я не могу это так оставить»</span>
                 <span class="check-circle"></span>
               </div>
             </div>
             <!-- Свой вариант мысли -->
             <div>
-              <textarea id="painInput" rows="2" style="width:100%; border-radius:12px; padding:9px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Или напишите свой вариант своими словами без цензуры..."></textarea>
+              <textarea id="customThoughtInput" rows="2" style="width:100%; border-radius:12px; padding:9px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Или напишите свой вариант своими словами без цензуры..."></textarea>
             </div>
-            <!-- Hidden field for situation compatibility -->
+            <!-- Hidden field for situation and legacy pain compatibility -->
+            <input type="hidden" id="painInput" value="">
             <input type="hidden" id="situationInput" value="">
           </div>
 
@@ -1858,8 +1859,8 @@ textarea:focus, input:focus {
           <!-- Записка от попутчика при временном перебое связи -->
           <div id="connectionErrorNotice" style="display:none; padding:16px 18px; border-radius:20px; background:linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(246,242,236,0.92) 100%); border:1.5px solid rgba(217,131,78,0.32); box-shadow:0 8px 24px rgba(18,68,83,0.06);">
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; border-bottom:1px dashed rgba(217,131,78,0.3); padding-bottom:8px;">
-              <div style="width:36px; height:36px; border-radius:50%; background:rgba(217,131,78,0.15); display:flex; align-items:center; justify-content:center; font-size:18px;">
-                ✉️
+              <div style="width:36px; height:36px; border-radius:50%; background:rgba(217,131,78,0.15); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:#A85532;">
+                NB
               </div>
               <div style="flex:1;">
                 <div style="font-size:13.5px; font-weight:800; color:var(--nb-deep);">Записка от попутчика</div>
@@ -1873,7 +1874,7 @@ textarea:focus, input:focus {
 
             <div style="display:flex; flex-direction:column; gap:8px;">
               <button type="button" onclick="goToVideo()" class="primary-btn btn-glare" style="width:100%; min-height:46px; border-radius:16px; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px;">
-                <span>🎧 Практика «Штиль после шторма» ➔</span>
+                <span>Практика «Штиль после шторма» ➔</span>
               </button>
             </div>
             <div style="font-size:11px; color:#2F7D59; font-weight:700; text-align:center; margin-top:8px;">
@@ -1881,7 +1882,7 @@ textarea:focus, input:focus {
             </div>
           </div>
 
-          <button id="submitBtn" type="button" onclick="submitToAI(event)" class="primary-btn btn-glare" style="width:100%; min-height:48px;">
+          <button id="submitBtn" type="button" onclick="submitStormCheck()" class="primary-btn btn-glare" style="width:100%; min-height:48px;">
             <span>Сформировать формулу покоя с попутчиком ➔</span>
           </button>
 
@@ -1913,7 +1914,7 @@ textarea:focus, input:focus {
         </div>
 
         <!-- RESULTS CARD -->
-        <div id="resultCard" class="glass card" style="display:none; flex-direction:column; gap:14px;">
+        <div id="scannerResultBox" class="glass card resultCard" style="display:none; flex-direction:column; gap:14px;">
           
           <!-- Companion Farewell Block in Result Card (when attempts <= 0) -->
           <div id="companionFarewellResult" style="display:none; padding:14px 16px; border-radius:16px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.26); text-align:center; flex-direction:column; gap:6px;">
@@ -1930,11 +1931,39 @@ textarea:focus, input:focus {
 
           <h3 style="font-size:18px; font-weight:800; text-align:center; margin:0;">Формула стабилизации</h3>
           
-          <div style="background:rgba(127,155,142,0.1); border-radius:14px; padding:14px; border:1px solid rgba(127,155,142,0.3);">
-            <div style="font-size:11px; color:var(--nb-accent); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; text-align:center;">🧘‍♀️ Ваша стабилизирующая формула</div>
-            <p id="resFormula" style="font-size:14px; font-weight:700; color:var(--nb-deep); text-align:center; line-height:1.5; margin:0;">
-              «Да, у меня сейчас инерция мышления. Я живой человек, меня задело. Но споря в голове, я сжигаю свои силы. Прямо сейчас мне ничего не угрожает. Я выбираю свой покой.»
-            </p>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <!-- 1. Что происходит с психикой -->
+            <div style="background:rgba(255,255,255,0.7); border-radius:14px; padding:12px 14px; border:1px solid rgba(36,49,57,0.08);">
+              <div style="font-size:11px; color:#A85532; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
+                Что происходит с психикой
+              </div>
+              <p id="formulaDiagnosis" style="font-size:13px; color:var(--nb-deep); line-height:1.5; margin:0; font-weight:600; white-space:pre-line;">
+                Прямо сейчас ваша психика застряла в цикле незавершённого действия. Мозг пытается силой мысли «доспорить» с человеком в голове, чтобы доказать свою правоту и снять физическую боль от несправедливости.
+              </p>
+            </div>
+
+            <!-- 2. Где застряло в теле -->
+            <div style="background:rgba(255,255,255,0.7); border-radius:14px; padding:12px 14px; border:1px solid rgba(36,49,57,0.08);">
+              <div style="font-size:11px; color:#A85532; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
+                Соматический зажим
+              </div>
+              <p id="formulaSomatic" style="font-size:13px; color:var(--nb-deep); line-height:1.5; margin:0; font-weight:600; white-space:pre-line;">
+                Зажимы в горле, груди и челюстях — это остановленные слова и заблокированный гнев. Тело готово к бою, хотя реального оппонента в комнате сейчас нет.
+              </p>
+            </div>
+
+            <!-- 3. Формула покоя и конкретные шаги -->
+            <div style="background:rgba(127,155,142,0.12); border-radius:14px; padding:14px; border:1px solid rgba(127,155,142,0.32);">
+              <div style="font-size:11px; color:var(--nb-accent); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; text-align:center;">
+                Формула покоя и шаги
+              </div>
+              <p id="formulaAction" style="font-size:13.5px; font-weight:700; color:var(--nb-deep); line-height:1.55; margin:0; white-space:pre-line;">
+                1. Осознайте: спор в голове в 12 часов ночи не решает проблему, он только сжигает ваши силы.
+2. Сделайте длинный выдох через рот и опустите плечи.
+3. Перестаньте искать аргументы. Наденьте наушники и включите медитацию «Штиль после шторма» (17 минут) — пусть голос снимет спазм с тела.
+              </p>
+              <p id="resFormula" style="display:none;"></p>
+            </div>
           </div>
 
           <!-- Рекомендация включить практику -->
@@ -2106,6 +2135,8 @@ textarea:focus, input:focus {
       if (el) el.classList.toggle('selected');
     }
 
+    var selectedThoughtText = '«Он снова промолчал и обесценил, а я опять должна всё понимать и терпеть»';
+
     function selectThoughtPreset(el, thoughtText) {
       safeHaptic('selection');
       var group = document.getElementById('thoughtPresetsGroup');
@@ -2114,118 +2145,135 @@ textarea:focus, input:focus {
         chips.forEach(function(c) { c.classList.remove('selected'); });
       }
       if (el) el.classList.add('selected');
+      selectedThoughtText = thoughtText;
+
+      // Очищаем кастомное поле, чтобы не срабатывала логика своего текста
+      var customThought = document.getElementById('customThoughtInput');
+      if (customThought) customThought.value = '';
+
       var painInp = document.getElementById('painInput');
-      if (painInp) {
-        painInp.value = thoughtText;
-      }
+      if (painInp) painInp.value = thoughtText;
     }
 
     function getSelectedBodySignals() {
-      var chips = document.querySelectorAll('#expressFormCard .option-chip.selected');
+      var chips = document.querySelectorAll('#scannerStepBox .option-chip.selected, #expressFormCard .option-chip.selected');
       var list = [];
       chips.forEach(function(chip) {
         var text = chip.querySelector('span') ? chip.querySelector('span').textContent.trim() : '';
         if (text) list.push(text);
       });
-      var customBody = document.getElementById('customBodyInput');
-      if (customBody && customBody.value.trim()) {
-        list.push('Своё ощущение: ' + customBody.value.trim());
-      }
       return list;
     }
 
-    var attempts = 19;
-    var ATTEMPTS_KEY = 's2_lesson3_attempts';
-    var savedAttempts = localStorage.getItem(ATTEMPTS_KEY);
-    if(savedAttempts !== null) {
-      attempts = parseInt(savedAttempts, 10);
+    // Кредиты / попытки
+    var aiCredits = 3;
+    var savedCredits = localStorage.getItem('s2_lesson3_credits');
+    if (savedCredits === null) {
+      savedCredits = localStorage.getItem('s2_lesson3_attempts');
     }
-    
-    function showSavedAdvice() {
-      safeHaptic('selection');
-      var saved = localStorage.getItem('s2_lesson3_block');
-      var data = null;
-      if (saved) {
-        try { data = JSON.parse(saved); } catch(e) {}
-      }
-      if (!data) {
-        data = {
-          formula: "«Да, у меня сейчас инерция мышления. Я живой человек, меня задело. Но споря в голове, я сжигаю свои силы. Прямо сейчас мне ничего не угрожает. Я выбираю свой покой.»"
-        };
-      }
-      if (data.formula) document.getElementById('resFormula').textContent = data.formula;
-
-      var formCard = document.getElementById('expressFormCard');
-      if (formCard) formCard.style.display = 'none';
-
-      var rc = document.getElementById('resultCard');
-      if (rc) {
-        rc.style.display = 'flex';
-        requestAnimationFrame(function() {
-          setTimeout(function() {
-            if (rc) rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 50);
-        });
-      }
+    if (savedCredits !== null) {
+      var parsed = parseInt(savedCredits, 10);
+      if (!isNaN(parsed)) aiCredits = parsed;
     }
+    var attempts = aiCredits; // alias
+    var ATTEMPTS_KEY = 's2_lesson3_credits';
 
-    function retryPractice() {
-      if (attempts <= 0) {
-        showSavedAdvice();
-        return;
-      }
-      safeHaptic('selection');
-      var resCard = document.getElementById('resultCard');
-      if (resCard) resCard.style.display = 'none';
-      
-      var formCard = document.getElementById('expressFormCard');
-      if (formCard) formCard.style.display = 'flex';
-
-      var painInp = document.getElementById('painInput');
-      if (painInp) painInp.value = '';
-
-      if (formCard) {
-        formCard.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    function updateAttemptsDisplay() {
+    function updateCreditsBadge() {
       var el = document.getElementById('attemptsCount');
-      if(el) el.textContent = attempts;
+      if (el) el.textContent = aiCredits;
 
       var elRetry = document.getElementById('retryAttemptsCount');
-      if(elRetry) elRetry.textContent = attempts;
+      if (elRetry) elRetry.textContent = aiCredits;
 
       var btnRetry = document.getElementById('btnRetryAi');
       var fwResult = document.getElementById('companionFarewellResult');
       var submitBtn = document.getElementById('submitBtn');
       var fwStep3 = document.getElementById('companionFarewellStep3');
 
-      if(attempts <= 0) {
-        if(submitBtn) submitBtn.style.display = 'none';
-        if(fwStep3) fwStep3.style.display = 'flex';
+      if (aiCredits <= 0) {
+        if (submitBtn) submitBtn.style.display = 'none';
+        if (fwStep3) fwStep3.style.display = 'flex';
 
-        if(btnRetry) btnRetry.style.display = 'none';
-        if(fwResult) fwResult.style.display = 'flex';
+        if (btnRetry) btnRetry.style.display = 'none';
+        if (fwResult) fwResult.style.display = 'flex';
       } else {
-        if(submitBtn) submitBtn.style.display = 'flex';
-        if(fwStep3) fwStep3.style.display = 'none';
+        if (submitBtn) submitBtn.style.display = 'flex';
+        if (fwStep3) fwStep3.style.display = 'none';
 
-        if(btnRetry) btnRetry.style.display = 'flex';
-        if(fwResult) fwResult.style.display = 'none';
+        if (btnRetry) btnRetry.style.display = 'flex';
+        if (fwResult) fwResult.style.display = 'none';
       }
     }
-    updateAttemptsDisplay();
+    var updateAttemptsDisplay = updateCreditsBadge;
 
-    function checkGibberish(text) {
-      if (!text || typeof text !== 'string') return true;
-      var clean = text.trim().toLowerCase();
-      if (clean.length < 5) return true;
+    function showFarewell() {
+      safeHaptic('error');
+      var submitBtn = document.getElementById('submitBtn');
+      if (submitBtn) submitBtn.style.display = 'none';
+      var fwStep3 = document.getElementById('companionFarewellStep3');
+      if (fwStep3) fwStep3.style.display = 'flex';
+      var fwResult = document.getElementById('companionFarewellResult');
+      if (fwResult) fwResult.style.display = 'flex';
+      showSavedAdvice();
+    }
+
+    var PRESET_LESSON3_RESPONSES = {
+      // Базовая формула покоя для готовых чекбоксов
+      formula: {
+        diagnosis: "Прямо сейчас ваша психика застряла в цикле незавершённого действия. Мозг пытается силой мысли «доспорить» с человеком в голове, чтобы доказать свою правоту и снять физическую боль от несправедливости.",
+        somatic: "Зажимы в горле, груди и челюстях — это остановленные слова и заблокированный гнев. Тело готово к бою, хотя реального оппонента в комнате сейчас нет.",
+        action: "1. Осознайте: спор в голове в 12 часов ночи не решает проблему, он только сжигает ваши силы.\n2. Сделайте длинный выдох через рот и опустите плечи.\n3. Перестаньте искать аргументы. Наденьте наушники и включите медитацию «Штиль после шторма» (17 минут) — пусть голос снимет спазм с тела."
+      }
+    };
+
+    function renderLesson3Preset() {
+      var data = PRESET_LESSON3_RESPONSES.formula;
       
-      // Repeated characters: "aaaa", "....."
-      if (/(.)\1{3,}/i.test(clean)) return true;
+      // Отображаем разбор в карточке
+      var elD = document.getElementById('formulaDiagnosis');
+      if (elD) elD.textContent = data.diagnosis;
+      var elS = document.getElementById('formulaSomatic');
+      if (elS) elS.textContent = data.somatic;
+      var elA = document.getElementById('formulaAction');
+      if (elA) elA.textContent = data.action;
 
-      // Common filler / non-answers / trolling / gibberish patterns
+      var resF = document.getElementById('resFormula');
+      if (resF) resF.textContent = data.action;
+
+      try {
+        localStorage.setItem('s2_lesson3_block', JSON.stringify(data));
+        localStorage.setItem('s2_lesson3_completed', 'true');
+      } catch(e) {}
+
+      // Прячем экран выбора, показываем результат
+      // ВАЖНО: aiCredits НЕ уменьшаем, попытка сохраняется!
+      var stepBox = document.getElementById('scannerStepBox') || document.getElementById('expressFormCard');
+      if (stepBox) stepBox.style.display = 'none';
+      var resultBox = document.getElementById('scannerResultBox') || document.getElementById('resultCard');
+      if (resultBox) {
+        resultBox.style.display = 'flex';
+        requestAnimationFrame(function() {
+          setTimeout(function() {
+            if (resultBox) resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 50);
+        });
+      }
+      safeHaptic('success');
+    }
+
+    function isGibberish(text) {
+      if (!text || typeof text !== 'string') return false;
+      var clean = text.trim().toLowerCase();
+      if (clean.length < 3) return true;
+      
+      // Повторяющиеся символы (aaaa, .....)
+      if (/(.){3,}/i.test(clean)) return true;
+
+      // Набор согласных без гласных
+      var consonantCluster = /[бвгджзйклмнпрстфхцчшщbcdfghjklmnpqrstvwxyz]{5,}/i.test(clean);
+      if (consonantCluster) return true;
+
+      // Паттерны бессмыслицы и филлеров
       var fillerPatterns = [
         /^(не знаю|хз|хз что|ничего|ни о чем|нет слов|просто так|тест|проверка|тестовый|asdf|qwerty|1234|бла бла|лалала|фыва)/i,
         /^(да|нет|ок|норм|понятно|ладно|хм|ну|ага|угу)$/i
@@ -2233,17 +2281,14 @@ textarea:focus, input:focus {
       for (var f = 0; f < fillerPatterns.length; f++) {
         if (fillerPatterns[f].test(clean)) return true;
       }
-      
+
       var words = clean.split(/\s+/).filter(Boolean);
-      // Repeated words like "да да да да" or "нет нет нет"
       if (words.length >= 2) {
         var uniqueWords = new Set(words);
         if (uniqueWords.size === 1) return true;
       }
-      
-      // Single long word without spaces > 20 characters
       if (words.length === 1 && clean.length > 20) return true;
-      
+
       var letters = clean.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
       if (letters.length >= 4) {
         var vowels = letters.match(/[аеёиоуыэюяaeiouy]/gi);
@@ -2256,7 +2301,7 @@ textarea:focus, input:focus {
           return true;
         }
       }
-      
+
       var mashPatterns = [/фыва/i, /йцук/i, /ячсм/i, /qwerty/i, /asdf/i, /zxcv/i];
       for (var i = 0; i < mashPatterns.length; i++) {
         if (mashPatterns[i].test(clean) && clean.length < 25) {
@@ -2265,6 +2310,7 @@ textarea:focus, input:focus {
       }
       return false;
     }
+    var checkGibberish = isGibberish;
 
     function showGibberishNotice(msg) {
       var elLoading = document.getElementById('aiLoading');
@@ -2273,7 +2319,7 @@ textarea:focus, input:focus {
       
       var notice = document.getElementById('gibberishNotice');
       var noticeText = document.getElementById('gibberishNoticeText');
-      var defaultMsg = 'Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами.';
+      var defaultMsg = 'Пожалуйста, напишите мысль понятными словами (без случайного набора букв) или выберите готовые варианты.';
       if (noticeText) noticeText.textContent = msg || defaultMsg;
       if (notice) {
         notice.style.display = 'block';
@@ -2304,129 +2350,246 @@ textarea:focus, input:focus {
       }
     }
 
-    function applyUniversalFormula() {
-      safeHaptic('success');
-      var pain = document.getElementById('painInput') ? document.getElementById('painInput').value.trim() : '';
-      var bodySignals = getSelectedBodySignals();
-      var bodyText = bodySignals.length > 0 ? bodySignals.join(', ').toLowerCase() : 'в теле';
-      
-      var universalFormula = "«Да, у меня сейчас инерция мышления. Я живой человек, меня задело: " + 
-        (pain ? "«" + pain.slice(0, 80) + "...»" : "эти слова крутятся в голове") + 
-        ", и напряжение отдаётся через " + bodyText + ". Но споря внутри себя с призраками, я сжигаю свои силы. Прямо сейчас мне физически ничего не угрожает. Я выбираю свой покой и выдыхаю чужую бурю.»";
-
-      var fallbackData = {
-        formula: universalFormula
-      };
-      
-      // Показываем формулу без списания попытки
-      renderResults(fallbackData, false);
+    function submitStormCheck() {
+      var customBody = document.getElementById('customBodyInput') ? document.getElementById('customBodyInput').value.trim() : '';
+      var customThought = document.getElementById('customThoughtInput') ? document.getElementById('customThoughtInput').value.trim() : '';
+      var hasCustom = customBody.length > 0 || customThought.length > 0;
+      // Если писал сам — проверяем на мусор
+      if (hasCustom) {
+        if ((customBody && isGibberish(customBody)) || (customThought && isGibberish(customThought))) {
+          safeHaptic('error');
+          alert('Пожалуйста, напишите мысль понятными словами (без случайного набора букв) или выберите готовые варианты.');
+          return;
+        }
+        // Списываем попытку только для своего текста
+        if (aiCredits <= 0) {
+          showFarewell();
+          return;
+        }
+        aiCredits--;
+        localStorage.setItem('s2_lesson3_credits', aiCredits);
+        localStorage.setItem('s2_lesson3_attempts', aiCredits.toString());
+        attempts = aiCredits;
+        updateCreditsBadge();
+        sendStormToAI(customBody, customThought);
+      } else {
+        // Выбрал готовые пункты — отдаем мгновенный ответ без списания
+        renderLesson3Preset();
+      }
     }
 
-    async function submitToAI(e) {
+    function submitToAI(e) {
       if (e && e.preventDefault) e.preventDefault();
       if (e && e.stopPropagation) e.stopPropagation();
+      submitStormCheck();
+    }
 
-      if(attempts <= 0) {
-        safeHaptic('error');
-        return;
-      }
-      
+    async function sendStormToAI(customBody, customThought) {
       var notice = document.getElementById('gibberishNotice');
       if (notice) notice.style.display = 'none';
       var connNotice = document.getElementById('connectionErrorNotice');
       if (connNotice) connNotice.style.display = 'none';
-      
-      var pain = document.getElementById('painInput').value.trim();
+
       var intensityEl = document.getElementById('intensityInput');
-      var intensity = intensityEl ? intensityEl.value : 'Шторм';
+      var intensity = intensityEl ? intensityEl.value : 'Сильно';
       var bodySignals = getSelectedBodySignals();
 
-      if(!pain) {
-        showGibberishNotice('Пожалуйста, выберите или напишите, какая мысль крутится в голове.');
-        return;
-      }
-
-      if(checkGibberish(pain)) {
-        showGibberishNotice();
-        return;
+      var pain = customThought || (document.getElementById('painInput') ? document.getElementById('painInput').value.trim() : '');
+      if (!pain) {
+        pain = selectedThoughtText;
       }
 
       safeHaptic('medium');
       var elLoading = document.getElementById('aiLoading');
       if (elLoading) elLoading.style.display = 'flex';
-      
+
       try {
         var payload = {
-           situation: 'Сила шторма: ' + intensity,
-           pain: pain,
-           bodySignals: bodySignals
+          situation: 'Сила шторма: ' + intensity,
+          pain: pain,
+          bodySignals: bodySignals
         };
-        
+
         var apiFunc = (typeof apiPost === 'function') ? apiPost : apiPostLocal;
         var data = await apiFunc('/api/s2-lesson3-strategy', payload);
 
         if (data && data.invalid) {
-           showGibberishNotice(data.message);
-           return;
+          showGibberishNotice(data.message);
+          aiCredits++;
+          localStorage.setItem('s2_lesson3_credits', aiCredits);
+          localStorage.setItem('s2_lesson3_attempts', aiCredits.toString());
+          attempts = aiCredits;
+          updateCreditsBadge();
+          return;
         }
-        
-        if(!data || !data.formula) {
-           throw new Error("Invalid API response");
+
+        if (!data || (!data.formula && !data.action)) {
+          throw new Error("Invalid API response");
         }
-        renderResults(data, true);
-        
-      } catch(err) {
+
+        var resultData = {
+          diagnosis: data.diagnosis || ("Прямо сейчас ваша психика застряла в цикле незавершённого действия. Мозг пытается силой мысли «доспорить» с человеком в голове, чтобы доказать свою правоту и снять физическую боль от несправедливости."),
+          somatic: data.somatic || ("Зажимы в теле (" + (bodySignals.join(', ') || 'зажимы') + ") — это остановленные слова и заблокированный гнев. Тело готово к бою, хотя реального оппонента в комнате сейчас нет."),
+          action: data.action || data.formula || ("1. Осознайте: спор в голове в 12 часов ночи не решает проблему, он только сжигает ваши силы.\n2. Сделайте длинный выдох через рот и опустите плечи.\n3. Перестаньте искать аргументы. Наденьте наушники и включите медитацию «Штиль после шторма» (17 минут) — пусть голос снимет спазм с тела.")
+        };
+
+        renderResults(resultData, false);
+
+      } catch (err) {
         console.error(err);
         showConnectionErrorNotice();
       }
     }
-    
-    function renderResults(data, deductAttempt = true) {
-        var elLoading = document.getElementById('aiLoading');
-        if (elLoading) elLoading.style.display = 'none';
-        
-        safeHaptic('success');
-        
-        if (deductAttempt) {
-          attempts--;
-          localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
-          updateAttemptsDisplay();
-        }
-        
+
+    function renderResults(data, deductAttempt) {
+      var elLoading = document.getElementById('aiLoading');
+      if (elLoading) elLoading.style.display = 'none';
+
+      safeHaptic('success');
+
+      if (deductAttempt) {
+        aiCredits--;
+        localStorage.setItem('s2_lesson3_credits', aiCredits);
+        localStorage.setItem('s2_lesson3_attempts', aiCredits.toString());
+        attempts = aiCredits;
+        updateCreditsBadge();
+      }
+
+      try {
         localStorage.setItem('s2_lesson3_block', JSON.stringify(data));
         localStorage.setItem('s2_lesson3_completed', 'true');
-        
-        if (data.formula) document.getElementById('resFormula').textContent = data.formula;
-        
-        var formCard = document.getElementById('expressFormCard');
-        if (formCard) formCard.style.display = 'none';
+      } catch (e) {}
 
-        var resCard = document.getElementById('resultCard');
-        if (resCard) {
-          resCard.style.display = 'flex';
-          requestAnimationFrame(function() {
-            setTimeout(function() {
-              if (resCard) {
-                resCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }, 60);
-          });
-        }
+      if (data.diagnosis) {
+        var elD = document.getElementById('formulaDiagnosis');
+        if (elD) elD.textContent = data.diagnosis;
+      }
+      if (data.somatic) {
+        var elS = document.getElementById('formulaSomatic');
+        if (elS) elS.textContent = data.somatic;
+      }
+      if (data.action) {
+        var elA = document.getElementById('formulaAction');
+        if (elA) elA.textContent = data.action;
+      }
+      var resF = document.getElementById('resFormula');
+      if (resF) resF.textContent = data.action || data.formula || '';
+
+      var formCard = document.getElementById('scannerStepBox') || document.getElementById('expressFormCard');
+      if (formCard) formCard.style.display = 'none';
+
+      var resCard = document.getElementById('scannerResultBox') || document.getElementById('resultCard');
+      if (resCard) {
+        resCard.style.display = 'flex';
+        requestAnimationFrame(function() {
+          setTimeout(function() {
+            if (resCard) resCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 60);
+        });
+      }
+    }
+
+    function showSavedAdvice() {
+      safeHaptic('selection');
+      var saved = localStorage.getItem('s2_lesson3_block');
+      var data = null;
+      if (saved) {
+        try { data = JSON.parse(saved); } catch(e) {}
+      }
+      if (!data) {
+        data = PRESET_LESSON3_RESPONSES.formula;
+      }
+      if (data.diagnosis && document.getElementById('formulaDiagnosis')) {
+        document.getElementById('formulaDiagnosis').textContent = data.diagnosis;
+      }
+      if (data.somatic && document.getElementById('formulaSomatic')) {
+        document.getElementById('formulaSomatic').textContent = data.somatic;
+      }
+      if (data.action && document.getElementById('formulaAction')) {
+        document.getElementById('formulaAction').textContent = data.action;
+      }
+      if (data.formula && document.getElementById('resFormula')) {
+        document.getElementById('resFormula').textContent = data.formula;
+      }
+
+      var formCard = document.getElementById('scannerStepBox') || document.getElementById('expressFormCard');
+      if (formCard) formCard.style.display = 'none';
+
+      var rc = document.getElementById('scannerResultBox') || document.getElementById('resultCard');
+      if (rc) {
+        rc.style.display = 'flex';
+        requestAnimationFrame(function() {
+          setTimeout(function() {
+            if (rc) rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 50);
+        });
+      }
+    }
+
+    function retryPractice() {
+      safeHaptic('selection');
+      var resCard = document.getElementById('scannerResultBox') || document.getElementById('resultCard');
+      if (resCard) resCard.style.display = 'none';
+      
+      var formCard = document.getElementById('scannerStepBox') || document.getElementById('expressFormCard');
+      if (formCard) formCard.style.display = 'flex';
+
+      var customBody = document.getElementById('customBodyInput');
+      if (customBody) customBody.value = '';
+
+      var customThought = document.getElementById('customThoughtInput');
+      if (customThought) customThought.value = '';
+
+      var painInp = document.getElementById('painInput');
+      if (painInp) painInp.value = '';
+
+      if (formCard) {
+        formCard.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function applyUniversalFormula() {
+      renderLesson3Preset();
     }
 
     window.addEventListener('DOMContentLoaded', function() {
+      updateCreditsBadge();
       var saved = localStorage.getItem('s2_lesson3_block');
-      if(saved) {
+      if (saved) {
         try {
           var data = JSON.parse(saved);
-          if (data.formula) document.getElementById('resFormula').textContent = data.formula;
-        }catch(e){}
+          if (data.diagnosis && document.getElementById('formulaDiagnosis')) {
+            document.getElementById('formulaDiagnosis').textContent = data.diagnosis;
+          }
+          if (data.somatic && document.getElementById('formulaSomatic')) {
+            document.getElementById('formulaSomatic').textContent = data.somatic;
+          }
+          if (data.action && document.getElementById('formulaAction')) {
+            document.getElementById('formulaAction').textContent = data.action;
+          }
+          if (data.formula && document.getElementById('resFormula')) {
+            document.getElementById('resFormula').textContent = data.formula;
+          }
+        } catch(e) {}
       }
-      if (attempts <= 0) {
-        var formCard = document.getElementById('expressFormCard');
-        if(formCard) formCard.style.display = 'none';
-        var rc = document.getElementById('resultCard');
-        if(rc) rc.style.display = 'flex';
+      if (aiCredits <= 0) {
+        var formCard = document.getElementById('scannerStepBox') || document.getElementById('expressFormCard');
+        if (formCard) formCard.style.display = 'none';
+        var rc = document.getElementById('scannerResultBox') || document.getElementById('resultCard');
+        if (rc) rc.style.display = 'flex';
+      }
+
+      var customThought = document.getElementById('customThoughtInput');
+      if (customThought) {
+        customThought.addEventListener('input', function() {
+          if (this.value.trim().length > 0) {
+            var group = document.getElementById('thoughtPresetsGroup');
+            if (group) {
+              var chips = group.querySelectorAll('.option-chip');
+              chips.forEach(function(c) { c.classList.remove('selected'); });
+            }
+          }
+        });
       }
 
       var audioEl = document.getElementById('meditationAudio');
