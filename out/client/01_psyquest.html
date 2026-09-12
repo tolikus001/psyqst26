@@ -298,94 +298,237 @@
       text-align: center;
     }
 
-    /* Опции ответов */
-    .options-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .option-item {
+    /* ДИНАМИЧЕСКИЙ СЧЕТЧИК ЭНЕРГИИ (БАТАРЕЙКА) */
+    .energy-bar-wrap {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 14px 18px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1.5px solid rgba(14, 31, 46, 0.08);
-      color: var(--nb-deep);
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
-      user-select: none;
+      gap: 10px;
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(14, 31, 46, 0.04);
+      margin-bottom: 2px;
+    }
+
+    .energy-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--nb-sea);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .energy-track {
+      flex: 1;
+      height: 7px;
+      background: rgba(14, 31, 46, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .energy-fill {
+      height: 100%;
       width: 100%;
+      background: linear-gradient(90deg, #2F7D59 0%, #C29E65 60%, #B42318 100%);
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .option-item:hover {
-      border-color: rgba(181, 102, 62, 0.35);
+    .energy-val {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--nb-deep);
+      min-width: 32px;
+      text-align: right;
+    }
+
+    /* КАРТОЧНЫЙ СВАЙП-ТРЕК (TINDER STYLE) */
+    .card-swipe-container {
+      position: relative;
+      width: 100%;
+      min-height: 290px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      margin: 4px 0 8px;
+    }
+
+    .swipe-card {
+      width: 100%;
       background: #FFFFFF;
-      box-shadow: 0 4px 14px rgba(14, 31, 46, 0.06);
-    }
-
-    .option-item:active {
-      transform: scale(0.985);
-    }
-
-    /* Эффект выбора (Active state) — мягкая терракота с белым текстом */
-    .option-item.selected {
-      background: linear-gradient(105deg, #B5663E 0%, #BD7249 50%, #CB8760 100%) !important;
-      border-color: #A95531 !important;
-      box-shadow: 0 10px 24px rgba(181, 102, 62, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
-      transform: scale(0.988);
-    }
-
-    .option-content {
+      border: 1.5px solid rgba(14, 31, 46, 0.09);
+      border-radius: 22px;
+      padding: 24px 20px;
+      box-shadow: 0 16px 36px rgba(45, 62, 54, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02);
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      flex: 1;
-      min-width: 0;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 260px;
+      touch-action: pan-y;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease, border-color 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    .option-title {
+    .swipe-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #C29E65 0%, #B5663E 100%);
+    }
+
+    .swipe-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: rgba(14, 31, 46, 0.04);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--nb-sea);
+      width: fit-content;
+    }
+
+    .swipe-card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--nb-deep);
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+      margin: 0;
+    }
+
+    .swipe-card-desc {
+      font-size: 14px;
+      line-height: 1.55;
+      color: #3B4B54;
+      font-weight: 500;
+      margin: 0;
+      flex: 1;
+    }
+
+    /* Блок моментального инсайта при попадании */
+    .card-micro-insight {
+      display: none;
+      align-items: flex-start;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(250, 246, 238, 0.96) 0%, rgba(243, 233, 218, 0.96) 100%);
+      border: 1px solid rgba(194, 158, 101, 0.4);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: #573E16;
+      animation: fadeIn 0.2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* КНОПКИ ДЕЙСТВИЙ СВАЙПА */
+    .swipe-actions {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 12px;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .swipe-btn-pass {
+      min-height: 52px;
+      padding: 13px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1.5px solid rgba(14, 31, 46, 0.12);
+      color: #55656F;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+
+    .swipe-btn-pass:active {
+      transform: scale(0.97);
+      background: #E8ECEE;
+    }
+
+    .swipe-btn-hit {
+      min-height: 52px;
+      padding: 13px 18px;
+      border-radius: 18px;
+      background: linear-gradient(105deg, #B5663E 0%, #BD7249 50%, #CB8760 100%);
+      border: 1px solid #A95531;
+      border-top-color: #E3A578;
+      color: #FFFFFF;
       font-size: 14.5px;
       font-weight: 800;
-      line-height: 1.3;
-      color: var(--nb-deep);
-      transition: color 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(181, 102, 62, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      text-shadow: 0 1px 0 rgba(91, 40, 18, 0.2);
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      position: relative;
+      overflow: hidden;
     }
 
-    .option-desc {
-      font-size: 12.5px;
-      line-height: 1.4;
-      color: #68767C;
-      font-weight: 500;
-      transition: color 0.15s ease;
+    .swipe-btn-hit::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.32) 50%, rgba(255, 255, 255, 0) 100%);
+      transform: rotate(25deg);
+      pointer-events: none;
+      animation: btnShimmer 3.6s infinite ease-in-out;
     }
 
-    .option-arrow {
-      font-size: 17px;
-      font-weight: 700;
-      color: rgba(36, 49, 57, 0.3);
-      flex-shrink: 0;
-      transition: all 0.15s ease;
-      margin-left: 6px;
+    .swipe-btn-hit:active {
+      transform: scale(0.97);
     }
 
-    .option-item.selected .option-title {
-      color: #FFFFFF !important;
+    /* Анимации свайпов */
+    .swipe-card.swiping-left {
+      transform: translateX(-120%) rotate(-12deg) !important;
+      opacity: 0 !important;
     }
 
-    .option-item.selected .option-desc {
-      color: rgba(255, 255, 255, 0.9) !important;
+    .swipe-card.swiping-right {
+      transform: translateX(120%) rotate(12deg) !important;
+      opacity: 0 !important;
     }
 
-    .option-item.selected .option-arrow {
-      color: #FFFFFF !important;
-      transform: translateX(3px);
+    .swipe-card.hit-active {
+      border-color: #B5663E !important;
+      box-shadow: 0 16px 36px rgba(181, 102, 62, 0.24) !important;
     }
 
     /* Блок сохранённого закона психики на финальном экране */
@@ -607,12 +750,18 @@
         <div class="strategy-badge">ПСИквест</div>
       </header>
 
-      <!-- Индикатор прогресса -->
+      <!-- Индикатор прогресса и батарейка энергии -->
       <div id="progressWrap" style="display:none;">
-        <div id="stepCounter" class="step-counter">Вопрос 1 из 5</div>
-        <div class="progress-bar-wrap">
-          <div id="progressFill" class="progress-bar-fill"></div>
+        <div class="energy-bar-wrap">
+          <div class="energy-label">
+            <span>⚡ Ресурс энергии:</span>
+          </div>
+          <div class="energy-track">
+            <div id="energyFill" class="energy-fill"></div>
+          </div>
+          <div id="energyVal" class="energy-val">100%</div>
         </div>
+        <div id="stepCounter" class="step-counter" style="margin-top:4px;">Ситуация 1 из 7</div>
       </div>
 
       <!-- ЭКРАН 0: ОБЛОЖКА ДИАГНОСТИКИ -->
@@ -628,13 +777,37 @@
         </button>
       </section>
 
-      <!-- ЭКРАН С ВОПРОСОМ -->
-      <section id="screenQuestion" class="glass card" style="display:none;">
-        <div class="eyebrow" id="questionCategory">Текущая ситуация</div>
-        <h2 id="questionTitle" class="card-title">Что прямо сейчас точнее всего описывает ситуацию в ваших отношениях?</h2>
+      <!-- ЭКРАН СИТУАЦИИ (КАРТОЧНЫЙ СВАЙП) -->
+      <section id="screenQuestion" class="glass card" style="display:none; padding:18px 16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+          <div class="eyebrow" id="cardCategory" style="margin:0 !important;">Ситуация</div>
+          <span id="swipeHint" class="subtle" style="font-size:11px;">Свайп или кнопки 👇</span>
+        </div>
 
-        <div id="optionsList" class="options-list">
-          <!-- Опции генерируются через JS -->
+        <div class="card-swipe-container">
+          <div id="activeSwipeCard" class="swipe-card">
+            <div>
+              <div id="cardBadge" class="swipe-card-badge">🎯 Триггер истощения</div>
+              <h2 id="cardTitle" class="swipe-card-title" style="margin-top:10px;">Радар чужого настроения</h2>
+            </div>
+            <p id="cardDesc" class="swipe-card-desc">
+              Партнёр приходит хмурый или отвечает односложно — и внутри мгновенно сжимается пружина: «Что случилось? В чём моя вина?». Настроение падает в ноль.
+            </p>
+            <div id="cardMicroInsight" class="card-micro-insight">
+              <span>💡</span>
+              <span id="cardInsightText"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Кнопки управления -->
+        <div class="swipe-actions">
+          <button type="button" class="swipe-btn-pass" onclick="handleCardChoice(false);">
+            <span>Мимо</span>
+          </button>
+          <button type="button" class="swipe-btn-hit" onclick="handleCardChoice(true);">
+            <span>🎯 В точку, моё</span>
+          </button>
         </div>
       </section>
 
@@ -728,273 +901,227 @@
       } catch(e) {}
     }
 
-    // 5 вопросов по 5 вариантов ответов (двухуровневая структура: title + desc)
-    const questions = [
+    // 7 ВЫЧИЩЕННЫХ КАРТОЧЕК СИТУАЦИЙ (TINDER SWIPE МЕХАНИКА)
+    const situationCards = [
       {
-        category: "Текущая ситуация",
-        title: "Что прямо сейчас точнее всего описывает ситуацию в ваших отношениях?",
-        options: [
-          {
-            title: "Вместе, но растворяюсь",
-            desc: "Жду сообщений, гашу свои желания, боюсь сделать лишний шаг.",
-            route: "emotions",
-            insight: "Когда границы размыты, фоновая тревога становится постоянной. Первый шаг — вернуть эмоциональный суверенитет."
-          },
-          {
-            title: "В поиске или на свиданиях",
-            desc: "Тянет к эмоционально холодным людям, в финале — пустота.",
-            route: "partner",
-            insight: "Паттерн выбора недоступных: психика путает эмоциональные качели с настоящей любовью."
-          },
-          {
-            title: "Живём как соседи",
-            desc: "Длительный союз, быт, скрытые обиды и ноль тепла.",
-            route: "family",
-            insight: "Цикл отчуждения. Защитная стена растёт из накопленных и невысказанных обид."
-          },
-          {
-            title: "Острый шторм и кризис",
-            desc: "Измена, внезапный разрыв, почва ушла из-под ног.",
-            route: "crisis",
-            insight: "Острая травма привязанности. Тело реагирует так же, как на физическую угрозу жизни."
-          },
-          {
-            title: "Усталость подстраиваться",
-            desc: "Заслуживаю любовь и признание, потерян контакт с собой.",
-            route: "emotions",
-            insight: "Синдром «хорошего человека»: цена заслуживания чужого одобрения — потеря собственного «Я»."
-          }
-        ]
+        badge: "🎯 Ситуация 1",
+        title: "Радар чужого настроения",
+        desc: "Партнёр приходит хмурый или отвечает односложно — и внутри мгновенно сжимается пружина: «Что случилось? В чём моя вина?». Настроение падает в ноль.",
+        insight: "Режим радара сжигает колоссальное количество энергии: кнопка от вашего покоя отдана в чужие руки.",
+        route: "emotions",
+        drain: 14
       },
       {
-        category: "Автоматическая реакция",
-        title: "Когда партнёр замыкается, молчит или отдаляется — что вы делаете в первую очередь?",
-        options: [
-          {
-            title: "Суечусь и спасаю",
-            desc: "Стараюсь вдвое больше, угождаю, лишь бы вернуть расположение.",
-            route: "emotions",
-            insight: "Реакция «спасать»: попытка успокоить собственную тревогу через суету и гиперопеку."
-          },
-          {
-            title: "Замираю от тревоги",
-            desc: "Проверяю телефон каждые 5 минут и сутками кручу споры в голове.",
-            route: "emotions",
-            insight: "Мысленная жвачка — это иллюзия контроля. Мозг тратит гигантские силы на бесконечный спор с фантомом."
-          },
-          {
-            title: "Терплю, потом взрываюсь",
-            desc: "Коплю в себе до предела, а затем всё выливается наружу с криком.",
-            route: "family",
-            insight: "Взрыв — это крик бессилия. Психика больше не может удерживать накопленный груз."
-          },
-          {
-            title: "Ухожу в глухую оборону",
-            desc: "Включаю холодное безразличие, хотя внутри всё сжимается от боли.",
-            route: "family",
-            insight: "Маска «мне всё равно» — броня от боли, которая постепенно убивает живой контакт."
-          },
-          {
-            title: "Паника и почва из-под ног",
-            desc: "Кажется, что прямо сейчас всё рухнет и останется только пустота.",
-            route: "crisis",
-            insight: "Страх покинутости. В такие моменты критически важно вернуть контакт с опорой под ногами."
-          }
-        ]
+        badge: "🎯 Ситуация 2",
+        title: "Бесконечный диалог в голове",
+        desc: "Разговор давно закончен, в комнате тишина, а в голове до глубокой ночи продолжается спор: как надо было ответить и что доказать.",
+        insight: "Утечка сил в бесконечный внутренний спор запускает стрессовую реакцию тела снова и снова.",
+        route: "emotions",
+        drain: 15
       },
       {
-        category: "Телесный срез",
-        title: "Где в теле физически отзывается это напряжение при ссорах и недопонимании?",
-        options: [
-          {
-            title: "Ком в горле и челюсти",
-            desc: "Трудно высказать правду, слова буквально застревают внутри.",
-            route: "family",
-            insight: "Блок в горле и челюстях — запрет на выражение гнева и своей правды."
-          },
-          {
-            title: "Спазм и тяжесть в груди",
-            desc: "Фоновый страх потери, сдавленное дыхание и частый пульс.",
-            route: "emotions",
-            insight: "Соматический спазм в груди блокирует нормальное дыхание и держит пульс высоким."
-          },
-          {
-            title: "Каменные плечи и шея",
-            desc: "Ощущение, что весь груз отношений висит исключительно на мне.",
-            route: "emotions",
-            insight: "Плечевой панцирь формируется, когда человек годами «везёт всё на себе»."
-          },
-          {
-            title: "Холод и пустота в животе",
-            desc: "Чувство базовой беззащитности, одиночества и тревоги.",
-            route: "partner",
-            insight: "Живот — зона базовой безопасности. Холод сигнализирует о потере фундаментальной опоры."
-          },
-          {
-            title: "Дрожь и соматический шок",
-            desc: "В стрессе подкашиваются ноги, накрывает озноб или оцепенение.",
-            route: "crisis",
-            insight: "Адреналиновый шок. Телу требуется не анализ, а физическое заземление."
-          }
-        ]
+        badge: "🎯 Ситуация 3",
+        title: "Ожидание бури",
+        desc: "Когда в отношениях затишье и покой, расслабиться всё равно не удаётся — внутри фоновое напряжение: «Слишком всё хорошо, сейчас что-то случится».",
+        insight: "Привычка жить в стрессе: психика воспринимает спокойствие как опасную паузу перед ударом.",
+        route: "crisis",
+        drain: 14
       },
       {
-        category: "Утечка энергии",
-        title: "На что конкретно уходит львиная доля ваших душевных и физических сил?",
-        options: [
-          {
-            title: "На «режим радара»",
-            desc: "Непрерывно сканирую тон, шаги и взгляд, чтобы не нарваться на холод.",
-            route: "emotions",
-            insight: "«Режим радара» сжигает до 70% суточной глюкозы мозга. Вы устаёте сильнее, чем на тяжёлой работе."
-          },
-          {
-            title: "На внутренний суд",
-            desc: "Бесконечно прокручиваю диалоги, ищу аргументы и оправдания.",
-            route: "emotions",
-            insight: "Диалоги в голове не решают конфликт, а лишь снова и снова запускают выброс кортизола."
-          },
-          {
-            title: "На попытки быть идеалом",
-            desc: "Сливаю силы на чужие ожидания, забывая о своих желаниях.",
-            route: "partner",
-            insight: "Перфекционизм в отношениях — самая энергозатратная попытка заслужить любовь."
-          },
-          {
-            title: "На сдерживание обид",
-            desc: "Коплю годами внутри, чтобы не разрушить хрупкую иллюзию мира.",
-            route: "family",
-            insight: "Сдерживание эмоций требует колоссальной мышечной работы. Отсюда утренняя разбитость."
-          },
-          {
-            title: "На борьбу с бессилием",
-            desc: "Все ресурсы уходят на то, чтобы просто держаться на плаву в шторме.",
-            route: "crisis",
-            insight: "В кризисе ресурсы истощаются за дни. Без экстренной опоры начинается выгорание."
-          }
-        ]
+        badge: "🎯 Ситуация 4",
+        title: "Терпение до взрыва",
+        desc: "Сначала долго копите обиды и сглаживаете углы, чтобы «не обострять», а потом накрывает ярость из-за немытой кружки или пустяка.",
+        insight: "Взрыв — это крик бессилия перегруженной нервной системы, которая долго удерживала сжатую пружину.",
+        route: "family",
+        drain: 15
       },
       {
-        category: "Точка выбора",
-        title: "Что сейчас для вас стало бы главным и самым ценным облегчением?",
-        options: [
-          {
-            title: "Вернуть покой и себя",
-            desc: "Перестать замирать у телефона и растворяться в чужих настроениях.",
-            route: "emotions",
-            insight: "Это курс «Я остаюсь собой»: возврат эмоциональной независимости и тишины в голове."
-          },
-          {
-            title: "Свидания без боли",
-            desc: "Видеть скрытые сигналы, отсекать холодных и создать здоровый союз.",
-            route: "partner",
-            insight: "Это курс «Я выбираю»: снятие иллюзий, фильтр надёжного партнёра и свидания без боли."
-          },
-          {
-            title: "Вернуть тепло в семью",
-            desc: "Выйти из бесконечного круга бытовых ссор к честному диалогу.",
-            route: "family",
-            insight: "Это программа «Мы вместе»: перезагрузка контакта и выход из бытового отчуждения."
-          },
-          {
-            title: "Остановить шторм",
-            desc: "Не наломать дров на эмоциях, защитить себя и вернуть почву под ногами.",
-            route: "crisis",
-            insight: "Это антикризисный протокол «Точка опоры»: сохранение достоинства и ясности в шторме."
-          },
-          {
-            title: "Внутренний стержень",
-            desc: "Обрести фундаментальную уверенность: «Я у себя есть».",
-            route: "emotions",
-            insight: "Это фундаментальная опора: «Я у себя есть»."
-          }
-        ]
+        badge: "🎯 Ситуация 5",
+        title: "Груз на одних плечах",
+        desc: "Кажется, что если перестать напоминать, организовывать и всё контролировать — контакт просто рассыплется и всё рухнет.",
+        insight: "Гиперопека под маской заботы: попытка спасти контакт через тотальный контроль ситуации.",
+        route: "family",
+        drain: 14
+      },
+      {
+        badge: "🎯 Ситуация 6",
+        title: "Телесный спазм",
+        desc: "При намёке на холод или ссору физически перехватывает дыхание, застревает ком в горле или тяжело давит в груди.",
+        insight: "Соматический спазм: тело включает глубинную защиту при угрозе потери эмоционального контакта.",
+        route: "crisis",
+        drain: 14
+      },
+      {
+        badge: "🎯 Ситуация 7",
+        title: "Страх стать обузой",
+        desc: "Проще сделать вид, что «всё в порядке», спрятать слабость и справиться в одиночку, чем прямо попросить о поддержке.",
+        insight: "Ложная независимость: запрет на уязвимость отдаляет близких и оставляет вас в глухом одиночестве.",
+        route: "emotions",
+        drain: 14
       }
     ];
 
-    let currentStep = 0;
+    let currentCardIndex = 0;
+    let energyLevel = 100;
     const scores = { emotions: 0, partner: 0, family: 0, crisis: 0 };
     let finalRoute = "emotions";
     let userSelections = [];
     let savedInsight = "";
+    let isTransitioning = false;
 
     function startQuiz() {
       safeHaptic("light");
       document.getElementById("screenIntro").style.display = "none";
       document.getElementById("progressWrap").style.display = "block";
-      currentStep = 0;
+      currentCardIndex = 0;
+      energyLevel = 100;
+      scores.emotions = 0;
+      scores.partner = 0;
+      scores.family = 0;
+      scores.crisis = 0;
       userSelections = [];
       savedInsight = "";
-      renderQuestion();
+      updateEnergyUI();
+      renderCard();
+      initSwipeTouch();
     }
 
-    function renderQuestion() {
-      const q = questions[currentStep];
-      document.getElementById("stepCounter").textContent = "Вопрос " + (currentStep + 1) + " из " + questions.length;
-      const pct = Math.round(((currentStep) / questions.length) * 100);
-      document.getElementById("progressFill").style.width = pct + "%";
+    function updateEnergyUI() {
+      const fillEl = document.getElementById("energyFill");
+      const valEl = document.getElementById("energyVal");
+      if (fillEl) fillEl.style.width = Math.max(0, energyLevel) + "%";
+      if (valEl) valEl.textContent = Math.max(0, energyLevel) + "%";
+    }
 
-      document.getElementById("questionCategory").textContent = q.category;
-      document.getElementById("questionTitle").textContent = q.title;
+    function renderCard() {
+      if (currentCardIndex >= situationCards.length) {
+        finishQuiz();
+        return;
+      }
 
-      const list = document.getElementById("optionsList");
-      list.innerHTML = "";
+      const card = situationCards[currentCardIndex];
+      document.getElementById("stepCounter").textContent = "Ситуация " + (currentCardIndex + 1) + " из " + situationCards.length;
+      document.getElementById("cardBadge").textContent = card.badge;
+      document.getElementById("cardTitle").textContent = card.title;
+      document.getElementById("cardDesc").textContent = card.desc;
 
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "option-item";
-        btn.innerHTML = `
-          <div class="option-content">
-            <span class="option-title">${opt.title}</span>
-            <span class="option-desc">${opt.desc}</span>
-          </div>
-          <span class="option-arrow">→</span>
-        `;
-        btn.onclick = () => selectAnswer(idx);
-        list.appendChild(btn);
-      });
+      const insightEl = document.getElementById("cardMicroInsight");
+      if (insightEl) insightEl.style.display = "none";
+
+      const cardEl = document.getElementById("activeSwipeCard");
+      if (cardEl) {
+        cardEl.className = "swipe-card";
+        cardEl.style.transform = "";
+        cardEl.style.opacity = "1";
+      }
 
       document.getElementById("screenQuestion").style.display = "flex";
+      isTransitioning = false;
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function selectAnswer(optIdx) {
-      safeHaptic("light");
-      const q = questions[currentStep];
-      const opt = q.options[optIdx];
+    function handleCardChoice(isHit) {
+      if (isTransitioning) return;
+      isTransitioning = true;
 
-      userSelections.push({
-        step: currentStep,
-        question: q.title,
-        answer: opt.title + " — " + opt.desc,
-        route: opt.route
-      });
-      if (opt.insight) {
-        savedInsight = opt.insight;
-      }
+      const card = situationCards[currentCardIndex];
+      const cardEl = document.getElementById("activeSwipeCard");
 
-      const items = document.querySelectorAll(".option-item");
-      items.forEach((it, i) => {
-        if (i === optIdx) {
-          it.classList.add("selected");
-        } else {
-          it.style.opacity = "0.45";
+      if (isHit) {
+        safeHaptic("light");
+        energyLevel = Math.max(8, energyLevel - card.drain);
+        updateEnergyUI();
+        scores[card.route] = (scores[card.route] || 0) + 2;
+        savedInsight = card.insight;
+
+        userSelections.push({
+          step: currentCardIndex + 1,
+          situation: card.title,
+          choice: "В точку, моё",
+          route: card.route
+        });
+
+        // Мгновенная подсветка попадания
+        cardEl.classList.add("hit-active");
+        const insightEl = document.getElementById("cardMicroInsight");
+        const insightTextEl = document.getElementById("cardInsightText");
+        if (insightEl && insightTextEl) {
+          insightTextEl.textContent = card.insight;
+          insightEl.style.display = "flex";
         }
-      });
 
-      if (opt.route) {
-        scores[opt.route] = (scores[opt.route] || 0) + (currentStep >= 3 ? 2 : 1);
+        setTimeout(() => {
+          cardEl.classList.add("swiping-right");
+          setTimeout(() => {
+            currentCardIndex++;
+            renderCard();
+          }, 240);
+        }, 380);
+
+      } else {
+        safeHaptic();
+        userSelections.push({
+          step: currentCardIndex + 1,
+          situation: card.title,
+          choice: "Мимо",
+          route: card.route
+        });
+
+        cardEl.classList.add("swiping-left");
+        setTimeout(() => {
+          currentCardIndex++;
+          renderCard();
+        }, 220);
       }
+    }
 
-      setTimeout(() => {
-        currentStep++;
-        if (currentStep < questions.length) {
-          renderQuestion();
+    // Поддержка естественных мобильных тач-свайпов
+    function initSwipeTouch() {
+      const cardEl = document.getElementById("activeSwipeCard");
+      if (!cardEl || cardEl._touchInit) return;
+      cardEl._touchInit = true;
+
+      let startX = 0;
+      let startY = 0;
+      let currentX = 0;
+      let isDragging = false;
+
+      cardEl.addEventListener("touchstart", (e) => {
+        if (isTransitioning) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        currentX = startX;
+        isDragging = true;
+        cardEl.style.transition = "none";
+      }, { passive: true });
+
+      cardEl.addEventListener("touchmove", (e) => {
+        if (!isDragging || isTransitioning) return;
+        currentX = e.touches[0].clientX;
+        const diffX = currentX - startX;
+        const diffY = e.touches[0].clientY - startY;
+
+        // Если скроллит вертикально — не блокируем
+        if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffX) < 15) return;
+
+        const rotate = (diffX / 20);
+        cardEl.style.transform = `translateX(${diffX}px) rotate(${rotate}deg)`;
+      }, { passive: true });
+
+      cardEl.addEventListener("touchend", () => {
+        if (!isDragging || isTransitioning) return;
+        isDragging = false;
+        cardEl.style.transition = "transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease";
+
+        const diffX = currentX - startX;
+        if (diffX > 75) {
+          handleCardChoice(true); // Свайп вправо = В точку
+        } else if (diffX < -75) {
+          handleCardChoice(false); // Свайп влево = Мимо
         } else {
-          finishQuiz();
+          cardEl.style.transform = "";
         }
-      }, 200);
+      }, { passive: true });
     }
 
     function finishQuiz() {
