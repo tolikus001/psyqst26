@@ -1692,7 +1692,7 @@ textarea:focus, input:focus {
         <!-- Insight & Actions Card (Immediately visible) -->
         <section id="insightSection" class="glass card text-center">
           <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-            💡 Главный вывод
+            Главный вывод
           </div>
           <h3 style="font-size:16px; font-weight:800; margin-bottom:8px; text-align:center;">Что важно забрать из урока</h3>
           <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin-bottom:16px; text-align:center;">
@@ -1732,7 +1732,7 @@ textarea:focus, input:focus {
         <div class="glass card text-center" style="padding: 16px 18px;">
           <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
             <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:#A85532; border-color:rgba(217, 131, 78, 0.25);">
-              ☀️ Интеллектуальный попутчик
+              Интеллектуальный попутчик
             </div>
             <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep); padding:2px 10px; border-radius:999px;">
               Осталось попыток:&nbsp;<span id="attemptsCount" style="color:#A85532; font-weight:900;">3</span>
@@ -1843,8 +1843,29 @@ textarea:focus, input:focus {
         <!-- STEP 3 -->
         <div id="step3" class="glass card" style="display:none; flex-direction:column; gap:12px; position:relative;">
           <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 3. Какие мысли в голове?</h3>
-          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Что вы сразу подумали в этот момент? Какой худший сценарий накрутился в голове? Чего испугались больше всего?</p>
-          <textarea id="thrillerInput" rows="4" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Например: он отдалился, я ему не нужна, мы точно расстанемся, он что-то скрывает..."></textarea>
+          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Выберите типичный сценарий мыслей или опишите свои:</p>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <!-- Вариант 1 -->
+            <button type="button" onclick="selectPresetThriller(this, 1, 'Он отдалился, я ему не нужна, отношения рушатся и я останусь одна')" class="thriller-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer; transition:all 0.2s ease;">
+              <strong>«Он отдалился</strong>, я ему не нужна, отношения рушатся и я останусь одна»
+            </button>
+
+            <!-- Вариант 2 -->
+            <button type="button" onclick="selectPresetThriller(this, 2, 'Он делает это назло, обесценивает меня и не считается с моими планами')" class="thriller-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer; transition:all 0.2s ease;">
+              <strong>«Он делает это назло</strong>, обесценивает меня и пренебрегает мной»
+            </button>
+
+            <!-- Вариант 3 (Свои мысли) -->
+            <button type="button" onclick="toggleCustomThriller(this)" class="thriller-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px dashed rgba(36,49,57,0.2); background:rgba(255,255,255,0.6); font-size:13px; line-height:1.35; color:var(--nb-text); cursor:pointer; transition:all 0.2s ease;">
+              <strong>Описать свои мысли в голове</strong>
+            </button>
+          </div>
+
+          <!-- Скрытое поле ввода для своего варианта мыслей -->
+          <div id="customThrillerBox" style="display:none; flex-direction:column; gap:8px;">
+            <textarea id="thrillerInput" rows="3" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1.5px solid var(--nb-sea); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Что вы сразу подумали в этот момент? Какой худший сценарий накрутился?"></textarea>
+          </div>
           
           <!-- Gibberish / Incomplete Notice -->
           <div id="gibberishNotice" style="display:none; padding:12px 14px; border-radius:16px; background:rgba(217,131,78,0.12); border:1.5px solid #D9834E; margin-top:4px; margin-bottom:4px;">
@@ -1853,7 +1874,7 @@ textarea:focus, input:focus {
               <div style="flex:1;">
                 <div style="font-size:13px; font-weight:800; color:#A85532; margin-bottom:3px;">Интеллектуальный попутчик:</div>
                 <div id="gibberishNoticeText" style="font-size:12.5px; color:var(--nb-deep); line-height:1.45;">Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами.</div>
-                <div style="font-size:11px; color:#2F7D59; font-weight:700; margin-top:5px;">✨ Запрос не засчитан за попытку — вы можете дополнить ответ прямо сейчас.</div>
+                <div style="font-size:11px; color:#2F7D59; font-weight:700; margin-top:5px;">Запрос не засчитан за попытку — вы можете дополнить ответ прямо сейчас.</div>
               </div>
             </div>
           </div>
@@ -1865,7 +1886,7 @@ textarea:focus, input:focus {
           <!-- Companion Farewell Block in Step 3 (when attempts = 0) -->
           <div id="companionFarewellStep3" style="display:none; margin-top:6px; padding:16px 14px; border-radius:18px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.28); text-align:center; flex-direction:column; gap:10px;">
             <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
-              <span style="font-size:20px;">🚂</span>
+              
               <span style="font-size:14px; font-weight:800; color:var(--nb-deep); line-height:1.35;">
                 Попутчик уже пошёл в следующий урок и зовёт вас с собой!
               </span>
@@ -1878,7 +1899,7 @@ textarea:focus, input:focus {
                 <span>Идти с попутчиком в Урок 2 →</span>
               </button>
               <button type="button" onclick="showSavedAdvice()" class="secondary-btn" style="width:100%; min-height:42px; border-radius:16px; font-size:13px; font-weight:700; color:var(--nb-deep);">
-                <span>Посмотреть советы попутчика 📋</span>
+                <span>Посмотреть советы попутчика</span>
               </button>
             </div>
           </div>
@@ -1896,7 +1917,7 @@ textarea:focus, input:focus {
           <!-- Companion Farewell Block in Result Card (when attempts <= 0) -->
           <div id="companionFarewellResult" style="display:none; padding:14px 16px; border-radius:16px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.26); text-align:center; flex-direction:column; gap:6px;">
             <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
-              <span style="font-size:20px;">🚂</span>
+              
               <span style="font-size:14px; font-weight:800; color:var(--nb-deep); line-height:1.35;">
                 Попутчик пошёл дальше и зовёт вас с собой!
               </span>
@@ -1909,23 +1930,23 @@ textarea:focus, input:focus {
           <h3 style="font-size:18px; font-weight:800; text-align:center; margin:0;">Разбор ситуации</h3>
           
           <div style="background:rgba(255,255,255,0.6); border-radius:14px; padding:12px 14px; border-left:4px solid var(--nb-sea);">
-            <div style="font-size:11px; color:var(--nb-sea); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; text-align:center;">📷 Реальный факт (что произошло на самом деле)</div>
+            <div style="font-size:11px; color:var(--nb-sea); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; text-align:center;">Реальный факт (что произошло на самом деле)</div>
             <p id="resFact" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">...</p>
           </div>
           
           <div style="background:rgba(255,255,255,0.6); border-radius:14px; padding:12px 14px; border-left:4px solid var(--danger);">
-            <div style="font-size:11px; color:var(--danger); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; text-align:center;">💭 Мысли в голове (что накрутил испуганный мозг)</div>
+            <div style="font-size:11px; color:var(--danger); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; text-align:center;">Мысли в голове (что накрутил испуганный мозг)</div>
             <p id="resThriller" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin:0;">...</p>
           </div>
           
           <div style="background:rgba(127,155,142,0.12); border-radius:16px; padding:16px; border:1px solid rgba(127,155,142,0.35);">
-            <div style="font-size:12px; color:var(--nb-deep); font-weight:800; letter-spacing:0.2px; margin-bottom:10px; text-align:center;">🌿 Что сделать прямо сейчас, чтобы вернуть себя:</div>
+            <div style="font-size:12px; color:var(--nb-deep); font-weight:800; letter-spacing:0.2px; margin-bottom:10px; text-align:center;">Что сделать прямо сейчас, чтобы вернуть себя:</div>
             <div id="resStabilizer" style="font-size:13px; font-weight:600; color:var(--nb-deep); text-align:left; line-height:1.6; white-space:pre-line; margin:0;">...</div>
           </div>
 
           <!-- Кнопка: Ещё раз спросить попутчика (скрыта, когда попытки закончились) -->
           <button type="button" id="btnRetryAi" onclick="retryPractice()" style="width:100%; min-height:54px; display:flex; align-items:center; justify-content:center; gap:12px; padding:10px 16px; border-radius:16px; border:1.5px solid rgba(196,115,79,0.32); background:rgba(255,255,255,0.85); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:0 4px 14px rgba(196,115,79,0.08), 0 1px 3px rgba(0,0,0,0.04); cursor:pointer; transition:all 0.2s ease;">
-            <span style="font-size:20px; line-height:1; flex-shrink:0;">💬</span>
+            
             <div style="display:flex; flex-direction:column; align-items:center; gap:2px; text-align:center;">
               <span style="font-size:13.5px; font-weight:800; color:var(--nb-deep); line-height:1.3;">Спросить Интеллектуального попутчика ещё раз</span>
               <span style="font-size:11.5px; font-weight:600; color:#A85532; line-height:1.2;">(осталось ответов: <span id="retryAttemptsCount">3</span>)</span>
@@ -1934,7 +1955,7 @@ textarea:focus, input:focus {
 
           <!-- Кнопка результат и переход на следующий урок -->
           <div style="background:rgba(200,178,143,0.14); border:1px solid rgba(200,178,143,0.35); padding:12px 14px; border-radius:14px; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px;">
-            <span style="font-size:16px;">💎</span>
+            
             <span style="font-size:12.5px; font-weight:700; color:var(--nb-deep); margin:0;">Результат сохранен в Блок №1 «Карты опоры»</span>
           </div>
           
@@ -2348,6 +2369,9 @@ textarea:focus, input:focus {
     }
 
     var selectedSituationText = '';
+    var selectedSituationPreset = 0;
+    var selectedThrillerText = '';
+    var selectedThrillerPreset = 0;
 
     function selectPresetSituation(btn, text) {
       safeHaptic('selection');
@@ -2357,6 +2381,7 @@ textarea:focus, input:focus {
 
       document.getElementById('customSituationBox').style.display = 'none';
       selectedSituationText = text;
+      selectedSituationPreset = text.indexOf('Пришёл') !== -1 ? 1 : 2;
       document.getElementById('situationInput').value = text;
     }
 
@@ -2371,6 +2396,7 @@ textarea:focus, input:focus {
       var input = document.getElementById('situationInput');
       input.value = '';
       selectedSituationText = '';
+      selectedSituationPreset = 0;
       input.focus();
     }
 
@@ -2433,13 +2459,91 @@ textarea:focus, input:focus {
       document.getElementById('step3').style.display = 'flex';
     }
 
+    function selectPresetThriller(btn, num, text) {
+      safeHaptic('selection');
+      var allChips = document.querySelectorAll('.thriller-chip');
+      allChips.forEach(function(c) { c.classList.remove('selected'); });
+      btn.classList.add('selected');
+
+      var box = document.getElementById('customThrillerBox');
+      if (box) box.style.display = 'none';
+      selectedThrillerText = text;
+      selectedThrillerPreset = num;
+      document.getElementById('thrillerInput').value = text;
+    }
+
+    function toggleCustomThriller(btn) {
+      safeHaptic('selection');
+      var allChips = document.querySelectorAll('.thriller-chip');
+      allChips.forEach(function(c) { c.classList.remove('selected'); });
+      btn.classList.add('selected');
+
+      var box = document.getElementById('customThrillerBox');
+      if (box) box.style.display = 'flex';
+      var input = document.getElementById('thrillerInput');
+      input.value = '';
+      selectedThrillerText = '';
+      selectedThrillerPreset = 0;
+      input.focus();
+    }
+
     var attempts = 3;
     var ATTEMPTS_KEY = 's2_lesson1_attempts';
     var savedAttempts = localStorage.getItem(ATTEMPTS_KEY);
     if(savedAttempts !== null) {
       attempts = parseInt(savedAttempts, 10);
     }
-    
+
+    var PRESET_RESPONSES = {
+      "1_1": {
+            "fact": "Человек пришёл с работы, молча прошёл на кухню и уткнулся в экран телефона. Больше физически ничего не произошло.",
+            "thriller": "Голова накрутила: он отдаляется, я ему надоела, отношения рушатся и я останусь одна.",
+            "stabilizer": "1. Тело: Опустите плечи, почувствуйте стопами пол под собой и сделайте спокойный длинный выдох через рот. Напряжение сразу начнет отпускать.\n\n2. Граница: Напомните себе: прямо сейчас мне ничего физически не угрожает. Его молчание — это его усталость и его погода. Это не приговор мне и не конец отношений.\n\n3. Действие: Уберите руки от телефона, налейте стакан теплой воды и дайте паузе случиться. Вы не обязаны быть аниматором чужого настроения и срочно всё спасать."
+      },
+      "1_2": {
+            "fact": "Человек молчит и смотрит в телефон после рабочего дня. Никаких слов агрессии сказано не было.",
+            "thriller": "Голова накрутила: он делает это назло, наказывает меня молчанием и специально обесценивает.",
+            "stabilizer": "1. Тело: Разожмите зубы, расслабьте живот и положите руку на грудь. Почувствуйте своё дыхание.\n\n2. Граница: Не читайте чужие мысли. Молчание взрослого человека — это чаще всего перегруз нервной системы, а не спланированная атака на вас.\n\n3. Действие: Займитесь своими делами. Выйдите из комнаты, дайте человеку 20 минут тишины. Контакт восстанавливается из спокойствия, а не из допроса."
+      },
+      "2_1": {
+            "fact": "Планы изменились или человек задержался. В реальности изменилось только расписание событий.",
+            "thriller": "Голова накрутила: я для него на последнем месте, он бросит меня, я останусь одна и никому не нужна.",
+            "stabilizer": "1. Тело: Сделайте паузу на 3 глубоких вдоха. Не принимайте решений и не пишите резких сообщений на пике первого импульса.\n\n2. Граница: Опоздание или срыв планов отражают обстоятельства или несобранность другого человека, но никак не определяют вашу ценность.\n\n3. Действие: Переключитесь на свой комфорт: закажите вкусную еду, почитайте или отдохните. Вы не зависите от чужих графиков."
+      },
+      "2_2": {
+            "fact": "Человек сообщил об отмене или переносе встречи позже оговоренного срока.",
+            "thriller": "Голова накрутила: он делает это назло, вытирает об меня ноги и не уважает моё время.",
+            "stabilizer": "1. Тело: Опустите руки, выдохните и снимите напряжение с шеи. Дайте пульсу успокоиться.\n\n2. Граница: Вы имеете полное право на досаду. Но обвинения в моменте приведут только к глухой защите и скандалу.\n\n3. Действие: Спокойно обозначьте факт позже: «Мне неприятно, когда планы меняются без предупреждения. В следующий раз предупреждай за 2 часа». Без крика и драмы."
+      }
+};
+
+    function renderPresetResult(comboKey) {
+      safeHaptic('success');
+      var preset = PRESET_RESPONSES[comboKey] || PRESET_RESPONSES['1_1'];
+
+      try {
+        localStorage.setItem('s2_lesson1_block', JSON.stringify(preset));
+        localStorage.setItem('s2_lesson1_completed', 'true');
+      } catch(e) {}
+
+      document.getElementById('resFact').textContent = preset.fact;
+      document.getElementById('resThriller').textContent = preset.thriller;
+      document.getElementById('resStabilizer').textContent = preset.stabilizer;
+
+      var s1 = document.getElementById('step1'); if(s1) s1.style.display = 'none';
+      var s2 = document.getElementById('step2'); if(s2) s2.style.display = 'none';
+      var s3 = document.getElementById('step3'); if(s3) s3.style.display = 'none';
+      var rc = document.getElementById('resultCard');
+      if (rc) {
+        rc.style.display = 'flex';
+        requestAnimationFrame(function() {
+          setTimeout(function() {
+            if (rc) rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 50);
+        });
+      }
+    }
+
     function showSavedAdvice() {
       safeHaptic('selection');
       var saved = localStorage.getItem('s2_lesson1_block');
@@ -2448,11 +2552,7 @@ textarea:focus, input:focus {
         try { data = JSON.parse(saved); } catch(e) {}
       }
       if (!data) {
-        data = {
-          fact: "В реальности произошло только это: человек пришел, прошел в комнату, молчит или смотрит в экран. Без домыслов и прогнозов на будущее.",
-          thriller: "Голова накрутила: он отдалился, я ему надоела, отношения рушатся и я останусь одна.",
-          stabilizer: "1. Тело: Опустите плечи, почувствуйте стопами пол под собой и сделайте спокойный длинный выдох через рот. Напряжение сразу начнет отпускать.\n\n2. Граница: Напомните себе: прямо сейчас мне ничего физически не угрожает. Его хмурость или молчание — это его настроение и его погода. Это не приговор мне и не конец отношений.\n\n3. Действие: Уберите руки от телефона, налейте стакан теплой воды и дайте паузе случиться. Вы не обязаны быть аниматором чужого настроения и срочно всё спасать."
-        };
+        data = PRESET_RESPONSES['1_1'];
       }
       document.getElementById('resFact').textContent = data.fact;
       document.getElementById('resThriller').textContent = data.thriller;
@@ -2502,7 +2602,7 @@ textarea:focus, input:focus {
 
       if(attempts <= 0) {
         if(submitBtn) submitBtn.style.display = 'none';
-        if(fwStep3) fwStep3.style.display = 'none';
+        if(fwStep3) fwStep3.style.display = 'flex';
 
         if(btnRetry) btnRetry.style.display = 'none';
         if(fwResult) fwResult.style.display = 'flex';
@@ -2556,7 +2656,7 @@ textarea:focus, input:focus {
       if (!text || typeof text !== 'string') return true;
       var clean = text.trim();
       if (clean.length < 4) return true;
-      if (/(.)\1{3,}/i.test(clean)) return true;
+      if (/(.){3,}/i.test(clean)) return true;
       
       var letters = clean.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
       if (letters.length >= 4) {
@@ -2603,27 +2703,43 @@ textarea:focus, input:focus {
       if (e && e.preventDefault) e.preventDefault();
       if (e && e.stopPropagation) e.stopPropagation();
 
-      if(attempts <= 0) {
-        safeHaptic('error');
-        return;
-      }
-      
       var notice = document.getElementById('gibberishNotice');
       if (notice) notice.style.display = 'none';
-      
-      var thriller = document.getElementById('thrillerInput').value.trim();
+
+      var isCustomSit = (selectedSituationPreset === 0);
+      var isCustomThr = (selectedThrillerPreset === 0);
       var situation = document.getElementById('situationInput').value.trim();
-      
-      if(!thriller || !situation) {
-        showGibberishNotice('Пожалуйста, опишите ситуацию и мысли в голове подробнее.');
+      var thriller = document.getElementById('thrillerInput').value.trim();
+
+      // 1. Если выбраны оба готовых шаблона без ручного ввода — отдаем заготовленный ответ Анатолия (0 списаний попыток)
+      if (!isCustomSit && !isCustomThr && selectedSituationPreset > 0 && selectedThrillerPreset > 0) {
+        var combo = selectedSituationPreset + '_' + selectedThrillerPreset;
+        renderPresetResult(combo);
         return;
       }
 
-      if(checkGibberish(thriller) || checkGibberish(situation)) {
-        showGibberishNotice();
+      // 2. Если пользователь написал хотя бы один свой ответ вручную:
+      if (!thriller || !situation) {
+        showGibberishNotice('Пожалуйста, опишите ситуацию и мысли в голове понятными словами.');
         return;
       }
-      
+
+      if (checkGibberish(thriller) || checkGibberish(situation)) {
+        showGibberishNotice('Пожалуйста, опишите мысли понятными словами (без абракадабры).');
+        return;
+      }
+
+      if (attempts <= 0) {
+        safeHaptic('error');
+        showSavedAdvice();
+        return;
+      }
+
+      // Списываем 1 попытку только при реальном обращении к ИИ со своим текстом
+      attempts--;
+      localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
+      updateAttemptsDisplay();
+
       var s1 = document.getElementById('slider1').value;
       var s2 = document.getElementById('slider2').value;
       var s3 = document.getElementById('slider3').value;
@@ -2649,6 +2765,9 @@ textarea:focus, input:focus {
         var data = await apiFunc('/api/s2-lesson1-strategy', payload);
 
         if (data && data.invalid) {
+           attempts = Math.min(3, attempts + 1);
+           localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
+           updateAttemptsDisplay();
            showGibberishNotice(data.message);
            return;
         }
@@ -2661,14 +2780,17 @@ textarea:focus, input:focus {
       } catch(err) {
         console.error(err);
         if (checkGibberish(thriller) || checkGibberish(situation)) {
+          attempts = Math.min(3, attempts + 1);
+          localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
+          updateAttemptsDisplay();
           showGibberishNotice();
           return;
         }
         setTimeout(function() {
           renderResults({
-            fact: "В реальности произошло только это: человек пришел, прошел в комнату, молчит или смотрит в экран. Без домыслов и прогнозов на будущее.",
-            thriller: "Голова накрутила: он отдалился, я ему надоела, отношения рушатся и я останусь одна.",
-            stabilizer: "1. Тело: Опустите плечи, почувствуйте стопами пол под собой и сделайте спокойный длинный выдох через рот. Напряжение сразу начнет отпускать.\n\n2. Граница: Напомните себе: прямо сейчас мне ничего физически не угрожает. Его хмурость или молчание — это его настроение и его погода. Это не приговор мне и не конец отношений.\n\n3. Действие: Уберите руки от телефона, налейте стакан теплой воды и дайте паузе случиться. Вы не обязаны быть аниматором чужого настроения и срочно всё спасать."
+            fact: "В реальности произошла ситуация, вызвавшая эмоциональный отклик.",
+            thriller: "Голова запустила привычный сценарий тревоги и накручивания.",
+            stabilizer: "1. Тело: Опустите плечи, почувствуйте стопами пол под собой и сделайте спокойный длинный выдох через рот. Напряжение сразу начнет отпускать.\n\n2. Граница: Напомните себе: прямо сейчас мне ничего физически не угрожает. Чужая реакция — это чужая погода. Это не приговор вам и не конец отношений.\n\n3. Действие: Уберите руки от телефона, налейте стакан теплой воды и дайте паузе случиться. Вы не обязаны быть аниматором чужого настроения и срочно всё спасать."
           });
         }, 1500);
       }
@@ -2680,12 +2802,10 @@ textarea:focus, input:focus {
         
         safeHaptic('success');
         
-        attempts--;
-        localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
-        updateAttemptsDisplay();
-        
-        localStorage.setItem('s2_lesson1_block', JSON.stringify(data));
-        localStorage.setItem('s2_lesson1_completed', 'true');
+        try {
+          localStorage.setItem('s2_lesson1_block', JSON.stringify(data));
+          localStorage.setItem('s2_lesson1_completed', 'true');
+        } catch(e) {}
         
         document.getElementById('resFact').textContent = data.fact;
         document.getElementById('resThriller').textContent = data.thriller;
@@ -2706,7 +2826,7 @@ textarea:focus, input:focus {
           });
         }
     }
-    
+
     window.addEventListener('DOMContentLoaded', function() {
       var saved = localStorage.getItem('s2_lesson1_block');
       if(saved) {
