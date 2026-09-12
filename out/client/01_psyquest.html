@@ -422,25 +422,7 @@
       margin: 0;
     }
 
-    /* Блок моментального инсайта при попадании */
-    .card-micro-insight {
-      display: none;
-      align-items: flex-start;
-      gap: 8px;
-      background: linear-gradient(135deg, rgba(250, 246, 238, 0.96) 0%, rgba(243, 233, 218, 0.96) 100%);
-      border: 1px solid rgba(194, 158, 101, 0.4);
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-size: 12px;
-      line-height: 1.45;
-      color: #573E16;
-      animation: fadeIn 0.2s ease forwards;
-    }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
 
     /* КНОПКИ ДЕЙСТВИЙ СВАЙПА */
     .swipe-actions {
@@ -533,15 +515,16 @@
 
     /* Блок сохранённого закона психики на финальном экране */
     .bridge-insight-card {
-      background: linear-gradient(135deg, rgba(250, 246, 238, 0.96) 0%, rgba(243, 233, 218, 0.96) 100%);
-      border: 1.5px solid rgba(194, 158, 101, 0.4);
-      border-radius: 18px;
+      background: #FAF8F5;
+      border: 1.5px solid rgba(194, 158, 101, 0.35);
+      border-left: 4px solid #C29E65;
+      border-radius: 16px;
       padding: 14px 16px;
       text-align: left;
-      box-shadow: 0 4px 14px rgba(194, 158, 101, 0.08);
+      box-shadow: 0 4px 14px rgba(194, 158, 101, 0.06);
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
 
     /* Карточка результата и моста к курсу */
@@ -792,10 +775,6 @@
             <p id="cardDesc" class="swipe-card-desc">
               Партнёр приходит хмурый или отвечает односложно — и внутри мгновенно сжимается пружина: «Что случилось? В чём моя вина?». Настроение падает в ноль.
             </p>
-            <div id="cardMicroInsight" class="card-micro-insight">
-              <span>💡</span>
-              <span id="cardInsightText"></span>
-            </div>
           </div>
         </div>
 
@@ -844,12 +823,12 @@
           </div>
         </div>
 
-        <!-- Персональный закон психики (сохранённый совет) -->
+        <!-- Персональный закон психики (выводится только в финале) -->
         <div id="resInsightBox" class="bridge-insight-card" style="display:none;">
-          <strong style="font-size:12px; color:#7E5A22; display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-            <span>💡</span> <span>Закон психики для вас:</span>
-          </strong>
-          <p id="resInsightText" class="subtle" style="font-size:12.5px; color:#423014; margin:0; line-height:1.5;"></p>
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:#8C6A32; display:flex; align-items:center; gap:6px;">
+            <span>💡</span> <span>Ключевой закон психики:</span>
+          </div>
+          <p id="resInsightText" style="font-size:13px; line-height:1.5; color:#3B2F1C; font-weight:500; margin:0;"></p>
         </div>
 
         <!-- Оффер вводного урока и подарка -->
@@ -1023,9 +1002,6 @@
       document.getElementById("cardTitle").textContent = card.title;
       document.getElementById("cardDesc").textContent = card.desc;
 
-      const insightEl = document.getElementById("cardMicroInsight");
-      if (insightEl) insightEl.style.display = "none";
-
       const cardEl = document.getElementById("activeSwipeCard");
       if (cardEl) {
         cardEl.className = "swipe-card";
@@ -1059,22 +1035,12 @@
           route: card.route
         });
 
-        // Мгновенная подсветка попадания
-        cardEl.classList.add("hit-active");
-        const insightEl = document.getElementById("cardMicroInsight");
-        const insightTextEl = document.getElementById("cardInsightText");
-        if (insightEl && insightTextEl) {
-          insightTextEl.textContent = card.insight;
-          insightEl.style.display = "flex";
-        }
-
+        // Карточка сразу плавно улетает вправо
+        cardEl.classList.add("hit-active", "swiping-right");
         setTimeout(() => {
-          cardEl.classList.add("swiping-right");
-          setTimeout(() => {
-            currentCardIndex++;
-            renderCard();
-          }, 240);
-        }, 380);
+          currentCardIndex++;
+          renderCard();
+        }, 220);
 
       } else {
         safeHaptic();
