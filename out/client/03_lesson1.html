@@ -1417,9 +1417,6 @@ textarea:focus, input:focus {
             <span>🧭</span>
             <span>Навигация по курсу</span>
           </button>
-          <button type="button" onclick="safeHaptic('selection'); openScreen('04_lesson2.html');" class="next-lesson-btn">
-            <span>Следующий урок →</span>
-          </button>
         </div>
 
         <div class="header-progress-row">
@@ -1439,7 +1436,6 @@ textarea:focus, input:focus {
 
         <!-- Video Card -->
         <section class="glass card text-center">
-          <div class="eyebrow" style="margin-bottom:8px;">Урок 1 из 5</div>
           <h2>Молчание, которое запускает ваш сценарий</h2>
           <p class="lead" style="font-size:13px; margin-bottom:12px;">Как один факт превращается в тревогу, догадки и
             попытку догнать человека.</p>
@@ -1466,16 +1462,15 @@ textarea:focus, input:focus {
             факт и интерпретацию, тревога перестаёт управлять вашими действиями.
           </p>
 
-          <div style="display:flex; flex-direction:column; gap:10px;">
-            <a href="https://disk.yandex.ru/i/qn8yFi5w31aAfQ" target="_blank" onclick="safeHaptic('selection');"
-              class="secondary-btn"
-              style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px;">
-              <span>📥 Скачать Чек-лист</span>
-            </a>
-
+          <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
             <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%;">
-              <span>Заполнить чек-лист ➔</span>
+              <span>Заполнить чек-лист онлайн →</span>
             </button>
+
+            <a href="https://disk.yandex.ru/i/qn8yFi5w31aAfQ" target="_blank" onclick="safeHaptic('selection');"
+              style="font-size:12px; color:var(--nb-text-2); text-decoration:underline;">
+              или скачать чек-лист в PDF
+            </a>
           </div>
         </section>
 
