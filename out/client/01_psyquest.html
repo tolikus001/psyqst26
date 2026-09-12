@@ -76,10 +76,10 @@
       --nb-bg: #F3F6F5;
       --nb-text: #243139;
       --nb-text-2: #68767C;
-      --nb-accent: #124453;
+      --nb-accent: #154D5D;
       --nb-accent-hover: #0E3541;
-      --nb-deep: #243139;
-      --nb-sea: #45656D;
+      --nb-deep: #1A2832;
+      --nb-sea: #36606A;
       --nb-line: rgba(14, 31, 46, 0.10);
       --nb-gold: #C29E65;
       --nb-gold-dark: #8C6A32;
@@ -103,7 +103,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Фоновые листья из курса */
+    /* Фоновый природный слой листьев */
     #maisonArtBackground {
       position: fixed !important;
       inset: 0 !important;
@@ -111,7 +111,7 @@
       background-repeat: no-repeat !important;
       background-position: center center !important;
       background-size: cover !important;
-      opacity: 0.32 !important;
+      opacity: 0.34 !important;
       transform: translateZ(0);
       pointer-events: none !important;
       background-image: url('leaves_oak.jpg');
@@ -122,12 +122,13 @@
       z-index: 1 !important;
     }
 
-    /* Master Shell */
+    /* Мастер-оболочка (строгое центрирование) */
     .app-shell {
       min-height: 100dvh;
       display: flex;
       justify-content: center;
-      padding: max(16px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom));
+      align-items: flex-start;
+      padding: max(16px, env(safe-area-inset-top)) 14px max(28px, env(safe-area-inset-bottom));
       background: transparent !important;
     }
 
@@ -141,29 +142,30 @@
       background: transparent !important;
     }
 
-    /* Строгое центрирование заголовков и служебных плашек */
+    /* Строгое центрирование всех заголовков, бейджей и текстов */
     h1, h2, h3, h4, h5, h6,
     .card-title,
     .lead,
     .subtle,
-    .eyebrow {
+    .eyebrow,
+    .text-center {
       text-align: center !important;
     }
 
     h1, .card-title-lg {
-      margin: 12px 0 8px;
-      font-size: 24px;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
+      margin: 10px 0 8px;
+      font-size: 23px;
+      line-height: 1.22;
+      letter-spacing: -0.025em;
       color: var(--nb-deep);
       font-weight: 800;
     }
 
     h2, .card-title {
-      margin: 8px 0 8px;
+      margin: 6px 0 8px;
       font-size: 19px;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
+      line-height: 1.28;
+      letter-spacing: -0.015em;
       color: var(--nb-deep);
       font-weight: 800;
     }
@@ -171,44 +173,47 @@
     .lead {
       color: var(--nb-text-2);
       font-size: 13.5px;
-      line-height: 1.48;
-      margin: 0 0 12px;
+      line-height: 1.5;
+      margin: 0 auto 12px;
+      max-width: 390px;
     }
 
+    /* Изящная овальная плашка над заголовком */
     .eyebrow {
       display: inline-flex !important;
       align-items: center;
       justify-content: center;
       gap: 6px;
       padding: 5px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(194, 158, 101, 0.35);
-      background: rgba(255, 255, 255, 0.75);
-      color: #8A6428;
+      border-radius: 9999px;
+      border: 1px solid rgba(194, 158, 101, 0.4);
+      background: rgba(255, 255, 255, 0.85);
+      color: #7E5A22;
       font-size: 11.5px;
       font-weight: 700;
       line-height: 1.3;
-      margin: 0 auto 10px !important;
+      margin: 0 auto 8px !important;
       align-self: center !important;
+      box-shadow: 0 2px 6px rgba(194, 158, 101, 0.08);
     }
 
-    /* Карточки курса — Velvet Frosted Glass */
+    /* Карточки курса — Velvet Frosted Glass с белыми гранями */
     .glass, .card {
-      background: rgba(255, 255, 255, 0.58) !important;
-      backdrop-filter: blur(16px) saturate(135%) !important;
-      -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
-      border: 1px solid rgba(255, 255, 255, 0.75) !important;
-      box-shadow: 0 14px 34px rgba(45, 62, 54, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
-      border-radius: 24px !important;
-      padding: 22px 18px !important;
+      background: rgba(255, 255, 255, 0.62) !important;
+      backdrop-filter: blur(16px) saturate(140%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.8) !important;
+      box-shadow: 0 16px 36px rgba(45, 62, 54, 0.07), 0 2px 6px rgba(0, 0, 0, 0.02), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+      border-radius: 26px !important;
+      padding: 24px 20px !important;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       position: relative;
       transition: all 0.25s ease;
     }
 
-    /* Шапка с контекстом Telegram/Notibot */
+    /* Шапка приложения с контекстом Telegram/Notibot */
     .header {
       display: flex;
       align-items: center;
@@ -227,7 +232,7 @@
       width: 40px;
       height: 40px;
       border-radius: 9999px;
-      background: var(--nb-accent);
+      background: linear-gradient(135deg, #154D5D 0%, #0E3541 100%);
       color: #FFFFFF;
       font-size: 14px;
       font-weight: 800;
@@ -237,6 +242,7 @@
       box-shadow: 0 4px 12px rgba(18, 68, 83, 0.2);
       flex-shrink: 0;
       overflow: hidden;
+      border: 1.5px solid rgba(255, 255, 255, 0.85);
     }
 
     .greeting {
@@ -249,7 +255,7 @@
     .subtle {
       font-size: 11.5px;
       color: var(--nb-text-2);
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .strategy-badge {
@@ -257,11 +263,12 @@
       align-items: center;
       padding: 5px 12px;
       border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.85);
       border: 1px solid rgba(194, 158, 101, 0.35);
       font-size: 11px;
       font-weight: 800;
       color: #7A5620;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
     /* Progress bar */
@@ -271,102 +278,120 @@
       background: rgba(14, 31, 46, 0.08);
       border-radius: 999px;
       overflow: hidden;
-      margin: 2px 0 6px;
+      margin: 2px 0 4px;
     }
 
     .progress-bar-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #C29E65 0%, #124453 100%);
+      background: linear-gradient(90deg, #C29E65 0%, #154D5D 100%);
       border-radius: 999px;
       transition: width 0.35s ease;
     }
 
     .step-counter {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--nb-sea);
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
       text-align: center;
     }
 
-    /* Options List */
+    /* Опции ответов */
     .options-list {
       display: flex;
       flex-direction: column;
-      gap: 9px;
-      margin-top: 4px;
+      gap: 10px;
+      margin-top: 6px;
     }
 
     .option-item {
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 13px 15px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.82);
-      border: 1.5px solid rgba(14, 31, 46, 0.09);
+      align-items: center;
+      gap: 14px;
+      padding: 13px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1.5px solid rgba(14, 31, 46, 0.08);
       color: var(--nb-deep);
       font-size: 13px;
-      line-height: 1.42;
+      line-height: 1.45;
       font-weight: 600;
       text-align: left;
       cursor: pointer;
-      transition: all 0.18s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
+      user-select: none;
+    }
+
+    .option-item:hover {
+      border-color: rgba(21, 77, 93, 0.28);
+      background: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(14, 31, 46, 0.05);
     }
 
     .option-item:active {
       transform: scale(0.985);
-      background: #FFFFFF;
-      border-color: var(--nb-accent);
     }
 
     .option-item.selected {
       border-color: var(--nb-accent) !important;
-      background: rgba(18, 68, 83, 0.07) !important;
-      box-shadow: 0 4px 14px rgba(18, 68, 83, 0.12) !important;
+      background: rgba(21, 77, 93, 0.08) !important;
+      box-shadow: 0 6px 18px rgba(21, 77, 93, 0.12) !important;
       color: var(--nb-deep) !important;
       font-weight: 700 !important;
     }
 
-    .option-icon {
+    .option-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: rgba(21, 77, 93, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 18px;
       flex-shrink: 0;
-      line-height: 1.2;
+      border: 1px solid rgba(21, 77, 93, 0.1);
     }
 
-    /* Insight Toast */
+    .option-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Всплывающий инсайт */
     .insight-toast {
       display: none;
-      background: linear-gradient(135deg, rgba(248, 243, 233, 0.95) 0%, rgba(238, 226, 206, 0.95) 100%);
-      border: 1px solid rgba(194, 158, 101, 0.45);
-      border-radius: 14px;
-      padding: 12px 14px;
+      background: linear-gradient(135deg, rgba(250, 246, 238, 0.98) 0%, rgba(243, 233, 218, 0.98) 100%);
+      border: 1.5px solid rgba(194, 158, 101, 0.5);
+      border-radius: 16px;
+      padding: 13px 15px;
       font-size: 12.5px;
-      line-height: 1.45;
-      color: #4A3516;
-      animation: fadeIn 0.25s ease;
-      box-shadow: 0 4px 14px rgba(194, 158, 101, 0.15);
+      line-height: 1.48;
+      color: #423014;
+      animation: fadeIn 0.28s ease;
+      box-shadow: 0 6px 18px rgba(194, 158, 101, 0.16);
       text-align: left;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Meter / Шкала утечки */
+    /* Шкала утечки энергии */
     .drain-meter-card {
-      background: rgba(255, 255, 255, 0.75);
-      border: 1.5px solid rgba(194, 158, 101, 0.35);
-      border-radius: 18px;
-      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1.5px solid rgba(194, 158, 101, 0.38);
+      border-radius: 20px;
+      padding: 15px 18px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 9px;
       text-align: left;
+      box-shadow: 0 4px 16px rgba(194, 158, 101, 0.1);
     }
 
     .drain-row {
@@ -377,14 +402,14 @@
 
     .drain-label {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--nb-text-2);
       text-transform: uppercase;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.4px;
     }
 
     .drain-val {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 900;
       color: #A85532;
     }
@@ -404,16 +429,17 @@
       border-radius: 999px;
     }
 
-    /* Соматическое аудио */
+    /* Соматическое аудио для снятия спазма */
     .audio-relief-box {
-      background: rgba(255, 255, 255, 0.8);
-      border: 1.5px solid rgba(18, 68, 83, 0.18);
-      border-radius: 18px;
-      padding: 14px 14px 12px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1.5px solid rgba(21, 77, 93, 0.18);
+      border-radius: 20px;
+      padding: 16px 16px 14px;
       display: flex;
       flex-direction: column;
       gap: 8px;
       text-align: center;
+      box-shadow: 0 4px 16px rgba(21, 77, 93, 0.06);
     }
 
     .audio-player-wrap {
@@ -422,36 +448,38 @@
 
     .audio-player-wrap audio {
       width: 100%;
-      height: 38px;
-      border-radius: 10px;
+      height: 40px;
+      border-radius: 12px;
       accent-color: var(--nb-accent);
     }
 
-    /* Карточка эксперта */
+    /* Визитная карточка эксперта */
     .expert-card {
       display: flex;
       align-items: center;
-      gap: 12px;
-      background: rgba(255, 255, 255, 0.7);
-      border: 1px solid rgba(14, 31, 46, 0.08);
-      border-radius: 16px;
-      padding: 10px 14px;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(14, 31, 46, 0.09);
+      border-radius: 18px;
+      padding: 12px 16px;
       text-align: left;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
     }
 
     .expert-avatar {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 9999px;
-      background: linear-gradient(135deg, #152C3D 0%, #0E3541 100%);
+      background: linear-gradient(135deg, #154D5D 0%, #0E3541 100%);
       color: #FFFFFF;
       font-weight: 900;
-      font-size: 15px;
+      font-size: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 4px 14px rgba(21, 77, 93, 0.25);
+      border: 2px solid #FFFFFF;
     }
 
     .expert-info {
@@ -461,84 +489,105 @@
     }
 
     .expert-name {
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 800;
       color: var(--nb-deep);
     }
 
     .expert-title {
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--nb-text-2);
-      line-height: 1.3;
+      line-height: 1.35;
+      font-weight: 500;
     }
 
-    /* Промо платного курса на шаге 0 */
+    /* Блок программы курса на шаге 0 */
     .paid-course-banner {
-      background: linear-gradient(135deg, rgba(235, 242, 237, 0.95) 0%, rgba(220, 234, 224, 0.95) 100%);
-      border: 1.5px solid rgba(47, 125, 89, 0.28);
-      border-radius: 18px;
-      padding: 14px 14px;
+      background: linear-gradient(135deg, rgba(237, 245, 240, 0.96) 0%, rgba(224, 238, 229, 0.96) 100%);
+      border: 1.5px solid rgba(47, 125, 89, 0.3);
+      border-radius: 20px;
+      padding: 15px 16px;
       text-align: center;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      box-shadow: 0 4px 16px rgba(47, 125, 89, 0.08);
     }
 
-    /* Кнопки курса */
-    .primary-btn {
-      width: 100%;
-      min-height: 48px;
-      background: var(--nb-accent);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 16px;
-      font-size: 14px;
-      font-weight: 800;
+    /* КНОПКИ С ЖИВЫМ СВЕТОВЫМ БЛИКОМ (SHINE FLARE) */
+    .primary-btn, .btn-gold {
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      width: 100%;
+      min-height: 50px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 800;
       cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 8px 22px rgba(18, 68, 83, 0.22);
-      transition: all 0.2s ease;
+      border: none;
+      transition: all 0.22s ease;
+      user-select: none;
     }
 
-    .primary-btn:active {
-      transform: scale(0.985);
-      background: var(--nb-accent-hover);
+    .primary-btn {
+      background: linear-gradient(135deg, #154D5D 0%, #0E3541 100%);
+      color: #FFFFFF;
+      box-shadow: 0 10px 28px rgba(21, 77, 93, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
 
     .btn-gold {
-      width: 100%;
-      min-height: 48px;
       background: linear-gradient(135deg, #C29E65 0%, #A88147 100%);
       color: #FFFFFF;
-      border: none;
-      border-radius: 16px;
-      font-size: 14px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 6px 18px rgba(168, 129, 71, 0.25);
-      transition: all 0.2s ease;
+      box-shadow: 0 10px 28px rgba(168, 129, 71, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
-    .btn-gold:active {
-      transform: scale(0.985);
-      background: #967035;
+    /* Бегущий анимированный блик на кнопках */
+    .primary-btn::after, .btn-gold::after {
+      content: "";
+      position: absolute;
+      top: -60%;
+      left: -70%;
+      width: 45%;
+      height: 220%;
+      background: linear-gradient(
+        75deg,
+        rgba(255, 255, 255, 0) 10%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0) 90%
+      );
+      transform: rotate(25deg);
+      animation: flareSweep 3.2s infinite ease-in-out;
+      pointer-events: none;
     }
 
+    @keyframes flareSweep {
+      0% {
+        left: -70%;
+      }
+      22% {
+        left: 140%;
+      }
+      100% {
+        left: 140%;
+      }
+    }
+
+    .primary-btn:active, .btn-gold:active {
+      transform: scale(0.982);
+    }
+
+    /* Второстепенная кнопка */
     .secondary-btn {
       width: 100%;
       min-height: 44px;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       color: var(--nb-accent);
-      border: 1.5px solid rgba(18, 68, 83, 0.25);
+      border: 1.5px solid rgba(21, 77, 93, 0.22);
       border-radius: 16px;
       font-size: 13px;
       font-weight: 700;
@@ -548,6 +597,8 @@
       gap: 6px;
       cursor: pointer;
       text-decoration: none;
+      transition: all 0.18s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
     }
 
     .secondary-btn:active {
@@ -555,15 +606,14 @@
       background: #FFFFFF;
     }
 
-    /* Pulse effect */
     .pulse {
-      animation: ctaPulse 2.4s infinite;
+      animation: ctaPulse 2.6s infinite;
     }
 
     @keyframes ctaPulse {
-      0% { box-shadow: 0 0 0 0 rgba(18, 68, 83, 0.35); }
-      70% { box-shadow: 0 0 0 10px rgba(18, 68, 83, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(18, 68, 83, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(21, 77, 93, 0.35); }
+      70% { box-shadow: 0 0 0 12px rgba(21, 77, 93, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(21, 77, 93, 0); }
     }
   </style>
 
@@ -608,7 +658,7 @@
         const avatarEl = document.getElementById('userAvatar');
         if (avatarEl) {
           if (photoUrl) {
-            avatarEl.innerHTML = '<img src="' + photoUrl + '" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:9999px;" onerror="this.parentNode.textContent=\'' + getInitials(firstName) + '\';" />';
+            avatarEl.innerHTML = '<img src="' + photoUrl + '" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:9999px;" onerror="this.parentNode.textContent=\'' + getInitials(firstName).replace(/'/g, "\\'") + '\';" />';
           } else {
             avatarEl.textContent = getInitials(firstName);
           }
@@ -661,11 +711,11 @@
           Короткий интерактивный срез без заумных психологических терминов. Поможет увидеть скрытый сценарий в паре, понять, почему вы просыпаетесь уставшей и куда утекает 70% ваших жизненных сил.
         </p>
 
-        <div style="background: rgba(18, 68, 83, 0.06); border-radius: 14px; padding: 12px 14px; font-size: 12px; line-height: 1.45; color: #2B424C; text-align:center;">
+        <div style="background: rgba(21, 77, 93, 0.06); border-radius: 14px; padding: 12px 14px; font-size: 12px; line-height: 1.45; color: #2B424C; text-align:center;">
           🔒 Без регистрации и личных данных. Точный персональный разбор откроется сразу после ответов.
         </div>
 
-        <button type="button" class="btn-gold pulse" onclick="startQuiz();" style="margin-top:6px;">
+        <button type="button" class="btn-gold pulse" onclick="startQuiz();" style="margin-top:4px;">
           <span>Начать диагностику (2 минуты) ➔</span>
         </button>
       </section>
@@ -674,7 +724,7 @@
       <section id="screenQuestion" class="glass card" style="display:none;">
         <div class="eyebrow" id="questionCategory">Текущая ситуация</div>
         <h2 id="questionTitle" class="card-title">Что прямо сейчас точнее всего описывает ситуацию в ваших отношениях?</h2>
-        <p id="questionSubtitle" class="lead" style="display:none; margin-bottom:8px;"></p>
+        <p id="questionSubtitle" class="lead" style="display:none; margin-bottom:6px;"></p>
 
         <div id="optionsList" class="options-list">
           <!-- Опции генерируются через JS -->
@@ -685,8 +735,8 @@
       </section>
 
       <!-- ЭКРАН АНАЛИЗА (1.2 сек) -->
-      <section id="screenAnalyzing" class="glass card text-center" style="display:none; padding:38px 20px;">
-        <div style="font-size:36px; animation:spin 1.5s linear infinite;">⏳</div>
+      <section id="screenAnalyzing" class="glass card text-center" style="display:none; padding:44px 20px;">
+        <div style="font-size:38px; animation:spin 1.5s linear infinite;">⏳</div>
         <h2 class="card-title" style="margin-top:14px;">Анализируем ваш сценарий...</h2>
         <p class="lead" style="margin:0;">Сопоставляем соматические маркеры и скрытые утечки энергии.</p>
       </section>
@@ -716,12 +766,12 @@
 
         <!-- Название сценария -->
         <div>
-          <span class="subtle" style="text-transform:uppercase; letter-spacing:0.04em; font-weight:800; font-size:11px;">Ваш ведущий сценарий:</span>
+          <span class="subtle" style="text-transform:uppercase; letter-spacing:0.05em; font-weight:800; font-size:11px;">Ваш ведущий сценарий:</span>
           <h2 id="resTitle" class="card-title" style="color:var(--nb-sea); margin-top:4px;">Сценарий: «Растворение и гиперконтроль»</h2>
         </div>
 
         <!-- Диагноз -->
-        <div style="padding:15px; border-radius:18px; background:rgba(255,255,255,0.75); border:1px solid rgba(36,49,57,0.07); text-align:left;">
+        <div style="padding:15px; border-radius:18px; background:rgba(255,255,255,0.78); border:1px solid rgba(36,49,57,0.07); text-align:left;">
           <p id="resDiagnosis" style="font-size:13px; line-height:1.55; color:var(--nb-text); margin:0;">
             Ваши силы уходят не на дела. Львиная доля энергии утекает в «режим радара»: вы непрерывно сканируете настроение партнёра по шагам, тону голоса и паузам в переписке. Психика находится в постоянном ожидании шторма, поэтому вы чувствуете хроническое опустошение. Это не ваш «плохой характер» — так психика защищается от страха отвержения.
           </p>
@@ -744,7 +794,7 @@
           </div>
         </div>
 
-        <!-- УРОВЕНЬ 3: ЗNAKOMCTBO C ЭКСПЕРТОМ -->
+        <!-- УРОВЕНЬ 3: ЗНАКОМСТВО С ЭКСПЕРТОМ -->
         <div class="expert-card">
           <div class="expert-avatar">АФ</div>
           <div class="expert-info">
@@ -761,7 +811,7 @@
           </span>
         </div>
 
-        <!-- КНОПКА ПЕРЕХОДА НА УРОК 0 КУРСА -->
+        <!-- КНОПКА ПЕРЕХОДА НА УРОК 0 КУРСА С БЛИКОМ -->
         <a id="resCourseBtn" href="15_landing_partner_2.html" class="primary-btn pulse" onclick="safeHaptic();">
           <span>Смотреть видео-разбор и программу курса ➔</span>
         </a>
@@ -899,7 +949,7 @@
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "option-item";
-        btn.innerHTML = '<span class="option-icon">' + opt.icon + '</span><span class="option-text">' + opt.text + '</span>';
+        btn.innerHTML = '<div class="option-icon-box">' + opt.icon + '</div><span class="option-text">' + opt.text + '</span>';
         btn.onclick = () => selectAnswer(idx);
         list.appendChild(btn);
       });
@@ -916,7 +966,7 @@
       const items = document.querySelectorAll(".option-item");
       items.forEach((it, i) => {
         if (i === optIdx) it.classList.add("selected");
-        else it.style.opacity = "0.45";
+        else it.style.opacity = "0.4";
       });
 
       if (opt.route) {
