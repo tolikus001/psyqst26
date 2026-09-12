@@ -823,6 +823,13 @@
               Кнопка от вашего покоя отдана в чужие руки: пока близкий не поступит по-вашему, внутри горит тревога.
             </p>
           </div>
+          <!-- Сопутствующий фактор (второй план) -->
+          <div id="resSecondaryBox" style="display:none; margin-top:8px; padding-top:8px; border-top:1px dashed rgba(14,31,46,0.12);">
+            <strong style="font-size:12px; color:var(--nb-sea); display:flex; align-items:center; gap:5px; margin-bottom:3px;">
+              <span>🔄</span> <span>Сопутствующий фактор: <span id="resSecondaryLabel"></span></span>
+            </strong>
+            <p id="resSecondaryDesc" class="subtle" style="font-size:12px; margin:0; line-height:1.45;"></p>
+          </div>
         </div>
 
         <!-- Персональный закон психики (выводится только в финале) -->
@@ -943,8 +950,9 @@
 
     let currentCardIndex = 0;
     let energyLevel = 100;
-    const scores = { emotions: 0, partner: 0, family: 0, crisis: 0 };
+    const scores = { emotions: 0, family: 0, crisis: 0 };
     let finalRoute = "emotions";
+    let secondaryRoute = null;
     let userSelections = [];
     let collectedInsights = [];
     let isTransitioning = false;
@@ -956,9 +964,10 @@
       currentCardIndex = 0;
       energyLevel = 100;
       scores.emotions = 0;
-      scores.partner = 0;
       scores.family = 0;
       scores.crisis = 0;
+      finalRoute = "emotions";
+      secondaryRoute = null;
       userSelections = [];
       collectedInsights = [];
       updateEnergyUI();
@@ -1116,12 +1125,24 @@
       document.getElementById("progressWrap").style.display = "none";
       document.getElementById("screenAnalyzing").style.display = "flex";
 
-      let highest = -1;
-      for (const [r, sc] of Object.entries(scores)) {
-        if (sc > highest) {
-          highest = sc;
-          finalRoute = r;
-        }
+      // Чувствительный расчет весов по 3 сценариям отношений
+      const cardCounts = { emotions: 3, family: 2, crisis: 2 };
+      const ranked = Object.keys(cardCounts).map(route => {
+        const hits = (scores[route] || 0) / 2;
+        const ratio = hits / cardCounts[route];
+        return { route, hits, ratio };
+      }).sort((a, b) => {
+        if (b.ratio !== a.ratio) return b.ratio - a.ratio;
+        return b.hits - a.hits;
+      });
+
+      finalRoute = ranked[0].hits > 0 ? ranked[0].route : "emotions";
+
+      // Сопутствующий триггер (второй план), если есть попадания во второй сценарий
+      if (ranked[1] && ranked[1].hits > 0 && ranked[1].route !== finalRoute) {
+        secondaryRoute = ranked[1].route;
+      } else {
+        secondaryRoute = null;
       }
 
       setTimeout(() => {
@@ -1130,15 +1151,6 @@
     }
 
     const scenarios = {
-      partner: {
-        title: "Сценарий: «Погоня за недоступными»",
-        diagnosis: "Ваша энергия утекает в попытки растопить чужую эмоциональную холодность на свиданиях. Психика путает непредсказуемость с сильной любовью, игнорируя красные флаги. Вы тратите силы на тех, с кем изначально больно.",
-        trap: "Вместо спокойного выбора человека вы переходите в режим «как его завоевать» и отдаёте инициативу.",
-        insight: "Паттерн выбора недоступных: психика путает качели с любовью. Первый шаг — сформировать фильтр надёжного партнёра.",
-        gift: "Анатолий Фёдоров уже записал для вас персональный видео-разбор курса «Я выбираю» и открыл вводный урок с медитацией «На своей земле».",
-        courseName: "Смотреть видео-разбор и забрать подарок ➔",
-        courseLink: "02_landing_partner.html"
-      },
       emotions: {
         title: "Сценарий: «Растворение и гиперконтроль»",
         diagnosis: "Ваши силы уходят в «режим радара»: непрерывное сканирование настроения партнёра, тона его голоса и пауз. Психика находится в круглосуточном напряжении, отсюда разбитость. Это не «плохой характер» — так нервная система пытается защититься от тревоги.",
@@ -1168,6 +1180,21 @@
       }
     };
 
+    const secondaryTriggers = {
+      emotions: {
+        label: "«Гиперконтроль и потеря границ»",
+        desc: "Поверх основного сценария включается режим тревожного радара: попытки угадать настроение партнёра и заслужить спокойствие за счёт собственных сил."
+      },
+      family: {
+        label: "«Накопленные обиды и отчуждение»",
+        desc: "Параллельно копится невысказанное раздражение из-за бытового неравенства и ощущения, что контакт держится только на ваших плечах."
+      },
+      crisis: {
+        label: "«Острый соматический стресс»",
+        desc: "Тело реагирует физическими зажимами (ком в горле, сжатие в груди) и постоянным фоновым ожиданием неминуемой ссоры или взрыва."
+      }
+    };
+
     function showResults() {
       document.getElementById("screenAnalyzing").style.display = "none";
       document.getElementById("screenResult").style.display = "flex";
@@ -1180,6 +1207,21 @@
       }
       if (document.getElementById("resGiftText")) {
         document.getElementById("resGiftText").textContent = sc.gift;
+      }
+
+      // Сопутствующий фактор (второй план)
+      const secBox = document.getElementById("resSecondaryBox");
+      const secLabel = document.getElementById("resSecondaryLabel");
+      const secDesc = document.getElementById("resSecondaryDesc");
+      if (secBox && secLabel && secDesc) {
+        if (secondaryRoute && secondaryTriggers[secondaryRoute]) {
+          const sec = secondaryTriggers[secondaryRoute];
+          secLabel.textContent = sec.label;
+          secDesc.textContent = sec.desc;
+          secBox.style.display = "block";
+        } else {
+          secBox.style.display = "none";
+        }
       }
 
       // Все сохранённые законы психики (выводятся только в финале)
