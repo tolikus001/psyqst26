@@ -1745,10 +1745,32 @@ textarea:focus, input:focus {
 
         <!-- STEP 1 -->
         <div id="step1" class="glass card" style="display:flex; flex-direction:column; gap:12px;">
-          <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 1. Ситуация, которая задела</h3>
-          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Вспомните, когда его поведение вывело вас из себя или включило тревогу (опоздал, сухо ответил, хмуро зашёл, замолчал). Что произошло?</p>
-          <textarea id="situationInput" rows="4" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Например: пришёл с работы, молча прошёл на кухню и уткнулся в телефон, на мой вопрос ответил сквозь зубы..."></textarea>
-          <button onclick="handleStep1()" class="primary-btn" style="width:100%; min-height:44px;">Далее</button>
+          <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 1. Что произошло на самом деле?</h3>
+          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Выберите ситуацию, которая включила тревогу, или опишите свою:</p>
+          
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <!-- Вариант 1 -->
+            <button type="button" onclick="selectPresetSituation(this, 'Пришёл с работы, молча прошёл на кухню и уткнулся в телефон, на мой вопрос ответил сквозь зубы')" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer; transition:all 0.2s ease;">
+              📱 <strong>Пришёл молча</strong>, уткнулся в телефон, на вопросы отвечает сквозь зубы
+            </button>
+
+            <!-- Вариант 2 -->
+            <button type="button" onclick="selectPresetSituation(this, 'Договорились о планах, он опоздал и изменил всё в последний момент, даже не предупредив')" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer; transition:all 0.2s ease;">
+              ⏳ <strong>Изменил планы</strong> или опоздал в последний момент без предупреждения
+            </button>
+
+            <!-- Вариант 3 (Своя ситуация) -->
+            <button type="button" onclick="toggleCustomSituation(this)" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px dashed rgba(36,49,57,0.2); background:rgba(255,255,255,0.6); font-size:13px; line-height:1.35; color:var(--nb-text); cursor:pointer; transition:all 0.2s ease;">
+              ✏️ <strong>Описать свою ситуацию</strong>
+            </button>
+          </div>
+
+          <!-- Скрытое поле ввода для своего варианта -->
+          <div id="customSituationBox" style="display:none; flex-direction:column; gap:8px;">
+            <textarea id="situationInput" rows="3" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1.5px solid var(--nb-sea); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Опишите сухой факт: что произошло?"></textarea>
+          </div>
+
+          <button id="btnStep1Next" onclick="handleStep1()" class="primary-btn" style="width:100%; min-height:44px; margin-top:4px;">Далее →</button>
         </div>
 
         <!-- STEP 2 -->
@@ -2211,6 +2233,16 @@ textarea:focus, input:focus {
       color: #C4734F !important;
       background: rgba(196, 115, 79, 0.14) !important;
     }
+    .situation-chip:hover {
+      border-color: rgba(196, 115, 79, 0.4) !important;
+      background: #FFFDFB !important;
+    }
+    .situation-chip.selected {
+      border-color: var(--nb-sea) !important;
+      background: rgba(69, 101, 109, 0.08) !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 14px rgba(69, 101, 109, 0.12) !important;
+    }
   </style>
 
   <script>
@@ -2315,13 +2347,44 @@ textarea:focus, input:focus {
       }
     }
 
+    var selectedSituationText = '';
+
+    function selectPresetSituation(btn, text) {
+      safeHaptic('selection');
+      var allChips = document.querySelectorAll('.situation-chip');
+      allChips.forEach(function(c) { c.classList.remove('selected'); });
+      btn.classList.add('selected');
+
+      document.getElementById('customSituationBox').style.display = 'none';
+      selectedSituationText = text;
+      document.getElementById('situationInput').value = text;
+    }
+
+    function toggleCustomSituation(btn) {
+      safeHaptic('selection');
+      var allChips = document.querySelectorAll('.situation-chip');
+      allChips.forEach(function(c) { c.classList.remove('selected'); });
+      btn.classList.add('selected');
+
+      var box = document.getElementById('customSituationBox');
+      box.style.display = 'flex';
+      var input = document.getElementById('situationInput');
+      input.value = '';
+      selectedSituationText = '';
+      input.focus();
+    }
+
     function handleStep1() {
-      var v = document.getElementById('situationInput').value.trim();
-      if(!v) {
+      var customVal = document.getElementById('situationInput').value.trim();
+      var finalSituation = customVal || selectedSituationText;
+
+      if (!finalSituation) {
         safeHaptic('error');
-        alert('Пожалуйста, опишите ситуацию.');
+        alert('Пожалуйста, выберите один из вариантов или напишите свою ситуацию.');
         return;
       }
+
+      document.getElementById('situationInput').value = finalSituation;
       safeHaptic('selection');
       document.getElementById('step1').style.display = 'none';
       document.getElementById('step2').style.display = 'flex';
