@@ -2166,6 +2166,9 @@ textarea:focus, input:focus {
       allPresets.forEach(function(chip) { chip.classList.remove('selected'); });
       
       var visionInp = document.getElementById('visionInput');
+      var customNeed = document.getElementById('customNeedInput');
+      if (customNeed) customNeed.value = '';
+
       if (isAlreadySelected) {
         selectedVisionPreset = '';
         if (visionInp && visionInp.value === text) visionInp.value = '';
@@ -2213,13 +2216,50 @@ textarea:focus, input:focus {
       goToStep(3);
     }
 
-    var attempts = 19;
-    var ATTEMPTS_KEY = 's2_lesson4_attempts';
-    var savedAttempts = localStorage.getItem(ATTEMPTS_KEY);
-    if(savedAttempts !== null) {
-      attempts = parseInt(savedAttempts, 10);
+    // Кредиты / попытки
+    var aiCredits = 3;
+    var savedCredits = localStorage.getItem('s2_lesson4_credits');
+    if (savedCredits === null) {
+      savedCredits = localStorage.getItem('s2_lesson4_attempts');
     }
-    
+    if (savedCredits !== null) {
+      var parsed = parseInt(savedCredits, 10);
+      if (!isNaN(parsed)) aiCredits = parsed;
+    }
+    var attempts = aiCredits; // alias
+    var ATTEMPTS_KEY = 's2_lesson4_credits';
+
+    function updateCreditsBadge() {
+      var el = document.getElementById('attemptsCount');
+      if (el) el.textContent = aiCredits;
+
+      var elRetry = document.getElementById('retryAttemptsCount');
+      if (elRetry) elRetry.textContent = aiCredits;
+
+      var btnRetry = document.getElementById('btnRetryAi');
+      var fwResult = document.getElementById('companionFarewellResult');
+      var submitBtn = document.getElementById('submitBtn');
+      var fwStep3 = document.getElementById('companionFarewellStep3');
+
+      if (aiCredits <= 0) {
+        if (btnRetry) btnRetry.style.display = 'none';
+        if (fwResult) fwResult.style.display = 'flex';
+      } else {
+        if (btnRetry) btnRetry.style.display = 'flex';
+        if (fwResult) fwResult.style.display = 'none';
+      }
+    }
+    var updateAttemptsDisplay = updateCreditsBadge;
+
+    function showFarewell() {
+      safeHaptic('error');
+      var fwStep3 = document.getElementById('companionFarewellStep3');
+      if (fwStep3) fwStep3.style.display = 'flex';
+      var fwResult = document.getElementById('companionFarewellResult');
+      if (fwResult) fwResult.style.display = 'flex';
+      alert('Попытки для индивидуального разбора завершены. Вы можете выбрать готовые варианты ответа или посмотреть сохранённый совет.');
+    }
+
     function showSavedAdvice() {
       safeHaptic('selection');
       var saved = localStorage.getItem('s2_lesson4_block');
@@ -2232,7 +2272,10 @@ textarea:focus, input:focus {
           message: "«Перестаньте заслуживать любовь контролем и тревогами. Ваша ценность существует сама по себе. Позвольте себе выдохнуть и опереться на собственную силу. Всё, что вам нужно для устойчивости — уже внутри вас.»"
         };
       }
-      if (data.message) document.getElementById('resWiseMessage').textContent = data.message;
+      if (data.message) {
+        var msgEl = document.getElementById('resWiseMessage');
+        if (msgEl) msgEl.textContent = data.message;
+      }
 
       var s1 = document.getElementById('step1'); if(s1) s1.style.display = 'none';
       var s2 = document.getElementById('step2'); if(s2) s2.style.display = 'none';
@@ -2255,48 +2298,49 @@ textarea:focus, input:focus {
       
       var visionInp = document.getElementById('visionInput');
       if (visionInp) visionInp.value = '';
+      var customNeed = document.getElementById('customNeedInput');
+      if (customNeed) customNeed.value = '';
       var custState = document.getElementById('customStateInput');
       if (custState) custState.value = '';
       var custBelief = document.getElementById('customBeliefInput');
       if (custBelief) custBelief.value = '';
 
+      selectedVisionPreset = '';
+      document.querySelectorAll('#visionPresets .option-chip').forEach(function(chip) {
+        chip.classList.remove('selected');
+      });
+
       goToStep(1);
     }
 
-    function updateAttemptsDisplay() {
-      var el = document.getElementById('attemptsCount');
-      if(el) el.textContent = attempts;
-
-      var elRetry = document.getElementById('retryAttemptsCount');
-      if(elRetry) elRetry.textContent = attempts;
-
-      var btnRetry = document.getElementById('btnRetryAi');
-      var fwResult = document.getElementById('companionFarewellResult');
-      var submitBtn = document.getElementById('submitBtn');
-      var fwStep3 = document.getElementById('companionFarewellStep3');
-
-      if(attempts <= 0) {
-        if(submitBtn) submitBtn.style.display = 'flex'; // Presets are always available!
-        if(fwStep3) fwStep3.style.display = 'none';
-
-        if(btnRetry) btnRetry.style.display = 'flex';
-        if(fwResult) fwResult.style.display = 'none';
-      } else {
-        if(submitBtn) submitBtn.style.display = 'flex';
-        if(fwStep3) fwStep3.style.display = 'none';
-
-        if(btnRetry) btnRetry.style.display = 'flex';
-        if(fwResult) fwResult.style.display = 'none';
-      }
-    }
-    updateAttemptsDisplay();
-
-    function checkGibberish(text) {
-      if (!text || typeof text !== 'string') return true;
-      var clean = text.trim();
-      if (clean.length < 4) return true;
-      if (/(.)\1{3,}/i.test(clean)) return true;
+    function isGibberish(text) {
+      if (!text || typeof text !== 'string') return false;
+      var clean = text.trim().toLowerCase();
+      if (clean.length < 3) return true;
       
+      // Повторяющиеся символы (aaaa, .....)
+      if (/(.)\1{3,}/i.test(clean)) return true;
+
+      // Набор согласных без гласных
+      var consonantCluster = /[бвгджзйклмнпрстфхцчшщbcdfghjklmnpqrstvwxyz]{5,}/i.test(clean);
+      if (consonantCluster) return true;
+
+      // Паттерны бессмыслицы и филлеров
+      var fillerPatterns = [
+        /^(не знаю|хз|хз что|ничего|ни о чем|нет слов|просто так|тест|проверка|тестовый|asdf|qwerty|1234|бла бла|лалала|фыва)/i,
+        /^(да|нет|ок|норм|понятно|ладно|хм|ну|ага|угу)$/i
+      ];
+      for (var f = 0; f < fillerPatterns.length; f++) {
+        if (fillerPatterns[f].test(clean)) return true;
+      }
+
+      var words = clean.split(/\s+/).filter(Boolean);
+      if (words.length >= 2) {
+        var uniqueWords = new Set(words);
+        if (uniqueWords.size === 1) return true;
+      }
+      if (words.length === 1 && clean.length > 20) return true;
+
       var letters = clean.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
       if (letters.length >= 4) {
         var vowels = letters.match(/[аеёиоуыэюяaeiouy]/gi);
@@ -2309,7 +2353,7 @@ textarea:focus, input:focus {
           return true;
         }
       }
-      
+
       var mashPatterns = [/фыва/i, /йцук/i, /ячсм/i, /qwerty/i, /asdf/i, /zxcv/i];
       for (var i = 0; i < mashPatterns.length; i++) {
         if (mashPatterns[i].test(clean) && clean.length < 25) {
@@ -2318,6 +2362,7 @@ textarea:focus, input:focus {
       }
       return false;
     }
+    var checkGibberish = isGibberish;
 
     function showGibberishNotice(msg) {
       var elLoading = document.getElementById('aiLoading');
@@ -2326,7 +2371,7 @@ textarea:focus, input:focus {
       
       var notice = document.getElementById('gibberishNotice');
       var noticeText = document.getElementById('gibberishNoticeText');
-      var defaultMsg = 'Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами.';
+      var defaultMsg = 'Пожалуйста, напишите мысль понятными словами (без случайного набора букв) или выберите готовые варианты.';
       if (noticeText) noticeText.textContent = msg || defaultMsg;
       if (notice) {
         notice.style.display = 'block';
@@ -2380,72 +2425,67 @@ textarea:focus, input:focus {
       return "«" + stateMsg + " " + beliefMsg + " " + visionMsg + "»";
     }
 
-    async function submitToAI(e) {
+    function renderLesson4Preset() {
+      var states = Array.from(document.querySelectorAll('input[name="stateSuppress"]:checked')).map(n => n.value);
+      var beliefs = Array.from(document.querySelectorAll('input[name="healthyBeliefs"]:checked')).map(n => n.value);
+      var vision = selectedVisionPreset || (document.getElementById('visionInput') ? document.getElementById('visionInput').value.trim() : '');
+
+      if (states.length === 0) states = ['anxiety_pause'];
+      if (beliefs.length === 0) beliefs = ['valuable'];
+      if (!vision) vision = 'Чувствую покой и безопасность: не жду подвоха, не сканирую его лицо и настроение, спокойно занимаюсь своими делами.';
+
+      var wiseMsg = getPreparedWisdomResponse(states, beliefs, vision);
+      renderResults({ message: wiseMsg }, false); // false = попытки НЕ списываем!
+    }
+
+    function submitLesson4() {
+      var custom1 = document.getElementById('customStateInput') ? document.getElementById('customStateInput').value.trim() : '';
+      var custom2 = document.getElementById('customBeliefInput') ? document.getElementById('customBeliefInput').value.trim() : '';
+      var custom3 = document.getElementById('customNeedInput') ? document.getElementById('customNeedInput').value.trim() : '';
+      var hasCustom = custom1.length > 0 || custom2.length > 0 || custom3.length > 0;
+      // 1. ЕСЛИ НАПИСАН СВОЙ ВАРИАНТ:
+      if (hasCustom) {
+        if ((custom1 && isGibberish(custom1)) || (custom2 && isGibberish(custom2)) || (custom3 && isGibberish(custom3))) {
+          safeHaptic('error');
+          alert('Пожалуйста, напишите мысль понятными словами (без абракадабры) или выберите готовые варианты.');
+          return;
+        }
+        if (aiCredits <= 0) {
+          showFarewell();
+          return;
+        }
+        // Списываем 1 попытку и вызываем реальный ИИ
+        aiCredits--;
+        localStorage.setItem('s2_lesson4_credits', aiCredits);
+        localStorage.setItem('s2_lesson4_attempts', aiCredits.toString());
+        attempts = aiCredits;
+        updateCreditsBadge();
+        sendLesson4ToAI(custom1, custom2, custom3);
+      } else {
+        // 2. ЕСЛИ ВЫБРАНЫ ТОЛЬКО ГОТОВЫЕ ГАЛОЧКИ:
+        // Показываем эталонный ответ мгновенно.
+        // Запрос в ИИ НЕ шлём, попытки НЕ списываем (остаётся 3 из 3).
+        renderLesson4Preset();
+      }
+    }
+
+    function submitToAI(e) {
       if (e && e.preventDefault) e.preventDefault();
       if (e && e.stopPropagation) e.stopPropagation();
+      submitLesson4();
+    }
 
+    async function sendLesson4ToAI(custom1, custom2, custom3) {
       var notice = document.getElementById('gibberishNotice');
       if (notice) notice.style.display = 'none';
-      
+
       var states = Array.from(document.querySelectorAll('input[name="stateSuppress"]:checked')).map(n => n.value);
-      var customState = document.getElementById('customStateInput') ? document.getElementById('customStateInput').value.trim() : '';
-      
       var beliefs = Array.from(document.querySelectorAll('input[name="healthyBeliefs"]:checked')).map(n => n.value);
-      var customBelief = document.getElementById('customBeliefInput') ? document.getElementById('customBeliefInput').value.trim() : '';
-      
-      var vision = document.getElementById('visionInput') ? document.getElementById('visionInput').value.trim() : '';
+      var vision = custom3 || selectedVisionPreset || (document.getElementById('visionInput') ? document.getElementById('visionInput').value.trim() : '');
 
-      // Default selections if completely empty
-      if (states.length === 0 && !customState) {
-        states = ['anxiety_pause'];
-      }
-      if (beliefs.length === 0 && !customBelief) {
-        beliefs = ['valuable'];
-      }
-      if (!vision && !selectedVisionPreset) {
-        var firstPreset = document.querySelector('#visionPresets .option-chip');
-        if (firstPreset) {
-          selectVisionPreset(firstPreset, 'Чувствую покой и безопасность: не жду подвоха, не сканирую его лицо и настроение, спокойно занимаюсь своими делами.');
-          vision = selectedVisionPreset;
-        }
-      } else if (!vision && selectedVisionPreset) {
-        vision = selectedVisionPreset;
-      }
-
-      // Check if user entered ANY custom text
-      var hasCustomInput = Boolean(customState || customBelief || (vision && vision !== selectedVisionPreset));
-
-      // CASE 1: PURE PRESETS (No custom input entered)
-      // Instant prepared response, NO AI call, NO attempt deduction!
-      if (!hasCustomInput) {
-        safeHaptic('medium');
-        var elLoading = document.getElementById('aiLoading');
-        if (elLoading) {
-          elLoading.style.display = 'flex';
-          var loadP = elLoading.querySelector('p');
-          if (loadP) loadP.textContent = 'Соединяю с Мудрой Собой...';
-        }
-        
-        setTimeout(function() {
-          var wiseMsg = getPreparedWisdomResponse(states, beliefs, vision);
-          renderResults({ message: wiseMsg }, false); // false = DO NOT DEDUCT ATTEMPTS!
-        }, 500);
-        return;
-      }
-
-      // CASE 2: CUSTOM INPUT
-      if (attempts <= 0) {
-        safeHaptic('medium');
-        var wiseMsg = getPreparedWisdomResponse(states, beliefs, vision);
-        renderResults({ message: wiseMsg }, false);
-        return;
-      }
-
-      var combinedCustom = [customState, customBelief, (vision !== selectedVisionPreset ? vision : '')].filter(Boolean).join(' ');
-      if (combinedCustom && checkGibberish(combinedCustom)) {
-        showGibberishNotice();
-        return;
-      }
+      if (states.length === 0 && !custom1) states = ['anxiety_pause'];
+      if (beliefs.length === 0 && !custom2) beliefs = ['valuable'];
+      if (!vision) vision = 'Чувствую покой и безопасность: не жду подвоха, не сканирую его лицо и настроение, спокойно занимаюсь своими делами.';
 
       safeHaptic('medium');
       var elLoading = document.getElementById('aiLoading');
@@ -2454,94 +2494,110 @@ textarea:focus, input:focus {
         var loadP = elLoading.querySelector('p');
         if (loadP) loadP.textContent = 'Соединяю с Мудрой Собой...';
       }
-      
+
       try {
         var payload = {
-           states: states,
-           customState: customState,
-           beliefs: beliefs,
-           customBelief: customBelief,
-           vision: vision
+          states: states,
+          customState: custom1,
+          beliefs: beliefs,
+          customBelief: custom2,
+          vision: vision
         };
-        
+
         var apiFunc = (typeof apiPost === 'function') ? apiPost : apiPostLocal;
         var data = await apiFunc('/api/s2-lesson4-strategy', payload);
 
         if (data && data.invalid) {
-           showGibberishNotice(data.message);
-           return;
-        }
-        
-        if (!data || !data.message) {
-           throw new Error("Invalid API response");
-        }
-        renderResults(data, true); // true = deduct attempt!
-        
-      } catch(err) {
-        console.error(err);
-        if (checkGibberish(combinedCustom)) {
-          showGibberishNotice();
+          if (elLoading) elLoading.style.display = 'none';
+          showGibberishNotice(data.message);
+          aiCredits++;
+          localStorage.setItem('s2_lesson4_credits', aiCredits);
+          localStorage.setItem('s2_lesson4_attempts', aiCredits.toString());
+          attempts = aiCredits;
+          updateCreditsBadge();
           return;
         }
-        setTimeout(function() {
-          var wiseMsg = getPreparedWisdomResponse(states, beliefs, vision);
-          renderResults({ message: wiseMsg }, true);
-        }, 1200);
+
+        if (!data || !data.message) {
+          throw new Error('Invalid API response');
+        }
+
+        renderResults(data, true);
+      } catch (err) {
+        console.error(err);
+        var wiseMsg = getPreparedWisdomResponse(states, beliefs, vision);
+        renderResults({ message: wiseMsg }, true);
       }
     }
-    
+
     function renderResults(data, deductAttempt) {
-        var elLoading = document.getElementById('aiLoading');
-        if (elLoading) elLoading.style.display = 'none';
-        
-        safeHaptic('success');
-        
-        if (deductAttempt) {
-          attempts--;
-          localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
-          updateAttemptsDisplay();
-          var attUsedBadge = document.getElementById('attemptUsedBadge');
-          if (attUsedBadge) attUsedBadge.style.display = 'block';
-          var noAttBadge = document.getElementById('noAttemptDeductedBadge');
-          if (noAttBadge) noAttBadge.style.display = 'none';
-        } else {
-          // Pure preset choice: attempt NOT deducted!
-          var noAttBadge = document.getElementById('noAttemptDeductedBadge');
-          if (noAttBadge) noAttBadge.style.display = 'block';
-          var attUsedBadge = document.getElementById('attemptUsedBadge');
-          if (attUsedBadge) attUsedBadge.style.display = 'none';
-        }
-        
-        localStorage.setItem('s2_lesson4_block', JSON.stringify(data));
-        localStorage.setItem('s2_lesson4_completed', 'true');
-        
-        if (data.message) document.getElementById('resWiseMessage').textContent = data.message;
-        
-        var s1 = document.getElementById('step1'); if (s1) s1.style.display = 'none';
-        var s2 = document.getElementById('step2'); if (s2) s2.style.display = 'none';
-        var s3 = document.getElementById('step3'); if (s3) s3.style.display = 'none';
-        var resCard = document.getElementById('resultCard');
-        if (resCard) {
-          resCard.style.display = 'flex';
-          requestAnimationFrame(function() {
-            setTimeout(function() {
-              if (resCard) {
-                resCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }, 60);
-          });
-        }
+      var elLoading = document.getElementById('aiLoading');
+      if (elLoading) elLoading.style.display = 'none';
+
+      safeHaptic('success');
+
+      var attUsedBadge = document.getElementById('attemptUsedBadge');
+      var noAttBadge = document.getElementById('noAttemptDeductedBadge');
+
+      if (deductAttempt) {
+        if (attUsedBadge) attUsedBadge.style.display = 'block';
+        if (noAttBadge) noAttBadge.style.display = 'none';
+      } else {
+        // Pure preset choice: attempt NOT deducted!
+        if (noAttBadge) noAttBadge.style.display = 'block';
+        if (attUsedBadge) attUsedBadge.style.display = 'none';
+      }
+
+      localStorage.setItem('s2_lesson4_block', JSON.stringify(data));
+      localStorage.setItem('s2_lesson4_completed', 'true');
+
+      if (data.message) {
+        var msgEl = document.getElementById('resWiseMessage');
+        if (msgEl) msgEl.textContent = data.message;
+      }
+
+      var s1 = document.getElementById('step1'); if (s1) s1.style.display = 'none';
+      var s2 = document.getElementById('step2'); if (s2) s2.style.display = 'none';
+      var s3 = document.getElementById('step3'); if (s3) s3.style.display = 'none';
+      var resCard = document.getElementById('resultCard');
+      if (resCard) {
+        resCard.style.display = 'flex';
+        requestAnimationFrame(function() {
+          setTimeout(function() {
+            if (resCard) resCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 60);
+        });
+      }
     }
 
     window.addEventListener('DOMContentLoaded', function() {
+      var customNeed = document.getElementById('customNeedInput');
+      if (customNeed) {
+        customNeed.addEventListener('input', function() {
+          if (this.value.trim().length > 0) {
+            selectedVisionPreset = '';
+            document.querySelectorAll('#visionPresets .option-chip').forEach(function(chip) {
+              chip.classList.remove('selected');
+            });
+            var visionInp = document.getElementById('visionInput');
+            if (visionInp) visionInp.value = this.value;
+          }
+        });
+      }
+
+      updateCreditsBadge();
+
       var saved = localStorage.getItem('s2_lesson4_block');
-      if(saved) {
+      if (saved) {
         try {
           var data = JSON.parse(saved);
-          if (data.message) document.getElementById('resWiseMessage').textContent = data.message;
-        }catch(e){}
+          if (data.message) {
+            var msgEl = document.getElementById('resWiseMessage');
+            if (msgEl) msgEl.textContent = data.message;
+          }
+        } catch(e) {}
       }
-      if (attempts <= 0 && saved) {
+      if (aiCredits <= 0 && saved) {
         var s1 = document.getElementById('step1'); if(s1) s1.style.display = 'none';
         var s2 = document.getElementById('step2'); if(s2) s2.style.display = 'none';
         var s3 = document.getElementById('step3'); if(s3) s3.style.display = 'none';

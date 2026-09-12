@@ -1655,7 +1655,7 @@ textarea:focus, input:focus {
             <span>Навигация по курсу</span>
           </button>
           <button type="button" onclick="safeHaptic('selection'); openScreen('21_bonuses.html');" class="next-lesson-btn">
-            <span>Бонусы курса 🎁 →</span>
+            <span>Бонусы курса →</span>
           </button>
         </div>
 
@@ -1719,7 +1719,7 @@ textarea:focus, input:focus {
 
           <div style="display:flex; flex-direction:column; gap:10px;">
             <button onclick="goToPractice()" class="secondary-btn" style="width:100%; min-height:46px; border-radius:16px; font-size:13.5px; font-weight:700; color:var(--nb-deep); display:flex; align-items:center; justify-content:center; gap:8px;">
-              <span>📋 Собрать и сохранить Карту опоры</span>
+              <span>Собрать и сохранить Карту опоры</span>
               <span class="strategy-badge" style="font-size:11px; padding:2px 8px;">5 шагов</span>
             </button>
           </div>
@@ -1774,7 +1774,7 @@ textarea:focus, input:focus {
           </div>
 
           <button onclick="saveSupportMap()" class="secondary-btn" style="width:100%; min-height:44px; border-radius:14px; font-size:13px; font-weight:700; color:var(--nb-deep); margin-top:4px;">
-            <span>💾 Сохранить мою Карту опоры</span>
+            <span>Сохранить мою Карту опоры</span>
           </button>
         </section>
 
@@ -1944,7 +1944,7 @@ textarea:focus, input:focus {
       };
       localStorage.setItem('s2_lesson5_map', JSON.stringify(mapData));
       localStorage.setItem('s2_lesson5_completed', 'true');
-      alert('✅ Карта опоры успешно сохранена в вашем профиле!');
+      alert('Карта опоры сохранена в вашем профиле');
     }
     var saveSupportMap = saveMap;
 
@@ -1961,17 +1961,48 @@ textarea:focus, input:focus {
         }, true);
       }
 
-      var saved = localStorage.getItem('s2_lesson5_map');
-      if(saved) {
+      // 1. Проверяем, сохранял ли пользователь саму карту 5 урока
+      var savedMap = localStorage.getItem('s2_lesson5_map');
+      if (savedMap) {
         try {
-          var d = JSON.parse(saved);
-          if(d.step1) document.getElementById('mapStep1').value = d.step1;
-          if(d.step2) document.getElementById('mapStep2').value = d.step2;
-          if(d.step3) document.getElementById('mapStep3').value = d.step3;
-          if(d.step4) document.getElementById('mapStep4').value = d.step4;
-          if(d.step5) document.getElementById('mapStep5').value = d.step5;
-        }catch(e){}
+          var d = JSON.parse(savedMap);
+          if (d.step1) document.getElementById('mapStep1').value = d.step1;
+          if (d.step2) document.getElementById('mapStep2').value = d.step2;
+          if (d.step3) document.getElementById('mapStep3').value = d.step3;
+          if (d.step4) document.getElementById('mapStep4').value = d.step4;
+          if (d.step5) document.getElementById('mapStep5').value = d.step5;
+          return;
+        } catch(e) {}
       }
+
+      // 2. Если карта еще не сохранялась — подтягиваем ответы из уроков 1-4
+      try {
+        var l1 = JSON.parse(localStorage.getItem('s2_lesson1_block') || '{}');
+        if (l1.stabilizer || l1.fact) {
+          document.getElementById('mapStep1').value = l1.stabilizer || l1.fact;
+        }
+      } catch(e) {}
+
+      try {
+        var l2 = JSON.parse(localStorage.getItem('s2_lesson2_block') || '{}');
+        if (l2.needView) {
+          document.getElementById('mapStep2').value = l2.needView;
+        }
+      } catch(e) {}
+
+      try {
+        var l3 = JSON.parse(localStorage.getItem('s2_lesson3_block') || '{}');
+        if (l3.formula || l3.action) {
+          document.getElementById('mapStep3').value = l3.formula || l3.action;
+        }
+      } catch(e) {}
+
+      try {
+        var l4 = JSON.parse(localStorage.getItem('s2_lesson4_block') || '{}');
+        if (l4.message) {
+          document.getElementById('mapStep4').value = l4.message;
+        }
+      } catch(e) {}
     });
   </script>
 
