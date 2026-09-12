@@ -139,7 +139,57 @@
     '24_bonus2_3': '0ORCSoM30o4K6tlmZ4KYmP',
     '25_bonus4': '6j07iXAve1PXf3vko48gGa',
     '25_bonus4.html': '6j07iXAve1PXf3vko48gGa',
-    '25_bonus2_4': '6j07iXAve1PXf3vko48gGa'
+    '25_bonus2_4': '6j07iXAve1PXf3vko48gGa',
+
+    // ── Сценарий 3: «Мы вместе» (семья/брак) ──
+    // TODO: заменить значения на реальные NotiBot Article ID после создания статей
+    '26_landing_family': '26_landing_family.html',
+    '26_landing_family.html': '26_landing_family.html',
+    '27_lesson1': '27_lesson1.html',
+    '27_lesson1.html': '27_lesson1.html',
+    '28_lesson2': '28_lesson2.html',
+    '28_lesson2.html': '28_lesson2.html',
+    '29_lesson3': '29_lesson3.html',
+    '29_lesson3.html': '29_lesson3.html',
+    '30_lesson4': '30_lesson4.html',
+    '30_lesson4.html': '30_lesson4.html',
+    '31_lesson5': '31_lesson5.html',
+    '31_lesson5.html': '31_lesson5.html',
+    '32_bonuses': '32_bonuses.html',
+    '32_bonuses.html': '32_bonuses.html',
+    '33_bonus1': '33_bonus1.html',
+    '33_bonus1.html': '33_bonus1.html',
+    '34_bonus2': '34_bonus2.html',
+    '34_bonus2.html': '34_bonus2.html',
+    '35_bonus3': '35_bonus3.html',
+    '35_bonus3.html': '35_bonus3.html',
+    '36_bonus4': '36_bonus4.html',
+    '36_bonus4.html': '36_bonus4.html',
+
+    // ── Сценарий 4: «Точка опоры» (кризис/измена) ──
+    // TODO: заменить значения на реальные NotiBot Article ID после создания статей
+    '37_landing_crisis': '37_landing_crisis.html',
+    '37_landing_crisis.html': '37_landing_crisis.html',
+    '38_lesson1': '38_lesson1.html',
+    '38_lesson1.html': '38_lesson1.html',
+    '39_lesson2': '39_lesson2.html',
+    '39_lesson2.html': '39_lesson2.html',
+    '40_lesson3': '40_lesson3.html',
+    '40_lesson3.html': '40_lesson3.html',
+    '41_lesson4': '41_lesson4.html',
+    '41_lesson4.html': '41_lesson4.html',
+    '42_lesson5': '42_lesson5.html',
+    '42_lesson5.html': '42_lesson5.html',
+    '43_bonuses': '43_bonuses.html',
+    '43_bonuses.html': '43_bonuses.html',
+    '44_bonus1': '44_bonus1.html',
+    '44_bonus1.html': '44_bonus1.html',
+    '45_bonus2': '45_bonus2.html',
+    '45_bonus2.html': '45_bonus2.html',
+    '46_bonus3': '46_bonus3.html',
+    '46_bonus3.html': '46_bonus3.html',
+    '47_bonus4': '47_bonus4.html',
+    '47_bonus4.html': '47_bonus4.html'
 
   };
 
@@ -167,7 +217,7 @@
     const raw = String(target || '').trim();
     const clean = raw.split('?')[0].split('#')[0].replace(/^\.?\//, '');
     const articleId = NOTIBOT_ARTICLES[clean] || NOTIBOT_ARTICLES[raw] || NOTIBOT_ARTICLES[target];
-    if (window.notibot && articleId && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
+    if (window.notibot && articleId && !articleId.endsWith('.html') && typeof window.notibot.openArticle === 'function' && window.parent && window.parent !== window) {
       window.notibot.openArticle(articleId);
     } else {
       window.location.href = target;

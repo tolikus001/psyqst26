@@ -558,13 +558,49 @@ textarea:focus, input:focus {
   text-align: center;
 }
 
+/* Smooth Glare / Sheen Sweep (вместо нервного мерцания) */
+.btn-glare,
 .pulse {
-  animation: pulse 2.4s ease-in-out infinite;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
 }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 12px 28px rgba(127, 155, 142, 0.22); transform: scale(1); }
-  50% { box-shadow: 0 16px 34px rgba(127, 155, 142, 0.32); transform: scale(1.01); }
+.btn-glare::after,
+.pulse::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -90%;
+  width: 50%;
+  height: 220%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  z-index: 2;
+  animation: btnGlareSweep 3.6s ease-in-out infinite;
+}
+
+@keyframes btnGlareSweep {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 1;
+  }
+  72%, 100% {
+    left: 160%;
+    opacity: 0;
+  }
 }
 
 @keyframes enter {
@@ -1642,7 +1678,7 @@ textarea:focus, input:focus {
           <p class="lead" style="font-size:13px; line-height:1.4; color:var(--nb-text-2); margin-bottom:12px; text-align:center;">Как остановить маятник между контролем и виной и найти точку внутренней опоры.</p>
 
           <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/pQYPKCqxT8pw5kedQJ8CaR?max_quality=720"
+            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/9tdYH511viGFNYc3cj46wW?max_quality=720"
               allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
               frameborder="0" allowfullscreen
               style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
@@ -1659,16 +1695,16 @@ textarea:focus, input:focus {
           </p>
 
           <div style="display:flex; flex-direction:column; gap:10px;">
-            <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%; min-height:46px;">
+            <button onclick="goToPractice()" class="primary-btn btn-glare" style="width:100%; min-height:48px;">
               <span>Перейти к практикуму ➔</span>
             </button>
           </div>
         </section>
 
         <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); openScreen('20_lesson5.html');" class="primary-btn pulse"
+          <button onclick="safeHaptic('selection'); openScreen('20_lesson5.html');" class="primary-btn btn-glare"
             style="width:100%; display:flex; justify-content:center; align-items:center; min-height:48px;">
-            <span>Перейти к уроку 5 →</span>
+            <span>Перейти к Уроку 5&nbsp;→</span>
           </button>
         </div>
 
@@ -1686,7 +1722,7 @@ textarea:focus, input:focus {
         <div class="glass card text-center" style="padding: 16px 18px;">
           <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
             <div class="eyebrow" style="margin:0; background:rgba(217, 131, 78, 0.12); color:#A85532; border-color:rgba(217, 131, 78, 0.25);">
-              ☀️ Встреча с Мудрой Собой
+              ☀️ Интеллектуальный попутчик: Мудрая Я
             </div>
             <div class="strategy-badge" style="margin:0 auto; font-size:11.5px; font-weight:800; background:rgba(36,49,57,0.06); color:var(--nb-deep); padding:2px 10px; border-radius:999px;">
               Осталось попыток:&nbsp;<span id="attemptsCount" style="color:#A85532; font-weight:900;">3</span>
@@ -1700,60 +1736,244 @@ textarea:focus, input:focus {
         <!-- STEP 1 -->
         <div id="step1" class="glass card" style="display:flex; flex-direction:column; gap:12px;">
           <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 1. Какое состояние вы чаще всего подавляете?</h3>
+          <p style="font-size:12.5px; color:var(--nb-text-2); text-align:center; margin:0; line-height:1.4;">
+            Отметьте то, что поднимается внутри (можно выбрать одно или несколько):
+          </p>
+
           <div style="display:flex; flex-direction:column; gap:8px;">
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="checkbox" name="stateSuppress" value="needless" style="accent-color:var(--nb-sea); width:18px; height:18px;">
-              <span style="font-size:13px; font-weight:600; color:var(--nb-deep);">💔 Страх ненужности (заслуживаю любовь опекой)</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="checkbox" name="stateSuppress" value="anxiety_pause" style="accent-color:var(--nb-sea); width:18px; height:18px;">
-              <span style="font-size:13px; font-weight:600; color:var(--nb-deep);">⏳ Тревога от пауз и молчания (не выдерживаю неизвестность)</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="checkbox" name="stateSuppress" value="shame" style="accent-color:var(--nb-sea); width:18px; height:18px;">
-              <span style="font-size:13px; font-weight:600; color:var(--nb-deep);">🕳 Самоедство и стыд («со мной тяжело, я всё порчу»)</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="checkbox" name="stateSuppress" value="tiredness" style="accent-color:var(--nb-sea); width:18px; height:18px;">
-              <span style="font-size:13px; font-weight:600; color:var(--nb-deep);">🪫 Глубокая усталость (хочу перестать всё тащить)</span>
-            </label>
+            <div class="option-chip" onclick="toggleOptionChip(this, 'stateSuppress', 'needless')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">💔</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  Страх ненужности <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">заслуживаю любовь опекой, боюсь стать обузой</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+              <input type="checkbox" name="stateSuppress" value="needless" style="display:none;">
+            </div>
+
+            <div class="option-chip" onclick="toggleOptionChip(this, 'stateSuppress', 'anxiety_pause')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">⏳</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  Тревога от пауз и молчания <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">не выдерживаю неизвестность, сразу рисую худшее</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+              <input type="checkbox" name="stateSuppress" value="anxiety_pause" style="display:none;">
+            </div>
+
+            <div class="option-chip" onclick="toggleOptionChip(this, 'stateSuppress', 'shame')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">🕳</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  Самоедство и стыд <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">«со мной тяжело, я всё порчу, опять я виновата»</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+              <input type="checkbox" name="stateSuppress" value="shame" style="display:none;">
+            </div>
+
+            <div class="option-chip" onclick="toggleOptionChip(this, 'stateSuppress', 'tiredness')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">🪫</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  Глубокая усталость <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">хочу перестать всё тащить, но боюсь отпустить</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+              <input type="checkbox" name="stateSuppress" value="tiredness" style="display:none;">
+            </div>
           </div>
-          <button onclick="handleStep1()" class="primary-btn" style="width:100%; min-height:44px;">Далее</button>
+
+          <!-- Поле Свой вариант Шаг 1 -->
+          <div style="margin-top:2px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+              <label for="customStateInput" style="font-size:12px; font-weight:700; color:var(--nb-deep);">
+                ✏️ Или своё состояние:
+              </label>
+              <span style="font-size:11px; color:var(--nb-text-2);">необязательно</span>
+            </div>
+            <input type="text" id="customStateInput" placeholder="Например: чувство брошенности, страх скандала, паника..." 
+              style="width:100%; border-radius:14px; padding:10px 14px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; color:var(--nb-deep); outline:none; transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='var(--nb-sea)'" onblur="this.style.borderColor='rgba(36,49,57,0.15)'">
+          </div>
+
+          <button onclick="handleStep1()" class="primary-btn btn-glare" style="width:100%; min-height:46px; border-radius:16px;">Далее</button>
         </div>
 
         <!-- STEP 2 -->
         <div id="step2" class="glass card" style="display:none; flex-direction:column; gap:12px;">
           <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 2. Здоровые убеждения, которые за этим стоят</h3>
+          <p style="font-size:12.5px; color:var(--nb-text-2); text-align:center; margin:0; line-height:1.4;">
+            Какая взрослая опора и правда нужна вашей душе сейчас:
+          </p>
+
           <div style="display:flex; flex-direction:column; gap:8px;">
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="checkbox" name="healthyBeliefs" value="valuable" style="accent-color:var(--nb-accent); width:18px; height:18px;">
-              <span style="font-size:12.5px; font-weight:600; color:var(--nb-deep);">💎 «Моя ценность существует сама по себе. Я достойна любви просто так»</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="checkbox" name="healthyBeliefs" value="clarity" style="accent-color:var(--nb-accent); width:18px; height:18px;">
-              <span style="font-size:12.5px; font-weight:600; color:var(--nb-deep);">💎 «Я имею полное право на ясность и открытый диалог»</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="checkbox" name="healthyBeliefs" value="emotions_norm" style="accent-color:var(--nb-accent); width:18px; height:18px;">
-              <span style="font-size:12.5px; font-weight:600; color:var(--nb-deep);">💎 «Мои чувства — это норма. Со мной всё в порядке»</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(36,49,57,0.1); cursor:pointer;">
-              <input type="checkbox" name="healthyBeliefs" value="shared_resp" style="accent-color:var(--nb-accent); width:18px; height:18px;">
-              <span style="font-size:12.5px; font-weight:600; color:var(--nb-deep);">💎 «Ответственность делится на двоих, я имею право на отдых и опору»</span>
-            </label>
+            <div class="option-chip" onclick="toggleOptionChip(this, 'healthyBeliefs', 'valuable')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">💎</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  «Моя ценность безусловна» <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">Я достойна любви просто так, не заслуживая её контролем</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+              <input type="checkbox" name="healthyBeliefs" value="valuable" style="display:none;">
+            </div>
+
+            <div class="option-chip" onclick="toggleOptionChip(this, 'healthyBeliefs', 'clarity')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">🕊</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  «Я имею право на ясность» <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">Мои вопросы и потребность в открытом диалоге — норма</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+              <input type="checkbox" name="healthyBeliefs" value="clarity" style="display:none;">
+            </div>
+
+            <div class="option-chip" onclick="toggleOptionChip(this, 'healthyBeliefs', 'emotions_norm')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">🌿</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  «Мои чувства — это норма» <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">Со мной всё в порядке, я имею право чувствовать и уставать</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+              <input type="checkbox" name="healthyBeliefs" value="emotions_norm" style="display:none;">
+            </div>
+
+            <div class="option-chip" onclick="toggleOptionChip(this, 'healthyBeliefs', 'shared_resp')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">⚓</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  «Ответственность делится на двоих» <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">Я имею полное право на отдых, заботу и опору</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+              <input type="checkbox" name="healthyBeliefs" value="shared_resp" style="display:none;">
+            </div>
           </div>
-          <button onclick="handleStep2()" class="primary-btn" style="width:100%; min-height:44px;">Далее</button>
+
+          <!-- Поле Свой вариант Шаг 2 -->
+          <div style="margin-top:2px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+              <label for="customBeliefInput" style="font-size:12px; font-weight:700; color:var(--nb-deep);">
+                ✏️ Или своя формула опоры:
+              </label>
+              <span style="font-size:11px; color:var(--nb-text-2);">необязательно</span>
+            </div>
+            <input type="text" id="customBeliefInput" placeholder="Например: Я выбираю свой покой и безопасность внутри себя..." 
+              style="width:100%; border-radius:14px; padding:10px 14px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; color:var(--nb-deep); outline:none; transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='var(--nb-sea)'" onblur="this.style.borderColor='rgba(36,49,57,0.15)'">
+          </div>
+
+          <div style="display:flex; gap:8px;">
+            <button onclick="goToStep(1)" class="secondary-btn" style="flex:0 0 85px; min-height:46px; border-radius:16px;">← Назад</button>
+            <button onclick="handleStep2()" class="primary-btn btn-glare" style="flex:1; min-height:46px; border-radius:16px;">Далее</button>
+          </div>
         </div>
 
         <!-- STEP 3 -->
         <div id="step3" class="glass card" style="display:none; flex-direction:column; gap:12px; position:relative;">
           <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 3. Жизнь с реализованной потребностью</h3>
-          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Если бы эта ваша потребность была полностью реализована — как бы вы себя чувствовали? Как бы изменились ваши отношения?</p>
-          <textarea id="visionInput" rows="4" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Опишите ваше состояние свободы, лёгкости и уверенности..."></textarea>
+          <p style="font-size:12.5px; color:var(--nb-text-2); text-align:center; margin:0; line-height:1.4;">
+            Выберите подходящее состояние в 1 клик или опишите своими словами:
+          </p>
+
+          <!-- Готовые варианты для быстрого выбора -->
+          <div id="visionPresets" style="display:flex; flex-direction:column; gap:8px;">
+            <div class="option-chip" onclick="selectVisionPreset(this, 'Чувствую покой и безопасность: не жду подвоха, не сканирую его лицо и настроение, спокойно занимаюсь своими делами.')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">🌿</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  Внутренний штиль <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">не жду подвоха, не сканирую его настроение, занимаюсь собой</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+            </div>
+
+            <div class="option-chip" onclick="selectVisionPreset(this, 'Говорю прямо и спокойно о том, что мне нужно, без страха быть отвергнутой или обиженной.')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">🕊</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  Свобода и лёгкость <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">говорю прямо и спокойно, без страха отвержения</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+            </div>
+
+            <div class="option-chip" onclick="selectVisionPreset(this, 'Даже если он молчит или не в духе, мой мир не рушится, я остаюсь целостной и в безопасности.')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">⚓</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  Устойчивость <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">даже если он молчит, мой мир не рушится, я в безопасности</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+            </div>
+
+            <div class="option-chip" onclick="selectVisionPreset(this, 'Перестала всё тащить и решать за двоих, вернула себе сон, радость и женскую силу.')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">💎</span>
+                <div style="font-size:13px; font-weight:600; color:var(--nb-deep); line-height:1.35;">
+                  Сброшенный контроль <span style="font-size:11.5px; color:var(--nb-text-2); display:block; font-weight:500;">перестала всё тащить за двоих, вернула себе радость и сон</span>
+                </div>
+              </div>
+              <div class="check-circle"></div>
+            </div>
+          </div>
+
+          <!-- Поле Свой вариант Шаг 3 -->
+          <div style="margin-top:2px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+              <label for="visionInput" style="font-size:12px; font-weight:700; color:var(--nb-deep);">
+                ✏️ Или дополните своими словами:
+              </label>
+              <span style="font-size:11px; color:var(--nb-text-2);">необязательно</span>
+            </div>
+            <textarea id="visionInput" rows="2" style="width:100%; border-radius:14px; padding:10px 14px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4; color:var(--nb-deep); outline:none; transition:border-color 0.2s;" placeholder="Опишите ваше ощущение свободы, если хотите сформулировать сами..."></textarea>
+          </div>
           
-          <button id="submitBtn" onclick="submitToAI()" class="primary-btn pulse" style="width:100%; min-height:46px;">
-            <span>Получить напутствие от Мудрой Себя ➔</span>
-          </button>
+          <!-- Gibberish / Incomplete Notice -->
+          <div id="gibberishNotice" style="display:none; padding:12px 14px; border-radius:16px; background:rgba(217,131,78,0.12); border:1.5px solid #D9834E; margin-top:4px; margin-bottom:4px;">
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+              <span style="font-size:20px; line-height:1;">🧭</span>
+              <div style="flex:1;">
+                <div style="font-size:13px; font-weight:800; color:#A85532; margin-bottom:3px;">Интеллектуальный попутчик:</div>
+                <div id="gibberishNoticeText" style="font-size:12.5px; color:var(--nb-deep); line-height:1.45;">Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами.</div>
+                <div style="font-size:11px; color:#2F7D59; font-weight:700; margin-top:5px;">✨ Запрос не засчитан за попытку — вы можете дополнить ответ прямо сейчас.</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px;">
+            <button onclick="goToStep(2)" class="secondary-btn" style="flex:0 0 85px; min-height:48px; border-radius:16px;">← Назад</button>
+            <button id="submitBtn" type="button" onclick="submitToAI(event)" class="primary-btn btn-glare" style="flex:1; min-height:48px; border-radius:16px;">
+              <span>Получить напутствие от Мудрой Себя ➔</span>
+            </button>
+          </div>
+          
+          <!-- Companion Farewell Block in Step 3 (when attempts = 0) -->
+          <div id="companionFarewellStep3" style="display:none; margin-top:6px; padding:16px 14px; border-radius:18px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.28); text-align:center; flex-direction:column; gap:10px;">
+            <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span style="font-size:20px;">🚂</span>
+              <span style="font-size:14px; font-weight:800; color:var(--nb-deep); line-height:1.35;">
+                Попутчик уже пошёл в финальный урок и зовёт вас с собой!
+              </span>
+            </div>
+            <p style="font-size:12.5px; color:var(--nb-text-2); line-height:1.45; margin:0;">
+              Вы сформулировали свои сильные опоры и напутствие Мудрой Себя. Попутчик переходит в 5-й урок на сборку Карты опоры и будет ждать вас там.
+            </p>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:2px;">
+              <button type="button" onclick="safeHaptic('selection'); openScreen('20_lesson5.html');" class="primary-btn btn-glare" style="width:100%; min-height:48px; border-radius:16px;">
+                <span>Идти с попутчиком в Урок 5&nbsp;→</span>
+              </button>
+              <button type="button" onclick="showSavedAdvice()" class="secondary-btn" style="width:100%; min-height:42px; border-radius:16px; font-size:13px; font-weight:700; color:var(--nb-deep);">
+                <span>Посмотреть советы попутчика 📋</span>
+              </button>
+            </div>
+          </div>
           
           <div id="aiLoading" style="display:none; position:absolute; inset:0; background:rgba(255,255,255,0.88); backdrop-filter:blur(6px); border-radius:24px; flex-direction:column; align-items:center; justify-content:center; z-index:20;">
             <div class="loader-spinner" style="margin-bottom:8px;"></div>
@@ -1763,25 +1983,58 @@ textarea:focus, input:focus {
 
         <!-- RESULTS CARD -->
         <div id="resultCard" class="glass card" style="display:none; flex-direction:column; gap:14px;">
+          
+          <!-- Companion Farewell Block in Result Card (when attempts <= 0) -->
+          <div id="companionFarewellResult" style="display:none; padding:14px 16px; border-radius:16px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.26); text-align:center; flex-direction:column; gap:6px;">
+            <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span style="font-size:20px;">🚂</span>
+              <span style="font-size:14px; font-weight:800; color:var(--nb-deep); line-height:1.35;">
+                Попутчик пошёл дальше и зовёт вас с собой!
+              </span>
+            </div>
+            <p style="font-size:12.5px; color:var(--nb-text-2); line-height:1.45; margin:0;">
+              Попытки завершены. Вот результаты прошлых разговоров:
+            </p>
+          </div>
+
           <h3 style="font-size:18px; font-weight:800; text-align:center; margin:0;">Послание от Мудрой Себя</h3>
+
+          <!-- Бейдж: попытка сохранена (готовый анализ) -->
+          <div id="noAttemptDeductedBadge" style="display:none; padding:8px 12px; border-radius:12px; background:rgba(47,125,89,0.1); border:1px solid rgba(47,125,89,0.25); color:#2F7D59; font-size:12px; font-weight:700; text-align:center;">
+            ✨ Готовый анализ сформирован моментально. Попытка диалога с попутчиком сохранена!
+          </div>
+
+          <!-- Бейдж: попытка списана (индивидуальный разбор) -->
+          <div id="attemptUsedBadge" style="display:none; padding:8px 12px; border-radius:12px; background:rgba(217,131,78,0.1); border:1px solid rgba(217,131,78,0.25); color:#A85532; font-size:12px; font-weight:700; text-align:center;">
+            🧭 Индивидуальный разбор от Интеллектуального попутчика
+          </div>
           
           <div style="background:rgba(127,155,142,0.12); border-radius:14px; padding:16px; border:1px solid rgba(127,155,142,0.3);">
             <div style="font-size:11px; color:var(--nb-accent); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; text-align:center;">✨ Напутствие на будущее</div>
             <p id="resWiseMessage" style="font-size:13.5px; line-height:1.6; color:var(--nb-deep); font-weight:600; margin:0;">
-              «Милая, перестань заслуживать любовь контролем и тревогами. Ты уже ценна и любима. Позволь себе опереться на мужчин, позволь себе выдохнуть. Всё, что тебе нужно — уже внутри тебя.»
+              «Перестаньте заслуживать любовь контролем и тревогами. Ваша ценность существует сама по себе. Позвольте себе выдохнуть и опереться на собственную силу. Всё, что вам нужно для устойчивости — уже внутри вас.»
             </p>
           </div>
 
-          <div style="background:rgba(200,178,143,0.12); padding:10px 12px; border-radius:10px; text-align:center;">
-            <p style="font-size:12px; font-weight:600; color:var(--nb-deep); margin:0;">Результат сохранен в Блок №4 «Карты опоры»</p>
+          <!-- Кнопка повторной практики (скрыта, когда попытки закончились) -->
+          <button id="btnRetryAi" type="button" onclick="retryPractice()" class="secondary-btn" style="width:100%; min-height:44px; border-radius:16px; font-size:13px; font-weight:700; color:var(--nb-deep); display:flex; align-items:center; justify-content:center; gap:6px;">
+            <span>Получить другое напутствие с Интеллектуальным попутчиком</span>
+            <span style="font-size:11.5px; font-weight:600; color:#A85532; line-height:1.2;">(осталось ответов: <span id="retryAttemptsCount">3</span>)</span>
+          </button>
+
+          <!-- Кнопка результат и переход на следующий урок -->
+          <div style="background:rgba(200,178,143,0.14); border:1px solid rgba(200,178,143,0.35); padding:12px 14px; border-radius:14px; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <span style="font-size:16px;">💎</span>
+            <span style="font-size:12.5px; font-weight:700; color:var(--nb-deep); margin:0;">Результат сохранен в Блок №4 «Карты опоры»</span>
           </div>
           
           <div style="text-align:center;">
             <p style="font-size:13px; color:var(--nb-text-2); line-height:1.5; margin:0;">Вы нашли свои сильные убеждения и соединились с поддержкой Мудрой Себя. Теперь пришло время собрать все 4 шага в вашу персональную «Карту опоры» в финальном уроке.</p>
           </div>
 
-          <button onclick="handleCta(event)" class="primary-btn pulse" style="width:100%; min-height:48px; text-align:center;">
-            <span>Перейти к Уроку 5: Сборка Карты опоры →</span>
+          <button onclick="handleCta(event)" class="primary-btn btn-glare" style="width:100%; min-height:54px; padding:10px 16px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:18px; text-align:center;">
+            <span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; opacity:0.85; line-height:1.2;">Следующий шаг • Урок 5</span>
+            <span style="font-size:clamp(13px, 3.7vw, 14.5px); font-weight:800; line-height:1.3; white-space:nowrap;">Сборка персональной Карты опоры&nbsp;→</span>
           </button>
         </div>
 
@@ -1899,19 +2152,79 @@ textarea:focus, input:focus {
       if (s1) s1.style.display = 'none';
       var s2 = document.getElementById('step2InteractiveScreen');
       if (s2) s2.style.display = 'flex';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      if (attempts <= 0) {
+        showSavedAdvice();
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function toggleOptionChip(el, groupName, val) {
+      safeHaptic('selection');
+      var input = el.querySelector('input');
+      if (!input) return;
+      input.checked = !input.checked;
+      if (input.checked) {
+        el.classList.add('selected');
+      } else {
+        el.classList.remove('selected');
+      }
+    }
+
+    var selectedVisionPreset = '';
+    function selectVisionPreset(el, text) {
+      safeHaptic('selection');
+      var allPresets = document.querySelectorAll('#visionPresets .option-chip');
+      var isAlreadySelected = el.classList.contains('selected');
+      allPresets.forEach(function(chip) { chip.classList.remove('selected'); });
+      
+      var visionInp = document.getElementById('visionInput');
+      if (isAlreadySelected) {
+        selectedVisionPreset = '';
+        if (visionInp && visionInp.value === text) visionInp.value = '';
+      } else {
+        el.classList.add('selected');
+        selectedVisionPreset = text;
+        if (visionInp) visionInp.value = text;
+      }
+    }
+
+    function goToStep(stepNum) {
+      safeHaptic('selection');
+      var s1 = document.getElementById('step1'); if (s1) s1.style.display = (stepNum === 1) ? 'flex' : 'none';
+      var s2 = document.getElementById('step2'); if (s2) s2.style.display = (stepNum === 2) ? 'flex' : 'none';
+      var s3 = document.getElementById('step3'); if (s3) s3.style.display = (stepNum === 3) ? 'flex' : 'none';
+      var resCard = document.getElementById('resultCard'); if (resCard) resCard.style.display = 'none';
+      
+      var currentStepEl = document.getElementById('step' + stepNum);
+      if (currentStepEl) {
+        requestAnimationFrame(function() {
+          currentStepEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
     }
 
     function handleStep1() {
       safeHaptic('selection');
-      document.getElementById('step1').style.display = 'none';
-      document.getElementById('step2').style.display = 'flex';
+      var states = Array.from(document.querySelectorAll('input[name="stateSuppress"]:checked')).map(n => n.value);
+      var customState = document.getElementById('customStateInput') ? document.getElementById('customStateInput').value.trim() : '';
+      if (states.length === 0 && !customState) {
+        var firstChip = document.querySelector('#step1 .option-chip');
+        if (firstChip) toggleOptionChip(firstChip, 'stateSuppress', 'needless');
+      }
+      goToStep(2);
     }
 
     function handleStep2() {
       safeHaptic('selection');
-      document.getElementById('step2').style.display = 'none';
-      document.getElementById('step3').style.display = 'flex';
+      var beliefs = Array.from(document.querySelectorAll('input[name="healthyBeliefs"]:checked')).map(n => n.value);
+      var customBelief = document.getElementById('customBeliefInput') ? document.getElementById('customBeliefInput').value.trim() : '';
+      if (beliefs.length === 0 && !customBelief) {
+        var firstChip = document.querySelector('#step2 .option-chip');
+        if (firstChip) toggleOptionChip(firstChip, 'healthyBeliefs', 'valuable');
+      }
+      goToStep(3);
     }
 
     var attempts = 3;
@@ -1921,81 +2234,334 @@ textarea:focus, input:focus {
       attempts = parseInt(savedAttempts, 10);
     }
     
+    function showSavedAdvice() {
+      safeHaptic('selection');
+      var saved = localStorage.getItem('s2_lesson4_block');
+      var data = null;
+      if (saved) {
+        try { data = JSON.parse(saved); } catch(e) {}
+      }
+      if (!data) {
+        data = {
+          message: "«Перестаньте заслуживать любовь контролем и тревогами. Ваша ценность существует сама по себе. Позвольте себе выдохнуть и опереться на собственную силу. Всё, что вам нужно для устойчивости — уже внутри вас.»"
+        };
+      }
+      if (data.message) document.getElementById('resWiseMessage').textContent = data.message;
+
+      var s1 = document.getElementById('step1'); if(s1) s1.style.display = 'none';
+      var s2 = document.getElementById('step2'); if(s2) s2.style.display = 'none';
+      var s3 = document.getElementById('step3'); if(s3) s3.style.display = 'none';
+      var rc = document.getElementById('resultCard');
+      if (rc) {
+        rc.style.display = 'flex';
+        requestAnimationFrame(function() {
+          setTimeout(function() {
+            if (rc) rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 50);
+        });
+      }
+    }
+
+    function retryPractice() {
+      safeHaptic('selection');
+      var resCard = document.getElementById('resultCard');
+      if (resCard) resCard.style.display = 'none';
+      
+      var visionInp = document.getElementById('visionInput');
+      if (visionInp) visionInp.value = '';
+      var custState = document.getElementById('customStateInput');
+      if (custState) custState.value = '';
+      var custBelief = document.getElementById('customBeliefInput');
+      if (custBelief) custBelief.value = '';
+
+      goToStep(1);
+    }
+
     function updateAttemptsDisplay() {
       var el = document.getElementById('attemptsCount');
       if(el) el.textContent = attempts;
+
+      var elRetry = document.getElementById('retryAttemptsCount');
+      if(elRetry) elRetry.textContent = attempts;
+
+      var btnRetry = document.getElementById('btnRetryAi');
+      var fwResult = document.getElementById('companionFarewellResult');
+      var submitBtn = document.getElementById('submitBtn');
+      var fwStep3 = document.getElementById('companionFarewellStep3');
+
       if(attempts <= 0) {
-        var btn = document.getElementById('submitBtn');
-        if(btn) {
-          btn.disabled = true;
-          btn.style.opacity = '0.5';
-          btn.querySelector('span').textContent = 'Попытки закончились';
-        }
+        if(submitBtn) submitBtn.style.display = 'flex'; // Presets are always available!
+        if(fwStep3) fwStep3.style.display = 'none';
+
+        if(btnRetry) btnRetry.style.display = 'flex';
+        if(fwResult) fwResult.style.display = 'none';
+      } else {
+        if(submitBtn) submitBtn.style.display = 'flex';
+        if(fwStep3) fwStep3.style.display = 'none';
+
+        if(btnRetry) btnRetry.style.display = 'flex';
+        if(fwResult) fwResult.style.display = 'none';
       }
     }
     updateAttemptsDisplay();
 
-    async function submitToAI() {
-      if(attempts <= 0) {
-        safeHaptic('error');
-        return;
+    function checkGibberish(text) {
+      if (!text || typeof text !== 'string') return true;
+      var clean = text.trim();
+      if (clean.length < 4) return true;
+      if (/(.)\1{3,}/i.test(clean)) return true;
+      
+      var letters = clean.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
+      if (letters.length >= 4) {
+        var vowels = letters.match(/[аеёиоуыэюяaeiouy]/gi);
+        var vowelCount = vowels ? vowels.length : 0;
+        if (vowelCount === 0 || (vowelCount / letters.length) < 0.12) {
+          return true;
+        }
+        var unique = new Set(letters.toLowerCase()).size;
+        if (letters.length >= 8 && unique <= 3) {
+          return true;
+        }
       }
       
-      var vision = document.getElementById('visionInput').value.trim();
+      var mashPatterns = [/фыва/i, /йцук/i, /ячсм/i, /qwerty/i, /asdf/i, /zxcv/i];
+      for (var i = 0; i < mashPatterns.length; i++) {
+        if (mashPatterns[i].test(clean) && clean.length < 25) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function showGibberishNotice(msg) {
+      var elLoading = document.getElementById('aiLoading');
+      if (elLoading) elLoading.style.display = 'none';
+      safeHaptic('error');
+      
+      var notice = document.getElementById('gibberishNotice');
+      var noticeText = document.getElementById('gibberishNoticeText');
+      var defaultMsg = 'Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами.';
+      if (noticeText) noticeText.textContent = msg || defaultMsg;
+      if (notice) {
+        notice.style.display = 'block';
+        requestAnimationFrame(function() {
+          setTimeout(function() {
+            if (notice) notice.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 50);
+        });
+      }
+    }
+
+    function getPreparedWisdomResponse(states, beliefs, visionText) {
+      // 1. Посыл по подавляемому состоянию:
+      var stateMsg = "";
+      if (states.includes('needless')) {
+        stateMsg = "Вы так долго заслуживали право быть любимой своей безотказностью и гиперопекой, что совсем перестали замечать: вас можно любить просто так. Не за то, что вы всё предусмотрели, решили и спасли, а за то, какая вы есть. Ваша ценность не зависит от того, насколько вы удобны.";
+      } else if (states.includes('anxiety_pause')) {
+        stateMsg = "Пауза или молчание со стороны мужчины — это не конец отношений и не приговор вам. Взрослый человек имеет право погрузиться в свои мысли, а вы имеете право не обслуживать чужую тишину. Ваша безопасность живёт не в его сиюминутном ответе, а внутри вашей собственной взрослой устойчивости.";
+      } else if (states.includes('shame')) {
+        stateMsg = "Перестаньте быть для себя строгим обвинителем. С вами всё в порядке. Ваши чувства, ваша ранимость и ваше желание тепла — абсолютно естественны. Вы не сломаны и ничего не испортили. Позвольте себе выдохнуть и отнестись к себе с заботой и поддержкой.";
+      } else if (states.includes('tiredness')) {
+        stateMsg = "Вы отдали слишком много сил контролю того, что вам не принадлежит. Вы не мама взрослому человеку. Снимите с себя этот чужой груз прямо сейчас. Мир не рухнет, если вы опустите руки и позволите мужчине нести его часть ответственности.";
+      } else {
+        stateMsg = "Каждый раз, когда тревога пытается заставить вас суетиться, спасать или контролировать — сделайте паузу. Это просто старая привычка психики, которая когда-то боялась отвержения.";
+      }
+
+      // 2. Взрослая опора по здоровому убеждению:
+      var beliefMsg = "";
+      if (beliefs.includes('valuable')) {
+        beliefMsg = "Помните: ваша ценность безусловна и не требует круглосуточных доказательств. Перестаньте покупать любовь жертвенностью.";
+      } else if (beliefs.includes('clarity')) {
+        beliefMsg = "Ваше право на ясность и открытый диалог — абсолютно законно. Вам не нужно терпеть холод или гадать по взглядам: вы можете спокойно и с достоинством говорить о своих потребностях.";
+      } else if (beliefs.includes('emotions_norm')) {
+        beliefMsg = "Разрешите себе быть живым человеком. Вам можно уставать, можно испытывать разные чувства и можно обозначать границы без чувства вины.";
+      } else if (beliefs.includes('shared_resp')) {
+        beliefMsg = "Ответственность за отношения всегда делится поровну. Перестаньте тащить обе половины: оставьте партнёру его часть пути.";
+      } else {
+        beliefMsg = "Ваша внутренняя опора — это твердыня, которую никто не разрушит, пока вы сами держите фокус на себе.";
+      }
+
+      // 3. Заземление и напутствие:
+      var visionMsg = "Опустите плечи, сделайте медленный вдох животом и вернитесь в своё тело. Вы взрослая, сильная и целостная женщина. Прямо сейчас вам ничего не угрожает. Выбирайте свой покой.";
+      if (visionText && (visionText.indexOf('покой') !== -1 || visionText.indexOf('Штиль') !== -1 || visionText.indexOf('штиль') !== -1)) {
+        visionMsg = "Опустите плечи и сделайте глубокий вдох. Ваш внутренний штиль — это ваша главная защита. Сохраняйте это спокойствие и чувствуйте опору в каждом шаге.";
+      } else if (visionText && (visionText.indexOf('свобод') !== -1 || visionText.indexOf('Свобода') !== -1)) {
+        visionMsg = "Разрешите себе эту внутреннюю свободу. Дышите спокойно: взрослая женщина не заслуживает любовь страхом, она транслирует уважение к себе.";
+      } else if (visionText && (visionText.indexOf('Устойчивость') !== -1 || visionText.indexOf('устойчив') !== -1)) {
+        visionMsg = "Ваш мир устойчив, потому что вы опираетесь на себя, а не на чужие переменчивые настроения. Всё встает на свои места.";
+      }
+
+      return "«" + stateMsg + " " + beliefMsg + " " + visionMsg + "»";
+    }
+
+    async function submitToAI(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      if (e && e.stopPropagation) e.stopPropagation();
+
+      var notice = document.getElementById('gibberishNotice');
+      if (notice) notice.style.display = 'none';
+      
       var states = Array.from(document.querySelectorAll('input[name="stateSuppress"]:checked')).map(n => n.value);
+      var customState = document.getElementById('customStateInput') ? document.getElementById('customStateInput').value.trim() : '';
+      
       var beliefs = Array.from(document.querySelectorAll('input[name="healthyBeliefs"]:checked')).map(n => n.value);
+      var customBelief = document.getElementById('customBeliefInput') ? document.getElementById('customBeliefInput').value.trim() : '';
+      
+      var vision = document.getElementById('visionInput') ? document.getElementById('visionInput').value.trim() : '';
+
+      // Default selections if completely empty
+      if (states.length === 0 && !customState) {
+        states = ['anxiety_pause'];
+      }
+      if (beliefs.length === 0 && !customBelief) {
+        beliefs = ['valuable'];
+      }
+      if (!vision && !selectedVisionPreset) {
+        var firstPreset = document.querySelector('#visionPresets .option-chip');
+        if (firstPreset) {
+          selectVisionPreset(firstPreset, 'Чувствую покой и безопасность: не жду подвоха, не сканирую его лицо и настроение, спокойно занимаюсь своими делами.');
+          vision = selectedVisionPreset;
+        }
+      } else if (!vision && selectedVisionPreset) {
+        vision = selectedVisionPreset;
+      }
+
+      // Check if user entered ANY custom text
+      var hasCustomInput = Boolean(customState || customBelief || (vision && vision !== selectedVisionPreset));
+
+      // CASE 1: PURE PRESETS (No custom input entered)
+      // Instant prepared response, NO AI call, NO attempt deduction!
+      if (!hasCustomInput) {
+        safeHaptic('medium');
+        var elLoading = document.getElementById('aiLoading');
+        if (elLoading) {
+          elLoading.style.display = 'flex';
+          var loadP = elLoading.querySelector('p');
+          if (loadP) loadP.textContent = 'Соединяю с Мудрой Собой...';
+        }
+        
+        setTimeout(function() {
+          var wiseMsg = getPreparedWisdomResponse(states, beliefs, vision);
+          renderResults({ message: wiseMsg }, false); // false = DO NOT DEDUCT ATTEMPTS!
+        }, 500);
+        return;
+      }
+
+      // CASE 2: CUSTOM INPUT
+      if (attempts <= 0) {
+        safeHaptic('medium');
+        var wiseMsg = getPreparedWisdomResponse(states, beliefs, vision);
+        renderResults({ message: wiseMsg }, false);
+        return;
+      }
+
+      var combinedCustom = [customState, customBelief, (vision !== selectedVisionPreset ? vision : '')].filter(Boolean).join(' ');
+      if (combinedCustom && checkGibberish(combinedCustom)) {
+        showGibberishNotice();
+        return;
+      }
 
       safeHaptic('medium');
       var elLoading = document.getElementById('aiLoading');
-      if (elLoading) elLoading.style.display = 'flex';
+      if (elLoading) {
+        elLoading.style.display = 'flex';
+        var loadP = elLoading.querySelector('p');
+        if (loadP) loadP.textContent = 'Соединяю с Мудрой Собой...';
+      }
       
       try {
         var payload = {
            states: states,
+           customState: customState,
            beliefs: beliefs,
+           customBelief: customBelief,
            vision: vision
         };
         
         var apiFunc = (typeof apiPost === 'function') ? apiPost : apiPostLocal;
         var data = await apiFunc('/api/s2-lesson4-strategy', payload);
+
+        if (data && data.invalid) {
+           showGibberishNotice(data.message);
+           return;
+        }
         
-        if(!data || !data.message) {
+        if (!data || !data.message) {
            throw new Error("Invalid API response");
         }
-        renderResults(data);
+        renderResults(data, true); // true = deduct attempt!
         
       } catch(err) {
         console.error(err);
+        if (checkGibberish(combinedCustom)) {
+          showGibberishNotice();
+          return;
+        }
         setTimeout(function() {
-          renderResults({
-            message: "«Милая, перестань заслуживать любовь контролем и тревогами. Ты уже ценна и любима. Позволь себе опереться на мужчин, позволь себе выдохнуть. Всё, что тебе нужно — уже внутри тебя.»"
-          });
-        }, 1500);
+          var wiseMsg = getPreparedWisdomResponse(states, beliefs, vision);
+          renderResults({ message: wiseMsg }, true);
+        }, 1200);
       }
     }
     
-    function renderResults(data) {
+    function renderResults(data, deductAttempt) {
         var elLoading = document.getElementById('aiLoading');
         if (elLoading) elLoading.style.display = 'none';
         
         safeHaptic('success');
         
-        attempts--;
-        localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
-        updateAttemptsDisplay();
+        if (deductAttempt) {
+          attempts--;
+          localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
+          updateAttemptsDisplay();
+          var attUsedBadge = document.getElementById('attemptUsedBadge');
+          if (attUsedBadge) attUsedBadge.style.display = 'block';
+          var noAttBadge = document.getElementById('noAttemptDeductedBadge');
+          if (noAttBadge) noAttBadge.style.display = 'none';
+        } else {
+          // Pure preset choice: attempt NOT deducted!
+          var noAttBadge = document.getElementById('noAttemptDeductedBadge');
+          if (noAttBadge) noAttBadge.style.display = 'block';
+          var attUsedBadge = document.getElementById('attemptUsedBadge');
+          if (attUsedBadge) attUsedBadge.style.display = 'none';
+        }
         
         localStorage.setItem('s2_lesson4_block', JSON.stringify(data));
         localStorage.setItem('s2_lesson4_completed', 'true');
         
         if (data.message) document.getElementById('resWiseMessage').textContent = data.message;
         
-        document.getElementById('step3').style.display = 'none';
+        var s1 = document.getElementById('step1'); if (s1) s1.style.display = 'none';
+        var s2 = document.getElementById('step2'); if (s2) s2.style.display = 'none';
+        var s3 = document.getElementById('step3'); if (s3) s3.style.display = 'none';
         var resCard = document.getElementById('resultCard');
         if (resCard) {
           resCard.style.display = 'flex';
-          resCard.scrollIntoView({ behavior: 'smooth' });
+          requestAnimationFrame(function() {
+            setTimeout(function() {
+              if (resCard) {
+                resCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }, 60);
+          });
         }
     }
+
+    window.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('s2_lesson4_block');
+      if(saved) {
+        try {
+          var data = JSON.parse(saved);
+          if (data.message) document.getElementById('resWiseMessage').textContent = data.message;
+        }catch(e){}
+      }
+      if (attempts <= 0 && saved) {
+        var s1 = document.getElementById('step1'); if(s1) s1.style.display = 'none';
+        var s2 = document.getElementById('step2'); if(s2) s2.style.display = 'none';
+        var s3 = document.getElementById('step3'); if(s3) s3.style.display = 'none';
+        var rc = document.getElementById('resultCard'); if(rc) rc.style.display = 'flex';
+      }
+    });
   </script>
 
   <!-- =========================================================

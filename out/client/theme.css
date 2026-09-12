@@ -496,13 +496,49 @@ textarea:focus, input:focus {
   background: rgba(255, 255, 255, 0.9);
 }
 
+/* Smooth Glare / Sheen Sweep (вместо нервного мерцания) */
+.btn-glare,
 .pulse {
-  animation: pulse 2.4s ease-in-out infinite;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
 }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 12px 28px rgba(127, 155, 142, 0.22); transform: scale(1); }
-  50% { box-shadow: 0 16px 34px rgba(127, 155, 142, 0.32); transform: scale(1.01); }
+.btn-glare::after,
+.pulse::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -90%;
+  width: 50%;
+  height: 220%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  z-index: 2;
+  animation: btnGlareSweep 3.6s ease-in-out infinite;
+}
+
+@keyframes btnGlareSweep {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 1;
+  }
+  72%, 100% {
+    left: 160%;
+    opacity: 0;
+  }
 }
 
 @keyframes enter {

@@ -29,4 +29,13 @@ node_modules/
 # Large media files
 *.mp4
 *.mov
+*.wav
 baza/исходник миникурса/video2-0.mp4
+
+# DAW cache
+*.reapeaks
+*.reapindex
+*.rpp-bak
+
+# Server temp
+out/server/files/

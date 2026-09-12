@@ -1,0 +1,19 @@
+# Environment secrets
+.env
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/

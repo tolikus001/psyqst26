@@ -558,13 +558,49 @@ textarea:focus, input:focus {
   text-align: center;
 }
 
+/* Smooth Glare / Sheen Sweep (вместо нервного мерцания) */
+.btn-glare,
 .pulse {
-  animation: pulse 2.4s ease-in-out infinite;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
 }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 12px 28px rgba(127, 155, 142, 0.22); transform: scale(1); }
-  50% { box-shadow: 0 16px 34px rgba(127, 155, 142, 0.32); transform: scale(1.01); }
+.btn-glare::after,
+.pulse::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -90%;
+  width: 50%;
+  height: 220%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  z-index: 2;
+  animation: btnGlareSweep 3.6s ease-in-out infinite;
+}
+
+@keyframes btnGlareSweep {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 1;
+  }
+  72%, 100% {
+    left: 160%;
+    opacity: 0;
+  }
 }
 
 @keyframes enter {
@@ -1639,36 +1675,60 @@ textarea:focus, input:focus {
         <section class="glass card text-center">
           <div class="eyebrow" style="margin-bottom:8px;">Финал курса • Урок 5 из 5</div>
           <h2 style="font-size:18px; font-weight:800; color:var(--nb-deep); line-height:1.3; margin-bottom:6px; text-align:center;">Сборка нового сценария: Карта опоры</h2>
-          <p class="lead" style="font-size:13px; line-height:1.4; color:var(--nb-text-2); margin-bottom:12px; text-align:center;">Ваш пошаговый компас устойчивости в отношениях и финальная медитация.</p>
+          <p class="lead" style="font-size:13px; line-height:1.4; color:var(--nb-text-2); margin-bottom:12px; text-align:center;">Ваш пошаговый компас устойчивости в отношениях и финальная практика.</p>
 
           <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/xhqTTBCRmLZA8P3KWEXtG4?max_quality=720"
+            <iframe id="kinescopeVideo" src="https://kinescope.io/embed/fj9NYWdBHntZ7bkiH6snJ8?max_quality=720"
               allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
               frameborder="0" allowfullscreen
               style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
           </div>
         </section>
 
-        <section id="insightSection" class="glass card text-center">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:8px;">
-            💡 Главный вывод
+        <!-- ПРАКТИКА НА ПЕРВОМ ПЛАНЕ -->
+        <section id="practiceSection" class="glass card text-center" style="background:linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(246,242,236,0.9) 100%); border:1.5px solid rgba(217,131,78,0.25); box-shadow:0 10px 28px rgba(18,68,83,0.06);">
+          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:6px;">
+            🎧 Главная практика урока • 15 минут
           </div>
-          <h3 style="font-size:16px; font-weight:800; margin-bottom:8px; text-align:center;">Что важно забрать из урока</h3>
-          <p class="lead" style="font-size:13px; line-height:1.5; color:var(--nb-text); margin-bottom:16px; text-align:center;">
-            Ваша устойчивость держится на ваших понятных осознанных шагах. Заполните Карту опоры и закрепите состояние через медитацию.
+          <h3 style="font-size:17px; font-weight:800; margin:0 0 6px 0; color:var(--nb-deep);">Практика «Я остаюсь собой»</h3>
+          <p style="font-size:12.5px; color:var(--nb-text-2); line-height:1.45; margin:0 0 12px 0;">
+            Финальная практика интеграции нового опыта и глубокого спокойствия от Анатолия Фёдорова. Наденьте наушники, сделайте глубокий вдох и закрепите состояние взрослой устойчивости.
+          </p>
+          
+          <div style="background:rgba(255,255,255,0.8); border-radius:14px; padding:12px; border:1px solid rgba(36,49,57,0.08); box-shadow:inset 0 1px 4px rgba(0,0,0,0.02);">
+            <audio id="meditationAudio5" controls preload="metadata" style="width:100%; accent-color:var(--nb-accent);">
+              <source src="meditation2-5.mp3" type="audio/mpeg">
+              <source src="meditation%202-5.mp3" type="audio/mpeg">
+              <source src="/data/meditation2-5.mp3" type="audio/mpeg">
+              <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation2-5.mp3" type="audio/mpeg">
+              <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation%202-5.mp3" type="audio/mpeg">
+              Ваш браузер не поддерживает аудио.
+            </audio>
+          </div>
+        </section>
+
+        <!-- БЛОК С КАРТОЙ ОПОРЫ -->
+        <section id="insightSection" class="glass card text-center">
+          <div class="eyebrow" style="background:rgba(217, 131, 78, 0.12); color:#A85532; border-color:rgba(217, 131, 78, 0.25); margin-bottom:8px;">
+            🧭 Практикум • Карта опоры
+          </div>
+          <h3 style="font-size:16px; font-weight:800; margin-bottom:6px; text-align:center;">Сборка персональной Карты опоры</h3>
+          <p class="lead" style="font-size:12.5px; line-height:1.45; color:var(--nb-text-2); margin-bottom:14px; text-align:center;">
+            Ваша устойчивость держится на понятных осознанных шагах. Соберите и сохраните вашу Карту опоры прямо сейчас.
           </p>
 
           <div style="display:flex; flex-direction:column; gap:10px;">
-            <button onclick="goToPractice()" class="primary-btn pulse" style="width:100%; min-height:46px;">
-              <span>Собрать Карту опоры ➔</span>
+            <button onclick="goToPractice()" class="secondary-btn" style="width:100%; min-height:46px; border-radius:16px; font-size:13.5px; font-weight:700; color:var(--nb-deep); display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span>📋 Собрать и сохранить Карту опоры</span>
+              <span class="strategy-badge" style="font-size:11px; padding:2px 8px;">5 шагов</span>
             </button>
           </div>
         </section>
 
         <div style="padding-top:4px;">
-          <button onclick="safeHaptic('selection'); openScreen('21_bonuses.html');" class="primary-btn pulse"
+          <button onclick="safeHaptic('selection'); openScreen('21_bonuses.html');" class="primary-btn btn-glare"
             style="width:100%; display:flex; justify-content:center; align-items:center; min-height:48px;">
-            <span>Перейти к 4 бонусам курса →</span>
+            <span>Перейти к 4 бонусам курса&nbsp;→</span>
           </button>
         </div>
 
@@ -1679,7 +1739,7 @@ textarea:focus, input:focus {
 
         <div>
           <button onclick="goToVideo()" class="top-nav-btn" style="display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:13px; color:var(--nb-deep); background:rgba(255,255,255,0.75); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:6px 14px; border-radius:9999px; border:1px solid rgba(255,255,255,0.85); box-shadow:0 2px 8px rgba(0,0,0,0.04); text-decoration:none; cursor:pointer;">
-            ← Назад к видеоуроку
+            ← Назад к видеоуроку и практике
           </button>
         </div>
 
@@ -1695,42 +1755,42 @@ textarea:focus, input:focus {
 
           <div>
             <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">2. Разговор на равных (о своей потребности)</label>
-            <input type="text" id="mapStep2" value="«Я устала, мне нужна твоя помощь. Пожалуйста, реши это сегодня»." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
+            <input type="text" id="mapStep2" value="«Я очень устала. Мне нужна твоя помощь с этим. Пожалуйста, реши этот вопрос сегодня»." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
           </div>
 
           <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">3. Телесный сигнал</label>
-            <input type="text" id="mapStep3" value="Замечаю сжатие в челюсти/плечах ➔ делаю глубокий выдох." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
+            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">3. Формула заземления</label>
+            <input type="text" id="mapStep3" value="«Да, у меня сейчас инерция мышления. Я живой человек, меня задело. Но споря в голове, я сжигаю свои силы. Прямо сейчас мне ничего не угрожает. Я выбираю свой покой»." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
           </div>
 
           <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">4. Опора и сильное убеждение</label>
-            <input type="text" id="mapStep4" value="«Моя ценность существует сама по себе. Со мной всё в порядке»." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
+            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">4. Опора на Мудрую Я</label>
+            <input type="text" id="mapStep4" value="«Перестаньте заслуживать любовь контролем. Ваша ценность существует сама по себе»." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
           </div>
 
           <div>
-            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">5. Право на неидеальность</label>
-            <input type="text" id="mapStep5" value="Если сорвалась — это просто диагностика. В следующий раз выберу новый шаг." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
+            <label style="font-size:12px; font-weight:800; color:var(--nb-sea); display:block; margin-bottom:4px;">5. Главный ориентир</label>
+            <input type="text" id="mapStep5" value="Я выхожу из роли контролёра и возвращаю себе лёгкость." style="width:100%; border-radius:10px; padding:8px 10px; font-size:12.5px; border:1px solid rgba(36,49,57,0.15); background:#FFF;">
           </div>
 
-          <button onclick="saveMap()" class="primary-btn" style="width:100%; min-height:44px; margin-top:4px;">
-            <span>Сохранить мою Карту опоры ➔</span>
+          <button onclick="saveSupportMap()" class="secondary-btn" style="width:100%; min-height:44px; border-radius:14px; font-size:13px; font-weight:700; color:var(--nb-deep); margin-top:4px;">
+            <span>💾 Сохранить мою Карту опоры</span>
           </button>
         </section>
 
-        <!-- Meditation -->
-        <section class="glass card text-center" style="padding:16px;">
-          <div class="eyebrow" style="background:rgba(47,125,89,0.1); color:var(--success); border-color:rgba(47,125,89,0.2); margin-bottom:6px;">
-            🧘‍♀️ Финальная аудиопрактика
+        <!-- Ссылка на практику с переходом -->
+        <div style="background:linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(246,242,236,0.9) 100%); border-radius:18px; padding:16px; border:1.5px solid rgba(47,125,89,0.28); box-shadow:0 8px 24px rgba(18,68,83,0.06); text-align:center; display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; align-items:center; justify-content:center; gap:6px;">
+            <span style="font-size:18px;">🎧</span>
+            <span style="font-size:14px; font-weight:800; color:var(--nb-deep);">Финальная практика «Я остаюсь собой»</span>
           </div>
-          <h4 style="font-size:15px; font-weight:800; margin:0 0 4px 0; color:var(--nb-deep);">Медитация «Я остаюсь собой» (10–12 минут)</h4>
-          <p style="font-size:12px; color:var(--nb-text-2); margin:0 0 10px 0;">Практика интеграции нового опыта и глубокого спокойствия от Анатолия Фёдорова.</p>
-          
-          <audio id="meditationAudio5" controls preload="metadata" style="width:100%; accent-color:var(--nb-accent);">
-            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation1-3.MP3" type="audio/mpeg">
-            Ваш браузер не поддерживает аудио.
-          </audio>
-        </section>
+          <p style="font-size:12.5px; color:var(--nb-text-2); line-height:1.45; margin:0;">
+            Закрепите собранную Карту опоры глубоким погружением в состояние взрослой устойчивости.
+          </p>
+          <button type="button" onclick="goToPracticeAudio()" class="primary-btn btn-glare" style="width:100%; min-height:46px; border-radius:16px; font-size:13.5px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <span>🎧 Практика «Я остаюсь собой» • 15 минут ➔</span>
+          </button>
+        </div>
 
         <!-- High-Ticket Offer Block -->
         <section class="glass card text-center" style="border:2px solid rgba(196,115,79,0.3); background:rgba(255,255,255,0.85); padding:18px;">
@@ -1739,10 +1799,10 @@ textarea:focus, input:focus {
           </div>
           <h3 style="font-size:16px; font-weight:800; color:var(--nb-deep); margin-bottom:8px;">Глубокий психологический портрет + Консультация Анатолия Фёдорова</h3>
           <p style="font-size:12.5px; line-height:1.5; color:var(--nb-text-2); margin-bottom:14px;">
-            21 вопрос теста, 10+ страниц детального поведенческого анализа СПА и часовая персональная консультация 1-на-1.
+            21 вопрос теста, 10+ страниц детального психологического анализа и часовая персональная консультация 1-на-1.
           </p>
 
-          <button onclick="safeHaptic('selection'); openProduct('course_partner_10000');" class="primary-btn pulse" style="width:100%; min-height:48px; background:linear-gradient(135deg, #C4734F, #A85532);">
+          <button onclick="safeHaptic('selection'); openProduct('course_partner_10000');" class="primary-btn btn-glare" style="width:100%; min-height:48px; background:linear-gradient(135deg, #C4734F, #A85532);">
             <span>Записаться на разбор за 10 000 ₽</span>
           </button>
         </section>
@@ -1853,6 +1913,26 @@ textarea:focus, input:focus {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function goToPracticeAudio() {
+      safeHaptic('selection');
+      var s2 = document.getElementById('step2InteractiveScreen');
+      if (s2) s2.style.display = 'none';
+      var s1 = document.getElementById('step1VideoScreen');
+      if (s1) s1.style.display = 'flex';
+      var practiceSec = document.getElementById('practiceSection');
+      if (practiceSec) {
+        practiceSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      var audioEl = document.getElementById('meditationAudio5');
+      if (audioEl) {
+        try {
+          audioEl.play();
+        } catch (e) {
+          console.log('Audio play error/gesture required:', e);
+        }
+      }
+    }
+
     function saveMap() {
       safeHaptic('success');
       var mapData = {
@@ -1866,8 +1946,21 @@ textarea:focus, input:focus {
       localStorage.setItem('s2_lesson5_completed', 'true');
       alert('✅ Карта опоры успешно сохранена в вашем профиле!');
     }
+    var saveSupportMap = saveMap;
 
     window.addEventListener('DOMContentLoaded', function() {
+      var audioEl = document.getElementById('meditationAudio5');
+      if (audioEl) {
+        audioEl.addEventListener('error', function(e) {
+          console.warn('Audio primary source error, trying fallback:', e);
+          if (!audioEl.dataset.triedFallback) {
+            audioEl.dataset.triedFallback = 'true';
+            audioEl.src = 'meditation2-5.mp3';
+            audioEl.load();
+          }
+        }, true);
+      }
+
       var saved = localStorage.getItem('s2_lesson5_map');
       if(saved) {
         try {

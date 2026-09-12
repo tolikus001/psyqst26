@@ -37,9 +37,29 @@ const POLZA_URL = process.env.POLZA_URL || process.env.POLZA_BASE_URL || 'https:
 const POLZA_API_KEY = process.env.POLZA_API_KEY || '';
 const POLZA_MODEL = process.env.POLZA_MODEL || 'gpt-4o-mini';
 
-// CORS Headers
-function setCorsHeaders(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+// CORS Headers (whitelist: NotiBot, Amvera, localhost)
+const ALLOWED_ORIGINS = [
+  'https://list.notibot.ru',
+  'https://inter01-anatolyfedorov.amvera.io',
+  'http://localhost:3000',
+  'http://localhost:8080',
+  'http://127.0.0.1:3000'
+];
+
+function setCorsHeaders(res, req) {
+  const origin = req && req.headers && req.headers.origin;
+  if (origin) {
+    if (ALLOWED_ORIGINS.indexOf(origin) !== -1 ||
+        /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) ||
+        origin === 'null') {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Vary', 'Origin');
+    } else {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+    }
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Authorization, X-Requested-With');
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges');
@@ -53,7 +73,13 @@ function resolveFilePath(targetName) {
   const aliases = {
     'video0.mp4': 'lesson0.mp4',
     'урок 0.mp4': 'lesson0.mp4',
-    'lesson0_v2.mp4': 'lesson0.mp4'
+    'lesson0_v2.mp4': 'lesson0.mp4',
+    'meditation2-0.mp3': 'meditation 2-0.mp3',
+    'meditation_2-0.mp3': 'meditation 2-0.mp3',
+    'meditation2-3.mp3': 'meditation 2-3.mp3',
+    'meditation_2-3.mp3': 'meditation 2-3.mp3',
+    'meditation2-5.mp3': 'meditation 2-5.mp3',
+    'meditation_2-5.mp3': 'meditation 2-5.mp3'
   };
   if (aliases[cleanName.toLowerCase()]) {
     cleanName = aliases[cleanName.toLowerCase()];
@@ -88,7 +114,7 @@ function resolveFilePath(targetName) {
 
 // Media Streaming with HTTP 206 Partial Content
 function handleMediaStream(req, res, filePath, isHead = false) {
-  setCorsHeaders(res);
+  setCorsHeaders(res, req);
   const stat = fs.statSync(filePath);
   const fileSize = stat.size;
   const range = req.headers.range;
@@ -152,6 +178,62 @@ function cleanJsonText(text) {
   return text.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
 }
 
+// Heuristic check for gibberish / incoherent / too short input
+function isGibberishText(text) {
+  if (!text || typeof text !== 'string') return true;
+  const clean = text.trim();
+  if (clean.length < 5) return true;
+  
+  // Repeated single character 4+ times (e.g. "aaaa", ".....")
+  if (/(.)\1{3,}/i.test(clean)) return true;
+
+  // Common filler / non-answers / trolling / gibberish patterns
+  const fillerPatterns = [
+    /^(не знаю|хз|хз что|ничего|ни о чем|нет слов|просто так|тест|проверка|тестовый|asdf|qwerty|1234|бла бла|лалала|фыва)/i,
+    /^(да|нет|ок|норм|понятно|ладно|хм|ну|ага|угу)$/i
+  ];
+  for (const pat of fillerPatterns) {
+    if (pat.test(clean)) return true;
+  }
+
+  const words = clean.split(/\s+/).filter(Boolean);
+  // Repeated words like "да да да да" or "нет нет нет"
+  if (words.length >= 2) {
+    const uniqueWords = new Set(words);
+    if (uniqueWords.size === 1) return true;
+  }
+
+  // Single long word without spaces > 20 characters
+  if (words.length === 1 && clean.length > 20) return true;
+  
+  // Letter checks
+  const letters = clean.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
+  if (letters.length >= 4) {
+    const vowels = letters.match(/[аеёиоуыэюяaeiouy]/gi);
+    const vowelCount = vowels ? vowels.length : 0;
+    if (vowelCount === 0 || (vowelCount / letters.length) < 0.12) {
+      return true; // No vowels or keyboard mash
+    }
+    const unique = new Set(letters.toLowerCase()).size;
+    if (letters.length >= 8 && unique <= 3) {
+      return true;
+    }
+  }
+  
+  const mashPatterns = [/фыва/i, /йцук/i, /ячсм/i, /qwerty/i, /asdf/i, /zxcv/i];
+  for (const pat of mashPatterns) {
+    if (pat.test(clean) && clean.length < 25) {
+      return true;
+    }
+  }
+  return false;
+}
+
+const GIBBERISH_RESPONSE = {
+  invalid: true,
+  message: 'Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами.'
+};
+
 // Call Polza AI Gateway
 async function callPolzaAI(systemPrompt, userPrompt, jsonFormat = false) {
   const apiKey = POLZA_API_KEY;
@@ -200,14 +282,14 @@ const server = http.createServer(async (req, res) => {
 
   // CORS Preflight
   if (req.method === 'OPTIONS') {
-    setCorsHeaders(res);
+    setCorsHeaders(res, req);
     res.writeHead(204);
     return res.end();
   }
 
   // Healthcheck
   if (pathname === '/health' && req.method === 'GET') {
-    setCorsHeaders(res);
+    setCorsHeaders(res, req);
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     return res.end(JSON.stringify({ ok: true, status: 'running', service: 'psyquest-media-ai-zero-dep', timestamp: new Date().toISOString() }));
   }
@@ -224,7 +306,7 @@ const server = http.createServer(async (req, res) => {
 
   // API Files Diagnostics
   if (pathname === '/api/files' && req.method === 'GET') {
-    setCorsHeaders(res);
+    setCorsHeaders(res, req);
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     const result = {};
     const searchDirs = ['/data', path.join(__dirname, 'files'), path.join(__dirname, '..', 'client'), __dirname];
@@ -253,7 +335,7 @@ const server = http.createServer(async (req, res) => {
     const filePath = resolveFilePath(filename);
 
     if (!filePath) {
-      setCorsHeaders(res);
+      setCorsHeaders(res, req);
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
       return res.end(`File not found: ${filename}`);
     }
@@ -263,12 +345,49 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // ─── Rate Limiting for AI endpoints (10 req/min per IP) ───
+  const AI_ENDPOINTS = ['/api/psyquest', '/api/analyze', '/api/lesson1-strategy',
+    '/api/lesson2-strategy', '/api/lesson4-strategy', '/api/lesson5-synthesis',
+    '/api/portrait-assessment', '/api/send-telegram-summary', '/api/s2-lesson1-strategy',
+    '/api/s2-lesson2-strategy', '/api/s2-lesson3-strategy', '/api/s2-lesson4-strategy'];
+
+  if (req.method === 'POST' && AI_ENDPOINTS.indexOf(pathname) !== -1) {
+    const clientIp = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
+    const now = Date.now();
+    const windowMs = 60000; // 1 minute
+    const maxRequests = 10;
+
+    if (!global._rateLimitMap) global._rateLimitMap = {};
+    const bucket = global._rateLimitMap[clientIp] || [];
+    const recent = bucket.filter(function(t) { return t > now - windowMs; });
+    global._rateLimitMap[clientIp] = recent;
+
+    if (recent.length >= maxRequests) {
+      setCorsHeaders(res, req);
+      res.writeHead(429, { 'Content-Type': 'application/json; charset=utf-8' });
+      return res.end(JSON.stringify({ error: 'RATE_LIMIT', message: 'Слишком много запросов. Подождите минуту.' }));
+    }
+    recent.push(now);
+
+    // Cleanup stale IPs every 5 minutes
+    if (!global._rateLimitCleanup) {
+      global._rateLimitCleanup = setInterval(function() {
+        var map = global._rateLimitMap || {};
+        var cutoff = Date.now() - windowMs;
+        Object.keys(map).forEach(function(ip) {
+          map[ip] = map[ip].filter(function(t) { return t > cutoff; });
+          if (map[ip].length === 0) delete map[ip];
+        });
+      }, 300000);
+    }
+  }
+
   // Handle JSON POST requests
   if (req.method === 'POST') {
     let body = '';
     req.on('data', (chunk) => { body += chunk; });
     req.on('end', async () => {
-      setCorsHeaders(res);
+      setCorsHeaders(res, req);
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
 
       let parsed = {};
@@ -410,6 +529,176 @@ const server = http.createServer(async (req, res) => {
 
         res.writeHead(200);
         return res.end(JSON.stringify({ success: true, isAi: !!aiParsed, result: resData, analysis: formattedText }));
+      }
+
+      // Route: /api/s2-lesson1-strategy (Сценарий 2, Урок 1: Наблюдаемый факт vs Мысли в голове)
+      if (pathname === '/api/s2-lesson1-strategy') {
+        const { situation = '', thriller = '', emotions = {} } = parsed;
+        if (isGibberishText(thriller) || isGibberishText(situation)) {
+          setCorsHeaders(res, req);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify(GIBBERISH_RESPONSE));
+        }
+
+        const systemPrompt = [
+          'Ты — «Интеллектуальный попутчик», семейный психолог Анатолий Фёдоров.',
+          'Твой голос: спокойный, взрослый, мужской, основательный, живой разговор за чашкой чая без заумной академической тягомотины и без коучингового пафоса.',
+          'Пиши простыми живыми словами, чтобы понял любой человек, который никогда не читал книг по психологии.',
+          'СТРОГИЕ ПРАВИЛА:',
+          '1. ЗАПРЕЩЕНО использовать клише: «честно говоря», «давайте погрузимся», «путь к себе», «трансформация», «авторский метод СПА», «практика-стабилизатор».',
+          '2. ВАЖНЕЙШАЯ ПРОВЕРКА ВАЛИДНОСТИ: если входные данные участника — бессмыслица, белиберда, случайный набор букв/слов, троллинг или бессодержательный текст, по которому невозможно понять реальную жизненную ситуацию, верни СТРОГО JSON: {"invalid": true, "message": "Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами."}',
+          '3. Если данные осмысленны: отдели реальный физический факт от тревожных мыслей, которые накрутила голова, и дай 3 простых жизненных шага.',
+          '4. Верни ответ СТРОГО в формате JSON без markdown разметки:',
+          '{"fact":"(описание только реального физического факта того, что произошло на самом деле, без домыслов и прогнозов, до 220 символов)","thriller":"(разбор того, какие тревожные мысли накрутил испуганный мозг от неизвестности, простыми словами, до 220 символов)","stabilizer":"1. Тело: (простое телесное действие: опустить плечи, стопы в пол, медленный выдох через рот)\\n\\n2. Граница: (напоминание себе простыми словами: чужое молчание — это просто чужое настроение, мне сейчас ничего не угрожает, это не приговор)\\n\\n3. Действие: (бытовое действие прямо сейчас: убрать руки от телефона, налить воды, дать паузе повисеть, не быть аниматором)"}'
+        ].join('\n');
+
+        const userPrompt = `Ситуация (что произошло): ${situation}\nМысли в голове (что накрутилось): ${thriller}\nШкалы эмоций (0-10): раздражение/злость=${emotions.anger || 0}, тревога/паника=${emotions.anxiety || 0}, обида/досада=${emotions.resentment || 0}, холод/оцепенение=${emotions.coldness || 0}`;
+
+        let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
+        let aiParsed = null;
+        if (aiRaw) {
+          try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
+        }
+
+        if (aiParsed && aiParsed.invalid) {
+          setCorsHeaders(res, req);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify(aiParsed));
+        }
+
+        const fallback = {
+          fact: `В реальности произошло только это: ${situation ? situation.slice(0, 150) : 'партнер пришел молчаливый и отдалился'}. Без домыслов и прогнозов на будущее.`,
+          thriller: `Голова накрутила: ${thriller ? thriller.slice(0, 150) : 'он охладел, мы расстанемся, я ему не нужна'}. Мозг от неизвестности всегда рисует худший сценарий.`,
+          stabilizer: '1. Тело: Опустите плечи, почувствуйте стопами пол под собой и сделайте спокойный длинный выдох через рот. Напряжение сразу начнет отпускать.\n\n2. Граница: Напомните себе: прямо сейчас мне ничего физически не угрожает. Его хмурость или молчание — это его настроение и его погода. Это не приговор мне и не конец отношений.\n\n3. Действие: Уберите руки от телефона, налейте стакан теплой воды и дайте паузе случиться. Вы не обязаны быть аниматором чужого настроения и срочно всё спасать.'
+        };
+
+        const resData = aiParsed || fallback;
+        setCorsHeaders(res, req);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        return res.end(JSON.stringify(resData));
+      }
+
+      // Route: /api/s2-lesson2-strategy (Сценарий 2, Урок 2: Переводчик на язык партнёра)
+      if (pathname === '/api/s2-lesson2-strategy') {
+        const { situation = '', phrase = '', need = '' } = parsed;
+        if (isGibberishText(need) || isGibberishText(phrase)) {
+          setCorsHeaders(res, req);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify(GIBBERISH_RESPONSE));
+        }
+
+        const systemPrompt = [
+          'Ты — «Интеллектуальный попутчик», мудрый наставник и переводчик в отношениях в проекте Анатолия Фёдорова.',
+          'Твоя задача — помочь участнику перевести привычную претензию/контроль на язык истинной потребности без нападения и защит.',
+          'ВАЖНЕЙШАЯ ПРОВЕРКА: если ответы — бессмыслица, белиберда, случайный набор букв или бессодержательный текст, верни СТРОГО: {"invalid": true, "message": "Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами."}',
+          'СТРОГИЙ ФОРМАТ JSON:',
+          '{"partnerView":"(Как эта фраза звучит для партнёра: почему вызывает сопротивление или желание отстраниться, 1-2 предложения)","needView":"(Какая истинная глубинная потребность прячется за этими словами на самом деле, 1-2 предложения)","alternatives":"1. «(первый бережный вариант фразы от первого лица)»<br>2. «(второй вариант)»<br>3. «(третий вариант)»"}'
+        ].join('\n');
+
+        const userPrompt = `Ситуация: ${situation}\nЧто сказали/хотели сказать: ${phrase}\nИстинная потребность: ${need}`;
+        let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
+        let aiParsed = null;
+        if (aiRaw) {
+          try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
+        }
+
+        if (aiParsed && aiParsed.invalid) {
+          setCorsHeaders(res, req);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify(aiParsed));
+        }
+
+        const fallback = {
+          partnerView: 'Фраза звучит как скрытый упрёк и требование оправдаться, из-за чего партнёр не слышит саму боль, а уходит в глухую оборону или отдаляется.',
+          needView: `За этой реакцией стоит живая потребность: «${need.slice(0, 100)}». Вам нужно не обвинить, а почувствовать безопасность и надёжность.`,
+          alternatives: '1. «Мне сейчас тревожно и не хватает ясности. Давай спокойно поговорим 10 минут, для меня это очень важно.»<br>2. «Я очень устала всё держать в голове. Мне нужна твоя помощь и участие, чтобы выдохнуть.»<br>3. «Когда ты отдаляешься, мне кажется, что я остаюсь одна. Скажи, что сейчас происходит?»'
+        };
+
+        const resData = aiParsed || fallback;
+        setCorsHeaders(res, req);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        return res.end(JSON.stringify(resData));
+      }
+
+      // Route: /api/s2-lesson3-strategy (Сценарий 2, Урок 3: Остановка внутреннего шторма)
+      if (pathname === '/api/s2-lesson3-strategy') {
+        const { situation = '', pain = '', bodySignals = [] } = parsed;
+        if (isGibberishText(pain) || (situation && isGibberishText(situation) && situation.length > 0)) {
+          setCorsHeaders(res, req);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify(GIBBERISH_RESPONSE));
+        }
+
+        const systemPrompt = [
+          'Ты — «Интеллектуальный попутчик», наставник Анатолий Фёдоров.',
+          'Твоя задача — помочь участнику остановить внутренний шторм, снять мысленную жвачку и дать одну сильную стабилизирующую формулу самоподдержки.',
+          'ВАЖНЕЙШАЯ ПРОВЕРКА: если ответы — бессмыслица, белиберда, случайный набор букв или бессодержательный текст, верни СТРОГО: {"invalid": true, "message": "Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами."}',
+          'СТРОГИЙ ФОРМАТ JSON:',
+          '{"formula":"«(точная, ёмкая формула из 3-4 предложений от первого лица, признающая эмоции, отделяющая фантазии от реальности и возвращающая покой в тело)»"}'
+        ].join('\n');
+
+        const userPrompt = `Ситуация: ${situation}\nМысли и обвинения в голове: ${pain}\nТелесные сигналы: ${Array.isArray(bodySignals) ? bodySignals.join(', ') : bodySignals}`;
+        let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
+        let aiParsed = null;
+        if (aiRaw) {
+          try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
+        }
+
+        if (aiParsed && aiParsed.invalid) {
+          setCorsHeaders(res, req);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify(aiParsed));
+        }
+
+        const fallback = {
+          formula: '«Да, у меня сейчас инерция мышления. Я живой человек, меня задело. Но споря в голове, я сжигаю свои силы. Прямо сейчас мне ничего не угрожает. Я выбираю свой покой и отпускаю чужое настроение.»'
+        };
+
+        const resData = aiParsed || fallback;
+        setCorsHeaders(res, req);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        return res.end(JSON.stringify(resData));
+      }
+
+      // Route: /api/s2-lesson4-strategy (Сценарий 2, Урок 4: Напутствие Мудрой Себя)
+      if (pathname === '/api/s2-lesson4-strategy') {
+        const { states = [], beliefs = [], vision = '' } = parsed;
+        if (isGibberishText(vision)) {
+          setCorsHeaders(res, req);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify(GIBBERISH_RESPONSE));
+        }
+
+        const systemPrompt = [
+          'Ты — «Интеллектуальный попутчик», наставник Анатолий Фёдоров, проводник голоса взрослой, мудрой позиции участницы.',
+          'Твоя задача — собрать тёплое, глубокое напутствие с уважением и поддержкой.',
+          'СТРОГИЙ ЗАПРЕТ: НИКАКОЙ фамильярности! Запрещены обращения вроде "милая", "дорогая", "девочка моя" и т.п. Тон — спокойный, взрослый, поддерживающий, уважительный на "Вы".',
+          'ВАЖНЕЙШАЯ ПРОВЕРКА: если ответы — бессмыслица, белиберда, случайный набор букв или бессодержательный текст, верни СТРОГО: {"invalid": true, "message": "Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами."}',
+          'СТРОГИЙ ФОРМАТ JSON:',
+          '{"message":"«(глубокое, взрослое напутствие: 3-4 предложения, опора на безусловную ценность, снятие вины, разрешение отпустить гиперконтроль, уважение и покой)»"}'
+        ].join('\n');
+
+        const userPrompt = `Подавленные состояния: ${Array.isArray(states) ? states.join(', ') : states}\nЗдоровые убеждения: ${Array.isArray(beliefs) ? beliefs.join(', ') : beliefs}\nОбраз реализованной потребности: ${vision}`;
+        let aiRaw = await callPolzaAI(systemPrompt, userPrompt, true);
+        let aiParsed = null;
+        if (aiRaw) {
+          try { aiParsed = JSON.parse(cleanJsonText(aiRaw)); } catch (e) {}
+        }
+
+        if (aiParsed && aiParsed.invalid) {
+          setCorsHeaders(res, req);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify(aiParsed));
+        }
+
+        const fallback = {
+          message: '«Перестаньте заслуживать любовь контролем и тревогами. Ваша ценность существует сама по себе. Позвольте себе выдохнуть и опереться на собственную силу. Всё, что вам нужно для устойчивости — уже внутри вас.»'
+        };
+
+        const resData = aiParsed || fallback;
+        setCorsHeaders(res, req);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        return res.end(JSON.stringify(resData));
       }
 
       // Route: /api/lesson2-strategy (Карта притяжения)
