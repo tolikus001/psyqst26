@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+  <!-- Notibot Bridge Early Interceptor (КОДЕР 2.0) -->
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+  </script>
+  <!-- Fallback Inlined Notibot Bridge if standalone -->
+  <script>
+    if (!window.notibot) {
+      (function() {
+        class NotibotBridge {
+          constructor() {
+            this.user = {};
+            this.app = {};
+            this._updateHandlers = [];
+            this._lastActionTimes = {};
+            this._responseHandlers = {};
+            this._init();
+          }
+          _init() {
+            window.addEventListener('message', (event) => {
+              if (!event.data) return;
+              const isInit = event.data.type === 'NOTIBOT_INIT' ||
+                             event.data.type === 'notibot:init' ||
+                             event.data.type === 'NOTIBOT_READY' ||
+                             event.data.type === 'notibot_init';
+              if (isInit) {
+                const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+                const a = (event.data.data && event.data.data.app) || event.data.app || {};
+                if (u) this.user = u;
+                if (a) this.app = a;
+                this._updateHandlers.forEach(cb => {
+                  try { cb(this.user, this.app); } catch(e) {}
+                });
+              }
+            });
+            if (window.parent && window.parent !== window) {
+              try { window.parent.postMessage({ source: 'vibe-sandbox', type: 'READY_FOR_INIT' }, '*'); } catch(e) {}
+            }
+          }
+          onUpdate(callback) {
+            if (typeof callback === 'function') {
+              this._updateHandlers.push(callback);
+              if (this.user && (this.user.displayName || this.user.first_name || this.user.id || Object.keys(this.user).length > 0)) {
+                callback(this.user, this.app);
+              }
+            }
+          }
+          openArticle(id) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_article', payload: { id } }, '*'); }
+          openProduct(id) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_product', payload: { id } }, '*'); }
+          openStorefront() { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_storefront' }, '*'); }
+          openLink(url) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_link', payload: { url } }, '*'); else window.location.href = url; }
+          hapticImpact(style) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style } }, '*'); }
+          hapticNotification(type) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { type } }, '*'); }
+          hapticSelection() { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style: 'selection' } }, '*'); }
+        }
+        window.notibot = new NotibotBridge();
+      })();
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://kinescope.io https://*.kinescope.io;
+      frame-src 'self' https://kinescope.io https://*.kinescope.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob:;
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Московская Академия Гипноза и Гипнотерапии (МАГиГ) — Курс «Эриксоновский гипноз»</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style id="inlined-theme">
+:root {
+  --nb-bg: #F3F6F5;
+  --nb-text: #243139;
+  --nb-text-2: #68767C;
+  --nb-accent: #7F9B8E;
+  --nb-deep: #243139;
+  --nb-sea: #45656D;
+  --nb-line: rgba(14, 31, 46, 0.10);
+  --nb-gold: #C8B28F;
+  --nb-gold-bright: #D4AF37;
+  --danger: #B42318;
+  --warning: #B7791F;
+  --success: #2F7D59;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100% !important;
+  background: #0E1A2B !important;
+  color: #E6EDF3;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#maisonArtBackground {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  background-image: url('leaves_oak.jpg');
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
+  opacity: 0.12 !important;
+  filter: saturate(0.7) contrast(1.1) brightness(0.7) !important;
+  transform: translateZ(0);
+  pointer-events: none !important;
+}
+
+body > *:not(#maisonArtBackground) {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom));
+  background: transparent !important;
+}
+
+.app {
+  width: 100%;
+  max-width: 448px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: transparent !important;
+}
+
+.academy-card {
+  background: rgba(18, 32, 51, 0.78) !important;
+  backdrop-filter: blur(16px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+  border: 1px solid rgba(200, 178, 143, 0.28) !important;
+  box-shadow: 0 16px 36px rgba(4, 10, 20, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  border-radius: 24px !important;
+  padding: 24px 20px !important;
+}
+
+.gold-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(200, 178, 143, 0.15);
+  border: 1px solid rgba(200, 178, 143, 0.4);
+  color: #E2CBA4;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+h1.academy-title {
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 12px 0 6px 0;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.academy-sub {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #A9BAC7;
+  text-align: center;
+  margin: 0;
+}
+
+.feature-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.feature-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.feature-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(200, 178, 143, 0.18);
+  border: 1px solid rgba(200, 178, 143, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #E2CBA4;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.feature-text h4 {
+  margin: 0 0 3px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.feature-text p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #94A6B5;
+}
+
+.person-box {
+  background: rgba(10, 20, 32, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-top: 10px;
+}
+
+.person-role {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #C8B28F;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.person-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+}
+
+.person-desc {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #9FB2C2;
+  margin: 0;
+}
+
+.gold-btn {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #D4AF37 0%, #C6A75E 50%, #B89645 100%);
+  color: #0C1B2A;
+  font-size: 15.5px;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 24px rgba(212, 175, 55, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gold-btn:active {
+  transform: scale(0.98);
+}
+
+.outline-btn {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #E2CBA4;
+  font-size: 14px;
+  font-weight: 700;
+  border: 1px solid rgba(200, 178, 143, 0.35);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.outline-btn:hover {
+  background: rgba(200, 178, 143, 0.12);
+}
+
+.nav-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.back-btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #C2D1DE;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+  </style>
+</head>
+<body>
+
+  <div id="maisonArtBackground" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <div class="app">
+
+      <!-- Top bar -->
+      <div class="nav-top-row">
+        <button class="back-btn-pill" onclick="handleBack();">
+          <span>← Назад</span>
+        </button>
+        <span class="gold-badge">
+          <span>🏛 МАГиГ</span>
+        </span>
+      </div>
+
+      <!-- Hero Card -->
+      <section class="academy-card" style="text-align:center;">
+        <div style="margin-bottom:8px;">
+          <div class="gold-badge" style="background:rgba(212,175,55,0.18); border-color:#D4AF37;">
+            <span>ФЛАГМАНСКИЙ КУРС</span>
+          </div>
+        </div>
+
+        <h1 class="academy-title">
+          ЭРИКСОНОВСКИЙ ГИПНОЗ
+        </h1>
+
+        <p class="academy-sub">
+          Самый полный практический курс базовых и терапевтических навыков эриксонианского гипноза в русскоязычном сегменте.
+        </p>
+
+        <div style="display:flex; justify-content:center; gap:8px; margin-top:14px; flex-wrap:wrap;">
+          <div style="background:rgba(255,255,255,0.06); padding:6px 12px; border-radius:10px; font-size:12px; color:#E0E9F0;">
+            📜 <b>Удостоверение</b> установленного образца
+          </div>
+          <div style="background:rgba(255,255,255,0.06); padding:6px 12px; border-radius:10px; font-size:12px; color:#E0E9F0;">
+            ⏳ <b>4 месяца</b> практики
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Figures (Fedorov & Chekchurin) -->
+      <section class="academy-card">
+        <h3 style="margin:0 0 10px 0; font-size:16px; font-weight:800; color:#FFFFFF; text-align:center;">
+          Руководство Академии
+        </h3>
+
+        <!-- Anatoly Fedorov -->
+        <div class="person-box" style="border-left:3px solid #C8B28F;">
+          <div class="person-role">Проректор МАГиГ</div>
+          <div class="person-name">Анатолий Игоревич Фёдоров</div>
+          <p class="person-desc">
+            Семейный психолог, гипнолог, эксперт по системным процессам, границам и бессознательным сценариям в отношениях.
+          </p>
+        </div>
+
+        <!-- Yuri Chekchurin -->
+        <div class="person-box">
+          <div class="person-role">Ректор МАГиГ • Автор курса</div>
+          <div class="person-name">Юрий Анатольевич Чекчурин</div>
+          <p class="person-desc">
+            Психотерапевт Единого Реестра Психотерапевтов Европы, психотерапевтический опыт с 1989 года, один из самых опытных гипнотерапевтов России.
+          </p>
+        </div>
+      </section>
+
+      <!-- What is inside course -->
+      <section class="academy-card">
+        <h3 style="margin:0 0 12px 0; font-size:16px; font-weight:800; color:#FFFFFF; text-align:center;">
+          Что входит в учебную программу
+        </h3>
+
+        <div class="feature-row">
+          <div class="feature-icon">🎬</div>
+          <div class="feature-text">
+            <h4>60 видеоуроков и 40 образцов наведения</h4>
+            <p>Фундаментальная видеобаза от базовых навыков транса до работы со сложными клиническими и соматическими запросами.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">👥</div>
+          <div class="feature-text">
+            <h4>До 4 практических встреч в неделю</h4>
+            <p>Отработка навыков наведения, метафор и утилизации сопротивления в малых группах под кураторством сертифицированных наставников.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">🎙</div>
+          <div class="feature-text">
+            <h4>Еженедельные встречи с ректором</h4>
+            <p>Живой разбор трудных клиентских кейсов, супервизия практики и ответы на вопросы участников.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">📑</div>
+          <div class="feature-text">
+            <h4>Государственная лицензия</h4>
+            <p>По окончании программы выдается удостоверение о повышении квалификации установленного государством образца.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- For Whom Block -->
+      <section class="academy-card">
+        <h3 style="margin:0 0 10px 0; font-size:16px; font-weight:800; color:#FFFFFF; text-align:center;">
+          Кому необходим этот курс
+        </h3>
+        <ul style="margin:0; padding-left:18px; font-size:13.5px; line-height:1.5; color:#C4D2DE; display:flex; flex-direction:column; gap:8px;">
+          <li><b>Психологам и психотерапевтам:</b> сократить время терапии и надежно работать с защитами, тревожностью и психосоматикой.</li>
+          <li><b>Коучам и помогающим практикам:</b> мягко обходить ментальный контроль клиента и находить ресурсы на бессознательном уровне.</li>
+          <li><b>Руководителям и переговорщикам:</b> овладеть технологией скрытого влияния, саморегуляции и устойчивости в условиях давления.</li>
+        </ul>
+      </section>
+
+      <!-- Primary Action Buttons -->
+      <section class="academy-card" style="display:flex; flex-direction:column; gap:12px; text-align:center; padding:22px 18px;">
+        <button onclick="handleOpenAcademy();" class="gold-btn">
+          <span>Узнать подробнее на сайте Академии →</span>
+        </button>
+
+        <button onclick="handleOpenChat();" class="outline-btn">
+          <span>Задать вопрос куратору в Telegram</span>
+        </button>
+
+        <p style="font-size:12px; line-height:1.4; color:#7E91A1; margin:4px 0 0 0;">
+          Официальный сайт курса: <b>hypnoacademy.ru/hypnokurs</b>
+        </p>
+      </section>
+
+      <!-- Footer -->
+      <footer style="text-align:center; padding-bottom:16px;">
+        <div style="font-size:11px; color:#5D7080; line-height:1.5;">
+          © Московская Академия Гипноза и Гипнотерапии (МАГиГ)<br/>
+          Лицензия на осуществление образовательной деятельности
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    function safeHaptic(type) {
+      try {
+        if (window.notibot) {
+          if (type === 'selection' && typeof window.notibot.hapticSelection === 'function') {
+            window.notibot.hapticSelection();
+          } else if ((type === 'success' || type === 'error' || type === 'warning') && typeof window.notibot.hapticNotification === 'function') {
+            window.notibot.hapticNotification(type);
+          } else if (typeof window.notibot.hapticImpact === 'function') {
+            window.notibot.hapticImpact(type || 'light');
+          }
+        } else if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+          } else {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
+        } else if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+          navigator.vibrate(type === 'success' ? [30, 50, 30] : 20);
+        }
+      } catch (e) {}
+    }
+
+    function handleOpenAcademy() {
+      safeHaptic('success');
+      const url = 'https://hypnoacademy.ru/hypnokurs';
+      if (window.notibot && typeof window.notibot.openLink === 'function') {
+        window.notibot.openLink(url);
+      } else if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openLink === 'function') {
+        window.Telegram.WebApp.openLink(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+
+    function handleOpenChat() {
+      safeHaptic('selection');
+      const url = 'https://t.me/moshypnoacademy';
+      if (window.notibot && typeof window.notibot.openLink === 'function') {
+        window.notibot.openLink(url);
+      } else if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openLink === 'function') {
+        window.Telegram.WebApp.openLink(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+
+    function handleBack() {
+      safeHaptic('selection');
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        if (window.notibot && typeof window.notibot.openArticle === 'function') {
+          window.notibot.openArticle('35Kvp1YSxOSOzKeVKcpom2');
+        } else {
+          window.location.href = '01_psyquest.html';
+        }
+      }
+    }
+  </script>
+</body>
+</html>

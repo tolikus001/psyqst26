@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+  <!-- Notibot Bridge Early Interceptor -->
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+  </script>
+  <!-- Fallback Inlined Notibot Bridge if standalone -->
+  <script>
+    if (!window.notibot) {
+      (function() {
+        class NotibotBridge {
+          constructor() {
+            this.user = {};
+            this.app = {};
+            this._updateHandlers = [];
+            this._lastActionTimes = {};
+            this._responseHandlers = {};
+            this._init();
+          }
+          _init() {
+            window.addEventListener('message', (event) => {
+              if (!event.data) return;
+              const isInit = event.data.type === 'NOTIBOT_INIT' ||
+                             event.data.type === 'notibot:init' ||
+                             event.data.type === 'NOTIBOT_READY' ||
+                             event.data.type === 'notibot_init';
+              if (isInit) {
+                const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+                const a = (event.data.data && event.data.data.app) || event.data.app || {};
+                if (u) this.user = u;
+                if (a) this.app = a;
+                this._updateHandlers.forEach(cb => {
+                  try { cb(this.user, this.app); } catch(e) {}
+                });
+              }
+            });
+            if (window.parent && window.parent !== window) {
+              try { window.parent.postMessage({ source: 'vibe-sandbox', type: 'READY_FOR_INIT' }, '*'); } catch(e) {}
+            }
+          }
+          onUpdate(callback) {
+            if (typeof callback === 'function') {
+              this._updateHandlers.push(callback);
+              if (this.user && (this.user.displayName || this.user.first_name || this.user.id || Object.keys(this.user).length > 0)) {
+                callback(this.user, this.app);
+              }
+            }
+          }
+          openLink(url) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_link', payload: { url } }, '*'); else window.location.href = url; }
+          hapticSelection() { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style: 'selection' } }, '*'); }
+          hapticImpact(style) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style } }, '*'); }
+        }
+        window.notibot = new NotibotBridge();
+      })();
+    }
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org https://unpkg.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob:;
+      frame-src 'self';
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Анатолий Фёдоров — Простые вещи в отношениях</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --nb-bg: #EAE6DF;
+      --nb-cream: #FBF8F3;
+      --nb-text: #202D35;
+      --nb-text-2: #5D6B73;
+      --nb-accent: #124453;
+      --nb-accent-hover: #0E3541;
+      --nb-gold: #C29E65;
+      --nb-gold-light: #F0E3CC;
+      --nb-gold-dark: #8C6A32;
+      --nb-card-border: rgba(194, 158, 101, 0.28);
+      --nb-shadow: 0 10px 24px rgba(22, 36, 45, 0.08);
+      --font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: #EAE6DF;
+      color: var(--nb-text);
+      font-family: var(--font-family);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-container {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 12px 14px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Top Banner Card */
+    .banner-card {
+      width: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+      background: #FFF;
+      position: relative;
+    }
+
+    .banner-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* Info Benefits Card */
+    .benefits-card {
+      background: var(--nb-cream);
+      border: 1px solid rgba(194, 158, 101, 0.35);
+      border-radius: 20px;
+      padding: 20px 18px;
+      box-shadow: var(--nb-shadow);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .benefits-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #273740;
+      margin: 0;
+      letter-spacing: -0.2px;
+    }
+
+    .benefits-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .benefit-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .benefit-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--nb-gold);
+    }
+
+    .benefit-icon svg {
+      width: 30px;
+      height: 30px;
+      stroke: #B89255;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .benefit-text {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.35;
+      color: #43545E;
+      text-align: center;
+      max-width: 280px;
+    }
+
+    /* Gold Diagnostic Button */
+    .diagnostic-btn {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 16px;
+      background: linear-gradient(180deg, #F9F4EC 0%, #EDE1CD 100%);
+      border: 1.5px solid #C8AA74;
+      border-radius: 14px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #634718;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(175, 140, 80, 0.14);
+      transition: all 0.2s ease;
+    }
+
+    .diagnostic-btn:active {
+      transform: scale(0.985);
+      background: #E6D8C2;
+    }
+
+    /* 2x2 Grid of Main Buttons */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .product-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .product-card:active {
+      transform: scale(0.97);
+    }
+
+    .product-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Bottom Channels Buttons */
+    .action-btn {
+      width: 100%;
+      min-height: 48px;
+      background: var(--nb-accent);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(18, 68, 83, 0.18);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:active {
+      transform: scale(0.985);
+      background: var(--nb-accent-hover);
+    }
+
+    /* Footer Links */
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 6px 6px;
+      font-size: 11px;
+      color: var(--nb-text-2);
+      text-align: center;
+    }
+
+    .footer-links a, .footer-links button {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 11px;
+      color: #6C7C85;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .footer-links a:hover, .footer-links button:hover {
+      text-decoration: underline;
+    }
+
+    .footer-dot {
+      opacity: 0.5;
+    }
+
+    /* Modal / Drawer for Legal Info */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-content {
+      background: #FFFFFF;
+      border-radius: 20px;
+      max-width: 420px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 22px 20px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--nb-text);
+    }
+
+    .modal-close-btn {
+      background: rgba(0, 0, 0, 0.06);
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 16px;
+      font-weight: 700;
+      color: #444;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page-container">
+
+    <!-- 1. Верхний баннер Анатолия Фёдорова -->
+    <div class="banner-card">
+      <img src="anatoly_header_banner_notibot.jpg" alt="Анатолий Фёдоров — Семейный психолог, гипнолог, проректор МАГиГ" />
+    </div>
+
+    <!-- 2. Блок «Здесь ты сможешь:» -->
+    <section class="benefits-card">
+      <h2 class="benefits-title">Здесь ты сможешь:</h2>
+
+      <div class="benefits-list">
+        
+        <!-- Пункт 1: Найти внутреннюю опору -->
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24">
+              <!-- Сияющий человек / Внутренняя опора -->
+              <circle cx="12" cy="7" r="3" />
+              <path d="M7 21v-3a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v3" />
+              <path d="M12 2v2M5 5l1.5 1.5M19 5l-1.5 1.5" />
+            </svg>
+          </div>
+          <span class="benefit-text">найти внутреннюю опору</span>
+        </div>
+
+        <!-- Пункт 2: Простроить внутреннюю систему -->
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24">
+              <!-- Кристаллическая решётка / Система -->
+              <circle cx="12" cy="12" r="2.5" />
+              <circle cx="12" cy="4" r="1.5" />
+              <circle cx="12" cy="20" r="1.5" />
+              <circle cx="4" cy="12" r="1.5" />
+              <circle cx="20" cy="12" r="1.5" />
+              <path d="M12 5.5v4M12 14.5v4M5.5 12h4M14.5 12h4M6.5 6.5l3 3M14.5 14.5l3 3M17.5 6.5l-3 3M9.5 14.5l-3 3" />
+            </svg>
+          </div>
+          <span class="benefit-text">простроить внутреннюю систему</span>
+        </div>
+
+        <!-- Пункт 3: Выстроить систему гармоничных отношений -->
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24">
+              <!-- Два силуэта и сердце / Отношения -->
+              <path d="M12 14c-2.5-3-5.5-2.5-5.5.5 0 2.5 5.5 6.5 5.5 6.5s5.5-4 5.5-6.5c0-3-3-3.5-5.5-.5z" />
+              <circle cx="8" cy="7" r="2" />
+              <circle cx="16" cy="7" r="2" />
+              <path d="M4 14v-1a3 3 0 0 1 3-3M20 14v-1a3 3 0 0 0-3-3" />
+            </svg>
+          </div>
+          <span class="benefit-text">выстроить систему гармоничных отношений</span>
+        </div>
+
+        <!-- Пункт 4: Снять тревогу и выгорание -->
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24">
+              <!-- Лотос / Покой и снятие выгорания -->
+              <path d="M12 21c-4-4-7-8-7-12 0 0 3-1 7 4 4-5 7-4 7-4 0 4-3 8-7 12z" />
+              <path d="M12 13c-2-3-4-4-5.5-3.5 0 2.5 3 5 5.5 6.5 2.5-1.5 5.5-4 5.5-6.5-1.5-.5-3.5.5-5.5 3.5z" />
+            </svg>
+          </div>
+          <span class="benefit-text">снять тревогу и выгорание</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. Золотистая плашка: Диагностика -->
+    <a href="01_psyquest.html" class="diagnostic-btn" onclick="safeHaptic();">
+      <span>Диагностика: «Я и мои отношения»</span>
+    </a>
+
+    <!-- 4. Сетка 2х2 главных кнопок продуктов -->
+    <section class="grid-cards">
+      
+      <!-- Кнопка 1: Медитации и аудиопрактики -->
+      <a href="hub_meditations.html" class="product-card" onclick="safeHaptic();">
+        <img src="card_1_meditations.jpg" alt="Медитации и аудиопрактики" onerror="this.src='медитации.jpg'" />
+      </a>
+
+      <!-- Кнопка 2: Практические курсы -->
+      <a href="hub_courses.html" class="product-card" onclick="safeHaptic();">
+        <img src="card_2_courses.jpg" alt="Практические курсы" onerror="this.src='курсы.jpg'" />
+      </a>
+
+      <!-- Кнопка 3: Обучение в Академии МАГиГ -->
+      <a href="magig.html" class="product-card" onclick="safeHaptic();">
+        <img src="card_4_academy.jpg" alt="Обучение в Академии МАГиГ" onerror="this.src='магиг.jpg'" />
+      </a>
+
+      <!-- Кнопка 4: Личные консультации -->
+      <a href="hub_consultations.html" class="product-card" onclick="safeHaptic();">
+        <img src="card_3_consultations.jpg" alt="Личные консультации" onerror="this.src='личные консультации.jpg'" />
+      </a>
+
+    </section>
+
+    <!-- 5. Кнопки «Мой канал» и «Канал YouTube» -->
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <a href="https://t.me/smplthing" target="_blank" class="action-btn" onclick="safeHaptic();">
+        <span>Мой канал</span>
+      </a>
+
+      <a href="https://youtube.com/@psy-anatolifedorov" target="_blank" class="action-btn" onclick="safeHaptic();">
+        <span>Канал YouTube</span>
+      </a>
+    </div>
+
+    <!-- 6. Футер с юридическими ссылками -->
+    <footer class="footer-links">
+      <button type="button" onclick="showModal('offer')">Публичная оферта</button>
+      <span class="footer-dot">•</span>
+      <button type="button" onclick="showModal('privacy')">Политика конфиденциальности</button>
+      <span class="footer-dot">•</span>
+      <button type="button" onclick="showModal('requisites')">Реквизиты</button>
+    </footer>
+
+  </main>
+
+  <!-- Модальные окна для документов -->
+  <div id="legalModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="modalTitle">Документ</h3>
+        <button type="button" class="modal-close-btn" onclick="hideModal()">✕</button>
+      </div>
+      <div id="modalBody" style="font-size:13px; line-height:1.5; color:#44525A;"></div>
+    </div>
+  </div>
+
+  <script>
+    function safeHaptic() {
+      try {
+        if (window.notibot && typeof notibot.hapticSelection === 'function') {
+          notibot.hapticSelection();
+        }
+      } catch(e) {}
+    }
+
+    function openMagigInfo() {
+      safeHaptic();
+      showModal('magig');
+    }
+
+    var legalTexts = {
+      offer: {
+        title: 'Публичная оферта',
+        content: '<p>Настоящий документ является официальным предложением (публичной офертой) ИП Фёдоров Анатолий Игоревич на заключение договора об оказании информационно-консультационных услуг и доступа к обучающим материалам.</p><p>Оплата любых продуктов на платформе подтверждает полное и безоговорочное согласие с условиями оферты.</p>'
+      },
+      privacy: {
+        title: 'Политика конфиденциальности',
+        content: '<p>Мы с уважением относимся к вашим персональным данным. Все полученные данные (имя, контакты, результаты опросов) используются исключительно для оказания консультационных услуг и доступа к материалам курса.</p><p>Данные не передаются третьим лицам без вашего прямого согласия.</p>'
+      },
+      requisites: {
+        title: 'Реквизиты',
+        content: '<p><strong>ИП Фёдоров Анатолий Игоревич</strong></p><p>ИНН: по запросу в службе заботы<br>Семейный психолог, гипнолог, проректор Московской Академии гипноза и гипнотерапии (МАГиГ).</p><p>Связь с Анатолием: <a href="https://t.me/luck_master" target="_blank" style="color:#124453; font-weight:700;">@luck_master</a></p>'
+      },
+      magig: {
+        title: 'Обучение в Академии МАГиГ',
+        content: '<p><strong>Московская Академия гипноза и гипнотерапии (МАГиГ)</strong></p><p>Анатолий Фёдоров является проректором Академии и ведущим преподавателем курсов профессиональной переподготовки по классическому и эриксоновскому гипнозу, системной терапии и консультированию.</p><p>По вопросам сертификационных программ и наборов в группы напишите напрямую Анатолию:</p><p style="margin-top:14px;"><a href="https://t.me/luck_master" target="_blank" class="action-btn" style="text-decoration:none; display:flex; align-items:center; justify-content:center;"><span>Написать в Telegram @luck_master</span></a></p>'
+      }
+    };
+
+    function showModal(type) {
+      var doc = legalTexts[type];
+      if (!doc) return;
+      document.getElementById('modalTitle').innerText = doc.title;
+      document.getElementById('modalBody').innerHTML = doc.content;
+      document.getElementById('legalModal').style.display = 'flex';
+    }
+
+    function hideModal() {
+      document.getElementById('legalModal').style.display = 'none';
+    }
+
+    function closeModal(e) {
+      if (e.target.id === 'legalModal') {
+        hideModal();
+      }
+    }
+  </script>
+</body>
+</html>

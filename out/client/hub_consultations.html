@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+  </script>
+  <script>
+    if (!window.notibot) {
+      (function() {
+        class NotibotBridge {
+          constructor() {
+            this.user = {};
+            this.app = {};
+            this._updateHandlers = [];
+            this._lastActionTimes = {};
+            this._responseHandlers = {};
+            this._init();
+          }
+          _init() {
+            window.addEventListener('message', (event) => {
+              if (!event.data) return;
+              const isInit = event.data.type === 'NOTIBOT_INIT' ||
+                             event.data.type === 'notibot:init' ||
+                             event.data.type === 'NOTIBOT_READY' ||
+                             event.data.type === 'notibot_init';
+              if (isInit) {
+                const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+                const a = (event.data.data && event.data.data.app) || event.data.app || {};
+                if (u) this.user = u;
+                if (a) this.app = a;
+                this._updateHandlers.forEach(cb => {
+                  try { cb(this.user, this.app); } catch(e) {}
+                });
+              }
+            });
+            if (window.parent && window.parent !== window) {
+              try { window.parent.postMessage({ source: 'vibe-sandbox', type: 'READY_FOR_INIT' }, '*'); } catch(e) {}
+            }
+          }
+          onUpdate(callback) {
+            if (typeof callback === 'function') {
+              this._updateHandlers.push(callback);
+              if (this.user && (this.user.displayName || this.user.first_name || this.user.id || Object.keys(this.user).length > 0)) {
+                callback(this.user, this.app);
+              }
+            }
+          }
+          openLink(url) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_link', payload: { url } }, '*'); else window.location.href = url; }
+          hapticSelection() { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style: 'selection' } }, '*'); }
+        }
+        window.notibot = new NotibotBridge();
+      })();
+    }
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Личные консультации — Анатолий Фёдоров</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --nb-bg: #EAE6DF;
+      --nb-cream: #FBF8F3;
+      --nb-text: #202D35;
+      --nb-text-2: #5D6B73;
+      --nb-accent: #124453;
+      --nb-accent-hover: #0E3541;
+      --nb-gold: #C29E65;
+      --nb-gold-light: #F0E3CC;
+      --nb-gold-dark: #8C6A32;
+      --nb-card-border: rgba(194, 158, 101, 0.28);
+      --nb-shadow: 0 10px 24px rgba(22, 36, 45, 0.08);
+      --font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: #EAE6DF;
+      color: var(--nb-text);
+      font-family: var(--font-family);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-container {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 12px 14px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .nav-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--nb-text);
+      text-decoration: none;
+      align-self: flex-start;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .hero-card {
+      background: var(--nb-cream);
+      border: 1px solid rgba(194, 158, 101, 0.35);
+      border-radius: 20px;
+      padding: 20px 18px;
+      box-shadow: var(--nb-shadow);
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--nb-gold-dark);
+      background: var(--nb-gold-light);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #202D35;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.3px;
+    }
+
+    .hero-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--nb-text-2);
+      margin: 0;
+    }
+
+    .service-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(36, 49, 57, 0.08);
+      border-radius: 18px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .service-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      align-self: flex-start;
+      background: #E8F0F2;
+      color: var(--nb-accent);
+      border: 1px solid rgba(18, 68, 83, 0.2);
+    }
+
+    .service-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--nb-text);
+      margin: 0;
+    }
+
+    .service-desc {
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--nb-text-2);
+      margin: 0;
+    }
+
+    .primary-btn {
+      width: 100%;
+      min-height: 48px;
+      background: var(--nb-accent);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(18, 68, 83, 0.18);
+      transition: all 0.2s ease;
+      margin-top: 4px;
+    }
+
+    .primary-btn:active {
+      transform: scale(0.985);
+      background: var(--nb-accent-hover);
+    }
+
+    .secondary-btn {
+      width: 100%;
+      min-height: 44px;
+      background: #FFFFFF;
+      color: var(--nb-accent);
+      border: 1.5px solid rgba(18, 68, 83, 0.25);
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page-container">
+
+    <!-- Кнопка назад -->
+    <a href="index.html" class="nav-back-btn" onclick="safeHaptic();">
+      ← На главную
+    </a>
+
+    <!-- Заглавная карточка -->
+    <section class="hero-card">
+      <div class="eyebrow">
+        Личный приём • Анатолий Фёдоров
+      </div>
+      <h1 class="hero-title">Индивидуальные консультации</h1>
+      <p class="hero-desc">
+        Семейный психолог, гипнолог, проректор Московской Академии гипноза и гипнотерапии (МАГиГ). Более 20 лет клинической и частной практики, 35 000+ часов работы с парами, эмоциональной зависимостью и кризисными состояниями.
+      </p>
+    </section>
+
+    <!-- Услуга 1: Диагностическая сессия и психологический портрет -->
+    <article class="service-card">
+      <div class="service-badge">Первый шаг • 45-60 минут</div>
+      <h2 class="service-title">Диагностическая сессия и портрет сценария</h2>
+      <p class="service-desc">
+        Точный разбор вашей ситуации: где сухое действие партнера, а где внутренняя тревожная катастрофа. Определение скрытой выгоды сценарных качелей и пошаговый маршрут выхода.
+      </p>
+      <a href="https://t.me/luck_master" target="_blank" class="primary-btn" onclick="safeHaptic();">
+        <span>Написать Анатолию в Telegram ➔</span>
+      </a>
+    </article>
+
+    <!-- Услуга 2: Программа сопровождения -->
+    <article class="service-card">
+      <div class="service-badge">Глубокая терапия • 1–2 месяца</div>
+      <h2 class="service-title">Индивидуальное сопровождение</h2>
+      <p class="service-desc">
+        Системная работа под ключ: пересборка границ, снятие навязчивой руминации и ночных споров, возврат внутренней опоры и стабилизация нервной системы методами гипнотерапии МАГиГ.
+      </p>
+      <a href="https://t.me/priceFedorov" target="_blank" class="secondary-btn" onclick="safeHaptic();">
+        <span>Посмотреть актуальный прайс и условия</span>
+      </a>
+    </article>
+
+    <!-- Услуга 3: Парная и семейная терапия -->
+    <article class="service-card">
+      <div class="service-badge">Для пар • Выход из кризиса</div>
+      <h2 class="service-title">Консультация для пар</h2>
+      <p class="service-desc">
+        Преодоление затяжного отчуждения, разрыв цикла «нападающий — убегающий», восстановление безопасного диалога без взаимных обвинений.
+      </p>
+      <a href="https://t.me/luck_master" target="_blank" class="secondary-btn" onclick="safeHaptic();">
+        <span>Записаться парой через личные сообщения</span>
+      </a>
+    </article>
+
+  </main>
+
+  <script>
+    function safeHaptic() {
+      try {
+        if (window.notibot && typeof notibot.hapticSelection === 'function') {
+          notibot.hapticSelection();
+        }
+      } catch(e) {}
+    }
+  </script>
+</body>
+</html>

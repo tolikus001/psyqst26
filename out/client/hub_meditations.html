@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://list.notibot.ru/notibot-bridge.js"></script>
+  <!-- Notibot Bridge Early Interceptor -->
+  <script>
+    window.notibotInitData = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'NOTIBOT_INIT' && event.data.data) {
+        window.notibotInitData = event.data.data;
+      }
+    });
+  </script>
+  <!-- Fallback Inlined Notibot Bridge if standalone -->
+  <script>
+    if (!window.notibot) {
+      (function() {
+        class NotibotBridge {
+          constructor() {
+            this.user = {};
+            this.app = {};
+            this._updateHandlers = [];
+            this._lastActionTimes = {};
+            this._responseHandlers = {};
+            this._init();
+          }
+          _init() {
+            window.addEventListener('message', (event) => {
+              if (!event.data) return;
+              const isInit = event.data.type === 'NOTIBOT_INIT' ||
+                             event.data.type === 'notibot:init' ||
+                             event.data.type === 'NOTIBOT_READY' ||
+                             event.data.type === 'notibot_init';
+              if (isInit) {
+                const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+                const a = (event.data.data && event.data.data.app) || event.data.app || {};
+                if (u) this.user = u;
+                if (a) this.app = a;
+                this._updateHandlers.forEach(cb => {
+                  try { cb(this.user, this.app); } catch(e) {}
+                });
+              }
+            });
+            if (window.parent && window.parent !== window) {
+              try { window.parent.postMessage({ source: 'vibe-sandbox', type: 'READY_FOR_INIT' }, '*'); } catch(e) {}
+            }
+          }
+          onUpdate(callback) {
+            if (typeof callback === 'function') {
+              this._updateHandlers.push(callback);
+              if (this.user && (this.user.displayName || this.user.first_name || this.user.id || Object.keys(this.user).length > 0)) {
+                callback(this.user, this.app);
+              }
+            }
+          }
+          openLink(url) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_link', payload: { url } }, '*'); else window.location.href = url; }
+          hapticSelection() { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style: 'selection' } }, '*'); }
+        }
+        window.notibot = new NotibotBridge();
+      })();
+    }
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://list.notibot.ru https://telegram.org;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      media-src 'self' https: data: blob:;
+      frame-src 'self';
+      connect-src 'self' https: http://localhost:3000;
+    " />
+  <title>Медитации и аудиопрактики — Анатолий Фёдоров</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --nb-bg: #EAE6DF;
+      --nb-cream: #FBF8F3;
+      --nb-text: #202D35;
+      --nb-text-2: #5D6B73;
+      --nb-accent: #124453;
+      --nb-gold: #C29E65;
+      --nb-gold-dark: #8C6A32;
+      --nb-teal-dark: #0D333E;
+      --font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      margin: 0; padding: 0; min-height: 100%;
+      background: #EAE6DF;
+      color: var(--nb-text);
+      font-family: var(--font-family);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-container {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 12px 14px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Top Navigation Button */
+    .nav-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--nb-accent);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      border: 1px solid rgba(194, 158, 101, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      text-decoration: none;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: all 0.2s ease;
+    }
+
+    .nav-back-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Hero Header Card */
+    .hero-card {
+      background: linear-gradient(135deg, #124453 0%, #0A262F 100%);
+      color: #FFFFFF;
+      border-radius: 20px;
+      padding: 22px 20px;
+      box-shadow: 0 10px 28px rgba(18, 68, 83, 0.2);
+      border: 1.5px solid rgba(194, 158, 101, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 130px;
+      height: 130px;
+      background: radial-gradient(circle, rgba(194, 158, 101, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #E2C391;
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 8px;
+      line-height: 1.25;
+      color: #FFFFFF;
+    }
+
+    .hero-desc {
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.82);
+      margin: 0;
+    }
+
+    /* Practice Card */
+    .practice-card {
+      background: var(--nb-cream);
+      border: 1.5px solid rgba(194, 158, 101, 0.3);
+      border-radius: 18px;
+      padding: 16px 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .practice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .practice-title {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--nb-text);
+      margin: 0 0 4px;
+      line-height: 1.3;
+    }
+
+    .practice-badge {
+      font-size: 11px;
+      font-weight: 800;
+      color: #8C6A32;
+      background: rgba(194, 158, 101, 0.16);
+      padding: 3px 8px;
+      border-radius: 8px;
+      white-space: nowrap;
+      border: 1px solid rgba(194, 158, 101, 0.25);
+    }
+
+    .practice-desc {
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: var(--nb-text-2);
+      margin: 0;
+    }
+
+    /* Audio Player Wrapper */
+    .audio-wrapper {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(36, 49, 57, 0.08);
+    }
+
+    .audio-wrapper audio {
+      width: 100%;
+      height: 38px;
+      accent-color: var(--nb-accent);
+    }
+
+    /* Action buttons */
+    .primary-btn {
+      width: 100%;
+      min-height: 46px;
+      background: var(--nb-accent);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 14px;
+      font-size: 13.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(18, 68, 83, 0.18);
+      transition: all 0.2s ease;
+    }
+
+    .primary-btn:active {
+      transform: scale(0.985);
+      background: var(--nb-teal-dark);
+    }
+
+    .secondary-btn {
+      width: 100%;
+      min-height: 44px;
+      background: #FFFFFF;
+      color: var(--nb-accent);
+      border: 1.5px solid rgba(18, 68, 83, 0.25);
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page-container">
+
+    <!-- Кнопка назад -->
+    <a href="index.html" class="nav-back-btn" onclick="safeHaptic();">
+      ← На главную
+    </a>
+
+    <!-- Заглавная карточка -->
+    <section class="hero-card">
+      <div class="eyebrow">
+        🎧 Авторские трансовые сессии • МАГиГ
+      </div>
+      <h1 class="hero-title">Медитации и аудиопрактики</h1>
+      <p class="hero-desc">
+        Глубинные аудиосессии Анатолия Фёдорова по методу трёхниточной эриксоновской косички (МАГиГ) с терапевтическими частотами 432 и 528 Гц. Возвращение в тело, снятие тревоги и остановка мысленной жвачки.
+      </p>
+    </section>
+
+    <!-- 1. Практика «Штиль после шторма» -->
+    <article class="practice-card">
+      <div class="practice-header">
+        <div>
+          <h2 class="practice-title">Практика «Штиль после шторма»</h2>
+          <div class="practice-badge">Экстренное заземление • 17 минут</div>
+        </div>
+      </div>
+      <p class="practice-desc">
+        Остановка внутреннего суда и мысленной жвачки. Наденьте наушники, сделайте глубокий вдох и позвольте голосу вернуть ваше тело в безопасную гавань.
+      </p>
+      <div class="audio-wrapper">
+        <audio controls preload="metadata">
+          <source src="meditation2-3.mp3" type="audio/mpeg">
+          <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation2-3.mp3" type="audio/mpeg">
+          Ваш браузер не поддерживает аудио.
+        </audio>
+      </div>
+      <a href="18_lesson3.html" class="secondary-btn" onclick="safeHaptic();">
+        <span>Открыть в контексте Урока 3 ➔</span>
+      </a>
+    </article>
+
+    <!-- 2. Практика «Я остаюсь собой» -->
+    <article class="practice-card">
+      <div class="practice-header">
+        <div>
+          <h2 class="practice-title">Практика «Я остаюсь собой»</h2>
+          <div class="practice-badge">Эмоциональный суверенитет • 15 минут</div>
+        </div>
+      </div>
+      <p class="practice-desc">
+        Финальная практика интеграции нового опыта и глубокого спокойствия. Возврат контроля над своим состоянием без попыток заслужить любовь чужим одобрением.
+      </p>
+      <div class="audio-wrapper">
+        <audio controls preload="metadata">
+          <source src="meditation2-5.mp3" type="audio/mpeg">
+          <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation2-5.mp3" type="audio/mpeg">
+          Ваш браузер не поддерживает аудио.
+        </audio>
+      </div>
+      <a href="20_lesson5.html" class="secondary-btn" onclick="safeHaptic();">
+        <span>Открыть в контексте Урока 5 ➔</span>
+      </a>
+    </article>
+
+    <!-- 3. Практика «На своей земле» -->
+    <article class="practice-card">
+      <div class="practice-header">
+        <div>
+          <h2 class="practice-title">Практика «На своей земле»</h2>
+          <div class="practice-badge">Границы и опора • 12 минут</div>
+        </div>
+      </div>
+      <p class="practice-desc">
+        Снятие синдрома спасателя и запретов на собственную жизнь. Глубокое ощущение права быть собой и опора на сильную здоровую взрослую часть.
+      </p>
+      <a href="07_lesson5.html" class="secondary-btn" onclick="safeHaptic();">
+        <span>Открыть практику в Уроке 5 (Сценарий 1) ➔</span>
+      </a>
+    </article>
+
+    <!-- 4. Практика «Я в безопасности» -->
+    <article class="practice-card">
+      <div class="practice-header">
+        <div>
+          <h2 class="practice-title">Практика «Я в безопасности»</h2>
+          <div class="practice-badge">Антикризисный якорь • 14 минут</div>
+        </div>
+      </div>
+      <p class="practice-desc">
+        Соматическая реанимация при остром потрясении (измена, шок, угроза разрыва). Мораторий на импульсивные действия в первые дни кризиса.
+      </p>
+      <a href="38_lesson1.html" class="secondary-btn" onclick="safeHaptic();">
+        <span>Открыть антикризисный протокол ➔</span>
+      </a>
+    </article>
+
+    <!-- Карточка перехода в Telegram / Прайс -->
+    <section style="background:linear-gradient(180deg, #FBF8F3 0%, #EDE1CD 100%); border:1.5px solid #C8AA74; border-radius:18px; padding:18px; text-align:center; display:flex; flex-direction:column; gap:10px; box-shadow:0 8px 24px rgba(175,140,80,0.12);">
+      <h3 style="font-size:15px; font-weight:800; color:#523912; margin:0;">Полный сборник практик и новых записей</h3>
+      <p style="font-size:12.5px; color:#5D6B73; line-height:1.45; margin:0;">
+        Новые трансовые сессии и аудиопрактики публикуются в официальном канале «Простые вещи».
+      </p>
+      <a href="https://t.me/smplthing" target="_blank" class="primary-btn" onclick="safeHaptic();">
+        <span>Слушать в канале «Простые вещи»</span>
+      </a>
+    </section>
+
+    <!-- Назад -->
+    <div style="padding-top:4px;">
+      <a href="index.html" class="secondary-btn" onclick="safeHaptic();">
+        <span>← Вернуться в каталог</span>
+      </a>
+    </div>
+
+  </main>
+
+  <script>
+    function safeHaptic() {
+      try {
+        if (window.notibot && typeof notibot.hapticSelection === 'function') {
+          notibot.hapticSelection();
+        }
+      } catch(e) {}
+    }
+  </script>
+</body>
+</html>
