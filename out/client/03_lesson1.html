@@ -1526,6 +1526,12 @@ textarea:focus, input:focus {
 
           <form id="strategyForm" onsubmit="analyzeStrategy(event)"
             style="display:flex; flex-direction:column; gap:12px;">
+            <div style="text-align:center; margin-bottom:4px;">
+              <button type="button" onclick="fillExampleScenario()" class="secondary-btn" style="font-size:11.5px; padding:6px 14px; min-height:auto; border-radius:999px;">
+                📋 Вставить пример ситуации
+              </button>
+            </div>
+
             <div>
               <label
                 style="font-size:12px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:4px;">Что
@@ -1763,6 +1769,20 @@ textarea:focus, input:focus {
           btn.style.display = 'block';
         }
       }
+    }
+    function fillExampleScenario() {
+      const factEl = document.getElementById('inpFact');
+      const thoughtEl = document.getElementById('inpThought') || document.getElementById('inpFeeling');
+      const actionEl = document.getElementById('inpAction');
+      const reliefEl = document.getElementById('inpRelief');
+      const resultEl = document.getElementById('inpResult');
+
+      if (factEl) factEl.value = "Он не отвечает на сообщение больше часа.";
+      if (thoughtEl) thoughtEl.value = "Я подумала, что он отдаляется и ему всё равно. Появилась тревога.";
+      if (actionEl) actionEl.value = "Стала проверять статус в сети и написала второе сообщение.";
+      if (reliefEl) reliefEl.value = "На пару минут отпустило, показалось, что контролирую ситуацию.";
+      if (resultEl) resultEl.value = "В итоге почувствовала унижение и оказалась в позиции догоняющей.";
+      safeHaptic('selection');
     }
     updateCreditsUI();
 
