@@ -1512,8 +1512,8 @@ textarea:focus, input:focus {
           </div>
           <p id="aiCreditsCardText"
             style="font-size:13px; line-height:1.5; color:var(--nb-slate); margin:0; text-align:center;">
-            Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит
-            диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.
+            Он поможет вам уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит
+            диагнозов и не принимает решения за вас — окончательный выбор остаётся вашим.
           </p>
         </div>
 
@@ -1573,7 +1573,7 @@ textarea:focus, input:focus {
 
           <!-- AI Feedback -->
           <div id="aiResultBlock" class="hidden"
-            style="margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:10px;">
+            style="display:none; margin-top:14px; padding:14px; border-radius:16px; background:rgba(127,155,142,0.12); border:1px solid rgba(127,155,142,0.25); flex-direction:column; gap:10px;">
             <strong style="color:var(--nb-deep); font-size:13px;">✨ Ответ Интеллектуального попутчика:</strong>
 
             <!-- Offline / Fallback Notice Banner -->
@@ -1757,7 +1757,7 @@ textarea:focus, input:focus {
         }
       } else {
         if (textEl) {
-          textEl.textContent = 'Он поможет тебе уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за тебя — окончательный выбор остаётся твоим.';
+          textEl.textContent = 'Он поможет вам уточнить ответы, разобрать ситуацию и увидеть повторяющийся сценарий. Попутчик не ставит диагнозов и не принимает решения за вас — окончательный выбор остаётся вашим.';
         }
         if (btn) {
           btn.style.display = 'block';
