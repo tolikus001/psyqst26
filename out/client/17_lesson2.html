@@ -1120,6 +1120,16 @@ textarea:focus, input:focus {
       border-color: rgba(196, 115, 79, 0.3) !important;
       background: #FFF8F5 !important;
     }
+    .situation-chip:hover {
+      border-color: rgba(196, 115, 79, 0.4) !important;
+      background: #FFFDFB !important;
+    }
+    .situation-chip.selected {
+      border-color: var(--nb-sea) !important;
+      background: rgba(69, 101, 109, 0.08) !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 14px rgba(69, 101, 109, 0.12) !important;
+    }
 </style>
   <script>
 (function() {
@@ -1746,40 +1756,93 @@ textarea:focus, input:focus {
         <!-- STEP 1 -->
         <div id="step1" class="glass card" style="display:flex; flex-direction:column; gap:12px;">
           <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 1. Разговор или ситуация</h3>
-          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Вспомните недавний разговор, где вы были недовольны поведением партнёра или вам пришлось решать за двоих.</p>
-          <textarea id="situationInput" rows="3" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Например: обсуждали ремонт / поездку на выходные, он тянул время, я начала давить..."></textarea>
-          <button onclick="handleStep1()" class="primary-btn" style="width:100%; min-height:44px;">Далее</button>
+          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Выберите недавнюю ситуацию или опишите свою:</p>
+          
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button type="button" onclick="selectPreset('step1', this, 'Обсуждали общие планы на выходные, он тянул время и уходил от ответа, я начала давить и решать за двоих')" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer;">
+              🚗 <strong>Тянул с решением:</strong> обсуждали планы, он тянул время, я начала давить и решать сама
+            </button>
+            <button type="button" onclick="selectPreset('step1', this, 'Бытовые дела: пообещал сделать, но забыл и лёг на диван, мне пришлось всё делать самой')" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer;">
+              🏠 <strong>Пообещал и не сделал:</strong> пришлось снова всё тащить и делать самой
+            </button>
+            <button type="button" onclick="toggleCustom('step1', this)" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px dashed rgba(36,49,57,0.2); background:rgba(255,255,255,0.6); font-size:13px; line-height:1.35; color:var(--nb-text); cursor:pointer;">
+              ✏️ <strong>Описать свою ситуацию</strong>
+            </button>
+          </div>
+
+          <div id="customBox1" style="display:none; flex-direction:column; gap:6px;">
+            <textarea id="situationInput" rows="3" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1.5px solid var(--nb-sea); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Опишите, о чём был разговор..."></textarea>
+          </div>
+
+          <button onclick="handleStep1()" class="primary-btn" style="width:100%; min-height:44px; margin-top:4px;">Далее →</button>
         </div>
 
         <!-- STEP 2 -->
         <div id="step2" class="glass card" style="display:none; flex-direction:column; gap:12px;">
           <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 2. Что вы сказали ему?</h3>
-          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Какими именно словами и фразами вы обратились к нему?</p>
-          <textarea id="phraseInput" rows="3" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Например: «Сколько можно тянуть, ты вообще собираешься что-то делать или мне опять всё самой решать?!»"></textarea>
-          <button onclick="handleStep2()" class="primary-btn" style="width:100%; min-height:44px;">Далее</button>
+          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Выберите привычную фразу контроля или напишите свои слова:</p>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button type="button" onclick="selectPreset('step2', this, '«Сколько можно тянуть, ты вообще собираешься что-то делать или мне опять всё самой решать?!»')" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer;">
+              😤 <strong>«Сколько можно тянуть, мне опять всё самой решать?!»</strong>
+            </button>
+            <button type="button" onclick="selectPreset('step2', this, '«Я так и знала, что на тебя нельзя положиться. Проще самой сделать, чем тебя допроситься!»')" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer;">
+              🧊 <strong>«Проще самой сделать, чем тебя допроситься!»</strong>
+            </button>
+            <button type="button" onclick="toggleCustom('step2', this)" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px dashed rgba(36,49,57,0.2); background:rgba(255,255,255,0.6); font-size:13px; line-height:1.35; color:var(--nb-text); cursor:pointer;">
+              ✏️ <strong>Написать свои слова</strong>
+            </button>
+          </div>
+
+          <div id="customBox2" style="display:none; flex-direction:column; gap:6px;">
+            <textarea id="phraseInput" rows="3" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1.5px solid var(--nb-sea); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Какими словами вы высказали претензию?"></textarea>
+          </div>
+
+          <div style="display:flex; gap:8px; margin-top:4px;">
+            <button type="button" onclick="backToStep(1)" class="secondary-btn" style="flex:0 0 80px; min-height:44px;">← Назад</button>
+            <button onclick="handleStep2()" class="primary-btn" style="flex:1; min-height:44px;">Далее →</button>
+          </div>
         </div>
 
         <!-- STEP 3 -->
         <div id="step3" class="glass card" style="display:none; flex-direction:column; gap:12px; position:relative;">
           <h3 style="font-size:16px; font-weight:800; text-align:center; margin:0;">Шаг 3. Какая потребность кричит внутри?</h3>
-          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Какая ваша истинная потребность или чувство стояли за этими словами? (Усталость, желание заботы, потребность в помощи)</p>
-          <textarea id="needInput" rows="3" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Например: Я ужасно устала всё держать в голове и хотела почувствовать, что он берёт ответственность..."></textarea>
-          
-          <!-- Gibberish / Incomplete Notice -->
-          <div id="gibberishNotice" style="display:none; padding:12px 14px; border-radius:16px; background:rgba(217,131,78,0.12); border:1.5px solid #D9834E; margin-top:4px; margin-bottom:4px;">
+          <p style="font-size:13px; color:var(--nb-text-2); text-align:center; margin:0;">Что на самом деле стояло за вашим контролем и раздражением?</p>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button type="button" onclick="selectPreset('step3', this, 'Я ужасно устала всё держать в голове и тащить на себе. Мне просто нужна реальная помощь и опора')" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer;">
+              😮💨 <strong>Усталость и перегруз:</strong> я устала всё тащить, мне нужна помощь и надёжная опора
+            </button>
+            <button type="button" onclick="selectPreset('step3', this, 'Мне тревожно и одиноко. Я боюсь остаться один на один со всеми проблемами, хочу почувствовать заботу')" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(36,49,57,0.12); background:#FFFFFF; font-size:13px; line-height:1.35; color:var(--nb-deep); cursor:pointer;">
+              🥺 <strong>Страх и одиночество:</strong> боюсь, что всё рухнет, хочу почувствовать заботу и контакт
+            </button>
+            <button type="button" onclick="toggleCustom('step3', this)" class="situation-chip" style="width:100%; text-align:left; padding:12px 14px; border-radius:14px; border:1.5px dashed rgba(36,49,57,0.2); background:rgba(255,255,255,0.6); font-size:13px; line-height:1.35; color:var(--nb-text); cursor:pointer;">
+              ✏️ <strong>Описать свою потребность</strong>
+            </button>
+          </div>
+
+          <div id="customBox3" style="display:none; flex-direction:column; gap:6px;">
+            <textarea id="needInput" rows="3" style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1.5px solid var(--nb-sea); background:#FFF; resize:vertical; font-family:inherit; line-height:1.4;" placeholder="Какое чувство пряталось за контролем?"></textarea>
+          </div>
+
+          <!-- Предупреждение об абракадабре -->
+          <div id="gibberishNotice" style="display:none; padding:12px 14px; border-radius:16px; background:rgba(217,131,78,0.12); border:1.5px solid #D9834E; margin:4px 0;">
             <div style="display:flex; align-items:flex-start; gap:10px;">
               <span style="font-size:20px; line-height:1;">🧭</span>
               <div style="flex:1;">
                 <div style="font-size:13px; font-weight:800; color:#A85532; margin-bottom:3px;">Интеллектуальный попутчик:</div>
-                <div id="gibberishNoticeText" style="font-size:12.5px; color:var(--nb-deep); line-height:1.45;">Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами.</div>
-                <div style="font-size:11px; color:#2F7D59; font-weight:700; margin-top:5px;">✨ Запрос не засчитан за попытку — вы можете дополнить ответ прямо сейчас.</div>
+                <div id="gibberishNoticeText" style="font-size:12.5px; color:var(--nb-deep); line-height:1.45;">Пожалуйста, выберите готовый вариант или напишите понятными словами (без случайного набора букв).</div>
+                <div style="font-size:11px; color:#2F7D59; font-weight:700; margin-top:5px;">✨ Попытка не списана — дополните ответ прямо сейчас.</div>
               </div>
             </div>
           </div>
 
-          <button id="submitBtn" type="button" onclick="submitToAI(event)" class="primary-btn btn-glare" style="width:100%; min-height:48px;">
-            <span>Перевести на язык партнёра с Интеллектуальным попутчиком ➔</span>
-          </button>
+          <div style="display:flex; gap:8px; margin-top:4px;">
+            <button type="button" onclick="backToStep(2)" class="secondary-btn" style="flex:0 0 80px; min-height:48px;">← Назад</button>
+            <button id="submitBtn" type="button" onclick="submitToAI(event)" class="primary-btn btn-glare" style="flex:1; min-height:48px;">
+              <span>Перевести на язык партнёра с Интеллектуальным попутчиком ➔</span>
+            </button>
+          </div>
           
           <!-- Companion Farewell Block in Step 3 (when attempts = 0) -->
           <div id="companionFarewellStep3" style="display:none; margin-top:6px; padding:16px 14px; border-radius:18px; background:rgba(217,131,78,0.12); border:1px solid rgba(217,131,78,0.28); text-align:center; flex-direction:column; gap:10px;">
@@ -1950,28 +2013,134 @@ textarea:focus, input:focus {
       }
     }
 
+    // Детектор абракадабры (русский и латиница)
+    function isGibberish(text) {
+      if (!text || typeof text !== 'string') return true;
+      var trimmed = text.trim();
+      if (trimmed.length < 5) return true;
+      var keymashPattern = /(asdf|qwer|zxcv|йцук|фыва|ячсм|скчф)/i;
+      if (keymashPattern.test(trimmed)) return true;
+      var vowels = trimmed.match(/[аеёиоуыэюяaeiouy]/gi);
+      if (!vowels) return true;
+      if (trimmed.length >= 6 && vowels.length <= 1 && !trimmed.includes(' ')) return true;
+      var repeatedChar = /(.)\1{2,}/.test(trimmed);
+      var consonantCluster = /[бвгджзйклмнпрстфхцчшщbcdfghjklmnpqrstvwxyz]{5,}/i.test(trimmed);
+      return repeatedChar || consonantCluster;
+    }
+
+    var selectedValues = {
+      step1: '',
+      step2: '',
+      step3: ''
+    };
+
+    function selectPreset(stepKey, btn, text) {
+      safeHaptic('selection');
+      var container = document.getElementById(stepKey);
+      var chips = container.querySelectorAll('.situation-chip');
+      chips.forEach(function(c) { c.classList.remove('selected'); });
+      btn.classList.add('selected');
+
+      var boxId = stepKey === 'step1' ? 'customBox1' : (stepKey === 'step2' ? 'customBox2' : 'customBox3');
+      var inputId = stepKey === 'step1' ? 'situationInput' : (stepKey === 'step2' ? 'phraseInput' : 'needInput');
+      
+      document.getElementById(boxId).style.display = 'none';
+      selectedValues[stepKey] = text;
+      document.getElementById(inputId).value = text;
+      hideNotice();
+    }
+
+    function toggleCustom(stepKey, btn) {
+      safeHaptic('selection');
+      var container = document.getElementById(stepKey);
+      var chips = container.querySelectorAll('.situation-chip');
+      chips.forEach(function(c) { c.classList.remove('selected'); });
+      btn.classList.add('selected');
+
+      var boxId = stepKey === 'step1' ? 'customBox1' : (stepKey === 'step2' ? 'customBox2' : 'customBox3');
+      var inputId = stepKey === 'step1' ? 'situationInput' : (stepKey === 'step2' ? 'phraseInput' : 'needInput');
+      
+      var box = document.getElementById(boxId);
+      box.style.display = 'flex';
+      var input = document.getElementById(inputId);
+      input.value = '';
+      selectedValues[stepKey] = '';
+      input.focus();
+      hideNotice();
+    }
+
+    function showNotice(msg) {
+      var elLoading = document.getElementById('aiLoading');
+      if (elLoading) elLoading.style.display = 'none';
+      safeHaptic('error');
+      var n = document.getElementById('gibberishNotice');
+      var t = document.getElementById('gibberishNoticeText');
+      if (n && t) {
+        t.textContent = msg || 'Пожалуйста, выберите готовый вариант или напишите понятными словами (без случайного набора букв).';
+        n.style.display = 'block';
+        requestAnimationFrame(function() {
+          setTimeout(function() {
+            if (n) n.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 50);
+        });
+      }
+    }
+
+    function showGibberishNotice(msg) {
+      showNotice(msg);
+    }
+
+    function hideNotice() {
+      var n = document.getElementById('gibberishNotice');
+      if (n) n.style.display = 'none';
+    }
+
     function handleStep1() {
-      var v = document.getElementById('situationInput').value.trim();
-      if(!v) {
-        safeHaptic('error');
-        alert('Пожалуйста, опишите ситуацию.');
+      var customVal = document.getElementById('situationInput').value.trim();
+      var val = customVal || selectedValues.step1;
+
+      if (!val) {
+        showNotice('Пожалуйста, выберите вариант или опишите ситуацию.');
         return;
       }
+      if (isGibberish(val)) {
+        showNotice('Обнаружен бессмысленный набор букв. Пожалуйста, напишите понятную ситуацию словами или выберите вариант выше.');
+        return;
+      }
+
+      document.getElementById('situationInput').value = val;
       safeHaptic('selection');
+      hideNotice();
       document.getElementById('step1').style.display = 'none';
       document.getElementById('step2').style.display = 'flex';
     }
 
     function handleStep2() {
-      var p = document.getElementById('phraseInput').value.trim();
-      if(!p) {
-        safeHaptic('error');
-        alert('Пожалуйста, укажите фразу.');
+      var customVal = document.getElementById('phraseInput').value.trim();
+      var val = customVal || selectedValues.step2;
+
+      if (!val) {
+        showNotice('Пожалуйста, выберите вариант фразы или напишите свои слова.');
         return;
       }
+      if (isGibberish(val)) {
+        showNotice('Пожалуйста, напишите фразу осмысленными словами или выберите готовый вариант выше.');
+        return;
+      }
+
+      document.getElementById('phraseInput').value = val;
       safeHaptic('selection');
+      hideNotice();
       document.getElementById('step2').style.display = 'none';
       document.getElementById('step3').style.display = 'flex';
+    }
+
+    function backToStep(targetStep) {
+      safeHaptic('selection');
+      hideNotice();
+      document.getElementById('step1').style.display = targetStep === 1 ? 'flex' : 'none';
+      document.getElementById('step2').style.display = targetStep === 2 ? 'flex' : 'none';
+      document.getElementById('step3').style.display = targetStep === 3 ? 'flex' : 'none';
     }
 
     var attempts = 19;
@@ -2099,50 +2268,7 @@ textarea:focus, input:focus {
     }
 
     function checkGibberish(text) {
-      if (!text || typeof text !== 'string') return true;
-      var clean = text.trim();
-      if (clean.length < 4) return true;
-      if (/(.)\1{3,}/i.test(clean)) return true;
-      
-      var letters = clean.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
-      if (letters.length >= 4) {
-        var vowels = letters.match(/[аеёиоуыэюяaeiouy]/gi);
-        var vowelCount = vowels ? vowels.length : 0;
-        if (vowelCount === 0 || (vowelCount / letters.length) < 0.12) {
-          return true;
-        }
-        var unique = new Set(letters.toLowerCase()).size;
-        if (letters.length >= 8 && unique <= 3) {
-          return true;
-        }
-      }
-      
-      var mashPatterns = [/фыва/i, /йцук/i, /ячсм/i, /qwerty/i, /asdf/i, /zxcv/i];
-      for (var i = 0; i < mashPatterns.length; i++) {
-        if (mashPatterns[i].test(clean) && clean.length < 25) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    function showGibberishNotice(msg) {
-      var elLoading = document.getElementById('aiLoading');
-      if (elLoading) elLoading.style.display = 'none';
-      safeHaptic('error');
-      
-      var notice = document.getElementById('gibberishNotice');
-      var noticeText = document.getElementById('gibberishNoticeText');
-      var defaultMsg = 'Ваши ответы были неполноценными, и я не смог их расшифровать. Пожалуйста, опишите ситуацию подробнее своими словами.';
-      if (noticeText) noticeText.textContent = msg || defaultMsg;
-      if (notice) {
-        notice.style.display = 'block';
-        requestAnimationFrame(function() {
-          setTimeout(function() {
-            if (notice) notice.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }, 50);
-        });
-      }
+      return isGibberish(text);
     }
 
     async function submitToAI(e) {
@@ -2154,20 +2280,28 @@ textarea:focus, input:focus {
         return;
       }
       
-      var notice = document.getElementById('gibberishNotice');
-      if (notice) notice.style.display = 'none';
+      hideNotice();
       
-      var situation = document.getElementById('situationInput').value.trim();
-      var phrase = document.getElementById('phraseInput').value.trim();
-      var need = document.getElementById('needInput').value.trim();
+      var customNeed = document.getElementById('needInput').value.trim();
+      var finalNeed = customNeed || selectedValues.step3;
+
+      if (!finalNeed || isGibberish(finalNeed)) {
+        showNotice('Пожалуйста, выберите потребность или напишите понятными словами (без абракадабры).');
+        return;
+      }
+      document.getElementById('needInput').value = finalNeed;
+
+      var situation = document.getElementById('situationInput').value.trim() || selectedValues.step1;
+      var phrase = document.getElementById('phraseInput').value.trim() || selectedValues.step2;
+      var need = finalNeed;
       
       if(!need || !phrase) {
-        showGibberishNotice('Пожалуйста, опишите фразу и вашу истинную потребность подробнее.');
+        showNotice('Пожалуйста, выберите фразу и вашу истинную потребность подробнее.');
         return;
       }
 
-      if(checkGibberish(need) || checkGibberish(phrase) || (situation && checkGibberish(situation))) {
-        showGibberishNotice();
+      if(isGibberish(need) || isGibberish(phrase) || (situation && isGibberish(situation))) {
+        showNotice('Пожалуйста, выберите готовые варианты или напишите понятными словами (без абракадабры).');
         return;
       }
 
