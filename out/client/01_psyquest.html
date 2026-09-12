@@ -336,9 +336,9 @@
     .energy-fill {
       height: 100%;
       width: 100%;
-      background: linear-gradient(90deg, #2F7D59 0%, #C29E65 60%, #B42318 100%);
+      background: #2F7D59;
       border-radius: 999px;
-      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s ease;
     }
 
     .energy-val {
@@ -347,32 +347,33 @@
       color: var(--nb-deep);
       min-width: 32px;
       text-align: right;
+      transition: color 0.3s ease;
     }
 
     /* КАРТОЧНЫЙ СВАЙП-ТРЕК (TINDER STYLE) */
     .card-swipe-container {
       position: relative;
       width: 100%;
-      min-height: 290px;
+      min-height: auto;
       display: flex;
-      align-items: center;
+      align-items: stretch;
       justify-content: center;
       perspective: 1000px;
-      margin: 4px 0 8px;
+      margin: 2px 0 8px;
     }
 
     .swipe-card {
       width: 100%;
       background: #FFFFFF;
       border: 1.5px solid rgba(14, 31, 46, 0.09);
-      border-radius: 22px;
-      padding: 24px 20px;
-      box-shadow: 0 16px 36px rgba(45, 62, 54, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02);
+      border-radius: 20px;
+      padding: 16px 16px 14px;
+      box-shadow: 0 10px 24px rgba(45, 62, 54, 0.06), 0 2px 6px rgba(0, 0, 0, 0.02);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 16px;
-      min-height: 260px;
+      justify-content: flex-start;
+      gap: 10px;
+      min-height: auto;
       touch-action: pan-y;
       user-select: none;
       -webkit-user-select: none;
@@ -395,7 +396,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 10px;
+      padding: 3px 9px;
       background: rgba(14, 31, 46, 0.04);
       border-radius: 999px;
       font-size: 11px;
@@ -405,21 +406,20 @@
     }
 
     .swipe-card-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
       color: var(--nb-deep);
       line-height: 1.25;
       letter-spacing: -0.015em;
-      margin: 0;
+      margin: 6px 0 0;
     }
 
     .swipe-card-desc {
-      font-size: 14px;
-      line-height: 1.55;
+      font-size: 13.5px;
+      line-height: 1.48;
       color: #3B4B54;
       font-weight: 500;
       margin: 0;
-      flex: 1;
     }
 
     /* Блок моментального инсайта при попадании */
@@ -778,9 +778,8 @@
       </section>
 
       <!-- ЭКРАН СИТУАЦИИ (КАРТОЧНЫЙ СВАЙП) -->
-      <section id="screenQuestion" class="glass card" style="display:none; padding:18px 16px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <div class="eyebrow" id="cardCategory" style="margin:0 !important;">Ситуация</div>
+      <section id="screenQuestion" class="glass card" style="display:none; padding:12px 14px 14px;">
+        <div style="text-align:center; width:100%; margin-bottom:2px;">
           <span id="swipeHint" class="subtle" style="font-size:11px;">Свайп или кнопки 👇</span>
         </div>
 
@@ -788,7 +787,7 @@
           <div id="activeSwipeCard" class="swipe-card">
             <div>
               <div id="cardBadge" class="swipe-card-badge">🎯 Триггер истощения</div>
-              <h2 id="cardTitle" class="swipe-card-title" style="margin-top:10px;">Радар чужого настроения</h2>
+              <h2 id="cardTitle" class="swipe-card-title">Радар чужого настроения</h2>
             </div>
             <p id="cardDesc" class="swipe-card-desc">
               Партнёр приходит хмурый или отвечает односложно — и внутри мгновенно сжимается пружина: «Что случилось? В чём моя вина?». Настроение падает в ноль.
@@ -989,8 +988,27 @@
     function updateEnergyUI() {
       const fillEl = document.getElementById("energyFill");
       const valEl = document.getElementById("energyVal");
-      if (fillEl) fillEl.style.width = Math.max(0, energyLevel) + "%";
-      if (valEl) valEl.textContent = Math.max(0, energyLevel) + "%";
+      const lvl = Math.max(0, energyLevel);
+      if (fillEl) {
+        fillEl.style.width = lvl + "%";
+        if (lvl < 30) {
+          fillEl.style.background = "#DC2626";
+        } else if (lvl < 60) {
+          fillEl.style.background = "#E5A024";
+        } else {
+          fillEl.style.background = "#2F7D59";
+        }
+      }
+      if (valEl) {
+        valEl.textContent = lvl + "%";
+        if (lvl < 30) {
+          valEl.style.color = "#DC2626";
+        } else if (lvl < 60) {
+          valEl.style.color = "#B7791F";
+        } else {
+          valEl.style.color = "var(--nb-deep)";
+        }
+      }
     }
 
     function renderCard() {
