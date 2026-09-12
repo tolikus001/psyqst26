@@ -406,40 +406,44 @@
       box-shadow: 0 4px 16px rgba(47, 125, 89, 0.07);
     }
 
-    /* КНОПКИ С ЖИВЫМ СВЕТОВЫМ БЛИКОМ (SHINE FLARE) */
-    .primary-btn, .btn-gold {
-      position: relative;
-      overflow: hidden;
+    /* КНОПКИ С ЖИВЫМ СВЕТОВЫМ БЛИКОМ — Warm Terracotta (Эталон Psyquest 5.6) */
+    .primary-btn {
+      position: relative !important;
+      overflow: hidden !important;
+      isolation: isolate !important;
+      width: 100%;
+      min-height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      width: 100%;
-      min-height: 50px;
-      border-radius: 16px;
-      font-size: 14px;
-      font-weight: 800;
+      padding: 14px 22px;
+      border-radius: 18px !important;
+      font-size: 15px;
+      font-weight: 800 !important;
+      background: linear-gradient(105deg, #B5663E 0%, #BD7249 50%, #CB8760 100%) !important;
+      color: #FFFFFF !important;
+      border: 1px solid #A95531 !important;
+      border-top-color: #E3A578 !important;
+      box-shadow: 0 12px 24px rgba(123, 67, 39, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.30), inset 0 -1px 0 rgba(104, 48, 23, 0.13) !important;
+      text-shadow: 0 1px 0 rgba(91, 40, 18, 0.18) !important;
       cursor: pointer;
       text-decoration: none;
-      border: none;
-      transition: all 0.22s ease;
+      transition: all 0.2s ease;
       user-select: none;
     }
 
-    .primary-btn {
-      background: linear-gradient(135deg, #154D5D 0%, #0E3541 100%);
-      color: #FFFFFF;
-      box-shadow: 0 10px 28px rgba(21, 77, 93, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    .primary-btn:hover {
+      background: linear-gradient(105deg, #BC6C43 0%, #C57A50 50%, #D08D66 100%) !important;
+      box-shadow: 0 15px 28px rgba(123, 67, 39, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.32) !important;
     }
 
-    .btn-gold {
-      background: linear-gradient(135deg, #C29E65 0%, #A88147 100%);
-      color: #FFFFFF;
-      box-shadow: 0 10px 28px rgba(168, 129, 71, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    .primary-btn:active {
+      transform: scale(0.985);
     }
 
-    /* Бегущий анимированный блик на кнопках */
-    .primary-btn::after, .btn-gold::after {
+    /* Бегущий анимированный световой блик на кнопке */
+    .primary-btn::after {
       content: "";
       position: absolute;
       top: -60%;
@@ -449,7 +453,7 @@
       background: linear-gradient(
         75deg,
         rgba(255, 255, 255, 0) 10%,
-        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0.65) 50%,
         rgba(255, 255, 255, 0) 90%
       );
       transform: rotate(25deg);
@@ -469,17 +473,13 @@
       }
     }
 
-    .primary-btn:active, .btn-gold:active {
-      transform: scale(0.982);
-    }
-
     /* Второстепенная кнопка */
     .secondary-btn {
       width: 100%;
       min-height: 44px;
       background: rgba(255, 255, 255, 0.88);
-      color: var(--nb-accent);
-      border: 1.5px solid rgba(21, 77, 93, 0.22);
+      color: var(--nb-deep);
+      border: 1.5px solid rgba(14, 31, 46, 0.12);
       border-radius: 16px;
       font-size: 13px;
       font-weight: 700;
@@ -503,9 +503,9 @@
     }
 
     @keyframes ctaPulse {
-      0% { box-shadow: 0 0 0 0 rgba(21, 77, 93, 0.35); }
-      70% { box-shadow: 0 0 0 12px rgba(21, 77, 93, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(21, 77, 93, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(181, 102, 62, 0.45); }
+      70% { box-shadow: 0 0 0 12px rgba(181, 102, 62, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(181, 102, 62, 0); }
     }
   </style>
 
@@ -607,7 +607,7 @@
           🔒 Без регистрации и личных данных. Точный персональный разбор откроется сразу после ответов.
         </div>
 
-        <button type="button" class="btn-gold pulse" onclick="startQuiz();" style="margin-top:4px;">
+        <button type="button" class="primary-btn pulse" onclick="startQuiz();" style="margin-top:6px;">
           <span>Начать диагностику (2 минуты) ➔</span>
         </button>
       </section>
