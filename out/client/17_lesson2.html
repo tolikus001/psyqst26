@@ -2143,11 +2143,31 @@ textarea:focus, input:focus {
       document.getElementById('step3').style.display = targetStep === 3 ? 'flex' : 'none';
     }
 
-    var attempts = 3;
     var ATTEMPTS_KEY = 's2_lesson2_attempts';
-    var savedAttempts = localStorage.getItem(ATTEMPTS_KEY);
-    if(savedAttempts !== null) {
-      attempts = parseInt(savedAttempts, 10);
+    var CREDITS_KEY = 's2_lesson2_credits';
+    var savedAttempts = localStorage.getItem(CREDITS_KEY) || localStorage.getItem(ATTEMPTS_KEY);
+    var attempts = 3;
+    if (savedAttempts !== null) {
+      var parsed = parseInt(savedAttempts, 10);
+      if (!isNaN(parsed)) attempts = parsed;
+    }
+    var aiCredits = attempts;
+
+    function updateCreditsBadge() {
+      updateAttemptsDisplay();
+    }
+
+    function showCompanionFarewell() {
+      safeHaptic('selection');
+      var fwStep3 = document.getElementById('companionFarewellStep3');
+      var submitBtn = document.getElementById('submitBtn');
+      if (submitBtn) submitBtn.style.display = 'none';
+      if (fwStep3) {
+        fwStep3.style.display = 'flex';
+        fwStep3.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        showSavedAdvice();
+      }
     }
     
     function showSavedAdvice() {
@@ -2183,7 +2203,7 @@ textarea:focus, input:focus {
     }
 
     function retryPractice() {
-      if (attempts <= 0) {
+      if (attempts <= 0 || aiCredits <= 0) {
         showSavedAdvice();
         return;
       }
@@ -2195,6 +2215,8 @@ textarea:focus, input:focus {
       if (phraseInp) phraseInp.value = '';
       var needInp = document.getElementById('needInput');
       if (needInp) needInp.value = '';
+      var sitInp = document.getElementById('situationInput');
+      if (sitInp) sitInp.value = '';
 
       var s1 = document.getElementById('step1');
       if (s1) {
@@ -2204,6 +2226,7 @@ textarea:focus, input:focus {
     }
 
     function updateAttemptsDisplay() {
+      aiCredits = attempts;
       var el = document.getElementById('attemptsCount');
       if(el) el.textContent = attempts;
 
@@ -2217,7 +2240,7 @@ textarea:focus, input:focus {
 
       if(attempts <= 0) {
         if(submitBtn) submitBtn.style.display = 'none';
-        if(fwStep3) fwStep3.style.display = 'none';
+        if(fwStep3) fwStep3.style.display = 'flex';
 
         if(btnRetry) btnRetry.style.display = 'none';
         if(fwResult) fwResult.style.display = 'flex';
@@ -2355,83 +2378,112 @@ textarea:focus, input:focus {
       safeHaptic('success');
     }
 
-    async function submitToAI(e) {
-      if (e && e.preventDefault) e.preventDefault();
-      if (e && e.stopPropagation) e.stopPropagation();
+    function submitToAI(event) {
+      if (event && event.preventDefault) event.preventDefault();
+      if (event && event.stopPropagation) event.stopPropagation();
 
       hideNotice();
-      
-      var customNeed = document.getElementById('needInput').value.trim();
-      var finalNeed = customNeed || selectedValues.step3;
 
-      if (!finalNeed || isGibberish(finalNeed)) {
-        showNotice('Пожалуйста, выберите потребность или напишите понятными словами (без абракадабры).');
+      // 1. Проверяем, был ли ХОТЯ БЫ ОДИН ответ написан вручную:
+      var isStep1Custom = document.getElementById('customBox1') && document.getElementById('customBox1').style.display !== 'none' && document.getElementById('situationInput').value.trim().length > 0;
+      var isStep2Custom = document.getElementById('customBox2') && document.getElementById('customBox2').style.display !== 'none' && document.getElementById('phraseInput').value.trim().length > 0;
+      var isStep3Custom = document.getElementById('customBox3') && document.getElementById('customBox3').style.display !== 'none' && document.getElementById('needInput').value.trim().length > 0;
+
+      // Если поле ручного ввода открыто на Шаге 3, но пустое:
+      if (document.getElementById('customBox3') && document.getElementById('customBox3').style.display !== 'none' && document.getElementById('needInput').value.trim().length === 0) {
+        showNotice('Пожалуйста, опишите вашу потребность словами или выберите вариант выше.');
         return;
       }
-      document.getElementById('needInput').value = finalNeed;
-
-      var customSituation = document.getElementById('situationInput').value.trim();
-      var finalSituation = customSituation || selectedValues.step1;
-
-      var customPhrase = document.getElementById('phraseInput').value.trim();
-      var finalPhrase = customPhrase || selectedValues.step2;
-
-      if (!finalPhrase) {
-        showNotice('Пожалуйста, выберите фразу или напишите свои слова.');
+      var finalNeed = document.getElementById('needInput').value.trim() || selectedValues.step3;
+      if (!finalNeed) {
+        showNotice('Пожалуйста, выберите потребность или опишите её словами.');
         return;
       }
 
-      if (isGibberish(finalNeed) || isGibberish(finalPhrase) || (finalSituation && isGibberish(finalSituation))) {
-        showNotice('Пожалуйста, выберите готовые варианты или напишите понятными словами (без абракадабры).');
+      var hasCustomAnswer = isStep1Custom || isStep2Custom || isStep3Custom;
+
+      // 2. Валидация на абракадабру для любого написанного вручную поля:
+      if (isStep1Custom && isGibberish(document.getElementById('situationInput').value)) {
+        showNotice('Пожалуйста, опишите ситуацию понятными словами (без абракадабры).');
+        return;
+      }
+      if (isStep2Custom && isGibberish(document.getElementById('phraseInput').value)) {
+        showNotice('Пожалуйста, напишите фразу понятными словами (без абракадабры).');
+        return;
+      }
+      if (isStep3Custom && isGibberish(document.getElementById('needInput').value)) {
+        showNotice('Пожалуйста, опишите потребность понятными словами (без абракадабры).');
         return;
       }
 
-      // Проверяем: если пользователь выбрал готовые шаблоны без своего текста в полях
-      var isCustom = (document.getElementById('customBox1') && document.getElementById('customBox1').style.display === 'flex') ||
-                     (document.getElementById('customBox2') && document.getElementById('customBox2').style.display === 'flex') ||
-                     (document.getElementById('customBox3') && document.getElementById('customBox3').style.display === 'flex');
-
-      var isPresetMatch = (selectedValues.step2 && finalPhrase === selectedValues.step2) &&
-                          (selectedValues.step3 && finalNeed === selectedValues.step3);
-
-      if (!isCustom && isPresetMatch) {
+      // 3. РАСПРЕДЕЛЕНИЕ ЛОГИКИ:
+      if (!hasCustomAnswer) {
+        // ВСЕ 3 ОТВЕТА ИЗ ШАБЛОНОВ:
+        // Показываем заготовленный разбор мгновенно. 
+        // В ИИ не стучимся, попытку НЕ списываем!
         renderPresetResult();
         return;
       }
 
-      if(attempts <= 0) {
-        safeHaptic('error');
-        showSavedAdvice();
+      // ХОТЯ БЫ ОДИН ОТВЕТ СВОЙ:
+      // Проверяем лимит попыток:
+      if (aiCredits <= 0 || attempts <= 0) {
+        showCompanionFarewell();
         return;
       }
 
+      // Списываем 1 попытку и отправляем реальный запрос в ИИ
+      aiCredits--;
+      attempts = aiCredits;
+      localStorage.setItem('s2_lesson2_credits', aiCredits.toString());
+      localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
+      updateCreditsBadge();
+
+      sendRealRequestToAI();
+    }
+
+    async function sendRealRequestToAI() {
       safeHaptic('medium');
       var elLoading = document.getElementById('aiLoading');
       if (elLoading) elLoading.style.display = 'flex';
-      
+
+      var situation = document.getElementById('situationInput').value.trim() || selectedValues.step1;
+      var phrase = document.getElementById('phraseInput').value.trim() || selectedValues.step2;
+      var need = document.getElementById('needInput').value.trim() || selectedValues.step3;
+
       try {
         var payload = {
-           situation: situation,
-           phrase: phrase,
-           need: need
+          situation: situation,
+          phrase: phrase,
+          need: need
         };
-        
+
         var apiFunc = (typeof apiPost === 'function') ? apiPost : apiPostLocal;
         var data = await apiFunc('/api/s2-lesson2-strategy', payload);
 
         if (data && data.invalid) {
-           showGibberishNotice(data.message);
-           return;
+          aiCredits = Math.min(3, aiCredits + 1);
+          attempts = aiCredits;
+          localStorage.setItem('s2_lesson2_credits', aiCredits.toString());
+          localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
+          updateCreditsBadge();
+          showGibberishNotice(data.message);
+          return;
         }
-        
-        if(!data || (!data.partnerView && !data.analysis)) {
-           throw new Error("Invalid API response");
+
+        if (!data || (!data.partnerView && !data.analysis)) {
+          throw new Error("Invalid API response");
         }
         renderResults(data);
-        
-      } catch(err) {
+
+      } catch (err) {
         console.error(err);
         if (checkGibberish(need) || checkGibberish(phrase)) {
+          aiCredits = Math.min(3, aiCredits + 1);
+          attempts = aiCredits;
+          localStorage.setItem('s2_lesson2_credits', aiCredits.toString());
+          localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
+          updateCreditsBadge();
           showGibberishNotice();
           return;
         }
@@ -2450,10 +2502,6 @@ textarea:focus, input:focus {
         if (elLoading) elLoading.style.display = 'none';
         
         safeHaptic('success');
-        
-        attempts--;
-        localStorage.setItem(ATTEMPTS_KEY, attempts.toString());
-        updateAttemptsDisplay();
         
         localStorage.setItem('s2_lesson2_block', JSON.stringify(data));
         localStorage.setItem('s2_lesson2_completed', 'true');
