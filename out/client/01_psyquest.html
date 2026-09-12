@@ -381,137 +381,29 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Шкала утечки энергии */
-    .drain-meter-card {
+    /* Карточка результата и моста к курсу */
+    .bridge-summary-card {
       background: rgba(255, 255, 255, 0.82);
-      border: 1.5px solid rgba(194, 158, 101, 0.38);
+      border: 1.5px solid rgba(194, 158, 101, 0.35);
+      border-radius: 20px;
+      padding: 16px 18px;
+      text-align: left;
+      box-shadow: 0 4px 16px rgba(194, 158, 101, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bridge-offer-card {
+      background: linear-gradient(135deg, rgba(237, 245, 240, 0.96) 0%, rgba(224, 238, 229, 0.96) 100%);
+      border: 1.5px solid rgba(47, 125, 89, 0.28);
       border-radius: 20px;
       padding: 15px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
       text-align: left;
-      box-shadow: 0 4px 16px rgba(194, 158, 101, 0.1);
-    }
-
-    .drain-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .drain-label {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--nb-text-2);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-
-    .drain-val {
-      font-size: 16px;
-      font-weight: 900;
-      color: #A85532;
-    }
-
-    .drain-bar-wrap {
-      width: 100%;
-      height: 9px;
-      background: rgba(14, 31, 46, 0.08);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .drain-bar-fill {
-      height: 100%;
-      width: 74%;
-      background: linear-gradient(90deg, #C29E65 0%, #A85532 100%);
-      border-radius: 999px;
-    }
-
-    /* Соматическое аудио для снятия спазма */
-    .audio-relief-box {
-      background: rgba(255, 255, 255, 0.82);
-      border: 1.5px solid rgba(21, 77, 93, 0.18);
-      border-radius: 20px;
-      padding: 16px 16px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      text-align: center;
-      box-shadow: 0 4px 16px rgba(21, 77, 93, 0.06);
-    }
-
-    .audio-player-wrap {
-      margin-top: 4px;
-    }
-
-    .audio-player-wrap audio {
-      width: 100%;
-      height: 40px;
-      border-radius: 12px;
-      accent-color: var(--nb-accent);
-    }
-
-    /* Визитная карточка эксперта */
-    .expert-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: rgba(255, 255, 255, 0.78);
-      border: 1px solid rgba(14, 31, 46, 0.09);
-      border-radius: 18px;
-      padding: 12px 16px;
-      text-align: left;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-    }
-
-    .expert-avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 9999px;
-      background: linear-gradient(135deg, #154D5D 0%, #0E3541 100%);
-      color: #FFFFFF;
-      font-weight: 900;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 4px 14px rgba(21, 77, 93, 0.25);
-      border: 2px solid #FFFFFF;
-    }
-
-    .expert-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .expert-name {
-      font-size: 14.5px;
-      font-weight: 800;
-      color: var(--nb-deep);
-    }
-
-    .expert-title {
-      font-size: 11.5px;
-      color: var(--nb-text-2);
-      line-height: 1.35;
-      font-weight: 500;
-    }
-
-    /* Блок программы курса на шаге 0 */
-    .paid-course-banner {
-      background: linear-gradient(135deg, rgba(237, 245, 240, 0.96) 0%, rgba(224, 238, 229, 0.96) 100%);
-      border: 1.5px solid rgba(47, 125, 89, 0.3);
-      border-radius: 20px;
-      padding: 15px 16px;
-      text-align: center;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      box-shadow: 0 4px 16px rgba(47, 125, 89, 0.08);
+      box-shadow: 0 4px 16px rgba(47, 125, 89, 0.07);
     }
 
     /* КНОПКИ С ЖИВЫМ СВЕТОВЫМ БЛИКОМ (SHINE FLARE) */
@@ -744,81 +636,45 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
       </style>
 
-      <!-- ЭКРАН РЕЗУЛЬТАТОВ: ПОЛЬЗА + РАЗБОР + АУДИОТЕХНИКА + АНАТОЛИЙ + КУРС -->
+      <!-- ЭКРАН РЕЗУЛЬТАТОВ: ПРЯМОЙ МОСТ К СТРАНИЦЕ КУРСА -->
       <section id="screenResult" class="glass card text-center" style="display:none;">
         <div class="eyebrow" style="background:rgba(47,125,89,0.12); color:var(--success); border-color:rgba(47,125,89,0.25);">
-          ✓ Анализ сценария завершён
+          ✓ Ваш ведущий сценарий определён
         </div>
 
-        <!-- Замер утечки ресурса -->
-        <div class="drain-meter-card">
-          <div class="drain-row">
-            <span class="drain-label">Утечка ресурса в паре</span>
-            <span class="drain-val">~74% энергии</span>
-          </div>
-          <div class="drain-bar-wrap">
-            <div class="drain-bar-fill"></div>
-          </div>
-          <span style="font-size:11.5px; color:#6E5325; line-height:1.35; margin-top:2px;">
-            Ваша нервная система работает в режиме круглосуточной боевой готовности.
-          </span>
-        </div>
-
-        <!-- Название сценария -->
         <div>
-          <span class="subtle" style="text-transform:uppercase; letter-spacing:0.05em; font-weight:800; font-size:11px;">Ваш ведущий сценарий:</span>
+          <span class="subtle" style="text-transform:uppercase; letter-spacing:0.05em; font-weight:800; font-size:11px;">Сценарий отношений:</span>
           <h2 id="resTitle" class="card-title" style="color:var(--nb-sea); margin-top:4px;">Сценарий: «Растворение и гиперконтроль»</h2>
         </div>
 
-        <!-- Диагноз -->
-        <div style="padding:15px; border-radius:18px; background:rgba(255,255,255,0.78); border:1px solid rgba(36,49,57,0.07); text-align:left;">
+        <!-- Суть сценария и ловушка -->
+        <div class="bridge-summary-card">
           <p id="resDiagnosis" style="font-size:13px; line-height:1.55; color:var(--nb-text); margin:0;">
-            Ваши силы уходят не на дела. Львиная доля энергии утекает в «режим радара»: вы непрерывно сканируете настроение партнёра по шагам, тону голоса и паузам в переписке. Психика находится в постоянном ожидании шторма, поэтому вы чувствуете хроническое опустошение. Это не ваш «плохой характер» — так психика защищается от страха отвержения.
+            Ваши силы уходят в «режим радара»: непрерывное сканирование настроения партнёра, тона его голоса и пауз. Психика находится в круглосуточном напряжении, отсюда хроническая разбитость. Это не «плохой характер» — так нервная система пытается защититься от страха отвержения.
           </p>
-        </div>
-
-        <!-- УРОВЕНЬ 2: ФИЗИЧЕСКОЕ ОБЛЕГЧЕНИЕ ПРЯМО НА ЭКРАНЕ -->
-        <div class="audio-relief-box">
-          <div class="eyebrow" style="margin-bottom:6px;">
-            🎧 Первое действие: снятие спазма в теле
-          </div>
-          <p style="font-size:12px; color:var(--nb-text-2); margin:0 0 6px; line-height:1.45;">
-            Наденьте наушники на 3 минуты. Это авторское соматическое аудио снимет зажим в груди и вернёт ровное дыхание прямо сейчас:
-          </p>
-          <div class="audio-player-wrap">
-            <audio controls preload="metadata">
-              <source src="meditation2-3.mp3" type="audio/mpeg">
-              <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation2-3.mp3" type="audio/mpeg">
-              Ваш браузер не поддерживает аудио.
-            </audio>
+          <div style="padding-top:8px; border-top:1px solid rgba(14,31,46,0.08);">
+            <strong style="font-size:12px; color:var(--nb-sea); display:block; margin-bottom:3px;">⚡ Главная ловушка:</strong>
+            <p id="resTrap" class="subtle" style="font-size:12px; margin:0; line-height:1.45;">
+              Кнопка от вашего покоя отдана в чужие руки: пока близкий не поступит по-вашему, внутри горит тревога.
+            </p>
           </div>
         </div>
-
-        <!-- УРОВЕНЬ 3: ЗНАКОМСТВО С ЭКСПЕРТОМ -->
-        <div class="expert-card">
-          <div class="expert-avatar">АФ</div>
-          <div class="expert-info">
-            <span class="expert-name">Анатолий Фёдоров</span>
-            <span class="expert-title">Семейный психолог, гипнолог, проректор МАГиГ</span>
-          </div>
-        </div>
-
-        <!-- ПЛАТНЫЙ КУРС: ЧЕСТНЫЙ ПЕРЕХОД НА ВВОДНЫЙ ШАГ 0 С ТАРИФАМИ -->
-        <div class="paid-course-banner">
-          <strong style="font-size:12.5px; color:#1C332A; font-weight:800;">🎬 Практический видеокурс (от 2 400 ₽)</strong>
-          <span id="resTransitionText" style="font-size:11.5px; color:#2D453B; line-height:1.4;">
-            На шаге 0 для вас открыт бесплатный видео-разбор и подарок-медитация. Там же вы сможете ознакомиться с программой и оформить доступ к полному курсу из 5 уроков.
+        <!-- Оффер вводного урока и подарка -->
+        <div class="bridge-offer-card">
+          <strong style="font-size:12.5px; color:#1C332A; font-weight:800; display:block;">🎁 Для вас открыт видео-разбор и подарок:</strong>
+          <span id="resGiftText" style="font-size:12px; color:#2D453B; line-height:1.45; display:block;">
+            Анатолий Фёдоров уже записал для вас персональный видео-разбор этого сценария и открыл вводный урок курса с авторской практикой-медитацией.
           </span>
         </div>
 
-        <!-- КНОПКА ПЕРЕХОДА НА УРОК 0 КУРСА С БЛИКОМ -->
-        <a id="resCourseBtn" href="15_landing_partner_2.html" class="primary-btn pulse" onclick="safeHaptic();">
-          <span>Смотреть видео-разбор и программу курса ➔</span>
+        <!-- ГЛАВНАЯ КНОПКА ПЕРЕХОДА НА СТРАНИЦУ КУРСА С БЛИКОМ -->
+        <a id="resCourseBtn" href="15_landing_partner_2.html" class="primary-btn pulse" onclick="goToCourseLanding(event);">
+          <span>Смотреть видео-разбор и забрать подарок ➔</span>
         </a>
 
-        <!-- Кнопка в каталог -->
+        <!-- Кнопка в каталог всех программ -->
         <a href="hub_courses.html" class="secondary-btn" onclick="safeHaptic();">
-          <span>Посмотреть весь каталог программ</span>
+          <span>Все программы Анатолия Фёдорова</span>
         </a>
       </section>
 
@@ -958,10 +814,14 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    let userSelections = [];
+
     function selectAnswer(optIdx) {
       safeHaptic();
       const q = questions[currentStep];
       const opt = q.options[optIdx];
+
+      userSelections.push({ step: currentStep, question: q.title, answer: opt.text, route: opt.route });
 
       const items = document.querySelectorAll(".option-item");
       items.forEach((it, i) => {
@@ -1008,49 +868,72 @@
       }, 1200);
     }
 
+    const scenarios = {
+      partner: {
+        title: "Сценарий: «Погоня за недоступными»",
+        diagnosis: "Ваша энергия утекает в попытки растопить чужую эмоциональную холодность на свиданиях. Психика путает непредсказуемость с сильной любовью, игнорируя красные флаги. Вы тратите силы на тех, с кем изначально больно.",
+        trap: "Вместо спокойного выбора человека вы переходите в режим «как его завоевать» и отдаёте инициативу.",
+        gift: "Анатолий Фёдоров уже записал для вас персональный видео-разбор курса «Я выбираю» и открыл вводный урок с медитацией «На своей земле».",
+        courseName: "Смотреть видео-разбор и забрать подарок ➔",
+        courseLink: "02_landing_partner.html"
+      },
+      emotions: {
+        title: "Сценарий: «Растворение и гиперконтроль»",
+        diagnosis: "Ваши силы уходят в «режим радара»: непрерывное сканирование настроения партнёра, тона его голоса и пауз. Психика находится в круглосуточном напряжении, отсюда разбитость. Это не «плохой характер» — так нервная система пытается защититься от тревоги.",
+        trap: "Кнопка от вашего покоя отдана в чужие руки: пока близкий не поступит по-вашему, внутри горит тревога.",
+        gift: "Анатолий Фёдоров уже записал для вас персональный видео-разбор курса «Я остаюсь собой» и открыл вводный урок с медитацией «Тишина в голове и теле».",
+        courseName: "Смотреть видео-разбор и забрать подарок ➔",
+        courseLink: "15_landing_partner_2.html"
+      },
+      family: {
+        title: "Сценарий: «Усталость и отчуждение в паре»",
+        diagnosis: "Энергия уходит на сдерживание обид и бытовое раздражение под одной крышей. В паре закрепился цикл «нападающий — убегающий»: один требует близости через претензии, второй закрывается в глухой обороне.",
+        trap: "Попытка спасти контакт через бесконечные уступки или уход в глухую молчанку только отдаляет вас друг от друга.",
+        gift: "Анатолий Фёдоров уже записал для вас персональный видео-разбор и открыл первый шаг к возвращению устойчивости и тепла в паре.",
+        courseName: "Смотреть видео-разбор и забрать подарок ➔",
+        courseLink: "15_landing_partner_2.html"
+      },
+      crisis: {
+        title: "Сценарий: «Острый кризис и потеря почвы»",
+        diagnosis: "Нервная система переживает острый стресс (шок, измена, угроза разрыва). Вся энергия уходит на борьбу с паникой. Сейчас критически важно не принимать поспешных судьбоносных решений на пике боли.",
+        trap: "Принятие резких разрушительных решений в состоянии аффекта из страха одиночества или безысходности.",
+        gift: "Анатолий Фёдоров уже записал для вас персональный видео-разбор и открыл протокол возвращения соматической опоры.",
+        courseName: "Смотреть видео-разбор и забрать подарок ➔",
+        courseLink: "15_landing_partner_2.html"
+      }
+    };
+
     function showResults() {
       document.getElementById("screenAnalyzing").style.display = "none";
       document.getElementById("screenResult").style.display = "flex";
 
-      // 2 ЖИВЫХ КУРСА (УРОКИ 0 С ВИДЕО, ПОДАРКОМ И ПОКУПКОЙ ЗА 2400₽):
-      // 1) partner -> 02_landing_partner.html («Я выбираю»)
-      // 2) emotions / family / crisis -> 15_landing_partner_2.html («Я остаюсь собой»)
-      const scenarios = {
-        emotions: {
-          title: "Сценарий: «Растворение и гиперконтроль»",
-          diagnosis: "Ваши силы уходят в «режим радара»: непрерывное сканирование настроения партнёра, тона его голоса и пауз в ответах. Психика находится в круглосуточном напряжении, поэтому вы просыпаетесь разбитой. Это не «плохой характер» — так нервная система пытается защититься от страха отвержения.",
-          courseName: "Смотреть видео-разбор и программу «Я остаюсь собой» ➔",
-          courseLink: "15_landing_partner_2.html"
-        },
-        partner: {
-          title: "Сценарий: «Погоня за недоступными»",
-          diagnosis: "Ваша энергия утекает в попытки растопить чужую эмоциональную холодность на свиданиях. Психика путает непредсказуемость с любовью, игнорируя красные флаги. Вы тратите силы на тех, с кем изначально больно.",
-          courseName: "Смотреть видео-разбор и программу «Я выбираю» ➔",
-          courseLink: "02_landing_partner.html"
-        },
-        family: {
-          title: "Сценарий: «Усталость и отчуждение в паре»",
-          diagnosis: "Энергия уходит на сдерживание обид и бытовое раздражение под одной крышей. Первый фундаментальный шаг к возвращению тепла и диалога — вернуть устойчивость себе и выйти из созависимости.",
-          courseName: "Смотреть видео-разбор и программу «Я остаюсь собой» ➔",
-          courseLink: "15_landing_partner_2.html"
-        },
-        crisis: {
-          title: "Сценарий: «Острый кризис и потеря почвы»",
-          diagnosis: "Нервная система переживает острый стресс (шок, измена, угроза разрыва). Вся энергия уходит на борьбу с паникой. Сейчас критически важно вернуть соматическую опору и сохранить суверенитет.",
-          courseName: "Смотреть видео-разбор и программу «Я остаюсь собой» ➔",
-          courseLink: "15_landing_partner_2.html"
-        }
-      };
-
       const sc = scenarios[finalRoute] || scenarios.emotions;
       document.getElementById("resTitle").textContent = sc.title;
       document.getElementById("resDiagnosis").textContent = sc.diagnosis;
+      if (document.getElementById("resTrap")) {
+        document.getElementById("resTrap").textContent = sc.trap;
+      }
+      if (document.getElementById("resGiftText")) {
+        document.getElementById("resGiftText").textContent = sc.gift;
+      }
 
       const btn = document.getElementById("resCourseBtn");
       btn.innerHTML = "<span>" + sc.courseName + "</span>";
       btn.href = sc.courseLink;
 
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function goToCourseLanding(e) {
+      if (e) e.preventDefault();
+      safeHaptic('selection');
+      const sc = scenarios[finalRoute] || scenarios.emotions;
+      try {
+        localStorage.setItem('psy_route', finalRoute);
+        localStorage.setItem('psy_scenario', sc.title);
+        localStorage.setItem('psy_answers', JSON.stringify(userSelections));
+      } catch(err) {}
+      window.location.href = sc.courseLink;
     }
   </script>
 </body>
