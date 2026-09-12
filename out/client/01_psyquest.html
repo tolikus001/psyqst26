@@ -802,71 +802,65 @@
       </style>
 
       <!-- ЭКРАН РЕЗУЛЬТАТОВ: ПРЯМОЙ МОСТ К СТРАНИЦЕ КУРСА -->
-      <section id="screenResult" class="glass card text-center" style="display:none;">
+      <section id="screenResult" class="glass card text-center" style="display:none; padding:14px 16px 18px;">
         <!-- Финальная батарейка остатка энергии (красная шкала истощения) -->
         <div class="energy-bar-wrap" style="flex-direction:column; align-items:stretch; gap:6px; padding:10px 14px; background:rgba(254,242,242,0.85); border:1.5px solid rgba(220,38,38,0.25); margin-bottom:4px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:800; color:#DC2626;">
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:12.5px; font-weight:800; color:#DC2626;">
             <span>⚡ Остаток энергии: <span id="resEnergyVal">28%</span></span>
-            <span id="resEnergyStatus" style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">Режим истощения</span>
+            <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em;">КРИТИЧЕСКИЙ РАСХОД</span>
           </div>
           <div class="energy-track" style="height:7px; background:rgba(220,38,38,0.12);">
             <div id="resEnergyFill" class="energy-fill" style="background:#DC2626; width:28%;"></div>
           </div>
+          <div style="font-size:11px; line-height:1.4; color:#8B1D1D; text-align:left; font-weight:500;">
+            «Ваша психика работает на пределе: силы уходят не на жизнь, а на удержание контроля».
+          </div>
         </div>
 
-        <div class="eyebrow" style="background:rgba(47,125,89,0.12); color:var(--success); border-color:rgba(47,125,89,0.25);">
+        <div class="eyebrow" style="background:rgba(47,125,89,0.12); color:var(--success); border-color:rgba(47,125,89,0.25); margin-bottom:2px;">
           ✓ Ведущий сценарий определён
         </div>
 
         <div>
-          <h2 id="resTitle" class="card-title" style="color:var(--nb-sea); margin:4px 0 0;">Ваш сценарий: «Растворение и гиперконтроль»</h2>
+          <h2 id="resTitle" class="card-title" style="color:var(--nb-sea); margin:2px 0 0; font-size:20px;">Ваш сценарий: «Растворение и гиперконтроль»</h2>
         </div>
 
-        <!-- Суть сценария и ловушка -->
-        <div class="bridge-summary-card">
-          <p id="resDiagnosis" style="font-size:13.5px; line-height:1.52; color:var(--nb-text); margin:0;">
-            Вы постоянно считываете чужое настроение: хмурый взгляд или холодный ответ сразу выбивают почву из-под ног. Внутри копится усталость, потому что спокойствие зависит не от вас, а от чужих реакций. Кажется, что если ещё немного подстроиться, станет легче — но сил уходит всё больше, а тепла не прибавляется.
-          </p>
-          <div style="padding-top:8px; border-top:1px solid rgba(14,31,46,0.08);">
-            <strong style="font-size:12px; color:var(--nb-sea); display:block; margin-bottom:3px;">⚡ Главная ловушка:</strong>
-            <p id="resTrap" class="subtle" style="font-size:12px; margin:0; line-height:1.45;">
-              Кнопка от вашего покоя отдана партнёру: пока у него плохое настроение, вы не можете расслабиться.
-            </p>
+        <!-- Компактная карточка сценария: Суть, В теле, Ловушка -->
+        <div class="bridge-summary-card" style="padding:14px 16px; gap:8px;">
+          <div style="font-size:12.5px; line-height:1.45; color:var(--nb-text); text-align:left;">
+            <strong style="color:var(--nb-sea);">• Суть:</strong> <span id="resEssence"></span>
           </div>
-          <!-- Сопутствующий фактор (второй план) -->
-          <div id="resSecondaryBox" style="display:none; margin-top:8px; padding-top:8px; border-top:1px dashed rgba(14,31,46,0.12);">
-            <strong style="font-size:12px; color:var(--nb-sea); display:flex; align-items:center; gap:5px; margin-bottom:3px;">
-              <span>🔄</span> <span>Сопутствующий фактор: <span id="resSecondaryLabel"></span></span>
-            </strong>
-            <p id="resSecondaryDesc" class="subtle" style="font-size:12px; margin:0; line-height:1.45;"></p>
+          <div style="font-size:12.5px; line-height:1.45; color:var(--nb-text); text-align:left;">
+            <strong style="color:var(--nb-sea);">• В теле:</strong> <span id="resBody"></span>
+          </div>
+          <div style="font-size:12.5px; line-height:1.45; color:var(--nb-text); text-align:left;">
+            <strong style="color:var(--danger);">• Ловушка:</strong> <span id="resTrap"></span>
           </div>
         </div>
 
-        <!-- Главный закон психики (одна емкая фраза) -->
-        <div id="resInsightBox" class="bridge-insight-card" style="display:none;">
-          <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:#8C6A32; display:flex; align-items:center; gap:6px;">
-            <span>💡</span> <span>Главный закон психики:</span>
+        <!-- Закон психики (одна фраза в аккуратной плашке) -->
+        <div id="resInsightBox" class="bridge-insight-card" style="padding:12px 14px; gap:4px;">
+          <div style="font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:#8C6A32; display:flex; align-items:center; gap:5px;">
+            <span>💡</span> <span>Закон психики:</span>
           </div>
-          <p id="resInsightText" style="font-size:13px; line-height:1.5; color:#3B2F1C; font-weight:600; margin:0;"></p>
+          <p id="resInsightText" style="font-size:12.5px; line-height:1.45; color:#3B2F1C; font-weight:600; margin:0; text-align:left;"></p>
         </div>
 
-        <!-- Оффер вводного урока и подарка -->
-        <div class="bridge-offer-card">
-          <strong style="font-size:12.5px; color:#1C332A; font-weight:800; display:block;">🎁 Для вас открыт видео-разбор и подарок:</strong>
-          <span id="resGiftText" style="font-size:12px; color:#2D453B; line-height:1.45; display:block;">
-            Анатолий Фёдоров уже записал для вас персональный видео-разбор этого сценария и открыл вводный урок курса с авторской практикой-медитацией.
+        <!-- МОСТ К ВИДЕО И ПРАКТИКЕ (зелёный блок над кнопкой) -->
+        <div class="bridge-offer-card" style="padding:13px 16px; gap:4px;">
+          <strong style="font-size:12.5px; color:#1C332A; font-weight:800; display:block; text-align:left;">Шаг 1: Остановить утечку сил прямо сейчас</strong>
+          <span style="font-size:12px; color:#2D453B; line-height:1.45; display:block; text-align:left;">
+            Выяснять отношения на нулевой батарейке бессмысленно. В коротком видеоуроке Анатолий Фёдоров (семейный психолог, проректор МАГиГ) раскладывает ваш сценарий и даёт практику возвращения устойчивости.
           </span>
         </div>
 
-        <!-- ГЛАВНАЯ КНОПКА ПЕРЕХОДА НА СТРАНИЦУ КУРСА С БЛИКОМ -->
+        <!-- ГЛАВНАЯ КНОПКА ПЕРЕХОДА НА СТРАНИЦУ КУРСА (ЕДИНСТВЕННАЯ КНОПКА) -->
         <a id="resCourseBtn" href="15_landing_partner_2.html" class="primary-btn pulse" onclick="goToCourseLanding(event);">
-          <span>Смотреть видео-разбор и забрать подарок ➔</span>
+          <span>Смотреть видео-разбор и практику (12 мин) →</span>
         </a>
-
-        <!-- Кнопка в каталог всех программ -->
-        <a href="hub_courses.html" class="secondary-btn" onclick="safeHaptic();">
-          <span>Все программы Анатолия Фёдорова</span>
-        </a>
+        <div style="font-size:11px; color:var(--nb-text-2); font-weight:500; text-align:center; margin-top:-6px;">
+          Откроется сразу в Telegram • Без оплат и регистраций
+        </div>
       </section>
 
       <!-- Подвал -->
@@ -1163,45 +1157,27 @@
     const scenarios = {
       emotions: {
         title: "Ваш сценарий: «Растворение и гиперконтроль»",
-        diagnosis: "Вы постоянно считываете чужое настроение: хмурый взгляд или холодный ответ сразу выбивают почву из-под ног. Внутри копится усталость, потому что спокойствие зависит не от вас, а от чужих реакций. Кажется, что если ещё немного подстроиться, станет легче — но сил уходит всё больше, а тепла не прибавляется.",
-        trap: "Кнопка от вашего покоя отдана партнёру: пока у него плохое настроение, вы не можете расслабиться.",
-        insight: "Спокойствие вернётся только тогда, когда кнопка от вашего состояния снова окажется в ваших руках.",
-        gift: "Анатолий Фёдоров уже записал для вас персональный видео-разбор курса «Я остаюсь собой» и открыл вводный урок с практикой возвращения внутренней опоры.",
-        courseName: "Смотреть видео-разбор и забрать подарок ➔",
+        essence: "Вы взяли на себя груз за двоих. Постоянный мониторинг чужого настроения и страх: если вы расслабитесь — всё рухнет.",
+        body: "Фоновый зажим в плечах, ком в горле, поверхностный сон.",
+        trap: "Пока ваше спокойствие зависит от партнёра — батарейка будет разряжаться быстрее, чем вы успеваете отдыхать.",
+        insight: "«Там, где один берёт 100% контроля, второй неизбежно сдаёт остатки ответственности. Контроль не создаёт близость — он маскирует страх».",
         courseLink: "15_landing_partner_2.html"
       },
       family: {
-        title: "Ваш сценарий: «Усталость и отчуждение в паре»",
-        diagnosis: "В отношениях накопилась глухая усталость. Разговоры либо ходят по кругу, либо заканчиваются взаимным молчанием по разным комнатам. Быт держится, но тепло ушло. Вы тянете всё на себе, копя обиды внутри, пока мелкий повод не приводит к вспышке раздражения.",
-        trap: "Копить недовольство молча, а потом взрываться и закрываться ещё глубже.",
-        insight: "Претензии отдаляют людей, а молчание убивает контакт. Близость начинается там, где говорят о себе, а не обвиняют другого.",
-        gift: "Анатолий Фёдоров уже записал для вас персональный видео-разбор и открыл первый урок по выходу из тупика взаимных обид.",
-        courseName: "Смотреть видео-разбор и забрать подарок ➔",
+        title: "Ваш сценарий: «Усталость и отчуждение»",
+        essence: "Разговоры сведены к быту. Внутри накопился осадок невысказанного, но начинать диалог нет сил. Проще замолчать и уйти в себя.",
+        body: "Тяжесть в груди, сжатые зубы, вялость по утрам даже после сна.",
+        trap: "Молчание не лечит, а цементирует стену отчуждения, за которой сгорает влечение.",
+        insight: "«Молчание — это не мир, а замороженный конфликт. Психика тратит колоссальные силы на удержание обид, лишая вас энергии».",
         courseLink: "15_landing_partner_2.html"
       },
       crisis: {
         title: "Ваш сценарий: «Острый кризис и потеря почвы»",
-        diagnosis: "Отношения подошли к критической точке. Внутри постоянная тревога, ком в горле и ощущение, что всё рушится. Всё внимание уходит на страх перед будущим и ожидание худшего. В таком состоянии легко наломать дров и принять разрушительные решения на пике эмоций.",
-        trap: "Пытаться рубить с плеча и сжигать мосты, пока внутри бушует паника.",
-        insight: "В шторме не перестраивают корабль: сначала нужно вернуть внутреннее равновесие, а уже потом решать, куда плыть.",
-        gift: "Анатолий Фёдоров уже записал для вас персональный видео-разбор и открыл протокол восстановления спокойствия в кризисе.",
-        courseName: "Смотреть видео-разбор и забрать подарок ➔",
+        essence: "Земля уходит из-под ног. Каждое слово ранит, а будущее видится либо войной, либо разрывом. Мысли крутятся 24/7.",
+        body: "Дрожь, скачки давления, ком в солнечном сплетении, приступы тревоги.",
+        trap: "Принятие судьбоносных решений на пике эмоционального истощения.",
+        insight: "«Пока тело зажато в стрессе, мозг видит только два тупика: нападать или бежать. Сначала нужно вернуть устойчивость телу».",
         courseLink: "15_landing_partner_2.html"
-      }
-    };
-
-    const secondaryTriggers = {
-      emotions: {
-        label: "«Гиперконтроль и потеря границ»",
-        desc: "Поверх основного сценария включается режим тревожного радара: попытки угадать настроение партнёра и заслужить спокойствие за счёт собственных сил."
-      },
-      family: {
-        label: "«Накопленные обиды и отчуждение»",
-        desc: "Параллельно копится невысказанное раздражение из-за бытового неравенства и ощущения, что контакт держится только на ваших плечах."
-      },
-      crisis: {
-        label: "«Острый соматический стресс»",
-        desc: "Тело реагирует физическими зажимами (ком в горле, сжатие в груди) и постоянным фоновым ожиданием неминуемой ссоры или взрыва."
       }
     };
 
@@ -1209,44 +1185,24 @@
       document.getElementById("screenAnalyzing").style.display = "none";
       document.getElementById("screenResult").style.display = "flex";
 
-      // Финальная шкала батарейки (красный цвет истощения)
+      // Финальная шкала батарейки (красный цвет истощения в диапазоне 26–34%)
       const resEnergyVal = document.getElementById("resEnergyVal");
       const resEnergyFill = document.getElementById("resEnergyFill");
-      const resEnergyStatus = document.getElementById("resEnergyStatus");
-      const finalLvl = Math.max(8, energyLevel);
+      const finalLvl = Math.max(26, Math.min(34, energyLevel));
       if (resEnergyVal) resEnergyVal.textContent = finalLvl + "%";
       if (resEnergyFill) {
         resEnergyFill.style.width = finalLvl + "%";
         resEnergyFill.style.background = "#DC2626";
       }
-      if (resEnergyStatus) {
-        resEnergyStatus.textContent = finalLvl <= 35 ? "Режим истощения" : "Критический расход";
-      }
 
       const sc = scenarios[finalRoute] || scenarios.emotions;
       document.getElementById("resTitle").textContent = sc.title;
-      document.getElementById("resDiagnosis").textContent = sc.diagnosis;
-      if (document.getElementById("resTrap")) {
-        document.getElementById("resTrap").textContent = sc.trap;
-      }
-      if (document.getElementById("resGiftText")) {
-        document.getElementById("resGiftText").textContent = sc.gift;
-      }
-
-      // Сопутствующий фактор (второй план)
-      const secBox = document.getElementById("resSecondaryBox");
-      const secLabel = document.getElementById("resSecondaryLabel");
-      const secDesc = document.getElementById("resSecondaryDesc");
-      if (secBox && secLabel && secDesc) {
-        if (secondaryRoute && secondaryTriggers[secondaryRoute]) {
-          const sec = secondaryTriggers[secondaryRoute];
-          secLabel.textContent = sec.label;
-          secDesc.textContent = sec.desc;
-          secBox.style.display = "block";
-        } else {
-          secBox.style.display = "none";
-        }
-      }
+      const essenceEl = document.getElementById("resEssence");
+      if (essenceEl) essenceEl.textContent = sc.essence;
+      const bodyEl = document.getElementById("resBody");
+      if (bodyEl) bodyEl.textContent = sc.body;
+      const trapEl = document.getElementById("resTrap");
+      if (trapEl) trapEl.textContent = sc.trap;
 
       // Главный закон психики для этого сценария (строго одна фраза)
       const insightBox = document.getElementById("resInsightBox");
@@ -1257,11 +1213,14 @@
       }
 
       const btn = document.getElementById("resCourseBtn");
-      btn.innerHTML = "<span>" + sc.courseName + "</span>";
-      btn.href = sc.courseLink;
+      if (btn) {
+        btn.href = sc.courseLink;
+      }
 
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+
+
 
     function goToCourseLanding(e) {
       if (e) e.preventDefault();
