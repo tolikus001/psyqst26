@@ -119,7 +119,14 @@
       position: fixed !important;
       inset: 0 !important;
       z-index: 0 !important;
-      background: #EFF3F0 !important;
+      background-image: url('leaves_oak.jpg');
+      background-repeat: no-repeat !important;
+      background-position: center center !important;
+      background-size: cover !important;
+      opacity: 0.22 !important;
+      filter: saturate(1.0) contrast(1.0) brightness(1.0) !important;
+      transform: translateZ(0);
+      pointer-events: none !important;
     }
 
     #maisonArtBackground::after {
@@ -774,7 +781,7 @@
   <script>
     (function () {
       const backgrounds = {
-        birch: "https://inter01-anatolyfedorov.amvera.io/data/leaves_birch.jpg",
+        birch: "https://inter01-anatolyfedorov.amvera.io/data/leaves_oak.jpg",
         oak: "https://inter01-anatolyfedorov.amvera.io/data/leaves_oak.jpg"
       };
 
@@ -784,7 +791,7 @@
         'index.html': 'birch',
         '01_psyquest.html': 'oak',
         '02_landing_partner.html': 'birch',
-        '15_landing_partner_2.html': 'birch',
+        '15_landing_partner_2.html': 'oak',
         '16_lesson1.html': 'oak',
         '04_lesson2.html': 'birch',
         '05_lesson3.html': 'oak',
