@@ -1604,7 +1604,65 @@ textarea:focus, input:focus {
             <span>🧭</span>
             <span>Навигация по курсу</span>
           </button>
-        </div>
+<script>
+  const ATTEMPT_KEYS = [
+    'psyquest_ai_credits_lesson4',
+    's2_lesson1_attempts',
+    's2_lesson2_attempts',
+    's2_lesson3_attempts',
+    's2_lesson4_attempts'
+  ];
+  function resetAllAttempts() {
+    ATTEMPT_KEYS.forEach(k => localStorage.setItem(k, '3'));
+    alert('Все попытки сброшены до 3 раз.');
+    location.reload();
+  }
+
+
+
+  // Validation helpers
+  function isGibberish(text) {
+    const trimmed = text.trim();
+    if (trimmed.length < 5) return true;
+    // Common keymash patterns (asdf, qwerty, zxcv, etc.)
+    const keymashPattern = /(asdf|qwer|zxcv|йцук|фыва|ячсм)/i;
+    if (keymashPattern.test(trimmed)) return true;
+    const vowels = trimmed.match(/[аеёиоуыэюяaeiouy]/gi);
+    if (!vowels) return true;
+    if (trimmed.length >= 6 && vowels.length <= 1 && !trimmed.includes(' ')) return true;
+    const repeatedChar = /(.)\1{2,}/.test(trimmed);
+    const consonantCluster = /[бвгджзйклмнпрстфхцчшщbcdfghjklmnpqrstvwxyz]{5,}/i.test(trimmed);
+    return repeatedChar || consonantCluster;
+  }
+
+  function validateStepInput(textareaId, defaultMsg = 'Пожалуйста, напишите пару осмысленных слов или нажмите «📋 Вставить пример»') {
+    const el = document.getElementById(textareaId);
+    const val = el ? el.value.trim() : '';
+    if (!val || isGibberish(val)) {
+      safeHaptic('error');
+      alert(defaultMsg);
+      if (el) el.focus();
+      return false;
+    }
+    return true;
+  }
+
+  function insertExampleBehavior() {
+    const el = document.getElementById('inpAllowedBehavior');
+    if (el) el.value = 'Прямо говорить о своих желаниях, отказывать, занимать пространство, действовать без чужого одобрения.';
+  }
+
+  function insertExampleBodyChange() {
+    const el = document.getElementById('inpBodyChange');
+    if (el) el.value = 'Расправились плечи, стало легче дышать, появилось больше уверенности.';
+  }
+
+  function insertExampleNewAction() {
+    const el = document.getElementById('inpNewAction');
+    if (el) el.value = 'Прямо скажу о своём желании, откажусь от неудобной просьбы или приму небольшое решение без чужого одобрения.';
+  }
+</script>
+</div>
 
         <div class="header-progress-row">
           <span class="lesson-badge-sub">Урок 4 из 5</span>
@@ -1749,14 +1807,18 @@ textarea:focus, input:focus {
             <label style="font-size:13px; font-weight:800; color:var(--nb-deep); display:block; margin-bottom:8px; line-height:1.4;">
               Что этот человек позволяет себе, а вы обычно себе запрещаете?
             </label>
-
+<div style="display:flex; justify-content:flex-end; margin-bottom:6px;">
+  <button type="button" onclick="insertExampleBehavior()" class="ghost-btn" style="font-size:11.5px; font-weight:700; color:var(--nb-sea); padding:4px 8px; background:rgba(18,68,83,0.06); border-radius:8px; border:none; cursor:pointer;">
+    📋 Вставить пример
+  </button>
+</div>
             <textarea id="inpAllowedBehavior" rows="3" required placeholder="Например: прямо говорить о своих желаниях, отказывать, занимать пространство, действовать без чужого одобрения." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.45; margin-bottom:14px;"></textarea>
 
             <div class="nav-row">
               <button onclick="goToStage(1)" class="ghost-btn">
                 ← Назад
               </button>
-              <button onclick="goToStage(3)" class="primary-btn pulse">
+              <button onclick="if(validateStepInput('inpAllowedBehavior')) goToStage(3)" class="primary-btn pulse">
                 <span>Увидеть внутренний запрет →</span>
               </button>
             </div>
@@ -1836,7 +1898,7 @@ textarea:focus, input:focus {
               </div>
 
               <div class="nav-row">
-                <button onclick="goToStage(3)" class="ghost-btn">
+                <button onclick="if(validateStepInput('inpAllowedBehavior')) goToStage(3)" class="ghost-btn">
                   ← Назад
                 </button>
                 <button onclick="goToStage(5)" class="primary-btn pulse">
@@ -1856,13 +1918,18 @@ textarea:focus, input:focus {
               Что изменилось в вашем теле и ощущении себя?
             </label>
 
+            <div style="display:flex; justify-content:flex-end; margin-bottom:6px;">
+              <button type="button" onclick="insertExampleBodyChange()" class="ghost-btn" style="font-size:11.5px; font-weight:700; color:var(--nb-sea); padding:4px 8px; background:rgba(18,68,83,0.06); border-radius:8px; border:none; cursor:pointer;">
+                📋 Вставить пример
+              </button>
+            </div>
             <textarea id="inpBodyChange" rows="3" required placeholder="Например: расправились плечи, стало легче дышать, появилось больше уверенности." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.45; margin-bottom:14px;"></textarea>
 
             <div class="nav-row">
               <button onclick="goToStage(4)" class="ghost-btn">
                 ← Назад
               </button>
-              <button onclick="goToStage(6)" class="primary-btn pulse">
+              <button onclick="if(validateStepInput('inpBodyChange')) goToStage(6)" class="primary-btn pulse">
                 <span>Выбрать новый поступок →</span>
               </button>
             </div>
@@ -1874,13 +1941,18 @@ textarea:focus, input:focus {
               Как вы проявите это качество безопасно для себя и других в ближайшие сутки?
             </label>
 
+            <div style="display:flex; justify-content:flex-end; margin-bottom:6px;">
+              <button type="button" onclick="insertExampleNewAction()" class="ghost-btn" style="font-size:11.5px; font-weight:700; color:var(--nb-sea); padding:4px 8px; background:rgba(18,68,83,0.06); border-radius:8px; border:none; cursor:pointer;">
+                📋 Вставить пример
+              </button>
+            </div>
             <textarea id="inpNewAction" rows="3" required placeholder="Например: прямо скажу о своём желании, откажусь от неудобной просьбы или приму небольшое решение без чужого одобрения." style="width:100%; border-radius:12px; padding:10px 12px; font-size:13px; border:1px solid rgba(36,49,57,0.15); background:#FFF; resize:vertical; font-family:inherit; line-height:1.45; margin-bottom:14px;"></textarea>
 
             <div class="nav-row">
               <button onclick="goToStage(5)" class="ghost-btn">
                 ← Назад
               </button>
-              <button onclick="getSingleAiBreakdown()" id="btnGetAiBreakdown" class="primary-btn pulse">
+              <button onclick="if(validateStepInput('inpNewAction')) getSingleAiBreakdown()" id="btnGetAiBreakdown" class="primary-btn pulse">
                 <span>Получить мой разбор ➔</span>
               </button>
             </div>
@@ -1995,11 +2067,11 @@ textarea:focus, input:focus {
     // Load AI Credits (Max 3 across the entire course)
     let aiCredits = 3;
     try {
-      const savedCredits = localStorage.getItem('psyquest_ai_credits');
+      const savedCredits = localStorage.getItem('psyquest_ai_credits_lesson4');
       if (savedCredits !== null) {
         aiCredits = Math.max(0, Math.min(3, parseInt(savedCredits, 10)));
       } else {
-        localStorage.setItem('psyquest_ai_credits', '3');
+        localStorage.setItem('psyquest_ai_credits_lesson4', '3');
       }
       updateCreditsUI();
     } catch (e) {}
@@ -2301,11 +2373,7 @@ textarea:focus, input:focus {
             return;
           }
         } else if (currentStage === 2) {
-          const val = (document.getElementById('inpAllowedBehavior').value || '').trim();
-          if (!val) {
-            alert('Пожалуйста, ответьте на вопрос этапа 2.');
-            return;
-          }
+          if (!validateStepInput('inpAllowedBehavior')) return;
         } else if (currentStage === 3) {
           const r = getFinalRules();
           if (r.length === 0) {
@@ -2313,11 +2381,7 @@ textarea:focus, input:focus {
             return;
           }
         } else if (currentStage === 5) {
-          const val = (document.getElementById('inpBodyChange').value || '').trim();
-          if (!val) {
-            alert('Пожалуйста, опишите изменения в теле и ощущении себя.');
-            return;
-          }
+          if (!validateStepInput('inpBodyChange')) return;
         } else if (currentStage === 6) {
           const val = (document.getElementById('inpNewAction').value || '').trim();
           if (!val) {
@@ -2354,11 +2418,8 @@ textarea:focus, input:focus {
     async function getSingleAiBreakdown() {
       if (isSubmitting) return;
 
+      if (!validateStepInput('inpNewAction')) return;
       const newAction = (document.getElementById('inpNewAction').value || '').trim();
-      if (!newAction) {
-        alert('Пожалуйста, опишите один новый поступок.');
-        return;
-      }
 
       const quality = getFinalQuality();
       const allowedBehavior = (document.getElementById('inpAllowedBehavior').value || '').trim();
@@ -2409,7 +2470,7 @@ textarea:focus, input:focus {
         aiCredits--;
         usedRealCredit = true;
         try {
-          localStorage.setItem('psyquest_ai_credits', aiCredits.toString());
+          localStorage.setItem('psyquest_ai_credits_lesson4', aiCredits.toString());
           localStorage.setItem('psyquest_lesson4_ai_done', 'true');
         } catch (e) {}
         updateCreditsUI();

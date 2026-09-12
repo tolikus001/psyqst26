@@ -732,6 +732,20 @@
           <div style="min-width:0">
             <div id="userGreeting" class="greeting">Привет!</div>
             <div class="subtle">Диагностика сценария</div>
+            <!-- Reset attempts button removed as per request -->
+            <script>
+              const ATTEMPT_KEYS = [
+                's2_lesson1_attempts',
+                's2_lesson2_attempts',
+                's2_lesson3_attempts',
+                's2_lesson4_attempts'
+              ];
+              function resetAllAttempts() {
+                ATTEMPT_KEYS.forEach(k => localStorage.setItem(k, '3'));
+                alert('Все попытки сброшены до 3 раз.');
+                location.reload();
+              }
+            </script>
           </div>
         </div>
         <div class="strategy-badge">ПСИквест</div>
