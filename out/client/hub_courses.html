@@ -12,7 +12,7 @@
       }
     });
   </script>
-  <!-- Fallback Inlined Notibot Bridge if standalone -->
+  <!-- Standalone Bridge Fallback -->
   <script>
     if (!window.notibot) {
       (function() {
@@ -30,30 +30,20 @@
               if (!event.data) return;
               const isInit = event.data.type === 'NOTIBOT_INIT' ||
                              event.data.type === 'notibot:init' ||
-                             event.data.type === 'NOTIBOT_READY' ||
-                             event.data.type === 'notibot_init';
+                             event.data.type === 'NOTIBOT_READY';
               if (isInit) {
-                const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+                const u = (event.data.data && event.data.data.user) || event.data.user || {};
                 const a = (event.data.data && event.data.data.app) || event.data.app || {};
                 if (u) this.user = u;
                 if (a) this.app = a;
-                this._updateHandlers.forEach(cb => {
-                  try { cb(this.user, this.app); } catch(e) {}
-                });
+                this._updateHandlers.forEach(cb => { try { cb(this.user, this.app); } catch(e) {} });
               }
             });
             if (window.parent && window.parent !== window) {
               try { window.parent.postMessage({ source: 'vibe-sandbox', type: 'READY_FOR_INIT' }, '*'); } catch(e) {}
             }
           }
-          onUpdate(callback) {
-            if (typeof callback === 'function') {
-              this._updateHandlers.push(callback);
-              if (this.user && (this.user.displayName || this.user.first_name || this.user.id || Object.keys(this.user).length > 0)) {
-                callback(this.user, this.app);
-              }
-            }
-          }
+          onUpdate(cb) { if (typeof cb === 'function') this._updateHandlers.push(cb); }
           openLink(url) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_link', payload: { url } }, '*'); else window.location.href = url; }
           hapticSelection() { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style: 'selection' } }, '*'); }
         }
@@ -108,13 +98,13 @@
       width: 100%;
       max-width: 440px;
       margin: 0 auto;
-      padding: 12px 14px 32px;
+      padding: 12px 14px 34px;
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
-    /* Top Navigation */
+    /* Navigation */
     .nav-back-btn {
       display: inline-flex;
       align-items: center;
@@ -135,11 +125,9 @@
       transition: all 0.2s ease;
     }
 
-    .nav-back-btn:active {
-      transform: scale(0.97);
-    }
+    .nav-back-btn:active { transform: scale(0.97); }
 
-    /* Hero Header Card */
+    /* Hero */
     .hero-card {
       background: linear-gradient(135deg, #152C3D 0%, #0D1C27 100%);
       color: #FFFFFF;
@@ -185,35 +173,44 @@
     .hero-desc {
       font-size: 12.5px;
       line-height: 1.5;
-      color: rgba(255, 255, 255, 0.82);
+      color: rgba(255, 255, 255, 0.84);
       margin: 0;
     }
 
-    /* Diagnostic pill */
-    .diagnostic-card {
-      background: linear-gradient(180deg, #FBF8F3 0%, #EDE1CD 100%);
-      border: 1.5px solid #C8AA74;
-      border-radius: 16px;
-      padding: 14px 16px;
+    /* Section Headers */
+    .section-title-wrap {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-      text-align: center;
-      box-shadow: 0 4px 14px rgba(175, 140, 80, 0.12);
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 6px;
     }
 
-    .diagnostic-card h3 {
-      margin: 0;
-      font-size: 13.5px;
+    .section-title {
+      font-size: 15px;
       font-weight: 800;
-      color: #593E15;
+      color: var(--nb-text);
+      margin: 0;
     }
 
-    .diagnostic-card p {
-      margin: 0 0 4px;
-      font-size: 12px;
-      color: #5D6B73;
-      line-height: 1.4;
+    .section-tag {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
+
+    .tag-active {
+      background: rgba(47, 125, 89, 0.12);
+      color: #2F7D59;
+      border: 1px solid rgba(47, 125, 89, 0.25);
+    }
+
+    .tag-soon {
+      background: rgba(194, 115, 79, 0.14);
+      color: #A85532;
+      border: 1px solid rgba(194, 115, 79, 0.25);
     }
 
     /* Course Card */
@@ -235,20 +232,19 @@
       font-weight: 800;
       padding: 3px 9px;
       border-radius: 8px;
-      text-transform: uppercase;
       letter-spacing: 0.3px;
     }
 
-    .badge-flagship {
-      background: rgba(194, 115, 79, 0.15);
-      color: #A85532;
-      border: 1px solid rgba(194, 115, 79, 0.3);
+    .badge-live {
+      background: rgba(47, 125, 89, 0.14);
+      color: #2F7D59;
+      border: 1px solid rgba(47, 125, 89, 0.28);
     }
 
-    .badge-standard {
-      background: rgba(18, 68, 83, 0.1);
-      color: var(--nb-accent);
-      border: 1px solid rgba(18, 68, 83, 0.2);
+    .badge-announced {
+      background: rgba(194, 115, 79, 0.14);
+      color: #A85532;
+      border: 1px solid rgba(194, 115, 79, 0.3);
     }
 
     .course-title {
@@ -317,6 +313,24 @@
       background: var(--nb-accent-hover);
     }
 
+    .notify-btn {
+      width: 100%;
+      min-height: 44px;
+      background: linear-gradient(135deg, #C29E65 0%, #A88147 100%);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(168, 129, 71, 0.2);
+    }
+
     .secondary-btn {
       width: 100%;
       min-height: 42px;
@@ -333,6 +347,72 @@
       cursor: pointer;
       text-decoration: none;
     }
+    /* Test / Quiz Banner */
+    .test-card {
+      background: linear-gradient(180deg, #FBF8F3 0%, #EDE1CD 100%);
+      border: 1.5px solid #C8AA74;
+      border-radius: 18px;
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 6px 20px rgba(175, 140, 80, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .test-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 8px;
+      background: rgba(194, 158, 101, 0.22);
+      color: #694C1B;
+      border: 1px solid rgba(194, 158, 101, 0.35);
+      letter-spacing: 0.3px;
+    }
+
+    .test-title {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: #38280E;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .test-desc {
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: #5E4E39;
+      margin: 0;
+    }
+
+    .test-action-btn {
+      width: 100%;
+      min-height: 46px;
+      background: linear-gradient(135deg, #ECC880 0%, #C99E58 100%);
+      color: #2E220D;
+      border: 1px solid rgba(194, 158, 101, 0.5);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(201, 158, 88, 0.28);
+      transition: all 0.2s ease;
+      margin-top: 2px;
+    }
+
+    .test-action-btn:active {
+      transform: scale(0.985);
+      background: #B88E4B;
+    }
   </style>
 </head>
 <body>
@@ -347,103 +427,125 @@
     <!-- Заглавная карточка -->
     <section class="hero-card">
       <div class="eyebrow">
-        🎓 Флагманские программы • Анатолий Фёдоров
+        🎓 Программы и сценарии • Анатолий Фёдоров
       </div>
-      <h1 class="hero-title">Практические курсы</h1>
+      <h1 class="hero-title">Каталог курсов</h1>
       <p class="hero-desc">
-        Пошаговые программы преодоления сценарных узлов в отношениях. Каждый курс включает 5 видеоуроков, персонального ИИ-попутчика, практические соматические тренажёры и аудиосессии МАГиГ.
+        Практические видеокурсы по отношениям без академической тягомотины. В каждом курсе — короткие видеоуроки, интерактивные задания и практики, соматические тренажёры и авторские аудиосессии МАГиГ.
       </p>
     </section>
 
-    <!-- Диагностический блок -->
-    <div class="diagnostic-card">
-      <h3>Не знаете, с чего начать?</h3>
-      <p>Пройдите 8 вопросов теста «Псиквест», чтобы определить точный сценарий в отношениях.</p>
-      <a href="01_psyquest.html" class="secondary-btn" onclick="safeHaptic();">
-        <span>Пройти диагностику «Я и мои отношения» ➔</span>
+    <!-- БЛОК ПОДБОРА КУРСА: ТЕСТ-КВЕСТ -->
+    <section class="test-card">
+      <span class="test-badge">🧭 Персональный подбор программы • 2 минуты</span>
+      <h2 class="test-title">Не знаете, какой курс вам подходит?</h2>
+      <p class="test-desc">
+        Пройдите экспресс-диагностику вашей ситуации в отношениях. Тест определит ваш сценарий и запустит персональный интерактивный квест.
+      </p>
+      <a href="01_psyquest.html" class="test-action-btn" onclick="safeHaptic();">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+        <span>Пройти тест ➔</span>
       </a>
+    </section>
+
+    <!-- РАЗДЕЛ 1: ГОТОВЫЕ КУРСЫ (ДОСТУПНЫ ПРЯМО СЕЙЧАС) -->
+    <div class="section-title-wrap">
+      <h2 class="section-title">Доступные курсы</h2>
+      <span class="section-tag tag-active">2 программы открыты</span>
     </div>
 
-    <!-- Курс 1: «Я остаюсь собой» (Флагман, Сценарий 2) -->
+    <!-- Курс 1: «Я остаюсь собой» (Сценарий 2) -->
     <article class="course-card">
-      <div class="course-badge badge-flagship">Флагманский курс • Вы в отношениях</div>
-      <h2 class="course-title">Курс «Я остаюсь собой»</h2>
+      <div class="course-badge badge-live">✓ Открыт доступ • Вы в отношениях</div>
+      <h3 class="course-title">Курс «Я остаюсь собой»</h3>
       <p class="course-subtitle">Выход из эмоциональной зависимости, тревоги и мысленной жвачки</p>
       <p class="course-desc">
-        Для тех, кто уже в отношениях, но живёт в ожидании чужих сообщений, растворился в партнёре и непрерывно ведёт мысленные споры. Возврат контроля над своим состоянием.
+        Для тех, кто уже в отношениях, но растворился в партнёре, замирает в ожидании сообщений и ведёт бесконечные диалоги в голове. Пошаговый возврат суверенитета и спокойствия.
       </p>
       <div class="course-features">
         <span class="feature-tag">5 видеоуроков</span>
-        <span class="feature-tag">ИИ-попутчик</span>
-        <span class="feature-tag">Практика «Я остаюсь собой» (15 мин)</span>
+        <span class="feature-tag">Интерактивные задания и практики</span>
+        <span class="feature-tag">Практика 15 мин</span>
         <span class="feature-tag">4 бонуса</span>
       </div>
       <a href="15_landing_partner_2.html" class="primary-btn" onclick="safeHaptic();">
-        <span>Открыть курс «Я остаюсь собой» ➔</span>
+        <span>Перейти к курсу «Я остаюсь собой» ➔</span>
       </a>
     </article>
 
     <!-- Курс 2: «Я выбираю» (Сценарий 1) -->
     <article class="course-card">
-      <div class="course-badge badge-standard">Поиск партнёра и свидания</div>
-      <h2 class="course-title">Курс «Я выбираю»</h2>
-      <p class="course-subtitle">Как перестать выбирать тех, с кем больно, и найти надёжного человека</p>
+      <div class="course-badge badge-live">✓ Открыт доступ • Поиск и свидания</div>
+      <h3 class="course-title">Курс «Я выбираю»</h3>
+      <p class="course-subtitle">Как перестать выбирать тех, с кем больно, и найти своего человека</p>
       <p class="course-desc">
-        Для тех, кто в поиске или устал от череды свиданий с эмоционально холодными и недоступными людьми. Снятие мифа о тревожных бабочках и фильтр выбора партнёра.
+        Для тех, кто в поиске или устал от свиданий с эмоционально холодными партнерами. Снятие мифа про «бабочки в животе», фильтр красных флагов и выбор надёжного партнёра.
       </p>
       <div class="course-features">
         <span class="feature-tag">5 видеоуроков</span>
-        <span class="feature-tag">ИИ-диагностика</span>
-        <span class="feature-tag">Карта красных флагов</span>
+        <span class="feature-tag">Интерактивные задания и практики</span>
         <span class="feature-tag">Дневник свиданий</span>
+        <span class="feature-tag">Практика «На своей земле»</span>
       </div>
       <a href="02_landing_partner.html" class="primary-btn" onclick="safeHaptic();">
-        <span>Открыть курс «Я выбираю» ➔</span>
+        <span>Перейти к курсу «Я выбираю» ➔</span>
       </a>
     </article>
 
-    <!-- Курс 3: «Мы вместе» (Сценарий 3) -->
-    <article class="course-card">
-      <div class="course-badge badge-standard">Брак и совместная жизнь</div>
-      <h2 class="course-title">Курс «Мы вместе»</h2>
-      <p class="course-subtitle">Возвращение тепла, диалога на равных и близости в браке</p>
+    <!-- РАЗДЕЛ 2: АНОНСЫ НОВЫХ КУРСОВ -->
+    <div class="section-title-wrap">
+      <h2 class="section-title">Анонсы ближайших программ</h2>
+      <span class="section-tag tag-soon">Скоро запуск</span>
+    </div>
+
+    <!-- Анонс 1: КУРС «Я У СЕБЯ ЕСТЬ» -->
+    <article class="course-card" style="border: 2px solid rgba(194, 115, 79, 0.4); background: linear-gradient(180deg, #FBF8F3 0%, #F5EDE0 100%);">
+      <div class="course-badge badge-announced">🔥 Главный анонс • Идёт предзапись</div>
+      <h3 class="course-title">Курс «Я у себя есть»</h3>
+      <p class="course-subtitle">Фундаментальная опора на себя, исцеление внутреннего критика и самоценность</p>
       <p class="course-desc">
-        Как разорвать замкнутый круг однотипных скандалов («нападающий — убегающий»), преодолеть отчуждение под одной крышей и вернуть искреннее физическое влечение.
+        Глубокий курс о том, как перестать заслуживать любовь хорошим поведением, выдерживать одиночество без паники и стать для себя самым надёжным взрослым другом.
       </p>
       <div class="course-features">
-        <span class="feature-tag">5 видеоуроков</span>
-        <span class="feature-tag">Карта семейного цикла</span>
-        <span class="feature-tag">Протоколы конструктивного спора</span>
-        <span class="feature-tag">Практики контакта</span>
+        <span class="feature-tag">Формирование ядра личности</span>
+        <span class="feature-tag">Работа с Тенью</span>
+        <span class="feature-tag">Гипнопрактики опоры</span>
       </div>
-      <a href="26_landing_family.html" class="primary-btn" onclick="safeHaptic();">
-        <span>Открыть курс «Мы вместе» ➔</span>
+      <a href="https://t.me/luck_master?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%2C%20%D0%90%D0%BD%D0%B0%D1%82%D0%BE%D0%BB%D0%B8%D0%B9!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B2%20%D0%BF%D1%80%D0%B5%D0%B4%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D1%8C%20%D0%BD%D0%B0%20%D0%BA%D1%83%D1%80%D1%81%20%C2%AB%D0%AF%20%D1%83%20%D1%81%D0%B5%D0%B1%D1%8F%20%D0%B5%D1%81%D1%82%D1%8C%C2%BB" target="_blank" class="notify-btn" onclick="safeHaptic();">
+        <span>Записаться в лист ожидания курса «Я у себя есть» ➔</span>
       </a>
     </article>
 
-    <!-- Курс 4: «Точка опоры» (Сценарий 4) -->
+    <!-- Анонс 2: Курс «Мы вместе» (Сценарий 3) -->
     <article class="course-card">
-      <div class="course-badge badge-standard">Острый кризис и измена</div>
-      <h2 class="course-title">Курс «Точка опоры»</h2>
-      <p class="course-subtitle">Антикризисный протокол первых 7–14 дней, когда земля ушла из-под ног</p>
+      <div class="course-badge badge-announced">Готовится к запуску • Семья и брак</div>
+      <h3 class="course-title">Курс «Мы вместе»</h3>
+      <p class="course-subtitle">Возвращение тепла, диалога на равных и близости в длительном союзе</p>
       <p class="course-desc">
-        Экстренная помощь при шоке, раскрытой измене, ультиматуме или внезапном решении о разрыве. Соматическое заземление и сохранение достоинства без импульсивных шагов.
+        Как разорвать замкнутый цикл «нападающий — убегающий», решить накопленные бытовые обиды и восстановить эмоциональный и тактильный контакт под одной крышей.
       </p>
-      <div class="course-features">
-        <span class="feature-tag">5 видеоуроков</span>
-        <span class="feature-tag">Стоп-паника протокол</span>
-        <span class="feature-tag">Мораторий на решения</span>
-        <span class="feature-tag">Практика «Я в безопасности»</span>
-      </div>
-      <a href="37_landing_crisis.html" class="primary-btn" onclick="safeHaptic();">
-        <span>Открыть курс «Точка опоры» ➔</span>
+      <a href="https://t.me/luck_master?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%2C%20%D0%90%D0%BD%D0%B0%D1%82%D0%BE%D0%BB%D0%B8%D0%B9!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BA%D1%83%D1%80%D1%81%20%C2%AB%D0%9C%D1%8B%20%D0%B2%D0%BC%D0%B5%D1%81%D1%82%D0%B5%C2%BB" target="_blank" class="secondary-btn" onclick="safeHaptic();">
+        <span>Узнать дату запуска курса «Мы вместе»</span>
+      </a>
+    </article>
+
+    <!-- Анонс 3: Курс «Точка опоры» (Сценарий 4) -->
+    <article class="course-card">
+      <div class="course-badge badge-announced">Готовится к запуску • Антикризис</div>
+      <h3 class="course-title">Курс «Точка опоры»</h3>
+      <p class="course-subtitle">Протокол первых 14 дней при измене, угрозе разрыва и потере почвы</p>
+      <p class="course-desc">
+        Экстренная опора в шторме. Как пережить первые дни без разрушительных импульсивных действий и сохранить собственное достоинство.
+      </p>
+      <a href="https://t.me/luck_master?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%2C%20%D0%90%D0%BD%D0%B0%D1%82%D0%BE%D0%BB%D0%B8%D0%B9!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BA%D1%83%D1%80%D1%81%20%C2%AB%D0%A2%D0%BE%D1%87%D0%BA%D0%B0%20%D0%BE%D0%BF%D0%BE%D1%80%D1%8B%C2%BB" target="_blank" class="secondary-btn" onclick="safeHaptic();">
+        <span>Узнать дату запуска курса «Точка опоры»</span>
       </a>
     </article>
 
     <!-- Назад -->
     <div style="padding-top:4px;">
       <a href="index.html" class="secondary-btn" onclick="safeHaptic();">
-        <span>← Вернуться в каталог</span>
+        <span>← Вернуться в главное меню</span>
       </a>
     </div>
 

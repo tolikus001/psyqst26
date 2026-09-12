@@ -12,7 +12,7 @@
       }
     });
   </script>
-  <!-- Fallback Inlined Notibot Bridge if standalone -->
+  <!-- Standalone Bridge Fallback -->
   <script>
     if (!window.notibot) {
       (function() {
@@ -30,32 +30,24 @@
               if (!event.data) return;
               const isInit = event.data.type === 'NOTIBOT_INIT' ||
                              event.data.type === 'notibot:init' ||
-                             event.data.type === 'NOTIBOT_READY' ||
-                             event.data.type === 'notibot_init';
+                             event.data.type === 'NOTIBOT_READY';
               if (isInit) {
-                const u = (event.data.data && event.data.data.user) || event.data.user || (event.data.data && event.data.data.displayName ? event.data.data : null);
+                const u = (event.data.data && event.data.data.user) || event.data.user || {};
                 const a = (event.data.data && event.data.data.app) || event.data.app || {};
                 if (u) this.user = u;
                 if (a) this.app = a;
-                this._updateHandlers.forEach(cb => {
-                  try { cb(this.user, this.app); } catch(e) {}
-                });
+                this._updateHandlers.forEach(cb => { try { cb(this.user, this.app); } catch(e) {} });
               }
             });
             if (window.parent && window.parent !== window) {
               try { window.parent.postMessage({ source: 'vibe-sandbox', type: 'READY_FOR_INIT' }, '*'); } catch(e) {}
             }
           }
-          onUpdate(callback) {
-            if (typeof callback === 'function') {
-              this._updateHandlers.push(callback);
-              if (this.user && (this.user.displayName || this.user.first_name || this.user.id || Object.keys(this.user).length > 0)) {
-                callback(this.user, this.app);
-              }
-            }
-          }
+          onUpdate(cb) { if (typeof cb === 'function') this._updateHandlers.push(cb); }
           openLink(url) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_link', payload: { url } }, '*'); else window.location.href = url; }
+          openProduct(id) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'open_product', payload: { id } }, '*'); else window.location.href = 'https://t.me/luck_master'; }
           hapticSelection() { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { style: 'selection' } }, '*'); }
+          hapticNotification(type) { if (window.parent) window.parent.postMessage({ source: 'vibe-sandbox', type: 'haptic', payload: { type } }, '*'); }
         }
         window.notibot = new NotibotBridge();
       })();
@@ -87,9 +79,9 @@
       --nb-text: #202D35;
       --nb-text-2: #5D6B73;
       --nb-accent: #124453;
+      --nb-accent-hover: #0E3541;
       --nb-gold: #C29E65;
       --nb-gold-dark: #8C6A32;
-      --nb-teal-dark: #0D333E;
       --font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
@@ -107,13 +99,12 @@
       width: 100%;
       max-width: 440px;
       margin: 0 auto;
-      padding: 12px 14px 32px;
+      padding: 12px 14px 34px;
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
-    /* Top Navigation Button */
     .nav-back-btn {
       display: inline-flex;
       align-items: center;
@@ -134,11 +125,9 @@
       transition: all 0.2s ease;
     }
 
-    .nav-back-btn:active {
-      transform: scale(0.97);
-    }
+    .nav-back-btn:active { transform: scale(0.97); }
 
-    /* Hero Header Card */
+    /* Hero */
     .hero-card {
       background: linear-gradient(135deg, #124453 0%, #0A262F 100%);
       color: #FFFFFF;
@@ -153,11 +142,11 @@
     .hero-card::after {
       content: '';
       position: absolute;
-      top: -40px;
-      right: -40px;
-      width: 130px;
-      height: 130px;
-      background: radial-gradient(circle, rgba(194, 158, 101, 0.25) 0%, transparent 70%);
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(194, 158, 101, 0.3) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -184,17 +173,120 @@
     .hero-desc {
       font-size: 12.5px;
       line-height: 1.5;
-      color: rgba(255, 255, 255, 0.82);
+      color: rgba(255, 255, 255, 0.84);
       margin: 0;
     }
 
-    /* Practice Card */
+    /* Top Expandable Buttons Group */
+    .toggle-buttons-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .toggle-btn {
+      width: 100%;
+      min-height: 56px;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(194, 158, 101, 0.32);
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      text-align: left;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toggle-btn:active {
+      transform: scale(0.985);
+    }
+
+    .toggle-btn.active {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAF5EC 100%);
+      border: 1.5px solid #C29E65;
+      box-shadow: 0 5px 18px rgba(194, 158, 101, 0.2);
+    }
+
+    .toggle-btn-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      background: rgba(194, 158, 101, 0.12);
+      border: 1px solid rgba(194, 158, 101, 0.25);
+    }
+
+    .toggle-texts {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toggle-main-title {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #202D35;
+      line-height: 1.25;
+    }
+
+    .toggle-btn.active .toggle-main-title {
+      color: #124453;
+    }
+
+    .toggle-sub-title {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #6A7B84;
+    }
+
+    .toggle-btn.active .toggle-sub-title {
+      color: #8C6A32;
+    }
+
+    .toggle-chevron {
+      color: #8C6A32;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    .toggle-btn.active .toggle-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Expandable Sections */
+    .practices-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Practice Cards */
     .practice-card {
       background: var(--nb-cream);
       border: 1.5px solid rgba(194, 158, 101, 0.3);
       border-radius: 18px;
-      padding: 16px 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -202,8 +294,36 @@
 
     .practice-header {
       display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .topic-tag {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .tag-gold {
+      background: rgba(194, 158, 101, 0.16);
+      color: #7A5822;
+      border: 1px solid rgba(194, 158, 101, 0.3);
+    }
+
+    .tag-green {
+      background: rgba(47, 125, 89, 0.12);
+      color: #266A4B;
+      border: 1px solid rgba(47, 125, 89, 0.25);
+    }
+
+    .practice-title-row {
+      display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: baseline;
       gap: 8px;
     }
 
@@ -211,19 +331,15 @@
       font-size: 15.5px;
       font-weight: 800;
       color: var(--nb-text);
-      margin: 0 0 4px;
+      margin: 0;
       line-height: 1.3;
     }
 
-    .practice-badge {
-      font-size: 11px;
-      font-weight: 800;
-      color: #8C6A32;
-      background: rgba(194, 158, 101, 0.16);
-      padding: 3px 8px;
-      border-radius: 8px;
+    .practice-duration {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #6C7C85;
       white-space: nowrap;
-      border: 1px solid rgba(194, 158, 101, 0.25);
     }
 
     .practice-desc {
@@ -233,9 +349,9 @@
       margin: 0;
     }
 
-    /* Audio Player Wrapper */
+    /* Audio Player */
     .audio-wrapper {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 12px;
       padding: 10px 12px;
       border: 1px solid rgba(36, 49, 57, 0.08);
@@ -247,14 +363,14 @@
       accent-color: var(--nb-accent);
     }
 
-    /* Action buttons */
-    .primary-btn {
+    /* Buy Single Button */
+    .buy-single-btn {
       width: 100%;
-      min-height: 46px;
-      background: var(--nb-accent);
+      min-height: 44px;
+      background: linear-gradient(135deg, #124453 0%, #0A262F 100%);
       color: #FFFFFF;
       border: none;
-      border-radius: 14px;
+      border-radius: 12px;
       font-size: 13.5px;
       font-weight: 700;
       display: flex;
@@ -263,13 +379,87 @@
       gap: 8px;
       cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 6px 18px rgba(18, 68, 83, 0.18);
+      box-shadow: 0 4px 14px rgba(18, 68, 83, 0.2);
       transition: all 0.2s ease;
     }
 
-    .primary-btn:active {
+    .buy-single-btn:active {
       transform: scale(0.985);
-      background: var(--nb-teal-dark);
+      background: #0E3541;
+    }
+
+    /* Bundle Offer */
+    .bundle-card {
+      background: linear-gradient(180deg, #FBF8F3 0%, #EDE1CD 100%);
+      border: 2px solid #C8AA74;
+      border-radius: 20px;
+      padding: 20px 18px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 10px 28px rgba(175, 140, 80, 0.16);
+      position: relative;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .bundle-badge {
+      position: absolute;
+      top: 12px;
+      right: -28px;
+      background: #A85532;
+      color: #FFF;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 32px;
+      transform: rotate(45deg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .price-main {
+      font-size: 26px;
+      font-weight: 900;
+      color: #4A3514;
+    }
+
+    .price-old {
+      font-size: 15px;
+      font-weight: 600;
+      color: #9E8970;
+      text-decoration: line-through;
+    }
+
+    .primary-bundle-btn {
+      width: 100%;
+      min-height: 48px;
+      background: linear-gradient(135deg, #ECC880 0%, #C99E58 100%);
+      color: #2E220D;
+      border: 1px solid rgba(194, 158, 101, 0.5);
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(201, 158, 88, 0.32);
+      transition: all 0.2s ease;
+    }
+
+    .primary-bundle-btn:active {
+      transform: scale(0.985);
+      background: #B88E4B;
     }
 
     .secondary-btn {
@@ -299,110 +489,210 @@
       ← На главную
     </a>
 
-    <!-- Заглавная карточка -->
+    <!-- Заглавный блок -->
     <section class="hero-card">
       <div class="eyebrow">
-        🎧 Авторские трансовые сессии • МАГиГ
+        🎧 Авторские аудиотехники • МАГиГ
       </div>
       <h1 class="hero-title">Медитации и аудиопрактики</h1>
       <p class="hero-desc">
-        Глубинные аудиосессии Анатолия Фёдорова по методу трёхниточной эриксоновской косички (МАГиГ) с терапевтическими частотами 432 и 528 Гц. Возвращение в тело, снятие тревоги и остановка мысленной жвачки.
+        Глубинные трансовые сессии Анатолия Фёдорова по методу трёхниточной эриксоновской косички (МАГиГ) под терапевтические частоты 432 и 528 Гц. Возвращение в тело, снятие тревоги и остановка мысленной жвачки.
       </p>
     </section>
 
-    <!-- 1. Практика «Штиль после шторма» -->
-    <article class="practice-card">
-      <div class="practice-header">
-        <div>
-          <h2 class="practice-title">Практика «Штиль после шторма»</h2>
-          <div class="practice-badge">Экстренное заземление • 17 минут</div>
-        </div>
-      </div>
-      <p class="practice-desc">
-        Остановка внутреннего суда и мысленной жвачки. Наденьте наушники, сделайте глубокий вдох и позвольте голосу вернуть ваше тело в безопасную гавань.
-      </p>
-      <div class="audio-wrapper">
-        <audio controls preload="metadata">
-          <source src="meditation2-3.mp3" type="audio/mpeg">
-          <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation2-3.mp3" type="audio/mpeg">
-          Ваш браузер не поддерживает аудио.
-        </audio>
-      </div>
-      <a href="18_lesson3.html" class="secondary-btn" onclick="safeHaptic();">
-        <span>Открыть в контексте Урока 3 ➔</span>
-      </a>
-    </article>
+    <!-- КНОПКИ РАСКРЫТИЯ СПИСКОВ: СНАЧАЛА ПЛАТНЫЕ, ЗАТЕМ БЕСПЛАТНЫЕ -->
+    <div class="toggle-buttons-group">
 
-    <!-- 2. Практика «Я остаюсь собой» -->
-    <article class="practice-card">
-      <div class="practice-header">
-        <div>
-          <h2 class="practice-title">Практика «Я остаюсь собой»</h2>
-          <div class="practice-badge">Эмоциональный суверенитет • 15 минут</div>
+      <!-- 1. Кнопка: Платные медитации -->
+      <button type="button" id="btnPaid" class="toggle-btn active" onclick="toggleSection('paid');">
+        <div class="toggle-btn-left">
+          <div class="toggle-icon-wrap">💎</div>
+          <div class="toggle-texts">
+            <span class="toggle-main-title">Платные медитации</span>
+            <span class="toggle-sub-title">4 глубинные сессии • 300 ₽ / пакет 990 ₽</span>
+          </div>
         </div>
-      </div>
-      <p class="practice-desc">
-        Финальная практика интеграции нового опыта и глубокого спокойствия. Возврат контроля над своим состоянием без попыток заслужить любовь чужим одобрением.
-      </p>
-      <div class="audio-wrapper">
-        <audio controls preload="metadata">
-          <source src="meditation2-5.mp3" type="audio/mpeg">
-          <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation2-5.mp3" type="audio/mpeg">
-          Ваш браузер не поддерживает аудио.
-        </audio>
-      </div>
-      <a href="20_lesson5.html" class="secondary-btn" onclick="safeHaptic();">
-        <span>Открыть в контексте Урока 5 ➔</span>
-      </a>
-    </article>
+        <svg class="toggle-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
 
-    <!-- 3. Практика «На своей земле» -->
-    <article class="practice-card">
-      <div class="practice-header">
-        <div>
-          <h2 class="practice-title">Практика «На своей земле»</h2>
-          <div class="practice-badge">Границы и опора • 12 минут</div>
+      <!-- 2. Кнопка: Бесплатные медитации -->
+      <button type="button" id="btnFree" class="toggle-btn" onclick="toggleSection('free');">
+        <div class="toggle-btn-left">
+          <div class="toggle-icon-wrap">🎧</div>
+          <div class="toggle-texts">
+            <span class="toggle-main-title">Бесплатные медитации</span>
+            <span class="toggle-sub-title">2 открытые сессии • Слушать онлайн</span>
+          </div>
         </div>
-      </div>
-      <p class="practice-desc">
-        Снятие синдрома спасателя и запретов на собственную жизнь. Глубокое ощущение права быть собой и опора на сильную здоровую взрослую часть.
-      </p>
-      <a href="07_lesson5.html" class="secondary-btn" onclick="safeHaptic();">
-        <span>Открыть практику в Уроке 5 (Сценарий 1) ➔</span>
-      </a>
-    </article>
+        <svg class="toggle-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
 
-    <!-- 4. Практика «Я в безопасности» -->
-    <article class="practice-card">
-      <div class="practice-header">
-        <div>
-          <h2 class="practice-title">Практика «Я в безопасности»</h2>
-          <div class="practice-badge">Антикризисный якорь • 14 минут</div>
+    </div>
+
+    <!-- РАЗДЕЛ: ПЛАТНЫЕ МЕДИТАЦИИ -->
+    <section id="paidSection" class="practices-section">
+
+      <!-- Платная 1: Штиль после шторма -->
+      <article class="practice-card">
+        <div class="practice-header">
+          <span class="topic-tag tag-gold">Тема: Мысленная жвачка и тревожный спор в голове</span>
+          <div class="practice-title-row">
+            <h3 class="practice-title">Практика «Штиль после шторма»</h3>
+            <span class="practice-duration">17 минут</span>
+          </div>
         </div>
-      </div>
-      <p class="practice-desc">
-        Соматическая реанимация при остром потрясении (измена, шок, угроза разрыва). Мораторий на импульсивные действия в первые дни кризиса.
-      </p>
-      <a href="38_lesson1.html" class="secondary-btn" onclick="safeHaptic();">
-        <span>Открыть антикризисный протокол ➔</span>
-      </a>
-    </article>
+        <p class="practice-desc">
+          Останавливает внутренний суд и прокручивание чужих слов. Снимает соматический спазм в груди и возвращает нервную систему в состояние тишины и безопасности.
+        </p>
+        <button type="button" class="buy-single-btn" onclick="buyItem('meditation_storm_300', 'Практика «Штиль после шторма»');">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>Купить практику • 300 ₽</span>
+        </button>
+      </article>
 
-    <!-- Карточка перехода в Telegram / Прайс -->
-    <section style="background:linear-gradient(180deg, #FBF8F3 0%, #EDE1CD 100%); border:1.5px solid #C8AA74; border-radius:18px; padding:18px; text-align:center; display:flex; flex-direction:column; gap:10px; box-shadow:0 8px 24px rgba(175,140,80,0.12);">
-      <h3 style="font-size:15px; font-weight:800; color:#523912; margin:0;">Полный сборник практик и новых записей</h3>
-      <p style="font-size:12.5px; color:#5D6B73; line-height:1.45; margin:0;">
-        Новые трансовые сессии и аудиопрактики публикуются в официальном канале «Простые вещи».
-      </p>
-      <a href="https://t.me/smplthing" target="_blank" class="primary-btn" onclick="safeHaptic();">
-        <span>Слушать в канале «Простые вещи»</span>
-      </a>
+      <!-- Платная 2: Я остаюсь собой -->
+      <article class="practice-card">
+        <div class="practice-header">
+          <span class="topic-tag tag-gold">Тема: Созависимость и контроль в отношениях</span>
+          <div class="practice-title-row">
+            <h3 class="practice-title">Практика «Я остаюсь собой»</h3>
+            <span class="practice-duration">15 минут</span>
+          </div>
+        </div>
+        <p class="practice-desc">
+          Возвращает внимание внутрь себя и снимает привычку контролировать другого. Помогает сохранять устойчивость и покой, даже когда партнёр молчит или отдаляется.
+        </p>
+        <button type="button" class="buy-single-btn" onclick="buyItem('meditation_myself_300', 'Практика «Я остаюсь собой»');">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>Купить практику • 300 ₽</span>
+        </button>
+      </article>
+
+      <!-- Платная 3: На своей земле -->
+      <article class="practice-card">
+        <div class="practice-header">
+          <span class="topic-tag tag-gold">Тема: Личные границы и синдром спасателя</span>
+          <div class="practice-title-row">
+            <h3 class="practice-title">Практика «На своей земле»</h3>
+            <span class="practice-duration">12 минут</span>
+          </div>
+        </div>
+        <p class="practice-desc">
+          Опора на Мудрую Я и восстановление права жить свою жизнь. Снимает вину за то, что вы не обязаны спасать и заслуживать чужую любовь хорошим поведением.
+        </p>
+        <button type="button" class="buy-single-btn" onclick="buyItem('meditation_land_300', 'Практика «На своей земле»');">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>Купить практику • 300 ₽</span>
+        </button>
+      </article>
+
+      <!-- Платная 4: Я в безопасности -->
+      <article class="practice-card">
+        <div class="practice-header">
+          <span class="topic-tag tag-gold">Тема: Острый кризис, измена и страх разрыва</span>
+          <div class="practice-title-row">
+            <h3 class="practice-title">Практика «Я в безопасности»</h3>
+            <span class="practice-duration">14 минут</span>
+          </div>
+        </div>
+        <p class="practice-desc">
+          Экстренная опора в момент шока или разрыва. Помогает заземлиться, выровнять пульс и не совершать импульсивных действий на пике эмоциональной боли.
+        </p>
+        <button type="button" class="buy-single-btn" onclick="buyItem('meditation_safe_300', 'Практика «Я в безопасности»');">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>Купить практику • 300 ₽</span>
+        </button>
+      </article>
+
+      <!-- ВЫГОДНЫЙ ПАКЕТ: ВСЕ ПРАКТИКИ ВМЕСТЕ ЗА 990 ₽ -->
+      <div class="bundle-card">
+        <div class="bundle-badge">Выгода 45%</div>
+        <h3 style="font-size:17px; font-weight:900; color:#4A3514; margin:0;">
+          Полная коллекция практик (Все вместе)
+        </h3>
+        <p style="font-size:12.5px; color:#6C5940; line-height:1.45; margin:0;">
+          Доступ ко всем 4-м глубинным аудиосессиям + новые трансовые практики Анатолия Фёдорова, которые будут добавляться в этот сборник.
+        </p>
+        
+        <div class="price-row">
+          <span class="price-main">990 ₽</span>
+          <span class="price-old">1 800 ₽</span>
+        </div>
+
+        <button type="button" class="primary-bundle-btn" onclick="buyItem('meditations_bundle_990', 'Полная коллекция практик за 990 ₽');">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          <span>Забрать всю коллекцию за 990 ₽</span>
+        </button>
+      </div>
+
     </section>
 
-    <!-- Назад -->
-    <div style="padding-top:4px;">
+    <!-- РАЗДЕЛ: БЕСПЛАТНЫЕ МЕДИТАЦИИ (РАСКРЫВАЕТСЯ ПО КНОПКЕ) -->
+    <section id="freeSection" class="practices-section" style="display:none;">
+
+      <!-- Бесплатная 1: Возврат в тело -->
+      <article class="practice-card">
+        <div class="practice-header">
+          <span class="topic-tag tag-green">Тема: Снятие телесного зажима и заземление</span>
+          <div class="practice-title-row">
+            <h3 class="practice-title">Практика «Возврат в тело: Заземление»</h3>
+            <span class="practice-duration">9 минут</span>
+          </div>
+        </div>
+        <p class="practice-desc">
+          Физическое заземление, снятие мышечного спазма в плечах и груди, выравнивание дыхания и возвращение контакта со спокойным телом.
+        </p>
+        <div class="audio-wrapper">
+          <audio controls preload="metadata">
+            <source src="meditation2-3.mp3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation2-3.mp3" type="audio/mpeg">
+            Ваш браузер не поддерживает аудио.
+          </audio>
+        </div>
+      </article>
+
+      <!-- Бесплатная 2: Пауза перед разговором -->
+      <article class="practice-card">
+        <div class="practice-header">
+          <span class="topic-tag tag-green">Тема: Настройка перед трудным разговором</span>
+          <div class="practice-title-row">
+            <h3 class="practice-title">Практика «Пауза перед разговором»</h3>
+            <span class="practice-duration">7 минут</span>
+          </div>
+        </div>
+        <p class="practice-desc">
+          Короткая настройка перед сложным разговором с близким. Снимает ком в горле, помогает войти в диалог не из обиды или защиты, а из взрослого спокойствия.
+        </p>
+        <div class="audio-wrapper">
+          <audio controls preload="metadata">
+            <source src="meditation2-5.mp3" type="audio/mpeg">
+            <source src="https://inter01-anatolyfedorov.amvera.io/data/meditation2-5.mp3" type="audio/mpeg">
+            Ваш браузер не поддерживает аудио.
+          </audio>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- БЛОК ДЛЯ ТЕХ, У КОГО УЖЕ ЕСТЬ ДОСТУП -->
+    <div style="background:#FFF; border:1px solid rgba(18,68,83,0.15); border-radius:16px; padding:14px 16px; text-align:center; display:flex; flex-direction:column; gap:8px;">
+      <span style="font-size:12.5px; font-weight:700; color:var(--nb-text);">Уже приобретали практики или курсы?</span>
+      <p style="font-size:12px; color:var(--nb-text-2); margin:0; line-height:1.4;">
+        Все ваши приобретённые аудиосессии всегда доступны в ваших личных материалах.
+      </p>
+      <a href="hub_courses.html" class="secondary-btn" onclick="safeHaptic();">
+        <span>Перейти к моим курсам ➔</span>
+      </a>
+    </div>
+
+    <!-- Возврат на главную -->
+    <div style="padding-top:2px;">
       <a href="index.html" class="secondary-btn" onclick="safeHaptic();">
-        <span>← Вернуться в каталог</span>
+        <span>← Вернуться в главное меню</span>
       </a>
     </div>
 
@@ -415,6 +705,50 @@
           notibot.hapticSelection();
         }
       } catch(e) {}
+    }
+
+    function toggleSection(type) {
+      safeHaptic();
+      var paidSec = document.getElementById('paidSection');
+      var freeSec = document.getElementById('freeSection');
+      var btnPaid = document.getElementById('btnPaid');
+      var btnFree = document.getElementById('btnFree');
+
+      if (type === 'paid') {
+        var isCurrentlyActive = btnPaid.classList.contains('active');
+        if (isCurrentlyActive) {
+          btnPaid.classList.remove('active');
+          paidSec.style.display = 'none';
+        } else {
+          btnPaid.classList.add('active');
+          paidSec.style.display = 'flex';
+          btnFree.classList.remove('active');
+          freeSec.style.display = 'none';
+        }
+      } else if (type === 'free') {
+        var isCurrentlyActive = btnFree.classList.contains('active');
+        if (isCurrentlyActive) {
+          btnFree.classList.remove('active');
+          freeSec.style.display = 'none';
+        } else {
+          btnFree.classList.add('active');
+          freeSec.style.display = 'flex';
+          btnPaid.classList.remove('active');
+          paidSec.style.display = 'none';
+        }
+      }
+    }
+
+    function buyItem(productId, title) {
+      safeHaptic();
+      try {
+        if (window.notibot && typeof notibot.openProduct === 'function') {
+          notibot.openProduct(productId);
+          return;
+        }
+      } catch(e) {}
+      var msg = encodeURIComponent('Здравствуйте, Анатолий! Хочу приобрести: ' + title);
+      window.open('https://t.me/luck_master?text=' + msg, '_blank');
     }
   </script>
 </body>
